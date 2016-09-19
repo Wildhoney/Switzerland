@@ -8,3 +8,5 @@
 node_modules
 npm_debug.log
 
+# example
+example/build.js
