@@ -1,0 +1,19 @@
+{
+  "name": "switzerland",
+  "version": "0.1.0",
+  "description": "Switzerland.js is a playground for experimenting with various Web Component techniques, approaches, and implementations.",
+  "main": "dist/switzerland.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wildhoney/Switzerland.git"
+  },
+  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wildhoney/Switzerland/issues"
+  },
+  "homepage": "https://github.com/Wildhoney/Switzerland#readme"
+}
