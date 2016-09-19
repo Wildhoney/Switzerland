@@ -1,4 +1,4 @@
-<img src="media/logo.png" alt="Switzerland" width="200" />
+<img src="media/logo.png" alt="Switzerland" width="300" />
 
 ---
 
