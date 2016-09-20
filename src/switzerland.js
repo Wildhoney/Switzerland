@@ -42,30 +42,42 @@ export const component = (name, render) => {
          */
         connectedCallback() {
 
-            const tree = render({ element: this });
+            const element = this;
+            const boundary = element.attachShadow({ mode: 'open' });
+
+            const tree = render({ element, boundary });
             const root = create(tree);
 
-            memoriseFor(this, { tree, root });
-            this.appendChild(root);
+            memoriseFor(element, { tree, root, element, boundary });
+            boundary.appendChild(root);
+
+            // Favour mutation observer over `attributeChangedCallback` as the latter requires
+            // specifying the observed attributes on the class.
+            const observer = new MutationObserver(this.render.bind(this));
+            observer.observe(element, { attributes: true });
+
+            // observer.disconnect();
 
         }
 
         /**
-         * @method attributeChangedCallback
+         * @method render
          * @return {void}
          */
-        attributeChangedCallback() {
+        render() {
 
             // Retrieve the previous Virtual DOM tree and node.
             const model = renders.get(this);
 
             if (model) {
 
-                const tree = render({ element: this });
-                const patches = diff(model.tree, tree);
-                const root = patch(model.root, patches);
+                const { tree: currentTree, root: currentRoot, element, boundary } = model;
 
-                memoriseFor(this, { tree, root });
+                const tree = render({ element, boundary });
+                const patches = diff(currentTree, tree);
+                const root = patch(currentRoot, patches);
+
+                memoriseFor(this, { tree, root, element, boundary });
 
             }
 
