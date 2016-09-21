@@ -1,6 +1,6 @@
 module.exports = {
     entry: {
-        build: ['./example/components/date/default.js']
+        businessCard: ['./example/components/business-card/default.js']
     },
     output: {
         path: __dirname + '/example',
