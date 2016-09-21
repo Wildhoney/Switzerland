@@ -1,3 +1,5 @@
+import { camelize } from 'humps';
+
 /**
  * @constant observers
  * @type {WeakMap}
@@ -21,7 +23,7 @@ const transform = attributes => {
 
         // Transform each attribute into a plain object.
         const model = attributes[index];
-        return { ...acc, [model.nodeName]: model.nodeValue };
+        return { ...acc, [camelize(model.nodeName)]: model.nodeValue };
 
     }, Object.create(null));
 

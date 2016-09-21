@@ -75,4 +75,5 @@ export const component = (name, render) => {
 };
 
 export { default as attrs } from './middleware/attributes';
+export { default as state } from './middleware/state';
 export { h as element } from 'virtual-dom';
