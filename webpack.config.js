@@ -11,7 +11,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loader: 'babel-loader'
+                loaders: ['babel-loader', 'virtual-dom?jsx=element']
             }
         ]
     }
