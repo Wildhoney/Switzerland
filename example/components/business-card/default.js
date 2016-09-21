@@ -5,23 +5,28 @@ import { component, attrs, state, element } from '../../../src/switzerland';
  * @constant initialState
  * @type {Object}
  */
-const initialState = { age: 1 };
+const initialState = { age: 30 };
+
+component('person-age', pipe(attrs, props => {
+    return <h1>Age: {props.attrs.age}</h1>
+}));
 
 component('business-card', pipe(attrs, state, props => {
 
     const state = { ...initialState, ...props.state };
+    const { attrs, setState } = props;
 
     return (
         <section className="name">
 
-            <h1>Name: {props.attrs.name}</h1>
-            <h2>Age: {state.age}</h2>
+            <h1>Name: {attrs.name}</h1>
+            <person-age dataset={{ age: state.age }}></person-age>
 
-            <button onclick={() => props.setState({ age: state.age - 1 })}>
+            <button onclick={() => setState({ age: state.age - 1 })}>
                 Decrease Age
             </button>
 
-            <button onclick={() => props.setState({ age: state.age + 1 })}>
+            <button onclick={() => setState({ age: state.age + 1 })}>
                 Increase Age
             </button>
 

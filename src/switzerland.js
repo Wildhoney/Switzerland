@@ -29,6 +29,7 @@ export const component = (name, render) => {
             const tree = render({ node, render: rerender });
             const root = create(tree);
 
+            // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
 
             registry.set(this, { node, tree, root });
