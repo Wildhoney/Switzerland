@@ -1,12 +1,12 @@
-import { pipe } from 'ramda';
-import { component, element, render, attrs } from '../../../src/switzerland';
+import pipe from 'ramda/src/pipe';
+import { component, attrs, element } from '../../../src/switzerland';
 
-component('business-card', pipe(attrs, ({ attrs }) => {
+component('business-card', pipe(attrs, props => {
 
     return (
-        <datetime>
-            <h1>{attrs.name}</h1>
-        </datetime>
+        <section className="name">
+            <h1>Name: {props.attrs.name}</h1>
+        </section>
     );
 
 }));
