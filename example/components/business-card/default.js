@@ -1,5 +1,5 @@
 import pipe from 'ramda/src/pipe';
-import { component, attrs, state, element } from '../../../src/switzerland';
+import { create, attrs, state, element } from '../../../src/switzerland';
 
 /**
  * @constant initialState
@@ -7,11 +7,11 @@ import { component, attrs, state, element } from '../../../src/switzerland';
  */
 const initialState = { age: 30 };
 
-component('person-age', pipe(attrs, props => {
+create('person-age', pipe(attrs, props => {
     return <h1>Age: {props.attrs.age}</h1>
 }));
 
-component('business-card', pipe(attrs, state, props => {
+create('business-card', pipe(attrs, state, props => {
 
     const state = { ...initialState, ...props.state };
     const { attrs, setState } = props;

@@ -1,4 +1,4 @@
-import { diff, patch, create } from 'virtual-dom';
+import { diff, patch, create as createElement } from 'virtual-dom';
 
 /**
  * @constant registry
@@ -7,12 +7,12 @@ import { diff, patch, create } from 'virtual-dom';
 const registry = new WeakMap();
 
 /**
- * @method component
+ * @method create
  * @param {String} name
  * @param {Function} render
  * @return {void}
  */
-export const component = (name, render) => {
+export const create = (name, render) => {
 
     customElements.define(name, class extends HTMLElement {
 
@@ -27,7 +27,7 @@ export const component = (name, render) => {
             const rerender = () => this.render(registry.get(this));
 
             const tree = render({ node, render: rerender });
-            const root = create(tree);
+            const root = createElement(tree);
 
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
