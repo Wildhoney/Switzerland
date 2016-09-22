@@ -63,6 +63,10 @@ const attach = files => {
 
 };
 
+/**
+ * @param {Array} files
+ * @return {Function}
+ */
 export default (...files) => {
 
     return props => {
@@ -101,7 +105,7 @@ export default (...files) => {
 
         })();
 
-        return { ...props, includes: addedFiles };
+        return { ...props, files: addedFiles };
 
     };
 

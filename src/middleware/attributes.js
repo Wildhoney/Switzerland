@@ -39,6 +39,10 @@ const transform = attributes => {
 
 };
 
+/**
+ * @param {Object} props
+ * @return {Object}
+ */
 export default props => {
 
     const { node, render } = props;

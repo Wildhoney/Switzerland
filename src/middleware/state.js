@@ -4,6 +4,10 @@
  */
 const states = new WeakMap();
 
+/**
+ * @param {Object} props
+ * @return {Object}
+ */
 export default props => {
 
     const hasState = states.has(props.node);
