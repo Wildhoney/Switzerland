@@ -77,4 +77,5 @@ export const create = (name, render) => {
 
 export { default as attrs } from './middleware/attributes';
 export { default as state } from './middleware/state';
+export { default as include } from './middleware/include';
 export { h as element } from 'virtual-dom';

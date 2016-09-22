@@ -41,26 +41,28 @@ const transform = attributes => {
 
 export default props => {
 
+    const { node, render } = props;
+
     // Obtain the reference to the observer, using the WeakMap to query whether we have an existing
     // one to utilise before creating another.
-    const hasObserver = observers.has(props.node);
-    const observer = hasObserver ? observers.get(props.node) : new MutationObserver(() => {
+    const hasObserver = observers.has(node);
+    const observer = hasObserver ? observers.get(node) : new MutationObserver(() => {
 
         // Remove the existing memorisation of the node's attributes before re-rendering.
-        attributes.delete(props.node);
-        props.render();
+        attributes.delete(node);
+        render();
 
     });
 
-    observer.observe(props.node, { attributes: true });
-    !hasObserver && observers.set(props.node, observer);
+    observer.observe(node, { attributes: true });
+    !hasObserver && observers.set(node, observer);
 
     // Parse all of the attributes on the node, and nested those into the props passed.
-    const attrs = attributes.get(props.node) || transform(props.node.attributes);
-    attributes.set(props.node, attrs);
+    const attrs = attributes.get(node) || transform(node.attributes);
+    attributes.set(node, attrs);
 
     // Clean up the observer if the node is no longer present in the DOM.
-    !props.node.isConnected && observer.disconnect();
+    !node.isConnected && observer.disconnect();
 
     return { ...props, attrs };
 

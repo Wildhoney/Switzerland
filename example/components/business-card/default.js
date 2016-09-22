@@ -1,5 +1,5 @@
 import pipe from 'ramda/src/pipe';
-import { create, attrs, state, element } from '../../../src/switzerland';
+import { create, attrs, state, include, element } from '../../../src/switzerland';
 
 /**
  * @constant initialState
@@ -7,11 +7,7 @@ import { create, attrs, state, element } from '../../../src/switzerland';
  */
 const initialState = { age: 30 };
 
-create('person-age', pipe(attrs, props => {
-    return <h1>Age: {props.attrs.age}</h1>
-}));
-
-create('business-card', pipe(attrs, state, props => {
+create('business-card', pipe(include('components/business-card/default.css'), attrs, state, props => {
 
     const state = { ...initialState, ...props.state };
     const { attrs, setState } = props;
@@ -19,8 +15,10 @@ create('business-card', pipe(attrs, state, props => {
     return (
         <section className="name">
 
-            <h1>Name: {attrs.name}</h1>
-            <person-age dataset={{ age: state.age }}></person-age>
+            <ul>
+                <li>Name: {attrs.name}</li>
+                <li>Age: {state.age}</li>
+            </ul>
 
             <button onclick={() => setState({ age: state.age - 1 })}>
                 Decrease Age
