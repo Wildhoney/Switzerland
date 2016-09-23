@@ -130,7 +130,7 @@ module.exports =
 
 	            const node = this;
 	            const boundary = node.attachShadow({ mode: 'open' });
-	            const rerender = () => this.render(registry.get(this));
+	            const rerender = () => this.render();
 
 	            const tree = render({ node, render: rerender });
 	            const root = (0, _virtualDom.create)(tree);
@@ -149,20 +149,21 @@ module.exports =
 
 	            // Once the node has been removed then we perform one last pass, however the render function
 	            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
-	            this.render(registry.get(this));
+	            this.render();
 	        }
 
 	        /**
 	         * @method render
-	         * @param {Object} instance
 	         * @return {Object}
 	         */
-	        render(instance) {
+	        render() {
+
+	            const instance = registry.get(this);
 	            const currentTree = instance.tree;
 	            const currentRoot = instance.root;
 	            const node = instance.node;
 
-	            const rerender = () => this.render(registry.get(this));
+	            const rerender = () => this.render();
 
 	            const tree = render({ node, render: rerender });
 

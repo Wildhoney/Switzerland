@@ -24,7 +24,7 @@ export const create = (name, render) => {
 
             const node = this;
             const boundary = node.attachShadow({ mode: 'open' });
-            const rerender = () => this.render(registry.get(this));
+            const rerender = () => this.render();
 
             const tree = render({ node, render: rerender });
             const root = createElement(tree);
@@ -44,19 +44,19 @@ export const create = (name, render) => {
 
             // Once the node has been removed then we perform one last pass, however the render function
             // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
-            this.render(registry.get(this));
+            this.render();
 
         }
 
         /**
          * @method render
-         * @param {Object} instance
          * @return {Object}
          */
-        render(instance) {
+        render() {
 
+            const instance = registry.get(this);
             const { tree: currentTree, root: currentRoot, node } = instance;
-            const rerender = () => this.render(registry.get(this));
+            const rerender = () => this.render();
 
             const tree = render({ node, render: rerender });
 
