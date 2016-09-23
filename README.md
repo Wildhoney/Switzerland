@@ -95,7 +95,7 @@ It's fair to say that updating a component in this way is rather cumbersome for 
 
 At the heart of Switzerland is the concept of middleware which can be applied to your components. More often than not you'll have a common pipeline for your components, and thus it makes sense to export a single [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) function for applying common middleware to all components.
 
-## Once
+### Once
 
 Using the `once` function allows you to invoke a given function only once for each instance of a component. Oftentimes this is useful for triggering an action when an element has been added to the DOM, such as issuing a HTTP request &mdash; think of it as a functional alternative to React's [`componentDidMount`](https://facebook.github.io/react/docs/component-specs.html).
 
@@ -111,7 +111,7 @@ export default create('user-list', pipe(once(fetchCheeses), redux(store), props 
 }));
 ````
 
-### Custom Middleware
+### Custom
 
 In this chapter we're going to create a piece of custom middleware that responds to `click` events on the host element &ndash; the element that hosts the shadow boundary.
 
