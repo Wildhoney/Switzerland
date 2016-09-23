@@ -14,7 +14,7 @@ const registry = new WeakMap();
  */
 export const create = (name, render) => {
 
-    customElements.define(name, class extends HTMLElement {
+    window.customElements.define(name, class extends window.HTMLElement {
 
         /**
          * @method connectedCallback
@@ -78,4 +78,5 @@ export const create = (name, render) => {
 export { default as attrs } from './middleware/attributes';
 export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
+export { default as redux } from './middleware/redux';
 export { h as element } from 'virtual-dom';

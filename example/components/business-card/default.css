@@ -1,3 +1,4 @@
-* {
-    border: 1px solid red;
+:host {
+    border: 1px solid orange;
+    display: inline-block;
 }
