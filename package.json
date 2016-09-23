@@ -5,7 +5,8 @@
   "main": "dist/switzerland.js",
   "scripts": {
     "build": "webpack --config webpack.build.js && webpack --config webpack.example.js",
-    "test": "ava"
+    "test": "ava",
+    "cleanup": "rimraf node_modules"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "moment": "^2.15.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
+    "rimraf": "^2.5.4",
     "shortid": "^2.2.6",
     "sinon": "^1.17.6",
     "virtual-dom-loader": "^0.1.0",

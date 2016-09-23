@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+  - 6.4
+  - 6.5
+  - 6.6
+
+before_deploy:
+  - npm run build
+  - npm run cleanup
+
+sudo: false
+
+deploy:
+  all_branches: true
+  skip_cleanup: true
+  provider: heroku
+  api_key:
+    secure: mEdioJTnb1fDv0lKcAishTxl0Rd/cCY9T7ri/Fo4hGPvQRsrto3X4tFm2Ss6lcGsvIfkY5Uw1qb1AXoj50Oael8CCQ3WEKtZvps+uvcXBiNRibw6ZKD11RA7GHdqwcD1XXF8s0IXo6siqCC1wtrjOu9jwBRbIiKjbHgZYL31FAAj76/Kkw5QFDXvu0unUHw60hTn40t6dzHmY6tHHoZwlFlXuWYHb3mHjlvFPPixz4bWGHZdL6Cp8Jzl8Y6FIGDQH60yQ/kRNQUBDC9I+Tm+xrUYJ6+5jfNzZkJRJ6nwRlmxpkhr14TczPTI0vurtxi02gMHJ/Eo9pu+ofvVIGdPFfPpBHPHj0d70VEz32IlulJI9VI9S9lEGyrXH9+wkXq83JxEtl1FcI6+l/vZczCz+2/PhSGN5VD3Xgbo/fpQJ9aGhHTPkwHGBz0YwIhOqtsH/LF4X7rPLf2LF06kFc3KfU7gjg/WgLIu6UCSjMT+Dvn3qM9Tue8Ob7lCBs9uVCw1cl9bFvGa8qVgn+3RLV28wa1FQgpgwKM9vw3yQzOzmjiODRczWzaGgloRP7wogHt8ECQJntjkrFef6MR8wKlm5XGrmcFA6A92zFjrIBVh11O9bn9vdJOKu1xzFLqcnKbEK6SWITzMGhscvItrHUTvYRkj0ylI2Um8Vts/9KiQGvI=
+  app: switzerland
+  on:
+    repo: Wildhoney/Switzerland
