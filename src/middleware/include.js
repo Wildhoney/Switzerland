@@ -86,13 +86,23 @@ export default (...files) => {
                 // Memorise the current set of files.
                 includes.set(node, files);
 
-                attach(addedFiles).then(nodes => {
+                if (addedFiles.length) {
 
-                    // Remove any `null` values which means the content of the file was empty, and then append
-                    // them to the component's shadow boundary.
-                    nodes.filter(identity).forEach(node => boundary.appendChild(node));
+                    props.node.classList.add('resolving');
+                    props.node.classList.remove('resolved');
 
-                });
+                    attach(addedFiles).then(nodes => {
+
+                        // Remove any `null` values which means the content of the file was empty, and then append
+                        // them to the component's shadow boundary.
+                        nodes.filter(identity).forEach(node => boundary.appendChild(node));
+
+                        props.node.classList.add('resolved');
+                        props.node.classList.remove('resolving');
+
+                    });
+
+                }
 
                 return addedFiles;
 

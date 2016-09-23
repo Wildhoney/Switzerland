@@ -120,4 +120,5 @@ export { default as attrs } from './middleware/attributes';
 export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
 export { default as redux } from './middleware/redux';
+export { time, timeEnd } from './debug/timer';
 export { h as element } from 'virtual-dom';

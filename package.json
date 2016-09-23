@@ -31,6 +31,7 @@
     "humps": "^1.1.0",
     "jsdom": "^9.5.0",
     "redux": "^3.6.0",
+    "shortid": "^2.2.6",
     "sinon": "^1.17.6",
     "virtual-dom-loader": "^0.1.0",
     "webpack": "^1.13.2"

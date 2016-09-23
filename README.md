@@ -87,4 +87,54 @@ const cheeses = swissCheese.getAttribute('data-cheeses');
 swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
 ```
 
-It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. Switzerland happily supports Redux, mobx, etc... without introducing third-party components due to the easy nature of creating your own middleware.
+It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. Switzerland happily supports Redux, mobx, etc... without introducing third-party components due to the easy nature of [creating your own middleware](#custom-middleware).
+
+## Middleware
+
+At the heart of Switzerland is the concept of middleware which can be applied to your components. More often than not you'll have a common pipeline for your components, and thus it makes sense to export a single [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) function for applying common middleware to all components.
+
+### Custom Middleware
+
+In this chapter we're going to create a piece of custom middleware that responds to `click` events on the host element &ndash; the element that hosts the shadow boundary.
+
+Setting up **any** middleware requires yielding the `props` that were passed to the middleware function &mdash; whether your augment those `props` or not is optional, and in many cases you may wish to create middleware that has [side effects](https://en.wikipedia.org/wiki/Side_effect_(computer_science)) &ndash; such as in our case.
+
+> Note: When augmenting `props` it's crucial **not** to mutate the object but rather extend it using [`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) or the [spread operator](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Spread_operator): `{ ...props, augmented: true }`.
+
+```javascript
+export default props => {
+    return props;    
+};
+```
+
+All middleware should take in `props` and yield `props` as shown above &mdash; essentially the above creates a no-op middleware. In our case we wish to take `props.node` &mdash; which refers to the host node &mdash; and attach an event listener to it.
+
+```javascript
+// Store a reference to each clicked handler, to ensure we don't keep adding
+// duplicate event listeners for our host node.
+const handlers = new WeakMap();
+
+export default props => {
+
+    // Determine whether a click event has already been defined for this host node.
+    const has = handlers.get(props.node);
+
+    // Attach the event listener to the node, only if it doesn't exist already.
+    const handler = () => console.log('Host node clicked!');
+    !has && handlers.set(props.node, props.node.addEventListener('click', handler));
+
+    // Determine whether the node is still present in the DOM using `isConnected`.
+    !props.node.isConnected && (() => {
+
+        // Remove the event listener once the node has been removed from the DOM.
+        props.node.removeEventListener('click', handlers.get(props.node));
+        handlers.remove(props.node);
+        
+    })();
+
+    return props;
+
+};
+```
+
+It's important that we use `WeakMap` to store a reference to the `click` handler using the `props.node` as the reference, because otherwise we'll have no way to determine if the event listener has already been added. It's also equally as important that we remove the event listener once the node is no longer present in the DOM using [`props.node.isConnected`](https://dom.spec.whatwg.org/#dom-node-isconnected).
