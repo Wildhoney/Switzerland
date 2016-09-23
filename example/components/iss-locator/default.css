@@ -33,12 +33,8 @@ section span {
     flex-direction: column;
 }
 
-div.flag {
-    width: 20vmin;
-    height: 10vmin;
-    background-size: contain;
-    background-position: center center;
-    background-repeat: no-repeat;
+img.flag {
+    width: 20%;
 }
 
 label {

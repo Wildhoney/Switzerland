@@ -46,11 +46,8 @@ const interval = once(props => setInterval(props.render, 2000));
 
 create('iss-locator', pipe(redux(store), include(...files), fetch, props => {
 
-    console.log('iss-locator');
-
     const { store, dispatch } = props;
-    const image = store.country.replace(/\s+/g, '-').toLowerCase();
-    const backgroundImage = `url(components/iss-locator/images/flags/${image}.png)`;
+    const image = `/components/iss-locator/images/flags/${store.flag}`;
 
     return (
         <section>
@@ -61,8 +58,8 @@ create('iss-locator', pipe(redux(store), include(...files), fetch, props => {
                     <label>ISS is currently flying over</label>
                     <h1>{store.country ? store.country : 'An Ocean Somewhere'}</h1>
 
-                    {store.country ? (
-                        <div className="flag" style={{ backgroundImage }} />
+                    {store.flag ? (
+                        <img className="flag" src={image} />
                     ) : ''}
 
                     <div className="astronauts">

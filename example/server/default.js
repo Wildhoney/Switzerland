@@ -1,3 +1,5 @@
+import { basename } from 'path';
+import { existsSync } from 'fs';
 import http from 'http';
 import express from 'express';
 import { get, create } from 'axios';
@@ -26,8 +28,14 @@ app.get('/current', (request, response) => {
         const url = `http://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1&format=json&namedetails=0`;
 
         instance.get(url).then(model => {
+
             const country = model.data.address.country;
-            response.send({ people, country, latitude, longitude });
+            const flagName = country.replace(/\s+/g, '-').toLowerCase();
+            const imagePath = `${__dirname}/example/components/iss-locator/images/flags/${flagName}.png`;
+            const flag = existsSync(imagePath) ? basename(imagePath) : undefined;
+
+            response.send({ people, country, flag, latitude, longitude });
+
         }).catch(() => {
             response.send({ people, latitude, longitude });
         });
