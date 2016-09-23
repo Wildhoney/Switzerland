@@ -1,51 +1,9 @@
 import { create, include, once, redux, html, element } from '../../../src/switzerland';
 import { pipe } from 'ramda';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
 import moment from 'moment';
-
-/**
- * @constant initialState
- * @type {Object}
- */
-const initialState = {
-    country: '',
-    latitude: '',
-    longitude: '',
-    people: [],
-    loading: true
-};
-
-/**
- * @constant store
- * @type {Object}
- */
-const store = createStore(locator, applyMiddleware(thunk));
-
-/**
- * @method locator
- * @param {Object} state
- * @param {Object} action
- * @return {Object}
- */
-function locator(state = initialState, action) {
-
-    switch (action.type) {
-
-        case 'UPDATE':
-            return { ...state, ...action.model, updated: Date.now(), loading: false };
-
-        case 'LOADING':
-            return { ...state, loading: true };
-
-        default:
-            return state;
-
-    }
-
-}
+import { store } from './redux';
 
 /**
  * @method update
@@ -74,19 +32,21 @@ const files = [
 ];
 
 /**
- * @method initial
+ * @method fetch
  * @return {void}
  */
-const initial = () => store.dispatch(update());
+const fetch = once(props => props.dispatch(update()));
 
 /**
- * @constant timeout
+ * @constant interval
  * @param {Object} props
  * @return {void}
  */
-const timeout = props => setInterval(props.render, 2000);
+const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-locator', pipe(redux(store), include(...files), once(timeout), once(initial), html(props => {
+create('iss-locator', pipe(redux(store), include(...files), fetch, props => {
+
+    console.log('iss-locator');
 
     const { store, dispatch } = props;
     const image = store.country.replace(/\s+/g, '-').toLowerCase();
@@ -129,11 +89,15 @@ create('iss-locator', pipe(redux(store), include(...files), once(timeout), once(
                 >
 
                 <div className="update">Update Location</div>
-                <datetime>(Updated {moment(store.updated).fromNow()})</datetime>
+                <iss-last-updated></iss-last-updated>
 
             </button>
 
         </section>
     );
 
-})));
+}));
+
+create('iss-last-updated', pipe(redux(store), interval, props => {
+    return <datetime>(Updated {moment(props.store.updated).fromNow()})</datetime>;
+}));

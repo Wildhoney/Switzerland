@@ -235,8 +235,11 @@ module.exports =
 
 	            if (!instance) {
 
-	                // Queued for the next tick, as the instance isn't ready yet.
-	                setTimeout(this.render.bind(this));
+	                // Rejected as developer has attempted to re-render during the start-up phase.
+	                // As an alternative we could queue the re-render using `setTimeout` for the next
+	                // tick, but ideally the developer should setup sensible defaults and thus avoid a
+	                // re-render during the start-up phase.
+	                // Queue: setTimeout(this.render.bind(this));
 	                return;
 	            }
 

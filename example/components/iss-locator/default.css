@@ -77,7 +77,7 @@ button div.update {
     text-transform: uppercase;
 }
 
-button datetime {
+button iss-last-updated {
     font-weight: 100;
     font-size: 1.2vmin;
     line-height: 1.2vmin;

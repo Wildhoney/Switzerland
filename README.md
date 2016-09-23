@@ -106,7 +106,7 @@ import { pipe } from 'ramda';
 
 const fetchCheeses = once(() => axios.get('https://cheeses.gov.uk/list.json'));
 
-export default create('user-list', pipe(once(fetchCheeses), redux(store), props => {
+export default create('swiss-cheese', pipe(once(fetchCheeses), redux(store), props => {
     return <h1>We have {props.store.cheeses.length} Swiss cheeses!</h1>
 }));
 ````
