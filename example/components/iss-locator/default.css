@@ -51,6 +51,7 @@ h1 {
 }
 
 button {
+    font: normal 800 2.5vmin/2.5vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -73,12 +74,13 @@ button.loading {
 }
 
 button div.update {
-    font: normal 800 2.5vmin/2.5vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
     text-transform: uppercase;
 }
 
 button datetime {
-    font: normal 100 1.2vmin/1.2vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+    font-weight: 100;
+    font-size: 1.2vmin;
+    line-height: 1.2vmin;
 }
 
 div.astronauts h3 {

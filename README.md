@@ -2,13 +2,15 @@
 
 > Switzerland is an experiment in the realm of Web Components through the use of native browser features with a [~4kb core](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js). Use [middleware](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware) to apply behaviours to your components, such as [setState/state](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/state.js), [Redux](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/redux.js), mobx. Created with interoperability in mind using Custom Elements, allowing components to be embedded into vanilla, React, Vue, Angular apps with ease. Style encapsulation by default using Shadow DOM.
 
+`npm install switzerland --save`
+
 ![Travis](http://img.shields.io/travis/Wildhoney/Switzerland.svg?style=flat-square)
 &nbsp;
 ![npm](http://img.shields.io/npm/v/switzerland.svg?style=flat-square)
 &nbsp;
 ![License MIT](http://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)
 
-`npm install switzerland --save`
+![Screenshot](media/screenshot.png)
 
 ---
 
