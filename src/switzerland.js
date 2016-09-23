@@ -7,6 +7,25 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 const registry = new WeakMap();
 
 /**
+ * @constant implementations
+ * @type {Object}
+ */
+const implementations = {
+
+    v0: {
+        hooks: ['attachedCallback', 'detachedCallback'],
+        customElement: (name, blueprint) => document.registerElement(name, blueprint),
+        shadowBoundary: node => node.createShadowRoot()
+    },
+    v1: {
+        hooks: ['connectedCallback', 'disconnectedCallback'],
+        customElement: (name, blueprint) => window.customElements.define(name, blueprint),
+        shadowBoundary: node => node.attachShadow({ mode: 'open' })
+    }
+
+};
+
+/**
  * @method create
  * @param {String} name
  * @param {Function} render
@@ -14,16 +33,28 @@ const registry = new WeakMap();
  */
 export const create = (name, render) => {
 
-    window.customElements.define(name, class extends window.HTMLElement {
+    /**
+     * Determines whether we use the v0 or v1 implementation of Custom Elements.
+     *
+     * @constant implementation
+     * @type {Object}
+     */
+    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+
+    /**
+     * @constant blueprint
+     * @type {Object}
+     */
+    implementation.customElement(name, class extends window.HTMLElement {
 
         /**
          * @method connectedCallback
          * @return {void}
          */
-        connectedCallback() {
+        [implementation.hooks[0]]() {
 
             const node = this;
-            const boundary = node.attachShadow({ mode: 'open' });
+            const boundary = implementation.shadowBoundary(node);
             const rerender = () => this.render();
 
             const tree = render({ node, render: rerender });
@@ -40,7 +71,7 @@ export const create = (name, render) => {
          * @method disconnectedCallback
          * @return {void}
          */
-        disconnectedCallback() {
+        [implementation.hooks[1]]() {
 
             // Once the node has been removed then we perform one last pass, however the render function
             // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
