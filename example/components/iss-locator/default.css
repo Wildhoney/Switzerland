@@ -3,8 +3,8 @@
     display: inline-block;
     background: transparent url('components/iss-locator/images/earth.jpg');
     background-size: cover;
-    width: 75vmin;
-    height: 75vmin;
+    width: 85vmin;
+    height: 85vmin;
     color: white;
     border-radius: 3px;
     text-align: center;
