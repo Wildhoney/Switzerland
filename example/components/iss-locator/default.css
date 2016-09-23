@@ -1,4 +1,105 @@
 :host {
-    border: 1px solid orange;
+    all: initial;
     display: inline-block;
+    background: transparent url('components/iss-locator/images/earth.jpg');
+    background-size: cover;
+    width: 75vmin;
+    height: 75vmin;
+    color: white;
+    border-radius: 3px;
+    text-align: center;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+section {
+    display: flex;
+    padding-top: 12.5vmin;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+section span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+div.flag {
+    width: 20vmin;
+    height: 10vmin;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+label {
+    font: normal 100 2vmin/3vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+}
+
+h1 {
+    font: normal 800 3vmin/4vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .5);
+}
+
+button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 10%;
+    margin: 2vmin;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, .15);
+    color: white;
+    padding: 0 3vmin;
+    border: 1px solid rgba(255, 255, 255, .5);
+    outline: none;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: opacity .25s;
+}
+
+button.loading {
+    opacity: .25;
+    pointer-events: none;
+}
+
+button div.update {
+    font: normal 800 2.5vmin/2.5vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+
+button datetime {
+    font: normal 100 1.2vmin/1.2vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+}
+
+div.astronauts h3 {
+    font: normal 400 2.5vmin/5vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .5);
+}
+
+div.astronauts ul {
+    font: normal 100 1.5vmin/1.5vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+    list-style-type: none;
+}
+
+div.astronauts ul li {
+    display: inline-block;
+    padding: 0 .5vmin;
+}
+
+div.coordinates {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font: normal 100 1.2vmin/1.2vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
+    padding: 1vmax;
 }

@@ -90,11 +90,20 @@ export const create = (name, render) => {
 
         /**
          * @method render
-         * @return {Object}
+         * @return {void}
          */
         render() {
 
             const instance = registry.get(this);
+
+            if (!instance) {
+
+                // Queued for the next tick, as the instance isn't ready yet.
+                setTimeout(this.render.bind(this));
+                return;
+
+            }
+
             const { tree: currentTree, root: currentRoot, node } = instance;
             const rerender = () => this.render();
 
@@ -116,6 +125,7 @@ export const create = (name, render) => {
 };
 
 export { default as html } from './middleware/html';
+export { default as once } from './middleware/once';
 export { default as attrs } from './middleware/attributes';
 export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';

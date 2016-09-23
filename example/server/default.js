@@ -1,9 +1,39 @@
 import http from 'http';
 import express from 'express';
+import { get, create } from 'axios';
+import { camelizeKeys } from 'humps';
 
 const app = express();
 const server = http.createServer(app);
 
 app.use(express.static(__dirname + '/example'));
-server.listen(process.env.PORT || 5000);
 
+app.get('/current', (request, response) => {
+
+    const position = get('http://api.open-notify.org/iss-now.json');
+    const astronauts = get('http://api.open-notify.org/astros.json');
+
+    Promise.all([position, astronauts]).then(responses => {
+
+        const [ position, astronauts ] = responses.map(model => camelizeKeys(model.data));
+        const people = astronauts.people.map(person => person.name);
+        const { latitude, longitude } = position.issPosition;
+
+        const instance = create({
+            headers: { 'Accept-Language': 'en-US,en;q=0.8' }
+        });
+
+        const url = `http://nominatim.openstreetmap.org/reverse?format=xml&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1&format=json&namedetails=0`;
+
+        instance.get(url).then(model => {
+            const country = model.data.address.country;
+            response.send({ people, country, latitude, longitude });
+        }).catch(() => {
+            response.send({ people, latitude, longitude });
+        });
+
+    });
+
+});
+
+server.listen(process.env.PORT || 5000);

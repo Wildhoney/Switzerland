@@ -1,69 +1,136 @@
-import pipe from 'ramda/src/pipe';
-import { create, attrs, state, include, redux, html, element } from '../../../src/switzerland';
-import { createStore } from 'redux';
-
-/**
- * @method counter
- * @param {Number} state
- * @param {Object} action
- * @return {number}
- */
-function counter(state = 0, action) {
-
-    switch (action.type) {
-
-        case 'INCREMENT':
-            return state + 1;
-
-        case 'DECREMENT':
-            return state - 1;
-
-        default:
-            return state
-
-    }
-
-}
-
-const store = createStore(counter);
+import { create, include, once, redux, html, element } from '../../../src/switzerland';
+import { pipe } from 'ramda';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import { get } from 'axios';
+import { camelizeKeys } from 'humps';
+import moment from 'moment';
 
 /**
  * @constant initialState
  * @type {Object}
  */
-const initialState = { age: 30 };
+const initialState = {
+    country: '',
+    latitude: '',
+    longitude: '',
+    people: [],
+    loading: true
+};
+
+/**
+ * @constant store
+ * @type {Object}
+ */
+const store = createStore(locator, applyMiddleware(thunk));
+
+/**
+ * @method locator
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object}
+ */
+function locator(state = initialState, action) {
+
+    switch (action.type) {
+
+        case 'UPDATE':
+            return { ...state, ...action.model, updated: Date.now(), loading: false };
+
+        case 'LOADING':
+            return { ...state, loading: true };
+
+        default:
+            return state;
+
+    }
+
+}
+
+/**
+ * @method update
+ * @return {Function}
+ */
+const update = () => {
+
+    return dispatch => {
+
+        dispatch({ type: 'LOADING' });
+
+        get('/current').then(response => {
+            const model = camelizeKeys(response.data);
+            dispatch({ type: 'UPDATE', model });
+        });
+    };
+
+};
 
 /**
  * @constant files
- * @type {Array}
+ * @type {Object}
  */
 const files = [
-    'components/business-card/default.css'
+    'components/iss-locator/default.css'
 ];
 
-create('business-card', pipe(include(...files), attrs, redux(store), state, html(props => {
+/**
+ * @method initial
+ * @return {void}
+ */
+const initial = () => store.dispatch(update());
 
-    const state = { ...initialState, ...props.state };
-    const { attrs, setState } = props;
+/**
+ * @constant timeout
+ * @param {Object} props
+ * @return {void}
+ */
+const timeout = props => setInterval(props.render, 2000);
+
+create('iss-locator', pipe(redux(store), include(...files), once(timeout), once(initial), html(props => {
+
+    const { store, dispatch } = props;
+    const image = store.country.replace(/\s+/g, '-').toLowerCase();
+    const backgroundImage = `url(components/iss-locator/images/flags/${image}.png)`;
 
     return (
-        <section className="name">
+        <section>
 
-            <ul>
-                <li>Name: {attrs.name}</li>
-                <li>Age: {state.age}</li>
-            </ul>
+            {store.latitude && store.longitude && !store.loading ? (
 
-            <button onclick={() => setState({ age: state.age - 1 })}>
-                Decrease Age
-            </button>
+                <span>
+                    <label>ISS is currently flying over</label>
+                    <h1>{store.country ? store.country : 'An Ocean Somewhere'}</h1>
 
-            <button onclick={() => setState({ age: state.age + 1 })}>
-                Increase Age
-            </button>
+                    {store.country ? (
+                        <div className="flag" style={{ backgroundImage }} />
+                    ) : ''}
 
-            <button onclick={() => store.dispatch({ type: 'INCREMENT' })}>
-                Increment {props.store}
+                    <div className="astronauts">
+
+                        <h3>{store.people.length} Astronauts:</h3>
+
+                        <ul className="astronauts">
+                            {store.people.map(name => <li>{name}</li>)}
+                        </ul>
+
+                    </div>
+
+                    <div className="coordinates">
+                        {store.latitude}, {store.longitude}
+                    </div>
+
+                </span>
+
+            ) : <img className="loading" src="components/iss-locator/images/loading.svg" />}
+
+            <button
+                className={store.loading ? 'loading' : ''}
+                onclick={() => dispatch(update())}
+                >
+
+                <div className="update">Update Location</div>
+                <datetime>(Updated {moment(store.updated).fromNow()})</datetime>
+
             </button>
 
         </section>

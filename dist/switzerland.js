@@ -57,7 +57,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.timeEnd = exports.time = exports.redux = exports.include = exports.state = exports.attrs = exports.html = exports.create = undefined;
+	exports.element = exports.timeEnd = exports.time = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -68,7 +68,16 @@ module.exports =
 	    }
 	});
 
-	var _attributes = __webpack_require__(3);
+	var _once = __webpack_require__(3);
+
+	Object.defineProperty(exports, 'once', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_once).default;
+	    }
+	});
+
+	var _attributes = __webpack_require__(4);
 
 	Object.defineProperty(exports, 'attrs', {
 	    enumerable: true,
@@ -77,7 +86,7 @@ module.exports =
 	    }
 	});
 
-	var _state = __webpack_require__(6);
+	var _state = __webpack_require__(7);
 
 	Object.defineProperty(exports, 'state', {
 	    enumerable: true,
@@ -86,7 +95,7 @@ module.exports =
 	    }
 	});
 
-	var _include = __webpack_require__(7);
+	var _include = __webpack_require__(8);
 
 	Object.defineProperty(exports, 'include', {
 	    enumerable: true,
@@ -95,7 +104,7 @@ module.exports =
 	    }
 	});
 
-	var _redux = __webpack_require__(9);
+	var _redux = __webpack_require__(10);
 
 	Object.defineProperty(exports, 'redux', {
 	    enumerable: true,
@@ -104,7 +113,7 @@ module.exports =
 	    }
 	});
 
-	var _timer = __webpack_require__(10);
+	var _timer = __webpack_require__(11);
 
 	Object.defineProperty(exports, 'time', {
 	    enumerable: true,
@@ -119,7 +128,7 @@ module.exports =
 	    }
 	});
 
-	var _virtualDom = __webpack_require__(20);
+	var _virtualDom = __webpack_require__(21);
 
 	Object.defineProperty(exports, 'element', {
 	    enumerable: true,
@@ -218,11 +227,19 @@ module.exports =
 
 	        /**
 	         * @method render
-	         * @return {Object}
+	         * @return {void}
 	         */
 	        render() {
 
 	            const instance = registry.get(this);
+
+	            if (!instance) {
+
+	                // Queued for the next tick, as the instance isn't ready yet.
+	                setTimeout(this.render.bind(this));
+	                return;
+	            }
+
 	            const currentTree = instance.tree;
 	            const currentRoot = instance.root;
 	            const node = instance.node;
@@ -268,6 +285,45 @@ module.exports =
 
 /***/ },
 /* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @constant once
+	 * @type {WeakMap}
+	 */
+	const once = new WeakMap();
+
+	/**
+	 * @param {Function} callback
+	 * @return {Function}
+	 */
+
+	exports.default = callback => {
+
+	    return props => {
+
+	        // Ensure the node has an entry in the map.
+	        const hasNode = once.has(props.node);
+	        !hasNode && once.set(props.node, new WeakMap());
+
+	        // Determine whether the function has been called already.
+	        const hasFunction = once.get(props.node).has(callback);
+	        !hasFunction && once.get(props.node).set(callback, callback(props));
+
+	        return _extends({}, props, once.get(props.node).get(callback));
+	    };
+	};
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -278,9 +334,9 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _humps = __webpack_require__(4);
+	var _humps = __webpack_require__(5);
 
-	var _ramda = __webpack_require__(5);
+	var _ramda = __webpack_require__(6);
 
 	/**
 	 * @constant observers
@@ -352,7 +408,7 @@ module.exports =
 	};
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -495,13 +551,13 @@ module.exports =
 	})(undefined);
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	module.exports = require("ramda");
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -543,7 +599,7 @@ module.exports =
 	};
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -554,9 +610,9 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _ramda = __webpack_require__(5);
+	var _ramda = __webpack_require__(6);
 
-	var _axios = __webpack_require__(8);
+	var _axios = __webpack_require__(9);
 
 	/**
 	 * @constant includes
@@ -665,13 +721,13 @@ module.exports =
 	};
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	module.exports = require("axios");
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -703,12 +759,12 @@ module.exports =
 	    // Subscribe to the store only if we haven't done so already.
 	    !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState()) && props.render()));
 
-	    return _extends({}, props, { store: store.getState() });
+	    return _extends({}, props, { store: store.getState(), dispatch: store.dispatch });
 	  };
 	};
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -720,7 +776,7 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _shortid = __webpack_require__(11);
+	var _shortid = __webpack_require__(12);
 
 	/**
 	 * @constant timers
@@ -755,23 +811,23 @@ module.exports =
 	};
 
 /***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = __webpack_require__(12);
-
-/***/ },
 /* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(13);
-	var encode = __webpack_require__(15);
-	var decode = __webpack_require__(17);
-	var isValid = __webpack_require__(18);
+	module.exports = __webpack_require__(13);
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var alphabet = __webpack_require__(14);
+	var encode = __webpack_require__(16);
+	var decode = __webpack_require__(18);
+	var isValid = __webpack_require__(19);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -786,7 +842,7 @@ module.exports =
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(19) || 0;
+	var clusterWorkerId = __webpack_require__(20) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -866,12 +922,12 @@ module.exports =
 	module.exports.isValid = isValid;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(14);
+	var randomFromSeed = __webpack_require__(15);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -969,7 +1025,7 @@ module.exports =
 	};
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -999,12 +1055,12 @@ module.exports =
 	};
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(16);
+	var randomByte = __webpack_require__(17);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -1023,7 +1079,7 @@ module.exports =
 	module.exports = encode;
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1042,12 +1098,12 @@ module.exports =
 	module.exports = randomByte;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(13);
+	var alphabet = __webpack_require__(14);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -1065,12 +1121,12 @@ module.exports =
 	module.exports = decode;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(13);
+	var alphabet = __webpack_require__(14);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6) {
@@ -1090,7 +1146,7 @@ module.exports =
 	module.exports = isShortId;
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1098,7 +1154,7 @@ module.exports =
 	module.exports = 0;
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	module.exports = require("virtual-dom");

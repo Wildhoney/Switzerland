@@ -1,0 +1,20 @@
+body, html {
+    background-color: #e6e6ed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+iss-locator {
+    opacity: 0;
+    transform: scale(.85);
+    transition: opacity .75s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                transform .75s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+iss-locator.resolved {
+    opacity: 1;
+    transform: scale(1);
+}
