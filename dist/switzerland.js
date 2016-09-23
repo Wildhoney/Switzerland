@@ -57,9 +57,18 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.redux = exports.include = exports.state = exports.attrs = exports.create = undefined;
+	exports.element = exports.redux = exports.include = exports.state = exports.attrs = exports.html = exports.create = undefined;
 
-	var _attributes = __webpack_require__(2);
+	var _html = __webpack_require__(2);
+
+	Object.defineProperty(exports, 'html', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_html).default;
+	    }
+	});
+
+	var _attributes = __webpack_require__(3);
 
 	Object.defineProperty(exports, 'attrs', {
 	    enumerable: true,
@@ -68,7 +77,7 @@ module.exports =
 	    }
 	});
 
-	var _state = __webpack_require__(5);
+	var _state = __webpack_require__(6);
 
 	Object.defineProperty(exports, 'state', {
 	    enumerable: true,
@@ -77,7 +86,7 @@ module.exports =
 	    }
 	});
 
-	var _include = __webpack_require__(6);
+	var _include = __webpack_require__(7);
 
 	Object.defineProperty(exports, 'include', {
 	    enumerable: true,
@@ -86,7 +95,7 @@ module.exports =
 	    }
 	});
 
-	var _redux = __webpack_require__(8);
+	var _redux = __webpack_require__(9);
 
 	Object.defineProperty(exports, 'redux', {
 	    enumerable: true,
@@ -95,7 +104,7 @@ module.exports =
 	    }
 	});
 
-	var _virtualDom = __webpack_require__(9);
+	var _virtualDom = __webpack_require__(10);
 
 	Object.defineProperty(exports, 'element', {
 	    enumerable: true,
@@ -132,6 +141,15 @@ module.exports =
 	};
 
 	/**
+	 * @method htmlFor
+	 * @param {Object} model
+	 * @return {Object}
+	 */
+	const htmlFor = model => {
+	    return 'html' in model ? model.html : model;
+	};
+
+	/**
 	 * @method create
 	 * @param {String} name
 	 * @param {Function} render
@@ -163,7 +181,7 @@ module.exports =
 	            const boundary = implementation.shadowBoundary(node);
 	            const rerender = () => this.render();
 
-	            const tree = render({ node, render: rerender });
+	            const tree = htmlFor(render({ node, render: rerender }));
 	            const root = (0, _virtualDom.create)(tree);
 
 	            // See: https://github.com/Matt-Esch/virtual-dom/pull/413
@@ -196,7 +214,7 @@ module.exports =
 
 	            const rerender = () => this.render();
 
-	            const tree = render({ node, render: rerender });
+	            const tree = htmlFor(render({ node, render: rerender }));
 
 	            if (node.isConnected) {
 
@@ -212,6 +230,29 @@ module.exports =
 
 /***/ },
 /* 2 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @param {Function} html
+	 * @return {Function}
+	 */
+	exports.default = html => {
+
+	    return props => {
+	        return _extends({}, props, { html: html(props) });
+	    };
+	};
+
+/***/ },
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -222,9 +263,9 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _humps = __webpack_require__(3);
+	var _humps = __webpack_require__(4);
 
-	var _ramda = __webpack_require__(4);
+	var _ramda = __webpack_require__(5);
 
 	/**
 	 * @constant observers
@@ -296,7 +337,7 @@ module.exports =
 	};
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -439,13 +480,13 @@ module.exports =
 	})(undefined);
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	module.exports = require("ramda");
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -487,7 +528,7 @@ module.exports =
 	};
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -498,9 +539,9 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _ramda = __webpack_require__(4);
+	var _ramda = __webpack_require__(5);
 
-	var _axios = __webpack_require__(7);
+	var _axios = __webpack_require__(8);
 
 	/**
 	 * @constant includes
@@ -600,13 +641,13 @@ module.exports =
 	};
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	module.exports = require("axios");
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -643,7 +684,7 @@ module.exports =
 	};
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	module.exports = require("virtual-dom");

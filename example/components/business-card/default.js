@@ -1,5 +1,5 @@
 import pipe from 'ramda/src/pipe';
-import { create, attrs, state, include, redux, element } from '../../../src/switzerland';
+import { create, attrs, state, include, redux, html, element } from '../../../src/switzerland';
 import { createStore } from 'redux';
 
 /**
@@ -41,7 +41,7 @@ const files = [
     'components/business-card/default.css'
 ];
 
-create('business-card', pipe(include(...files), attrs, redux(store), state, props => {
+create('business-card', pipe(include(...files), attrs, redux(store), state, html(props => {
 
     const state = { ...initialState, ...props.state };
     const { attrs, setState } = props;
@@ -69,4 +69,4 @@ create('business-card', pipe(include(...files), attrs, redux(store), state, prop
         </section>
     );
 
-}));
+})));

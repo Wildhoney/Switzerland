@@ -26,6 +26,15 @@ const implementations = {
 };
 
 /**
+ * @method htmlFor
+ * @param {Object} model
+ * @return {Object}
+ */
+const htmlFor = model => {
+    return 'html' in model ? model.html : model;
+};
+
+/**
  * @method create
  * @param {String} name
  * @param {Function} render
@@ -57,7 +66,7 @@ export const create = (name, render) => {
             const boundary = implementation.shadowBoundary(node);
             const rerender = () => this.render();
 
-            const tree = render({ node, render: rerender });
+            const tree = htmlFor(render({ node, render: rerender }));
             const root = createElement(tree);
 
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
@@ -89,7 +98,7 @@ export const create = (name, render) => {
             const { tree: currentTree, root: currentRoot, node } = instance;
             const rerender = () => this.render();
 
-            const tree = render({ node, render: rerender });
+            const tree = htmlFor(render({ node, render: rerender }));
 
             if (node.isConnected) {
 
@@ -106,6 +115,7 @@ export const create = (name, render) => {
 
 };
 
+export { default as html } from './middleware/html';
 export { default as attrs } from './middleware/attributes';
 export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
