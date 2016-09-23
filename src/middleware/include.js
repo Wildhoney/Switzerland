@@ -1,7 +1,4 @@
-import groupBy from 'ramda/src/groupBy';
-import memoize from 'ramda/src/memoize';
-import identity from 'ramda/src/identity';
-import difference from 'ramda/src/difference';
+import { difference, identity, memoize, groupBy } from 'ramda';
 import { get as fetch } from 'axios';
 
 /**

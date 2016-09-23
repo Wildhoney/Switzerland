@@ -4,7 +4,7 @@
   "description": "Switzerland.js is a playground for experimenting with various Web Component techniques, approaches, and implementations.",
   "main": "dist/switzerland.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config webpack.build.js && webpack --config webpack.example.js",
     "test": "ava"
   },
   "repository": {
@@ -19,7 +19,6 @@
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "devDependencies": {
     "ava": "^0.16.0",
-    "axios": "^0.14.0",
     "babel-cli": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-es2015-destructuring": "^6.9.0",
@@ -31,10 +30,8 @@
     "express": "^4.14.0",
     "humps": "^1.1.0",
     "jsdom": "^9.5.0",
-    "ramda": "^0.22.1",
     "redux": "^3.6.0",
     "sinon": "^1.17.6",
-    "virtual-dom": "^2.1.1",
     "virtual-dom-loader": "^0.1.0",
     "webpack": "^1.13.2"
   },
@@ -47,5 +44,10 @@
       "babel-register",
       "./tests/helpers/setup-browser-env.js"
     ]
+  },
+  "dependencies": {
+    "axios": "^0.14.0",
+    "virtual-dom": "^2.1.1",
+    "ramda": "^0.22.1"
   }
 }

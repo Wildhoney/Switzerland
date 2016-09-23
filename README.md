@@ -1,6 +1,14 @@
 <img src="media/logo.png" alt="Switzerland" width="200" />
 
-> <span style="color: #ff0000">Switzerland</span> is an experiment in the realm of Web Components through the use of native browser features with a [~4kb core](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js). Use [middleware](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware) to apply behaviours to your components, such as [setState/state](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/state.js), [Redux](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/redux.js), mobx. Created with interoperability in mind using Custom Elements, allowing components to be embedded into vanilla, React, Vue, Angular apps with ease. Style encapsulation by default using Shadow DOM.
+> <p color="#ff0000">Swizerland</p> is an experiment in the realm of Web Components through the use of native browser features with a [~4kb core](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js). Use [middleware](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware) to apply behaviours to your components, such as [setState/state](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/state.js), [Redux](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/redux.js), mobx. Created with interoperability in mind using Custom Elements, allowing components to be embedded into vanilla, React, Vue, Angular apps with ease. Style encapsulation by default using Shadow DOM.
+
+![Travis](http://img.shields.io/travis/Wildhoney/Switzerland.svg?style=flat-square)
+&nbsp;
+![npm](http://img.shields.io/npm/v/switzerland.svg?style=flat-square)
+&nbsp;
+![License MIT](http://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)
+
+`npm install switzerland --save`
 
 ---
 
@@ -26,14 +34,14 @@ create('swiss-cheese', () => {
 
 > Note: You need to import `element` if you're using the JSX syntax.
 
-Interestingly due to <span style="color: #ff0000">Switzerland</span>'s focus on interoperability you are now able to use `swiss-cheese` as a standard HTML component due to [Custom Elements](https://www.w3.org/TR/custom-elements/).
+Interestingly due to Switzerland's focus on interoperability you are now able to use `swiss-cheese` as a standard HTML component due to [Custom Elements](https://www.w3.org/TR/custom-elements/).
 
 ```javascript
 const swissCheese = document.createElement('swiss-cheese');
 document.body.appendChild(swissCheese);
 ```
 
-Needless to say that our `swiss-cheese` component is fairly uninteresting as it never updates. <span style="color: #ff0000">Switzerland</span> allows you to add behaviours to your components by applying middleware via `pipe` or `compose`. Middleware allows you to incrementally compose an object of `props` to pass into your component.
+Needless to say that our `swiss-cheese` component is fairly uninteresting as it never updates. Switzerland allows you to add behaviours to your components by applying middleware via `pipe` or `compose`. Middleware allows you to incrementally compose an object of `props` to pass into your component.
 
 Let's allow our users to add cheeses to our `swiss-cheese` component by updating the element's attributes &mdash; for this we can either build our own, or use the pre-existing `attrs` middleware.
 
@@ -69,4 +77,4 @@ const cheeses = swissCheese.getAttribute('data-cheeses');
 swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
 ```
 
-It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. <span style="color: #ff0000">Switzerland</span> happily supports Redux, mobx, etc... without introducing third-party components due to the easy nature of creating your own middleware.
+It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. Switzerland happily supports Redux, mobx, etc... without introducing third-party components due to the easy nature of creating your own middleware.
