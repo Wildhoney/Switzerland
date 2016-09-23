@@ -10,6 +10,8 @@
 
 `npm install switzerland --save`
 
+Support: <img src="https://github.com/alrra/browser-logos/blob/master/chrome-canary/chrome-canary_128x128.png?raw=true" width="16" /> only Chrome Canary for now.
+
 ---
 
 ## Getting Started
@@ -40,6 +42,8 @@ Interestingly due to Switzerland's focus on interoperability you are now able to
 const swissCheese = document.createElement('swiss-cheese');
 document.body.appendChild(swissCheese);
 ```
+
+> Note: `swissCheese` has a `render` function which you can invoke to cause a re-render from outside.
 
 Needless to say that our `swiss-cheese` component is fairly uninteresting as it never updates. Switzerland allows you to add behaviours to your components by applying middleware via `pipe` or `compose`. Middleware allows you to incrementally compose an object of `props` to pass into your component.
 
