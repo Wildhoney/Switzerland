@@ -111,6 +111,26 @@ export default create('swiss-cheese', pipe(once(fetchCheeses), redux(store), pro
 }));
 ````
 
+One clever application for the `once` middleware is to allow unique instances per instance of a node &mdash; for example a Redux instance per node, rather than the deafult per component. [Many attempts](https://github.com/threepointone/redux-react-local) have been tried for React, but are still overly and unnecessary complicated &ndash; with Switzerland local state with Redux is simple by using `once`.
+
+```javascript
+// Wrap the `createStore` in a function to yield a store each time it's invoked.
+const makeStore = () => createStore(locator, applyMiddleware(thunk));
+
+// Wrap the `makeStore` function in a function that `once` can memoize to invoke only
+// once per node.
+const createStore = () => {
+    return { localStore: makeStore() };
+};
+
+// Finally we create the middleware function, taking in the props and utilising the existing
+// `redux` middleware to pass `store` and `dispatch`  to our component.
+const localRedux = props => {
+    const { localStore } = once(createStore)(props);
+    return { ...props, ...redux(localStore)(props) };
+};
+```
+
 ### Custom
 
 In this chapter we're going to create a piece of custom middleware that responds to `click` events on the host element &ndash; the element that hosts the shadow boundary.
