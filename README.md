@@ -111,6 +111,8 @@ export default create('swiss-cheese', pipe(once(fetchCheeses), redux(store), pro
 }));
 ````
 
+#### Local Redux State
+
 One clever application for the `once` middleware is to allow unique instances per instance of a node &mdash; for example a Redux instance per node, rather than the deafult per component. [Many attempts](https://github.com/threepointone/redux-react-local) have been tried for React, but are still overly and unnecessary complicated &ndash; with Switzerland local state with Redux is simple by using `once`.
 
 ```javascript
