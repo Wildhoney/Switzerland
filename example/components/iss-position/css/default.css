@@ -1,7 +1,7 @@
 :host {
     all: initial;
     display: inline-block;
-    background: transparent url('/components/iss-position/images/earth.jpg');
+    background: transparent url('$path/images/earth.jpg');
     background-size: cover;
     width: 85vmin;
     height: 85vmin;
@@ -9,6 +9,19 @@
     border-radius: 3px;
     text-align: center;
 }
+
+iss-astronauts {
+    opacity: 0;
+    transform: scale(.85);
+    transition: opacity .75s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    transform .75s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+iss-astronauts.resolved {
+    opacity: 1;
+    transform: scale(1);
+}
+
 
 * {
     padding: 0;

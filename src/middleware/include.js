@@ -1,5 +1,6 @@
 import { difference, identity, memoize, groupBy } from 'ramda';
 import { get as fetch } from 'axios';
+import { path } from '../helpers/path';
 
 /**
  * @constant includes
@@ -50,8 +51,14 @@ const attach = files => {
 
         // Load each file individually and then concatenate them.
         return Promise.all(files.map(fetchInclude)).then(fileData => {
-            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${acc} ${fileDatum}`).trim();
+
+            // Concatenate all of the content from the documents, and replace any $path instances
+            // with the path of the component.
+            const content = fileData.reduce((acc, fileDatum) => `${acc} ${fileDatum}`).trim();
+            containerNode.innerHTML = content.replace(/\$path/ig, path);
+
             return containerNode.innerHTML.length ? containerNode : null;
+
         });
 
     });

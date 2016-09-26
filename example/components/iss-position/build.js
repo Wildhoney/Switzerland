@@ -177,7 +177,7 @@
 	    }
 	});
 
-	var _redux = __webpack_require__(33);
+	var _redux = __webpack_require__(35);
 
 	Object.defineProperty(exports, 'redux', {
 	    enumerable: true,
@@ -186,7 +186,7 @@
 	    }
 	});
 
-	var _timer = __webpack_require__(34);
+	var _timer = __webpack_require__(36);
 
 	Object.defineProperty(exports, 'time', {
 	    enumerable: true,
@@ -201,7 +201,7 @@
 	    }
 	});
 
-	var _path = __webpack_require__(44);
+	var _path = __webpack_require__(33);
 
 	Object.defineProperty(exports, 'path', {
 	    enumerable: true,
@@ -5925,6 +5925,8 @@
 
 	var _axios = __webpack_require__(10);
 
+	var _path = __webpack_require__(33);
+
 	/**
 	 * @constant includes
 	 * @type {WeakMap}
@@ -5970,7 +5972,12 @@
 
 	        // Load each file individually and then concatenate them.
 	        return Promise.all(files.map(fetchInclude)).then(fileData => {
-	            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${ acc } ${ fileDatum }`).trim();
+
+	            // Concatenate all of the content from the documents, and replace any $path instances
+	            // with the path of the component.
+	            const content = fileData.reduce((acc, fileDatum) => `${ acc } ${ fileDatum }`).trim();
+	            containerNode.innerHTML = content.replace(/\$path/ig, _path.path);
+
 	            return containerNode.innerHTML.length ? containerNode : null;
 	        });
 	    });
@@ -7500,6 +7507,127 @@
 
 /***/ },
 /* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.pathFor = exports.path = undefined;
+
+	var _pathParse = __webpack_require__(34);
+
+	var _pathParse2 = _interopRequireDefault(_pathParse);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @constant scriptPath
+	 * @type {String}
+	 */
+	const scriptPath = document.currentScript ? (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir : './';
+
+	/**
+	 * @constant path
+	 * @type {String}
+	 */
+	const path = exports.path = scriptPath;
+
+	/**
+	 * @method pathFor
+	 * @param {String} file
+	 * @return {String}
+	 */
+	const pathFor = exports.pathFor = file => `${ scriptPath }/${ file }`;
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	var isWindows = process.platform === 'win32';
+
+	// Regex to split a windows path into three parts: [*, device, slash,
+	// tail] windows-only
+	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+
+	// Regex to split the tail part of the above into [*, dir, basename, ext]
+	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+
+	var win32 = {};
+
+	// Function to split a filename into [root, dir, basename, ext]
+	function win32SplitPath(filename) {
+	  // Separate device+slash from tail
+	  var result = splitDeviceRe.exec(filename),
+	      device = (result[1] || '') + (result[2] || ''),
+	      tail = result[3] || '';
+	  // Split the tail into dir, basename and extension
+	  var result2 = splitTailRe.exec(tail),
+	      dir = result2[1],
+	      basename = result2[2],
+	      ext = result2[3];
+	  return [device, dir, basename, ext];
+	}
+
+	win32.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = win32SplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	// Split a filename into [root, dir, basename, ext], unix version
+	// 'root' is just a slash, or nothing.
+	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+	var posix = {};
+
+	function posixSplitPath(filename) {
+	  return splitPathRe.exec(filename).slice(1);
+	}
+
+	posix.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = posixSplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  allParts[1] = allParts[1] || '';
+	  allParts[2] = allParts[2] || '';
+	  allParts[3] = allParts[3] || '';
+
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	if (isWindows) module.exports = win32.parse;else /* posix */
+	  module.exports = posix.parse;
+
+	module.exports.posix = posix.parse;
+	module.exports.win32 = win32.parse;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+
+/***/ },
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7537,7 +7665,7 @@
 	};
 
 /***/ },
-/* 34 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7549,7 +7677,7 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _shortid = __webpack_require__(35);
+	var _shortid = __webpack_require__(37);
 
 	/**
 	 * @constant timers
@@ -7585,23 +7713,23 @@
 	};
 
 /***/ },
-/* 35 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(36);
+	module.exports = __webpack_require__(38);
 
 /***/ },
-/* 36 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(37);
-	var encode = __webpack_require__(39);
-	var decode = __webpack_require__(41);
-	var isValid = __webpack_require__(42);
+	var alphabet = __webpack_require__(39);
+	var encode = __webpack_require__(41);
+	var decode = __webpack_require__(43);
+	var isValid = __webpack_require__(44);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -7616,7 +7744,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(43) || 0;
+	var clusterWorkerId = __webpack_require__(45) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -7696,12 +7824,12 @@
 	module.exports.isValid = isValid;
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(38);
+	var randomFromSeed = __webpack_require__(40);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -7799,7 +7927,7 @@
 	};
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7829,12 +7957,12 @@
 	};
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(40);
+	var randomByte = __webpack_require__(42);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -7853,7 +7981,7 @@
 	module.exports = encode;
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7872,12 +8000,12 @@
 	module.exports = randomByte;
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(37);
+	var alphabet = __webpack_require__(39);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -7895,12 +8023,12 @@
 	module.exports = decode;
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(37);
+	var alphabet = __webpack_require__(39);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6) {
@@ -7920,127 +8048,12 @@
 	module.exports = isShortId;
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports) {
 
 	'use strict';
 
 	module.exports = 0;
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.pathFor = exports.path = undefined;
-
-	var _pathParse = __webpack_require__(45);
-
-	var _pathParse2 = _interopRequireDefault(_pathParse);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * @constant path
-	 * @type {String}
-	 */
-	const path = exports.path = (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
-
-	/**
-	 * @method pathFor
-	 * @param {String} file
-	 * @return {String}
-	 */
-	const pathFor = exports.pathFor = file => `${ path }/${ file }`;
-
-/***/ },
-/* 45 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
-	var isWindows = process.platform === 'win32';
-
-	// Regex to split a windows path into three parts: [*, device, slash,
-	// tail] windows-only
-	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
-
-	// Regex to split the tail part of the above into [*, dir, basename, ext]
-	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
-
-	var win32 = {};
-
-	// Function to split a filename into [root, dir, basename, ext]
-	function win32SplitPath(filename) {
-	  // Separate device+slash from tail
-	  var result = splitDeviceRe.exec(filename),
-	      device = (result[1] || '') + (result[2] || ''),
-	      tail = result[3] || '';
-	  // Split the tail into dir, basename and extension
-	  var result2 = splitTailRe.exec(tail),
-	      dir = result2[1],
-	      basename = result2[2],
-	      ext = result2[3];
-	  return [device, dir, basename, ext];
-	}
-
-	win32.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = win32SplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	// Split a filename into [root, dir, basename, ext], unix version
-	// 'root' is just a slash, or nothing.
-	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-	var posix = {};
-
-	function posixSplitPath(filename) {
-	  return splitPathRe.exec(filename).slice(1);
-	}
-
-	posix.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = posixSplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  allParts[1] = allParts[1] || '';
-	  allParts[2] = allParts[2] || '';
-	  allParts[3] = allParts[3] || '';
-
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	if (isWindows) module.exports = win32.parse;else /* posix */
-	  module.exports = posix.parse;
-
-	module.exports.posix = posix.parse;
-	module.exports.win32 = win32.parse;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
 
 /***/ },
 /* 46 */
