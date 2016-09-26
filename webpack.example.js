@@ -1,9 +1,9 @@
 module.exports = {
     entry: {
-        businessCard: ['./example/components/iss-locator/default.js']
+        businessCard: ['./example/components/iss-position/default.js']
     },
     output: {
-        path: __dirname + '/example',
+        path: __dirname + '/example/components/iss-position',
         filename: 'build.js',
         libraryTarget: 'var'
     },

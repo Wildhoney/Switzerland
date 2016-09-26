@@ -1,4 +1,4 @@
-import { create, include, once, redux, html, element } from '../../../src/switzerland';
+import { create, include, once, redux, html, element, pathFor } from '../../../src/switzerland';
 import { pipe } from 'ramda';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
@@ -27,9 +27,7 @@ const update = () => {
  * @constant files
  * @type {Object}
  */
-const files = [
-    'components/iss-locator/default.css'
-];
+const files = [ pathFor('default.css') ];
 
 /**
  * @method fetch
@@ -44,10 +42,10 @@ const fetch = once(props => props.dispatch(update()));
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-locator', pipe(redux(store), include(...files), fetch, props => {
+create('iss-position', pipe(redux(store), include(...files), fetch, props => {
 
     const { store, dispatch } = props;
-    const image = `/components/iss-locator/images/flags/${store.flag}`;
+    const image = pathFor(`images/flags/${store.flag}`);
 
     return (
         <section>
@@ -78,7 +76,7 @@ create('iss-locator', pipe(redux(store), include(...files), fetch, props => {
 
                 </span>
 
-            ) : <img className="loading" src="components/iss-locator/images/loading.svg" />}
+            ) : <img className="loading" src={pathFor('images/loading.svg')} />}
 
             <button
                 className={store.loading ? 'loading' : ''}

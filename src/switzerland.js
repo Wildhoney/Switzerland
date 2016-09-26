@@ -132,12 +132,18 @@ export const create = (name, render) => {
 
 };
 
+// Middleware.
 export { default as html } from './middleware/html';
 export { default as once } from './middleware/once';
 export { default as attrs } from './middleware/attributes';
 export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
 export { default as redux } from './middleware/redux';
+
+// Debug.
 export { time, timeEnd } from './debug/timer';
+export { path, pathFor } from './helpers/path';
+
+// Third-party.
 export { pipe, compose } from 'ramda';
 export { h as element } from 'virtual-dom';

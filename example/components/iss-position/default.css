@@ -1,7 +1,7 @@
 :host {
     all: initial;
     display: inline-block;
-    background: transparent url('components/iss-locator/images/earth.jpg');
+    background: transparent url('/components/iss-position/images/earth.jpg');
     background-size: cover;
     width: 85vmin;
     height: 85vmin;

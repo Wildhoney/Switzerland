@@ -8,5 +8,5 @@
 node_modules
 npm_debug.log
 
-# example
-example/build.js
+# examples
+/example/components/iss-locator/build.js

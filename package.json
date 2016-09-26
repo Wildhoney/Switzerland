@@ -37,6 +37,7 @@
     "humps": "^1.1.0",
     "jsdom": "^9.5.0",
     "moment": "^2.15.1",
+    "path-parse": "^1.0.5",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "rimraf": "^2.5.4",
