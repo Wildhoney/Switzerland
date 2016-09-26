@@ -10,8 +10,7 @@ module.exports = {
     },
     externals: {
         'axios': true,
-        'ramda': true,
-        'virtual-dom': true
+        'ramda': true
     },
     module: {
         loaders: [
