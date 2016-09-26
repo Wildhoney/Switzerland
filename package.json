@@ -4,7 +4,8 @@
   "description": "Switzerland.js is a playground for experimenting with various Web Component techniques, approaches, and implementations.",
   "main": "dist/switzerland.js",
   "scripts": {
-    "build": "webpack --config webpack.build.js && webpack --config webpack.example.js",
+    "build": "webpack --config webpack.build.js && npm run dev",
+    "dev": "webpack --config webpack.example.js",
     "test": "ava",
     "cleanup": "rimraf node_modules"
   },
@@ -32,7 +33,6 @@
     "babel-plugin-transform-es2015-spread": "^6.8.0",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "babel-register": "^6.14.0",
-    "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "express": "^4.14.0",
     "humps": "^1.1.0",
     "jsdom": "^9.5.0",
@@ -42,6 +42,7 @@
     "rimraf": "^2.5.4",
     "shortid": "^2.2.6",
     "sinon": "^1.17.6",
+    "virtual-dom": "^2.1.1",
     "virtual-dom-loader": "^0.1.0",
     "webpack": "^1.13.2"
   },
@@ -58,7 +59,6 @@
   },
   "dependencies": {
     "axios": "^0.14.0",
-    "virtual-dom": "^2.1.1",
     "ramda": "^0.22.1"
   }
 }

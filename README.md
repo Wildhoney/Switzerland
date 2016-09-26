@@ -14,6 +14,13 @@
 
 ---
 
+## Table of Contents
+
+1. [Getting Started](#getting-started)
+2. [Browser Support](#browser-support)
+3. [Middleware](docs/03-middleware.md)
+  1. [Once](docs/03-middleware.md#once)
+
 ## Browser Support
 
 <img src="https://github.com/alrra/browser-logos/blob/master/chrome/chrome_128x128.png?raw=true" width="64" />
@@ -24,7 +31,7 @@ Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elemen
 
 ## Getting Started
 
-Components are typically defined using [`pipe`](http://ramdajs.com/docs/#pipe) or [`compose`](http://ramdajs.com/docs/#compose) depending on preference &mdash; however for the simplest component all you need to pass is the name of the component and its render function, which contains the [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) or [`virtual-dom/h`](https://github.com/Matt-Esch/virtual-dom#example).
+Components are typically defined using [`pipe`](http://ramdajs.com/docs/#pipe) or [`compose`](http://ramdajs.com/docs/#compose) depending on preference &mdash; however for the simplest component all you need to pass is the name of the component and its render function, which contains the [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) or [`virtual-dom/h`](https://github.com/Matt-Esch/virtual-dom#example) markup.
 
 ```javascript
 import { create, element } from 'switzerland';
@@ -44,7 +51,7 @@ create('swiss-cheese', () => {
 
 > Note: You need to import `element` if you're using the JSX syntax.
 
-Interestingly due to Switzerland's focus on interoperability you are now able to use `swiss-cheese` as a standard HTML component due to [Custom Elements](https://www.w3.org/TR/custom-elements/).
+Interestingly due to Switzerland's focus on interoperability you are now able to use `swiss-cheese` as a standard HTML component thanks to [Custom Elements](https://www.w3.org/TR/custom-elements/).
 
 ```javascript
 const swissCheese = document.createElement('swiss-cheese');
@@ -58,7 +65,7 @@ Needless to say that our `swiss-cheese` component is fairly uninteresting as it 
 Let's allow our users to add cheeses to our `swiss-cheese` component by updating the element's attributes &mdash; for this we can either build our own, or use the pre-existing `attrs` middleware.
 
 ```javascript
-import { create, element, attrs } from 'switzerland';
+import { create, element, pipe, attrs } from 'switzerland';
 
 create('swiss-cheese', pipe(attrs, props => {
 
@@ -81,6 +88,8 @@ Using HTML directly we can add the `swiss-cheese` component to our document, pas
 <swiss-cheese data-cheeses="Swiss,Feta,Cheddar"></swiss-cheese>
 ````
 
+> Note: All attributes are [camelized](https://github.com/domchristie/humps#usage) and prefixes of `data-` will be stripped.
+
 Although the output will be the same as the previous example, our `swiss-cheese` component now takes in and listens for mutations to its attributes &mdash; causing an [efficient re-render](https://github.com/Matt-Esch/virtual-dom) when a mutation occurs.
 
 ```javascript
@@ -89,92 +98,33 @@ const cheeses = swissCheese.getAttribute('data-cheeses');
 swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
 ```
 
-It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. Switzerland happily supports Redux, mobx, etc... without introducing third-party components due to the easy nature of [creating your own middleware](#custom-middleware).
+It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. Switzerland happily supports setState, Redux, mobx, etc... without introducing third-party components due to the easy nature of creating your own middle.
 
-## Middleware
-
-At the heart of Switzerland is the concept of middleware which can be applied to your components. More often than not you'll have a common pipeline for your components, and thus it makes sense to export a single [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) function for applying common middleware to all components.
-
-### Once
-
-Using the `once` function allows you to invoke a given function only once for each instance of a component. Oftentimes this is useful for triggering an action when an element has been added to the DOM, such as issuing a HTTP request &mdash; think of it as a functional alternative to React's [`componentDidMount`](https://facebook.github.io/react/docs/component-specs.html).
+In the next example we're going to migrate from using an element's attributes to using the React-esque `setState`/`state` approach.
 
 ```javascript
-import { create, once, redux, element } from 'switzerland';
-import { get } from 'axios';
-import { pipe } from 'ramda';
+import { create, element, pipe, state } from 'switzerland';
 
-const fetchCheeses = once(() => axios.get('https://cheeses.gov.uk/list.json'));
+const initialState = {
+    cheeses: ['Swiss', 'Feta', 'Cheddar']
+};
 
-export default create('swiss-cheese', pipe(once(fetchCheeses), redux(store), props => {
-    return <h1>We have {props.store.cheeses.length} Swiss cheeses!</h1>
+create('swiss-cheese', pipe(state(initialState), props => {
+
+    const cheeses = props.state.cheeses;
+
+    return (
+        <ul>
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+            <li>
+                <a onclick={() => props.setState({ cheeses: ['Mozarella', ...cheeses] })}>
+                    Add Mozarella
+                </a>
+            </li>
+        </ul>
+    );
+
 }));
-````
-
-#### Local Redux State
-
-One clever application for the `once` middleware is to allow unique instances per instance of a node &mdash; for example a Redux instance per node, rather than the deafult per component. [Many attempts](https://github.com/threepointone/redux-react-local) have been tried for React, but are still overly and unnecessary complicated &ndash; with Switzerland local state with Redux is simple by using `once`.
-
-```javascript
-// Wrap the `createStore` in a function to yield a store each time it's invoked.
-const makeStore = () => createStore(locator, applyMiddleware(thunk));
-
-// Wrap the `makeStore` function in a function that `once` can memoize to invoke only
-// once per node.
-const createStore = () => {
-    return { localStore: makeStore() };
-};
-
-// Finally we create the middleware function, taking in the props and utilising the existing
-// `redux` middleware to pass `store` and `dispatch`  to our component.
-const localRedux = props => {
-    const { localStore } = once(createStore)(props);
-    return { ...props, ...redux(localStore)(props) };
-};
 ```
-
-### Custom
-
-In this chapter we're going to create a piece of custom middleware that responds to `click` events on the host element &ndash; the element that hosts the shadow boundary.
-
-Setting up **any** middleware requires yielding the `props` that were passed to the middleware function &mdash; whether your augment those `props` or not is optional, and in many cases you may wish to create middleware that has [side effects](https://en.wikipedia.org/wiki/Side_effect_(computer_science)) &ndash; such as in our case.
-
-> Note: When augmenting `props` it's crucial **not** to mutate the object but rather extend it using [`Object.assign`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) or the [spread operator](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Spread_operator): `{ ...props, augmented: true }`.
-
-```javascript
-export default props => {
-    return props;    
-};
-```
-
-All middleware should take in `props` and yield `props` as shown above &mdash; essentially the above creates a no-op middleware. In our case we wish to take `props.node` &mdash; which refers to the host node &mdash; and attach an event listener to it.
-
-```javascript
-// Store a reference to each clicked handler, to ensure we don't keep adding
-// duplicate event listeners for our host node.
-const handlers = new WeakMap();
-
-export default props => {
-
-    // Determine whether a click event has already been defined for this host node.
-    const has = handlers.get(props.node);
-
-    // Attach the event listener to the node, only if it doesn't exist already.
-    const handler = () => console.log('Host node clicked!');
-    !has && handlers.set(props.node, props.node.addEventListener('click', handler));
-
-    // Determine whether the node is still present in the DOM using `isConnected`.
-    !props.node.isConnected && (() => {
-
-        // Remove the event listener once the node has been removed from the DOM.
-        props.node.removeEventListener('click', handlers.get(props.node));
-        handlers.remove(props.node);
-        
-    })();
-
-    return props;
-
-};
-```
-
-It's important that we use `WeakMap` to store a reference to the `click` handler using the `props.node` as the reference, because otherwise we'll have no way to determine if the event listener has already been added. It's also equally as important that we remove the event listener once the node is no longer present in the DOM using [`props.node.isConnected`](https://dom.spec.whatwg.org/#dom-node-isconnected).
