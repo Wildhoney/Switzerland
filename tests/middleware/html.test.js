@@ -1,4 +1,5 @@
 import test from 'ava';
+import { htmlKey } from '../../src/switzerland';
 import html from '../../src/middleware/html';
 
 test('Should be able to wrap yielded HTML;', t => {
@@ -10,7 +11,7 @@ test('Should be able to wrap yielded HTML;', t => {
     const attrs = { name: 'Switzerland' };
 
     t.deepEqual(html(markup)({ node, attrs }), {
-        node, html: markup({ attrs }), attrs
+        node, [htmlKey]: markup({ attrs }), attrs
     });
 
 });

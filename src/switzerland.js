@@ -7,6 +7,12 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 const registry = new WeakMap();
 
 /**
+ * @constant htmlKey
+ * @type {Symbol}
+ */
+export const htmlKey = Symbol('switzerland/html');
+
+/**
  * @constant implementations
  * @type {Object}
  */
@@ -31,7 +37,7 @@ const implementations = {
  * @return {Object}
  */
 const htmlFor = model => {
-    return 'html' in model ? model.html : model;
+    return htmlKey in model ? model.html : model;
 };
 
 /**
