@@ -1,6 +1,6 @@
 module.exports = {
     entry: {
-        businessCard: ['./example/components/iss-position/default.js']
+        iss: ['./example/components/iss-position/default.js']
     },
     output: {
         path: __dirname + '/example/components/iss-position',

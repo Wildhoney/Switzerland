@@ -61,10 +61,12 @@ const attach = files => {
 };
 
 /**
- * @param {Array} files
+ * @param {Array|String} attachFiles
  * @return {Function}
  */
-export default (...files) => {
+export default (...attachFiles) => {
+
+    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
 
     return props => {
 

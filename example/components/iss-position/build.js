@@ -87,12 +87,6 @@
 	};
 
 	/**
-	 * @constant files
-	 * @type {Object}
-	 */
-	const files = [(0, _switzerland.pathFor)('default.css')];
-
-	/**
 	 * @method fetch
 	 * @return {void}
 	 */
@@ -105,19 +99,25 @@
 	 */
 	const interval = (0, _switzerland.once)(props => setInterval(props.render, 2000));
 
-	(0, _switzerland.create)('iss-position', (0, _ramda.pipe)((0, _switzerland.redux)(_redux.store), _switzerland.include.apply(undefined, files), fetch, props => {
+	(0, _switzerland.create)('iss-position', (0, _ramda.pipe)((0, _switzerland.redux)(_redux.store), (0, _switzerland.include)((0, _switzerland.pathFor)('css/default.css')), fetch, props => {
 	    const store = props.store;
 	    const dispatch = props.dispatch;
 
 	    const image = (0, _switzerland.pathFor)(`images/flags/${ store.flag }`);
 
-	    return (0, _switzerland.element)('section', null, [store.latitude && store.longitude && !store.loading ? (0, _switzerland.element)('span', null, [(0, _switzerland.element)('label', null, ["ISS is currently flying over"]), (0, _switzerland.element)('h1', null, [store.country ? store.country : 'An Ocean Somewhere']), store.flag ? (0, _switzerland.element)('img', { className: "flag", src: image }) : '', (0, _switzerland.element)('div', { className: "astronauts" }, [(0, _switzerland.element)('h3', null, [store.people.length, " Astronauts:"]), (0, _switzerland.element)('ul', { className: "astronauts" }, [store.people.map(name => (0, _switzerland.element)('li', null, [name]))])]), (0, _switzerland.element)('div', { className: "coordinates" }, [store.latitude, ", ", store.longitude])]) : (0, _switzerland.element)('img', { className: "loading", src: (0, _switzerland.pathFor)('images/loading.svg') }), (0, _switzerland.element)('button', {
+	    return (0, _switzerland.element)('section', null, [store.latitude && store.longitude && !store.loading ? (0, _switzerland.element)('span', null, [(0, _switzerland.element)('label', null, ["ISS is currently flying over"]), (0, _switzerland.element)('h1', null, [store.country ? store.country : 'An Ocean Somewhere']), store.flag ? (0, _switzerland.element)('img', { className: "flag", src: image }) : '', (0, _switzerland.element)('iss-astronauts', null), (0, _switzerland.element)('div', { className: "coordinates" }, [store.latitude, ", ", store.longitude])]) : (0, _switzerland.element)('img', { className: "loading", src: (0, _switzerland.pathFor)('images/loading.svg') }), (0, _switzerland.element)('button', {
 	        className: store.loading ? 'loading' : '',
 	        onclick: () => dispatch(update())
-	    }, [(0, _switzerland.element)('div', { className: "update" }, ["Update Location"]), (0, _switzerland.element)('iss-last-updated', null)])]);
+	    }, [(0, _switzerland.element)('div', { className: "update" }, ["Update Location"]), (0, _switzerland.element)('iss-updated', null)])]);
 	}));
 
-	(0, _switzerland.create)('iss-last-updated', (0, _ramda.pipe)((0, _switzerland.redux)(_redux.store), interval, props => {
+	(0, _switzerland.create)('iss-astronauts', (0, _ramda.pipe)((0, _switzerland.redux)(_redux.store), (0, _switzerland.include)((0, _switzerland.pathFor)('css/astronauts.css')), props => {
+
+	    return (0, _switzerland.element)('div', { className: "astronauts" }, [(0, _switzerland.element)('h3', null, [props.store.people.length, " Astronauts:"]), (0, _switzerland.element)('ul', { className: "astronauts" }, [props.store.people.map(name => (0, _switzerland.element)('li', null, [name]))])]);
+	}));
+
+	(0, _switzerland.create)('iss-updated', (0, _ramda.pipe)((0, _switzerland.redux)(_redux.store), interval, props => {
+
 	    return (0, _switzerland.element)('datetime', null, ["(Updated ", (0, _moment2.default)(props.store.updated).fromNow(), ")"]);
 	}));
 
@@ -5979,11 +5979,13 @@
 	};
 
 	/**
-	 * @param {Array} files
+	 * @param {Array|String} attachFiles
 	 * @return {Function}
 	 */
 
-	exports.default = (...files) => {
+	exports.default = (...attachFiles) => {
+
+	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
 
 	    return props => {
 	        const node = props.node;

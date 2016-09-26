@@ -24,12 +24,6 @@ const update = () => {
 };
 
 /**
- * @constant files
- * @type {Object}
- */
-const files = [ pathFor('default.css') ];
-
-/**
  * @method fetch
  * @return {void}
  */
@@ -42,7 +36,7 @@ const fetch = once(props => props.dispatch(update()));
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(redux(store), include(...files), fetch, props => {
+create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), fetch, props => {
 
     const { store, dispatch } = props;
     const image = pathFor(`images/flags/${store.flag}`);
@@ -56,19 +50,9 @@ create('iss-position', pipe(redux(store), include(...files), fetch, props => {
                     <label>ISS is currently flying over</label>
                     <h1>{store.country ? store.country : 'An Ocean Somewhere'}</h1>
 
-                    {store.flag ? (
-                        <img className="flag" src={image} />
-                    ) : ''}
+                    {store.flag ? <img className="flag" src={image} /> : ''}
 
-                    <div className="astronauts">
-
-                        <h3>{store.people.length} Astronauts:</h3>
-
-                        <ul className="astronauts">
-                            {store.people.map(name => <li>{name}</li>)}
-                        </ul>
-
-                    </div>
+                    <iss-astronauts />
 
                     <div className="coordinates">
                         {store.latitude}, {store.longitude}
@@ -84,7 +68,7 @@ create('iss-position', pipe(redux(store), include(...files), fetch, props => {
                 >
 
                 <div className="update">Update Location</div>
-                <iss-last-updated />
+                <iss-updated />
 
             </button>
 
@@ -93,6 +77,28 @@ create('iss-position', pipe(redux(store), include(...files), fetch, props => {
 
 }));
 
-create('iss-last-updated', pipe(redux(store), interval, props => {
-    return <datetime>(Updated {moment(props.store.updated).fromNow()})</datetime>;
+create('iss-astronauts', pipe(redux(store), include(pathFor('css/astronauts.css')), props => {
+
+    return (
+        <div className="astronauts">
+
+            <h3>{props.store.people.length} Astronauts:</h3>
+
+            <ul className="astronauts">
+                {props.store.people.map(name => <li>{name}</li>)}
+            </ul>
+
+        </div>
+    );
+
+}));
+
+create('iss-updated', pipe(redux(store), interval, props => {
+
+    return (
+        <datetime>
+            (Updated {moment(props.store.updated).fromNow()})
+        </datetime>
+    );
+
 }));
