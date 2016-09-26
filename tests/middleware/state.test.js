@@ -6,7 +6,7 @@ test('Should be able to manage state using state/setState;', t => {
 
     const node = document.createElement('div');
     const render = spy();
-    const props = state({ node, render });
+    const props = state({ counter: 0 })({ node, render });
 
     t.deepEqual(props, { node, render, ...props });
 

@@ -5,25 +5,29 @@
 const states = new WeakMap();
 
 /**
- * @param {Object} props
- * @return {Object}
+ * @param {Object} initialState
+ * @return {Function}
  */
-export default props => {
+export default initialState => {
 
-    const hasState = states.has(props.node);
-    const state = hasState ? states.get(props.node) : {};
-    !hasState && states.set(props.node, state);
+    return props => {
 
-    /**
-     * @method setState
-     * @param {Object} updatedState
-     * @return {void}
-     */
-    const setState = updatedState => {
-        states.set(props.node, { ...state, ...updatedState });
-        props.render();
+        const hasState = states.has(props.node);
+        const state = hasState ? states.get(props.node) : initialState;
+        !hasState && states.set(props.node, state);
+
+        /**
+         * @method setState
+         * @param {Object} updatedState
+         * @return {void}
+         */
+        const setState = updatedState => {
+            states.set(props.node, { ...state, ...updatedState });
+            props.render();
+        };
+
+        return { ...props, state, setState };
+
     };
-
-    return { ...props, state, setState };
 
 };
