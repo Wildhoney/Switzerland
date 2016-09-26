@@ -86,7 +86,7 @@ create('iss-locator', pipe(redux(store), include(...files), fetch, props => {
                 >
 
                 <div className="update">Update Location</div>
-                <iss-last-updated></iss-last-updated>
+                <iss-last-updated />
 
             </button>
 

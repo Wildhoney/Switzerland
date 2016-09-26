@@ -6,6 +6,7 @@ test('Should be able to invoke function once per node;', t => {
 
     const firstNode = document.createElement('div');
     const secondNode = document.createElement('div');
+
     const name = 'Switzerland!';
     const attrs = { location: 'London' };
 
@@ -20,5 +21,20 @@ test('Should be able to invoke function once per node;', t => {
     t.deepEqual(once(appName)({ node: secondNode, attrs }), { node: secondNode, name, attrs });
 
     t.is(appName.callCount, 2);
+
+});
+
+test('Should be able to the use the `keyFrom` function to determine uniqueness;', t => {
+
+    const node = document.createElement('div');
+
+    const keyFrom = props => ({});
+    const initialise = spy();
+
+    t.deepEqual(once(initialise, keyFrom)({ node }), { node });
+    t.deepEqual(once(initialise, keyFrom)({ node }), { node });
+
+    t.is(initialise.callCount, 2);
+
 
 });

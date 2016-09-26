@@ -6,21 +6,24 @@ const once = new WeakMap();
 
 /**
  * @param {Function} callback
+ * @param {Function} [keyFrom]
  * @return {Function}
  */
-export default callback => {
+export default (callback, keyFrom = props => props.node) => {
 
     return props => {
 
+        const key = keyFrom(props);
+
         // Ensure the node has an entry in the map.
-        const hasNode = once.has(props.node);
-        !hasNode && once.set(props.node, new WeakMap());
+        const hasNode = once.has(key);
+        !hasNode && once.set(key, new WeakMap());
 
         // Determine whether the function has been called already.
-        const hasFunction = once.get(props.node).has(callback);
-        !hasFunction && once.get(props.node).set(callback, callback(props));
+        const hasFunction = once.get(key).has(callback);
+        !hasFunction && once.get(key).set(callback, callback(props));
 
-        return { ...props, ...once.get(props.node).get(callback) };
+        return { ...props, ...once.get(key).get(callback) };
 
     };
 
