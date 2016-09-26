@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "devDependencies": {
     "ava": "^0.16.0",
+    "axios-mock-adapter": "^1.6.1",
     "babel-cli": "^6.14.0",
     "babel-loader": "^6.2.5",
     "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
@@ -46,7 +47,8 @@
   },
   "ava": {
     "files": [
-      "tests/*.test.js"
+      "tests/*.test.js",
+      "tests/**/*.test.js"
     ],
     "babel": "inherit",
     "require": [

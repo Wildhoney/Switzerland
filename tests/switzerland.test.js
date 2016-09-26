@@ -3,11 +3,9 @@ import { h } from 'virtual-dom';
 import { create } from '../src/switzerland';
 import { define } from './helpers/setup-browser-env';
 
-test('x', t => {
+test('Should be create a custom <x-tag /> node;', t => {
 
-    create('x-tag', () => {
-        return h('h1', {}, ['XTag']);
-    });
+    create('x-tag', () => h('h1', {}, ['XTag']));
 
     t.is(define.callCount, 1);
 

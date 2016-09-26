@@ -6,10 +6,8 @@ global.document = require('jsdom').jsdom('<body></body>');
 global.window = document.defaultView;
 global.navigator = window.navigator;
 
-/**
- * @constant customElements
- * @type {Object}
- */
-global.window.customElements = {
-    define
-};
+global.window.MutationObserver = spy();
+global.window.MutationObserver.prototype.observe = spy();
+global.window.MutationObserver.prototype.disconnect = spy();
+
+global.window.customElements = { define };
