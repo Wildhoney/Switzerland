@@ -139,4 +139,5 @@ export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
 export { default as redux } from './middleware/redux';
 export { time, timeEnd } from './debug/timer';
+export { pipe, compose } from 'ramda';
 export { h as element } from 'virtual-dom';
