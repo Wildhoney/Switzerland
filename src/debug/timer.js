@@ -29,6 +29,7 @@ export const time = props => {
  */
 export const timeEnd = props => {
 
+    const id = timers.get(props.node);
     console.timeEnd(id);
     return { ...props, timer: id };
 

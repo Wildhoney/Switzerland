@@ -50,7 +50,7 @@ export default props => {
     // Obtain the reference to the observer, using the WeakMap to query whether we have an existing
     // one to utilise before creating another.
     const hasObserver = observers.has(node);
-    const observer = hasObserver ? observers.get(node) : new MutationObserver(() => {
+    const observer = hasObserver ? observers.get(node) : new window.MutationObserver(() => {
 
         // Remove the existing memorisation of the node's attributes before re-rendering.
         attributes.delete(node);

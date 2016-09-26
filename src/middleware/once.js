@@ -12,7 +12,6 @@ export default callback => {
 
     return props => {
 
-
         // Ensure the node has an entry in the map.
         const hasNode = once.has(props.node);
         !hasNode && once.set(props.node, new WeakMap());

@@ -62,17 +62,16 @@ export const create = (name, render) => {
          */
         [implementation.hooks[0]]() {
 
-            const node = this;
-            const boundary = implementation.shadowBoundary(node);
+            const boundary = implementation.shadowBoundary(this);
             const rerender = () => this.render();
 
-            const tree = htmlFor(render({ node, render: rerender }));
+            const tree = htmlFor(render({ node: this, render: rerender }));
             const root = createElement(tree);
 
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
 
-            registry.set(this, { node, tree, root });
+            registry.set(this, { node: this, tree, root });
 
         }
 
