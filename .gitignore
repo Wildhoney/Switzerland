@@ -9,4 +9,4 @@ node_modules
 npm_debug.log
 
 # examples
-/example/components/iss-locator/build.js
+example/components/iss-position/build.js
