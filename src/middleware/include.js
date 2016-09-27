@@ -1,6 +1,7 @@
 import { difference, identity, memoize, groupBy } from 'ramda';
 import { get as fetch } from 'axios';
-import { path } from '../helpers/path';
+import parseUrls from 'css-url-parser';
+import parsePath from 'path-parse';
 
 /**
  * @constant includes
@@ -19,13 +20,24 @@ const includeMap = [
 
 /**
  * @method fetchInclude
- * @param {String} document
+ * @param {String} file
  * @return {Promise}
  */
-const fetchInclude = memoize(document => {
+const fetchInclude = memoize(file => {
+
+    const cssPath = parsePath(file).dir;
+
+    const transformPaths = content => {
+
+        const urls = parseUrls(content);
+
+        // Update the URLs to make them relative to the CSS document.
+        return urls ? urls.map(url => content.replace(url, `${cssPath}/${url}`)).toString() : content;
+
+    };
 
     return new Promise(resolve => {
-        fetch(document).then(response => response.data).then(resolve).catch(() => resolve(''));
+        fetch(file).then(response => transformPaths(response.data)).then(resolve).catch(() => resolve(''));
     });
 
 });
@@ -52,11 +64,8 @@ const attach = files => {
         // Load each file individually and then concatenate them.
         return Promise.all(files.map(fetchInclude)).then(fileData => {
 
-            // Concatenate all of the content from the documents, and replace any $path instances
-            // with the path of the component.
-            const content = fileData.reduce((acc, fileDatum) => `${acc} ${fileDatum}`).trim();
-            containerNode.innerHTML = content.replace(/\$path/ig, path);
-
+            // Concatenate all of the content from the documents.
+            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${acc} ${fileDatum}`).trim();
             return containerNode.innerHTML.length ? containerNode : null;
 
         });

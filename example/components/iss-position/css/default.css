@@ -1,7 +1,7 @@
 :host {
     all: initial;
     display: inline-block;
-    background: transparent url('$path/images/earth.jpg');
+    background: transparent url('../images/earth.jpg');
     background-size: cover;
     width: 85vmin;
     height: 85vmin;
@@ -21,7 +21,6 @@ iss-astronauts.resolved {
     opacity: 1;
     transform: scale(1);
 }
-
 
 * {
     padding: 0;
