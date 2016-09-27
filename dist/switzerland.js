@@ -57,7 +57,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.htmlKey = undefined;
+	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = undefined;
 
 	var _html = __webpack_require__(3);
 
@@ -170,12 +170,6 @@ module.exports =
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
-	 * @constant registry
-	 * @type {WeakMap}
-	 */
-	const registry = new WeakMap();
-
-	/**
 	 * @constant env
 	 * @type {String}
 	 */
@@ -189,6 +183,12 @@ module.exports =
 	})();
 
 	/**
+	 * @constant key
+	 * @type {Symbol}
+	 */
+	const key = Symbol('switzerland/memory');
+
+	/**
 	 * @method warning
 	 * @param {String} message
 	 * @return {void}
@@ -199,12 +199,6 @@ module.exports =
 	        console.warn(`Switzerland 🇨🇭 ${ message }.`);
 	    }
 	};
-
-	/**
-	 * @constant htmlKey
-	 * @type {Symbol}
-	 */
-	const htmlKey = exports.htmlKey = Symbol('switzerland/html');
 
 	/**
 	 * @constant implementations
@@ -223,15 +217,6 @@ module.exports =
 	        shadowBoundary: node => node.attachShadow({ mode: 'open' })
 	    }
 
-	};
-
-	/**
-	 * @method htmlFor
-	 * @param {Object} model
-	 * @return {Object}
-	 */
-	const htmlFor = model => {
-	    return htmlKey in model ? model.html : model;
 	};
 
 	/**
@@ -257,19 +242,26 @@ module.exports =
 	    implementation.customElement(name, class extends window.HTMLElement {
 
 	        /**
+	         * @constructor
+	         */
+	        constructor() {
+	            this[key] = {};
+	        }
+
+	        /**
 	         * @method connectedCallback
 	         * @return {void}
 	         */
 	        [implementation.hooks[0]]() {
 
 	            const boundary = implementation.shadowBoundary(this);
-	            const tree = htmlFor(render({ node: this }));
+	            const tree = (0, _html.htmlFor)(render({ node: this }));
 	            const root = (0, _virtualDom.create)(tree);
 
 	            // See: https://github.com/Matt-Esch/virtual-dom/pull/413
 	            boundary.appendChild(root);
 
-	            registry.set(this, { node: this, tree, root });
+	            this[key] = { node: this, tree, root };
 	        }
 
 	        /**
@@ -289,7 +281,7 @@ module.exports =
 	         */
 	        render() {
 
-	            const instance = registry.get(this);
+	            const instance = this[key];
 
 	            if (!instance) {
 
@@ -306,14 +298,14 @@ module.exports =
 	            const currentRoot = instance.root;
 	            const node = instance.node;
 
-	            const tree = htmlFor(render({ node }));
+	            const tree = (0, _html.htmlFor)(render({ node }));
 
 	            if (node.isConnected) {
 
 	                const patches = (0, _virtualDom.diff)(currentTree, tree);
 	                const root = (0, _virtualDom.patch)(currentRoot, patches);
 
-	                registry.set(this, { node, tree, root });
+	                this[key] = { node, tree, root };
 	            }
 	        }
 
@@ -511,27 +503,41 @@ module.exports =
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _switzerland = __webpack_require__(1);
+	/**
+	 * @constant htmlKey
+	 * @type {Symbol}
+	 */
+	const htmlKey = exports.htmlKey = Symbol('switzerland/html');
+
+	/**
+	 * @method htmlFor
+	 * @param {Object} model
+	 * @return {Object}
+	 */
+	const htmlFor = exports.htmlFor = model => {
+	  return htmlKey in model ? model[htmlKey] : model;
+	};
 
 	/**
 	 * @param {Function} html
 	 * @return {Function}
 	 */
+
 	exports.default = html => {
 
-	    return props => {
-	        return _extends({}, props, { [_switzerland.htmlKey]: html(props) });
-	    };
+	  return props => {
+	    return _extends({}, props, { [htmlKey]: html(props) });
+	  };
 	};
 
 /***/ },

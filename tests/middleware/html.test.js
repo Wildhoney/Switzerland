@@ -1,6 +1,5 @@
 import test from 'ava';
-import { htmlKey } from '../../src/switzerland';
-import html from '../../src/middleware/html';
+import html, { htmlKey } from '../../src/middleware/html';
 
 test('Should be able to wrap yielded HTML;', t => {
 

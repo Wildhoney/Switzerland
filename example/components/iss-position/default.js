@@ -1,4 +1,4 @@
-import { create, include, once, redux, html, element, pathFor } from '../../../src/switzerland';
+import { create, include, once, redux, html, element, pathFor, time, timeEnd } from '../../../src/switzerland';
 import { pipe } from 'ramda';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
@@ -36,7 +36,7 @@ const fetch = once(props => props.dispatch(update()));
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), fetch, props => {
+create('iss-position', pipe(time, redux(store), include(pathFor('css/default.css')), fetch, html(props => {
 
     const { redux, dispatch } = props;
     const image = pathFor(`images/flags/${redux.flag}`);
@@ -75,7 +75,7 @@ create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), f
         </section>
     );
 
-}));
+}), timeEnd));
 
 create('iss-astronauts', pipe(redux(store), include(pathFor('css/astronauts.css')), props => {
 

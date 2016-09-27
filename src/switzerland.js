@@ -1,10 +1,5 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
-
-/**
- * @constant registry
- * @type {WeakMap}
- */
-const registry = new WeakMap();
+import { htmlFor } from './middleware/html';
 
 /**
  * @constant env
@@ -21,6 +16,12 @@ const env = (() => {
 })();
 
 /**
+ * @constant key
+ * @type {Symbol}
+ */
+const key = Symbol('switzerland/memory');
+
+/**
  * @method warning
  * @param {String} message
  * @return {void}
@@ -32,12 +33,6 @@ const warning = message => {
     }
 
 };
-
-/**
- * @constant htmlKey
- * @type {Symbol}
- */
-export const htmlKey = Symbol('switzerland/html');
 
 /**
  * @constant implementations
@@ -56,15 +51,6 @@ const implementations = {
         shadowBoundary: node => node.attachShadow({ mode: 'open' })
     }
 
-};
-
-/**
- * @method htmlFor
- * @param {Object} model
- * @return {Object}
- */
-const htmlFor = model => {
-    return htmlKey in model ? model.html : model;
 };
 
 /**
@@ -90,6 +76,13 @@ export const create = (name, render) => {
     implementation.customElement(name, class extends window.HTMLElement {
 
         /**
+         * @constructor
+         */
+        constructor() {
+            this[key] = {};
+        }
+
+        /**
          * @method connectedCallback
          * @return {void}
          */
@@ -102,7 +95,7 @@ export const create = (name, render) => {
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
 
-            registry.set(this, { node: this, tree, root });
+            this[key] = { node: this, tree, root };
 
         }
 
@@ -124,7 +117,7 @@ export const create = (name, render) => {
          */
         render() {
 
-            const instance = registry.get(this);
+            const instance = this[key];
 
             if (!instance) {
 
@@ -146,7 +139,7 @@ export const create = (name, render) => {
                 const patches = diff(currentTree, tree);
                 const root = patch(currentRoot, patches);
 
-                registry.set(this, { node, tree, root });
+                this[key] = { node, tree, root };
 
             }
 
@@ -166,6 +159,8 @@ export { default as redux } from './middleware/redux';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';
+
+// Helpers.
 export { path, pathFor } from './helpers/path';
 
 // Third-party.
