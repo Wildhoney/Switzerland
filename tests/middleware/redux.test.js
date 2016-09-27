@@ -18,17 +18,17 @@ test('Should be able to manage state from Redux;', t => {
     const dispatch = store.dispatch;
     const render = spy();
 
-    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, store: store.getState() });
-    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, store: 0 });
+    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, redux: store.getState() });
+    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, redux: 0 });
 
     dispatch({ type: 'INCREMENT' });
-    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, store: 1 });
+    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, redux: 1 });
 
     dispatch({ type: 'INCREMENT' });
-    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, store: 2 });
+    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, redux: 2 });
 
     dispatch({ type: 'DECREMENT' });
-    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, store: 1 });
+    t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, redux: 1 });
 
     t.is(render.callCount, 3);
 
@@ -47,9 +47,9 @@ test('Should be able to use the handler function to determine update;', t => {
     const dispatch = store.dispatch;
     const render = spy();
 
-    t.deepEqual(redux(store, shouldUpdate)({ node, render }), { node, render, dispatch, store: 0 });
+    t.deepEqual(redux(store, shouldUpdate)({ node, render }), { node, render, dispatch, redux: 0 });
     dispatch({ type: 'INCREMENT' });
-    t.deepEqual(redux(store, shouldUpdate)({ node, render }), { node, render, dispatch, store: 1 });
+    t.deepEqual(redux(store, shouldUpdate)({ node, render }), { node, render, dispatch, redux: 1 });
 
     t.is(render.callCount, 0);
     t.is(shouldUpdate.callCount, 1);

@@ -38,24 +38,24 @@ const interval = once(props => setInterval(props.render, 2000));
 
 create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), fetch, props => {
 
-    const { store, dispatch } = props;
-    const image = pathFor(`images/flags/${store.flag}`);
+    const { redux, dispatch } = props;
+    const image = pathFor(`images/flags/${redux.flag}`);
 
     return (
         <section>
 
-            {store.latitude && store.longitude && !store.loading ? (
+            {redux.latitude && redux.longitude && !redux.loading ? (
 
                 <span>
                     <label>ISS is currently flying over</label>
-                    <h1>{store.country ? store.country : 'An Ocean Somewhere'}</h1>
+                    <h1>{redux.country ? redux.country : 'An Ocean Somewhere'}</h1>
 
-                    {store.flag ? <img className="flag" src={image} /> : ''}
+                    {redux.flag ? <img className="flag" src={image} /> : ''}
 
                     <iss-astronauts />
 
                     <div className="coordinates">
-                        {store.latitude}, {store.longitude}
+                        {redux.latitude}, {redux.longitude}
                     </div>
 
                 </span>
@@ -63,7 +63,7 @@ create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), f
             ) : <img className="loading" src={pathFor('images/loading.svg')} />}
 
             <button
-                className={store.loading ? 'loading' : ''}
+                className={redux.loading ? 'loading' : ''}
                 onclick={() => dispatch(update())}
                 >
 
@@ -82,10 +82,10 @@ create('iss-astronauts', pipe(redux(store), include(pathFor('css/astronauts.css'
     return (
         <div className="astronauts">
 
-            <h3>{props.store.people.length} Astronauts:</h3>
+            <h3>{props.redux.people.length} Astronauts:</h3>
 
             <ul className="astronauts">
-                {props.store.people.map(name => <li>{name}</li>)}
+                {props.redux.people.map(name => <li>{name}</li>)}
             </ul>
 
         </div>
@@ -97,7 +97,7 @@ create('iss-updated', pipe(redux(store), interval, props => {
 
     return (
         <datetime>
-            (Updated {moment(props.store.updated).fromNow()})
+            (Updated {moment(props.redux.updated).fromNow()})
         </datetime>
     );
 
