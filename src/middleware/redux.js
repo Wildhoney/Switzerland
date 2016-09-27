@@ -17,7 +17,7 @@ export default (store, handler = () => true) => {
         const state = store.getState();
 
         // Subscribe to the store only if we haven't done so already.
-        !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState(), state) && props.render()));
+        !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState(), state) && props.node.render()));
 
         return { ...props, redux: state, dispatch: store.dispatch };
 

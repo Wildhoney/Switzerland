@@ -23,7 +23,7 @@ export default initialState => {
          */
         const setState = updatedState => {
             states.set(props.node, { ...state, ...updatedState });
-            props.render();
+            props.node.render();
         };
 
         return { ...props, state, setState };
