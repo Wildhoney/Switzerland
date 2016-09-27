@@ -196,7 +196,7 @@ module.exports =
 	const warning = message => {
 
 	    if (env === 'development') {
-	        console.warn(`Switzerland: ${ message }.`);
+	        console.warn(`Switzerland 🇨🇭 ${ message }.`);
 	    }
 	};
 

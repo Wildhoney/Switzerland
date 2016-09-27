@@ -16,7 +16,7 @@ test('Should be able to manage state from Redux;', t => {
     const node = document.createElement('div');
     const store = createStore(counter);
     const dispatch = store.dispatch;
-    const render = spy();
+    const render = node.render = spy();
 
     t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, redux: store.getState() });
     t.deepEqual(redux(store)({ node, render }), { node, render, dispatch, redux: 0 });
@@ -45,7 +45,7 @@ test('Should be able to use the handler function to determine update;', t => {
     const node = document.createElement('div');
     const store = createStore(counter);
     const dispatch = store.dispatch;
-    const render = spy();
+    const render = node.render = spy();
 
     t.deepEqual(redux(store, shouldUpdate)({ node, render }), { node, render, dispatch, redux: 0 });
     dispatch({ type: 'INCREMENT' });

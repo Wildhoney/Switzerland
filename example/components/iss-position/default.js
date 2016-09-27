@@ -3,7 +3,7 @@ import { pipe } from 'ramda';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
 import moment from 'moment';
-import { store } from './redux';
+import { store } from './store';
 
 /**
  * @method update

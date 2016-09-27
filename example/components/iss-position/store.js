@@ -40,4 +40,4 @@ function locator(state = initialState, action) {
 
     }
 
-};
+}
