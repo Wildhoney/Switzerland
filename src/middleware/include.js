@@ -32,7 +32,7 @@ const fetchInclude = memoize(file => {
         const urls = parseUrls(content);
 
         // Update the URLs to make them relative to the CSS document.
-        return urls ? urls.map(url => content.replace(url, `${cssPath}/${url}`)).toString() : content;
+        return urls.length ? urls.map(url => content.replace(url, `${cssPath}/${url}`)).toString() : content;
 
     };
 

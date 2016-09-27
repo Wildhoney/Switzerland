@@ -698,7 +698,7 @@ module.exports =
 	        const urls = (0, _cssUrlParser2.default)(content);
 
 	        // Update the URLs to make them relative to the CSS document.
-	        return urls ? urls.map(url => content.replace(url, `${ cssPath }/${ url }`)).toString() : content;
+	        return urls.length ? urls.map(url => content.replace(url, `${ cssPath }/${ url }`)).toString() : content;
 	    };
 
 	    return new Promise(resolve => {
