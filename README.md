@@ -166,6 +166,22 @@ create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-chee
 
 > Note: Relative paths in the CSS document are retained.
 
-Once the component is mounted in the DOM, the attached CSS document will be fetched and loaded into the **shadow boundary** of our `swiss-cheese` component, and thus inherits Web Component's enviable [style encapsulation](http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#toc-style-scoped). During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash; will have a class name of `resolving`, whereas after **all** files have been downloaded and attached, the `resolving` class name will be replaced with `resolved` &ndash; this allows you to apply clever behaviour, such as hiding the component until the styles have been applied.
+Once the component is mounted in the DOM, the attached CSS document will be fetched and loaded into the **shadow boundary** of our `swiss-cheese` component, and thus inherits Web Component's enviable [style encapsulation](http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#toc-style-scoped).
+
+```css
+:host {
+    background: yellow url('../images/cheese.png');
+    border-radius: 3px;
+    font-size: 8rem;
+}
+```
+
+During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash; will have a class name of `resolving`, whereas after **all** files have been downloaded and attached, the `resolving` class name will be replaced with `resolved` &ndash; this allows you to apply clever behaviour, such as hiding the component until the styles have been applied.
+
+```html
+<swiss-cheese class="resolving">
+    <!-- ... -->
+</swiss-cheese>
+```
 
 You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `pathFor` function which determines the path of the current component which allows us to handily declare the path to the CSS document relatively. It's worth noting that the `path` constant is simply the path to the current component.
