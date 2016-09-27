@@ -100,7 +100,9 @@ swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
 
 It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. Switzerland happily supports setState, Redux, mobx, etc... without introducing third-party components due to the easy nature of creating your own middle.
 
-In the next example we're going to migrate from using an element's attributes to using the React-esque `setState`/`state` approach.
+## Using State
+
+Since using attributes isn't the most friendly way to update components we can instead choose to use another state manager &ndash; such as React-esque's `setState`/`state` approach.
 
 ```javascript
 import { create, element, pipe, state } from 'switzerland';
@@ -128,3 +130,42 @@ create('swiss-cheese', pipe(state(initialState), props => {
 
 }));
 ```
+
+By applying the `state` middleware to the `swiss-cheese` component, we have two additional properties added to our `props` &ndash; `setState` and `state`. Each **instance of a component** will receive a fresh `state` and thus can be mutated independently regardless of how many `swiss-cheese` nodes there are present in the DOM.
+
+## Applying Styles
+
+Now that we have a functioning `swiss-cheese` component, the next logical step would be applying styles to the component. Switzerland supports attaching CSS and JS files to the component by using the `include` middleware.
+
+```javascript
+import { create, element, pipe, state, include, pathFor } from 'switzerland';
+
+const initialState = {
+    cheeses: ['Swiss', 'Feta', 'Cheddar']
+};
+
+create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-cheese.css')), props => {
+
+    const cheeses = props.state.cheeses;
+
+    return (
+        <ul>
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+            <li>
+                <a onclick={() => props.setState({ cheeses: ['Mozarella', ...cheeses] })}>
+                    Add Mozarella
+                </a>
+            </li>
+        </ul>
+    );
+
+}));
+```
+
+> Note: Relative paths in the CSS document are retained.
+
+Once the component is mounted in the DOM, the attached CSS document will be fetched and loaded into the **shadow boundary** of our `swiss-cheese` component, and thus inherits Web Component's enviable [style encapsulation](http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#toc-style-scoped). During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash; will have a class name of `resolving`, whereas after **all** files have been downloaded and attached, the `resolving` class name will be replaced with `resolved` &ndash; this allows you to apply clever behaviour, such as hiding the component until the styles have been applied.
+
+You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `pathFor` function which determines the path of the current component which allows us to handily declare the path to the CSS document relatively. It's worth noting that the `path` constant is simply the path to the current component.
