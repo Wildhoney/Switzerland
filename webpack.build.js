@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
     entry: {
         switzerland: ['./src/switzerland.js']

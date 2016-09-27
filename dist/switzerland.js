@@ -52,14 +52,14 @@ module.exports =
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.htmlKey = undefined;
 
-	var _html = __webpack_require__(2);
+	var _html = __webpack_require__(3);
 
 	Object.defineProperty(exports, 'html', {
 	    enumerable: true,
@@ -68,7 +68,7 @@ module.exports =
 	    }
 	});
 
-	var _once = __webpack_require__(3);
+	var _once = __webpack_require__(4);
 
 	Object.defineProperty(exports, 'once', {
 	    enumerable: true,
@@ -77,7 +77,7 @@ module.exports =
 	    }
 	});
 
-	var _attributes = __webpack_require__(4);
+	var _attributes = __webpack_require__(5);
 
 	Object.defineProperty(exports, 'attrs', {
 	    enumerable: true,
@@ -86,7 +86,7 @@ module.exports =
 	    }
 	});
 
-	var _state = __webpack_require__(7);
+	var _state = __webpack_require__(8);
 
 	Object.defineProperty(exports, 'state', {
 	    enumerable: true,
@@ -95,7 +95,7 @@ module.exports =
 	    }
 	});
 
-	var _include = __webpack_require__(8);
+	var _include = __webpack_require__(9);
 
 	Object.defineProperty(exports, 'include', {
 	    enumerable: true,
@@ -143,7 +143,7 @@ module.exports =
 	    }
 	});
 
-	var _ramda = __webpack_require__(6);
+	var _ramda = __webpack_require__(7);
 
 	Object.defineProperty(exports, 'pipe', {
 	    enumerable: true,
@@ -174,6 +174,31 @@ module.exports =
 	 * @type {WeakMap}
 	 */
 	const registry = new WeakMap();
+
+	/**
+	 * @constant env
+	 * @type {String}
+	 */
+	const env = (() => {
+
+	    try {
+	        return process.env.NODE_ENV;
+	    } catch (err) {
+	        return 'development';
+	    }
+	})();
+
+	/**
+	 * @method warning
+	 * @param {String} message
+	 * @return {void}
+	 */
+	const warning = message => {
+
+	    if (env === 'development') {
+	        console.warn(`Switzerland: ${ message }.`);
+	    }
+	};
 
 	/**
 	 * @constant htmlKey
@@ -238,9 +263,7 @@ module.exports =
 	        [implementation.hooks[0]]() {
 
 	            const boundary = implementation.shadowBoundary(this);
-	            const rerender = () => this.render();
-
-	            const tree = htmlFor(render({ node: this, render: rerender }));
+	            const tree = htmlFor(render({ node: this }));
 	            const root = (0, _virtualDom.create)(tree);
 
 	            // See: https://github.com/Matt-Esch/virtual-dom/pull/413
@@ -275,6 +298,7 @@ module.exports =
 	                // tick, but ideally the developer should setup sensible defaults and thus avoid a
 	                // re-render during the start-up phase.
 	                // Queue: setTimeout(this.render.bind(this));
+	                warning('Casually ignoring an attempted re-render during the start-up phase of a component');
 	                return;
 	            }
 
@@ -282,9 +306,7 @@ module.exports =
 	            const currentRoot = instance.root;
 	            const node = instance.node;
 
-	            const rerender = () => this.render();
-
-	            const tree = htmlFor(render({ node, render: rerender }));
+	            const tree = htmlFor(render({ node }));
 
 	            if (node.isConnected) {
 
@@ -299,635 +321,10 @@ module.exports =
 	};
 
 	// Middleware.
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _switzerland = __webpack_require__(1);
-
-	/**
-	 * @param {Function} html
-	 * @return {Function}
-	 */
-	exports.default = html => {
-
-	    return props => {
-	        return _extends({}, props, { [_switzerland.htmlKey]: html(props) });
-	    };
-	};
-
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	/**
-	 * @constant once
-	 * @type {WeakMap}
-	 */
-	const once = new WeakMap();
-
-	/**
-	 * @param {Function} callback
-	 * @param {Function} [keyFrom]
-	 * @return {Function}
-	 */
-
-	exports.default = (callback, keyFrom = props => props.node) => {
-
-	    return props => {
-
-	        const key = keyFrom(props);
-
-	        // Ensure the node has an entry in the map.
-	        const hasNode = once.has(key);
-	        !hasNode && once.set(key, new WeakMap());
-
-	        // Determine whether the function has been called already.
-	        const hasFunction = once.get(key).has(callback);
-	        !hasFunction && once.get(key).set(callback, callback(props));
-
-	        return _extends({}, props, once.get(key).get(callback));
-	    };
-	};
-
-/***/ },
-/* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _humps = __webpack_require__(5);
-
-	var _ramda = __webpack_require__(6);
-
-	/**
-	 * @constant observers
-	 * @type {WeakMap}
-	 */
-	const observers = new WeakMap();
-
-	/**
-	 * @constant attributes
-	 * @type {WeakMap}
-	 */
-	const attributes = new WeakMap();
-
-	/**
-	 * @method removePrefix
-	 * @param {String} name
-	 * @return {String}
-	 */
-	const removePrefix = name => name.replace('data-', '');
-
-	/**
-	 * @method transform
-	 * @param {NamedNodeMap} attributes
-	 * @return {Object}
-	 */
-	const transform = attributes => {
-
-	  return Object.keys(attributes).reduce((acc, index) => {
-
-	    // Transform each attribute into a plain object.
-	    const model = attributes[index];
-	    const label = (0, _ramda.compose)(_humps.camelize, removePrefix);
-
-	    return _extends({}, acc, { [label(model.nodeName)]: model.nodeValue });
-	  }, Object.create(null));
-	};
-
-	/**
-	 * @param {Object} props
-	 * @return {Object}
-	 */
-
-	exports.default = props => {
-	  const node = props.node;
-	  const render = props.render;
-
-	  // Obtain the reference to the observer, using the WeakMap to query whether we have an existing
-	  // one to utilise before creating another.
-
-	  const hasObserver = observers.has(node);
-	  const observer = hasObserver ? observers.get(node) : new window.MutationObserver(() => {
-
-	    // Remove the existing memorisation of the node's attributes before re-rendering.
-	    attributes.delete(node);
-	    render();
-	  });
-
-	  observer.observe(node, { attributes: true });
-	  !hasObserver && observers.set(node, observer);
-
-	  // Parse all of the attributes on the node, and nested those into the props passed.
-	  const attrs = attributes.get(node) || transform(node.attributes);
-	  attributes.set(node, attrs);
-
-	  // Clean up the observer if the node is no longer present in the DOM.
-	  !node.isConnected && observer.disconnect();
-
-	  return _extends({}, props, { attrs });
-	};
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
-
-	// =========
-	// = humps =
-	// =========
-	// Underscore-to-camelCase converter (and vice versa)
-	// for strings and object keys
-
-	// humps is copyright © 2012+ Dom Christie
-	// Released under the MIT license.
-
-
-	;(function (global) {
-
-	  var _processKeys = function (convert, obj, options) {
-	    if (!_isObject(obj) || _isDate(obj) || _isRegExp(obj) || _isBoolean(obj)) {
-	      return obj;
-	    }
-
-	    var output,
-	        i = 0,
-	        l = 0;
-
-	    if (_isArray(obj)) {
-	      output = [];
-	      for (l = obj.length; i < l; i++) {
-	        output.push(_processKeys(convert, obj[i], options));
-	      }
-	    } else {
-	      output = {};
-	      for (var key in obj) {
-	        if (obj.hasOwnProperty(key)) {
-	          output[convert(key, options)] = _processKeys(convert, obj[key], options);
-	        }
-	      }
-	    }
-	    return output;
-	  };
-
-	  // String conversion methods
-
-	  var separateWords = function (string, options) {
-	    options = options || {};
-	    var separator = options.separator || '_';
-	    var split = options.split || /(?=[A-Z])/;
-
-	    return string.split(split).join(separator);
-	  };
-
-	  var camelize = function (string) {
-	    if (_isNumerical(string)) {
-	      return string;
-	    }
-	    string = string.replace(/[\-_\s]+(.)?/g, function (match, chr) {
-	      return chr ? chr.toUpperCase() : '';
-	    });
-	    // Ensure 1st char is always lowercase
-	    return string.substr(0, 1).toLowerCase() + string.substr(1);
-	  };
-
-	  var pascalize = function (string) {
-	    var camelized = camelize(string);
-	    // Ensure 1st char is always uppercase
-	    return camelized.substr(0, 1).toUpperCase() + camelized.substr(1);
-	  };
-
-	  var decamelize = function (string, options) {
-	    return separateWords(string, options).toLowerCase();
-	  };
-
-	  // Utilities
-	  // Taken from Underscore.js
-
-	  var toString = Object.prototype.toString;
-
-	  var _isObject = function (obj) {
-	    return obj === Object(obj);
-	  };
-	  var _isArray = function (obj) {
-	    return toString.call(obj) == '[object Array]';
-	  };
-	  var _isDate = function (obj) {
-	    return toString.call(obj) == '[object Date]';
-	  };
-	  var _isRegExp = function (obj) {
-	    return toString.call(obj) == '[object RegExp]';
-	  };
-	  var _isBoolean = function (obj) {
-	    return toString.call(obj) == '[object Boolean]';
-	  };
-
-	  // Performant way to determine if obj coerces to a number
-	  var _isNumerical = function (obj) {
-	    obj = obj - 0;
-	    return obj === obj;
-	  };
-
-	  // Sets up function which handles processing keys
-	  // allowing the convert function to be modified by a callback
-	  var _processor = function (convert, options) {
-	    var callback = options && 'process' in options ? options.process : options;
-
-	    if (typeof callback !== 'function') {
-	      return convert;
-	    }
-
-	    return function (string, options) {
-	      return callback(string, convert, options);
-	    };
-	  };
-
-	  var humps = {
-	    camelize: camelize,
-	    decamelize: decamelize,
-	    pascalize: pascalize,
-	    depascalize: decamelize,
-	    camelizeKeys: function (object, options) {
-	      return _processKeys(_processor(camelize, options), object);
-	    },
-	    decamelizeKeys: function (object, options) {
-	      return _processKeys(_processor(decamelize, options), object, options);
-	    },
-	    pascalizeKeys: function (object, options) {
-	      return _processKeys(_processor(pascalize, options), object);
-	    },
-	    depascalizeKeys: function () {
-	      return this.decamelizeKeys.apply(this, arguments);
-	    }
-	  };
-
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (humps), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof module !== 'undefined' && module.exports) {
-	    module.exports = humps;
-	  } else {
-	    global.humps = humps;
-	  }
-	})(undefined);
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	module.exports = require("ramda");
-
-/***/ },
-/* 7 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	/**
-	 * @constant states
-	 * @type {WeakMap}
-	 */
-	const states = new WeakMap();
-
-	/**
-	 * @param {Object} initialState
-	 * @return {Function}
-	 */
-
-	exports.default = initialState => {
-
-	  return props => {
-
-	    const hasState = states.has(props.node);
-	    const state = hasState ? states.get(props.node) : initialState;
-	    !hasState && states.set(props.node, state);
-
-	    /**
-	     * @method setState
-	     * @param {Object} updatedState
-	     * @return {void}
-	     */
-	    const setState = updatedState => {
-	      states.set(props.node, _extends({}, state, updatedState));
-	      props.render();
-	    };
-
-	    return _extends({}, props, { state, setState });
-	  };
-	};
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _ramda = __webpack_require__(6);
-
-	var _axios = __webpack_require__(9);
-
-	var _cssUrlParser = __webpack_require__(10);
-
-	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
-
-	var _pathParse = __webpack_require__(12);
-
-	var _pathParse2 = _interopRequireDefault(_pathParse);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * @constant includes
-	 * @type {WeakMap}
-	 */
-	const includes = new WeakMap();
-
-	/**
-	 * @constant includeMap
-	 * @type {Object}
-	 */
-	const includeMap = [{ extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } }, { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }];
-
-	/**
-	 * @method fetchInclude
-	 * @param {String} file
-	 * @return {Promise}
-	 */
-	const fetchInclude = (0, _ramda.memoize)(file => {
-
-	    const cssPath = (0, _pathParse2.default)(file).dir;
-
-	    const transformPaths = content => {
-
-	        const urls = (0, _cssUrlParser2.default)(content);
-
-	        // Update the URLs to make them relative to the CSS document.
-	        return urls.length ? urls.map(url => content.replace(url, `${ cssPath }/${ url }`)).toString() : content;
-	    };
-
-	    return new Promise(resolve => {
-	        (0, _axios.get)(file).then(response => transformPaths(response.data)).then(resolve).catch(() => resolve(''));
-	    });
-	});
-
-	/**
-	 * @method attach
-	 * @param files {Array|String}
-	 * @return {Promise}
-	 */
-	const attach = files => {
-
-	    // Group all of the files by their extension.
-	    const groupedFiles = (0, _ramda.groupBy)(file => file.extension)(files.map(path => ({ path, extension: path.split('.').pop() })));
-
-	    const mappedFiles = Object.keys(groupedFiles).map(extension => {
-
-	        const nodeData = includeMap.find(model => model.extensions.includes(extension));
-	        const files = groupedFiles[extension].map(model => model.path);
-	        const containerNode = document.createElement(nodeData.tag);
-
-	        // Apply all of the attributes defined in the `includeMap` to the node.
-	        Object.keys(nodeData.attrs).map(key => containerNode.setAttribute(key, nodeData.attrs[key]));
-
-	        // Load each file individually and then concatenate them.
-	        return Promise.all(files.map(fetchInclude)).then(fileData => {
-
-	            // Concatenate all of the content from the documents.
-	            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${ acc } ${ fileDatum }`).trim();
-	            return containerNode.innerHTML.length ? containerNode : null;
-	        });
-	    });
-
-	    return Promise.all(mappedFiles);
-	};
-
-	/**
-	 * @param {Array|String} attachFiles
-	 * @return {Function}
-	 */
-
-	exports.default = (...attachFiles) => {
-
-	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
-
-	    return props => {
-	        const node = props.node;
-
-
-	        const addedFiles = (() => {
-
-	            if (node.isConnected) {
-
-	                const boundary = props.node.shadowRoot;
-
-	                const hasCurrent = includes.has(node);
-	                !hasCurrent && includes.set(node, []);
-	                const current = includes.get(node);
-
-	                // We don't want to load the same files again, so we'll see what was previously loaded.
-	                const addedFiles = (0, _ramda.difference)(files, current);
-
-	                // Memorise the current set of files.
-	                includes.set(node, files);
-
-	                if (addedFiles.length) {
-
-	                    props.node.classList.add('resolving');
-	                    props.node.classList.remove('resolved');
-
-	                    attach(addedFiles).then(nodes => {
-
-	                        // Remove any `null` values which means the content of the file was empty, and then append
-	                        // them to the component's shadow boundary.
-	                        nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
-
-	                        props.node.classList.add('resolved');
-	                        props.node.classList.remove('resolving');
-	                    });
-	                }
-
-	                return addedFiles;
-	            }
-
-	            return [];
-	        })();
-
-	        return _extends({}, props, { files: addedFiles });
-	    };
-	};
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	module.exports = require("axios");
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var parseCssUrls = __webpack_require__(11);
-	module.exports = parseCssUrls;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var embeddedRegexp = /data:(.*?);base64,/;
-	var commentRegexp = /\/\*([\s\S]*?)\*\//g;
-	var urlsRegexp = /((?:@import\s+)?url\s*\(['"]?)(\S*?)(['"]?\s*\))|(@import\s+['"]?)([^;'"]+)/ig;
-
-	function isEmbedded(src) {
-		return embeddedRegexp.test(src);
-	}
-
-	function getUrls(text) {
-		var urls = [];
-		var urlMatch, url;
-
-		text = text.replace(commentRegexp, '');
-
-		while (urlMatch = urlsRegexp.exec(text)) {
-			// Match 2 group if '[@import] url(path)', match 5 group if '@import path'
-			url = urlMatch[2] || urlMatch[5];
-
-			if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
-				urls.push(url);
-			}
-		}
-
-		return urls;
-	}
-
-	module.exports = getUrls;
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
-	var isWindows = process.platform === 'win32';
-
-	// Regex to split a windows path into three parts: [*, device, slash,
-	// tail] windows-only
-	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
-
-	// Regex to split the tail part of the above into [*, dir, basename, ext]
-	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
-
-	var win32 = {};
-
-	// Function to split a filename into [root, dir, basename, ext]
-	function win32SplitPath(filename) {
-	  // Separate device+slash from tail
-	  var result = splitDeviceRe.exec(filename),
-	      device = (result[1] || '') + (result[2] || ''),
-	      tail = result[3] || '';
-	  // Split the tail into dir, basename and extension
-	  var result2 = splitTailRe.exec(tail),
-	      dir = result2[1],
-	      basename = result2[2],
-	      ext = result2[3];
-	  return [device, dir, basename, ext];
-	}
-
-	win32.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = win32SplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	// Split a filename into [root, dir, basename, ext], unix version
-	// 'root' is just a slash, or nothing.
-	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-	var posix = {};
-
-	function posixSplitPath(filename) {
-	  return splitPathRe.exec(filename).slice(1);
-	}
-
-	posix.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = posixSplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  allParts[1] = allParts[1] || '';
-	  allParts[2] = allParts[2] || '';
-	  allParts[3] = allParts[3] || '';
-
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	if (isWindows) module.exports = win32.parse;else /* posix */
-	  module.exports = posix.parse;
-
-	module.exports.posix = posix.parse;
-	module.exports.win32 = win32.parse;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
-
-/***/ },
-/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1113,6 +510,632 @@ module.exports =
 	};
 
 /***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _switzerland = __webpack_require__(1);
+
+	/**
+	 * @param {Function} html
+	 * @return {Function}
+	 */
+	exports.default = html => {
+
+	    return props => {
+	        return _extends({}, props, { [_switzerland.htmlKey]: html(props) });
+	    };
+	};
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @constant once
+	 * @type {WeakMap}
+	 */
+	const once = new WeakMap();
+
+	/**
+	 * @param {Function} callback
+	 * @param {Function} [keyFrom]
+	 * @return {Function}
+	 */
+
+	exports.default = (callback, keyFrom = props => props.node) => {
+
+	    return props => {
+
+	        const key = keyFrom(props);
+
+	        // Ensure the node has an entry in the map.
+	        const hasNode = once.has(key);
+	        !hasNode && once.set(key, new WeakMap());
+
+	        // Determine whether the function has been called already.
+	        const hasFunction = once.get(key).has(callback);
+	        !hasFunction && once.get(key).set(callback, callback(props));
+
+	        return _extends({}, props, once.get(key).get(callback));
+	    };
+	};
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _humps = __webpack_require__(6);
+
+	var _ramda = __webpack_require__(7);
+
+	/**
+	 * @constant observers
+	 * @type {WeakMap}
+	 */
+	const observers = new WeakMap();
+
+	/**
+	 * @constant attributes
+	 * @type {WeakMap}
+	 */
+	const attributes = new WeakMap();
+
+	/**
+	 * @method removePrefix
+	 * @param {String} name
+	 * @return {String}
+	 */
+	const removePrefix = name => name.replace('data-', '');
+
+	/**
+	 * @method transform
+	 * @param {NamedNodeMap} attributes
+	 * @return {Object}
+	 */
+	const transform = attributes => {
+
+	  return Object.keys(attributes).reduce((acc, index) => {
+
+	    // Transform each attribute into a plain object.
+	    const model = attributes[index];
+	    const label = (0, _ramda.compose)(_humps.camelize, removePrefix);
+
+	    return _extends({}, acc, { [label(model.nodeName)]: model.nodeValue });
+	  }, Object.create(null));
+	};
+
+	/**
+	 * @param {Object} props
+	 * @return {Object}
+	 */
+
+	exports.default = props => {
+	  const node = props.node;
+	  const render = props.render;
+
+	  // Obtain the reference to the observer, using the WeakMap to query whether we have an existing
+	  // one to utilise before creating another.
+
+	  const hasObserver = observers.has(node);
+	  const observer = hasObserver ? observers.get(node) : new window.MutationObserver(() => {
+
+	    // Remove the existing memorisation of the node's attributes before re-rendering.
+	    attributes.delete(node);
+	    render();
+	  });
+
+	  observer.observe(node, { attributes: true });
+	  !hasObserver && observers.set(node, observer);
+
+	  // Parse all of the attributes on the node, and nested those into the props passed.
+	  const attrs = attributes.get(node) || transform(node.attributes);
+	  attributes.set(node, attrs);
+
+	  // Clean up the observer if the node is no longer present in the DOM.
+	  !node.isConnected && observer.disconnect();
+
+	  return _extends({}, props, { attrs });
+	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
+
+	// =========
+	// = humps =
+	// =========
+	// Underscore-to-camelCase converter (and vice versa)
+	// for strings and object keys
+
+	// humps is copyright © 2012+ Dom Christie
+	// Released under the MIT license.
+
+
+	;(function (global) {
+
+	  var _processKeys = function (convert, obj, options) {
+	    if (!_isObject(obj) || _isDate(obj) || _isRegExp(obj) || _isBoolean(obj)) {
+	      return obj;
+	    }
+
+	    var output,
+	        i = 0,
+	        l = 0;
+
+	    if (_isArray(obj)) {
+	      output = [];
+	      for (l = obj.length; i < l; i++) {
+	        output.push(_processKeys(convert, obj[i], options));
+	      }
+	    } else {
+	      output = {};
+	      for (var key in obj) {
+	        if (obj.hasOwnProperty(key)) {
+	          output[convert(key, options)] = _processKeys(convert, obj[key], options);
+	        }
+	      }
+	    }
+	    return output;
+	  };
+
+	  // String conversion methods
+
+	  var separateWords = function (string, options) {
+	    options = options || {};
+	    var separator = options.separator || '_';
+	    var split = options.split || /(?=[A-Z])/;
+
+	    return string.split(split).join(separator);
+	  };
+
+	  var camelize = function (string) {
+	    if (_isNumerical(string)) {
+	      return string;
+	    }
+	    string = string.replace(/[\-_\s]+(.)?/g, function (match, chr) {
+	      return chr ? chr.toUpperCase() : '';
+	    });
+	    // Ensure 1st char is always lowercase
+	    return string.substr(0, 1).toLowerCase() + string.substr(1);
+	  };
+
+	  var pascalize = function (string) {
+	    var camelized = camelize(string);
+	    // Ensure 1st char is always uppercase
+	    return camelized.substr(0, 1).toUpperCase() + camelized.substr(1);
+	  };
+
+	  var decamelize = function (string, options) {
+	    return separateWords(string, options).toLowerCase();
+	  };
+
+	  // Utilities
+	  // Taken from Underscore.js
+
+	  var toString = Object.prototype.toString;
+
+	  var _isObject = function (obj) {
+	    return obj === Object(obj);
+	  };
+	  var _isArray = function (obj) {
+	    return toString.call(obj) == '[object Array]';
+	  };
+	  var _isDate = function (obj) {
+	    return toString.call(obj) == '[object Date]';
+	  };
+	  var _isRegExp = function (obj) {
+	    return toString.call(obj) == '[object RegExp]';
+	  };
+	  var _isBoolean = function (obj) {
+	    return toString.call(obj) == '[object Boolean]';
+	  };
+
+	  // Performant way to determine if obj coerces to a number
+	  var _isNumerical = function (obj) {
+	    obj = obj - 0;
+	    return obj === obj;
+	  };
+
+	  // Sets up function which handles processing keys
+	  // allowing the convert function to be modified by a callback
+	  var _processor = function (convert, options) {
+	    var callback = options && 'process' in options ? options.process : options;
+
+	    if (typeof callback !== 'function') {
+	      return convert;
+	    }
+
+	    return function (string, options) {
+	      return callback(string, convert, options);
+	    };
+	  };
+
+	  var humps = {
+	    camelize: camelize,
+	    decamelize: decamelize,
+	    pascalize: pascalize,
+	    depascalize: decamelize,
+	    camelizeKeys: function (object, options) {
+	      return _processKeys(_processor(camelize, options), object);
+	    },
+	    decamelizeKeys: function (object, options) {
+	      return _processKeys(_processor(decamelize, options), object, options);
+	    },
+	    pascalizeKeys: function (object, options) {
+	      return _processKeys(_processor(pascalize, options), object);
+	    },
+	    depascalizeKeys: function () {
+	      return this.decamelizeKeys.apply(this, arguments);
+	    }
+	  };
+
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_FACTORY__ = (humps), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof module !== 'undefined' && module.exports) {
+	    module.exports = humps;
+	  } else {
+	    global.humps = humps;
+	  }
+	})(undefined);
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = require("ramda");
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @constant states
+	 * @type {WeakMap}
+	 */
+	const states = new WeakMap();
+
+	/**
+	 * @param {Object} initialState
+	 * @return {Function}
+	 */
+
+	exports.default = initialState => {
+
+	  return props => {
+
+	    const hasState = states.has(props.node);
+	    const state = hasState ? states.get(props.node) : initialState;
+	    !hasState && states.set(props.node, state);
+
+	    /**
+	     * @method setState
+	     * @param {Object} updatedState
+	     * @return {void}
+	     */
+	    const setState = updatedState => {
+	      states.set(props.node, _extends({}, state, updatedState));
+	      props.node.render();
+	    };
+
+	    return _extends({}, props, { state, setState });
+	  };
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _ramda = __webpack_require__(7);
+
+	var _axios = __webpack_require__(10);
+
+	var _cssUrlParser = __webpack_require__(11);
+
+	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
+
+	var _pathParse = __webpack_require__(13);
+
+	var _pathParse2 = _interopRequireDefault(_pathParse);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @constant includes
+	 * @type {WeakMap}
+	 */
+	const includes = new WeakMap();
+
+	/**
+	 * @constant includeMap
+	 * @type {Object}
+	 */
+	const includeMap = [{ extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } }, { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }];
+
+	/**
+	 * @method fetchInclude
+	 * @param {String} file
+	 * @return {Promise}
+	 */
+	const fetchInclude = (0, _ramda.memoize)(file => {
+
+	    const cssPath = (0, _pathParse2.default)(file).dir;
+
+	    const transformPaths = content => {
+
+	        const urls = (0, _cssUrlParser2.default)(content);
+
+	        // Update the URLs to make them relative to the CSS document.
+	        return urls.length ? urls.map(url => content.replace(url, `${ cssPath }/${ url }`)).toString() : content;
+	    };
+
+	    return new Promise(resolve => {
+	        (0, _axios.get)(file).then(response => transformPaths(response.data)).then(resolve).catch(() => resolve(''));
+	    });
+	});
+
+	/**
+	 * @method attach
+	 * @param files {Array|String}
+	 * @return {Promise}
+	 */
+	const attach = files => {
+
+	    // Group all of the files by their extension.
+	    const groupedFiles = (0, _ramda.groupBy)(file => file.extension)(files.map(path => ({ path, extension: path.split('.').pop() })));
+
+	    const mappedFiles = Object.keys(groupedFiles).map(extension => {
+
+	        const nodeData = includeMap.find(model => model.extensions.includes(extension));
+	        const files = groupedFiles[extension].map(model => model.path);
+	        const containerNode = document.createElement(nodeData.tag);
+
+	        // Apply all of the attributes defined in the `includeMap` to the node.
+	        Object.keys(nodeData.attrs).map(key => containerNode.setAttribute(key, nodeData.attrs[key]));
+
+	        // Load each file individually and then concatenate them.
+	        return Promise.all(files.map(fetchInclude)).then(fileData => {
+
+	            // Concatenate all of the content from the documents.
+	            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${ acc } ${ fileDatum }`).trim();
+	            return containerNode.innerHTML.length ? containerNode : null;
+	        });
+	    });
+
+	    return Promise.all(mappedFiles);
+	};
+
+	/**
+	 * @param {Array|String} attachFiles
+	 * @return {Function}
+	 */
+
+	exports.default = (...attachFiles) => {
+
+	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
+
+	    return props => {
+	        const node = props.node;
+
+
+	        const addedFiles = (() => {
+
+	            if (node.isConnected) {
+
+	                const boundary = props.node.shadowRoot;
+
+	                const hasCurrent = includes.has(node);
+	                !hasCurrent && includes.set(node, []);
+	                const current = includes.get(node);
+
+	                // We don't want to load the same files again, so we'll see what was previously loaded.
+	                const addedFiles = (0, _ramda.difference)(files, current);
+
+	                // Memorise the current set of files.
+	                includes.set(node, files);
+
+	                if (addedFiles.length) {
+
+	                    props.node.classList.add('resolving');
+	                    props.node.classList.remove('resolved');
+
+	                    attach(addedFiles).then(nodes => {
+
+	                        // Remove any `null` values which means the content of the file was empty, and then append
+	                        // them to the component's shadow boundary.
+	                        nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
+
+	                        props.node.classList.add('resolved');
+	                        props.node.classList.remove('resolving');
+	                    });
+	                }
+
+	                return addedFiles;
+	            }
+
+	            return [];
+	        })();
+
+	        return _extends({}, props, { files: addedFiles });
+	    };
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	module.exports = require("axios");
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var parseCssUrls = __webpack_require__(12);
+	module.exports = parseCssUrls;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var embeddedRegexp = /data:(.*?);base64,/;
+	var commentRegexp = /\/\*([\s\S]*?)\*\//g;
+	var urlsRegexp = /((?:@import\s+)?url\s*\(['"]?)(\S*?)(['"]?\s*\))|(@import\s+['"]?)([^;'"]+)/ig;
+
+	function isEmbedded(src) {
+		return embeddedRegexp.test(src);
+	}
+
+	function getUrls(text) {
+		var urls = [];
+		var urlMatch, url;
+
+		text = text.replace(commentRegexp, '');
+
+		while (urlMatch = urlsRegexp.exec(text)) {
+			// Match 2 group if '[@import] url(path)', match 5 group if '@import path'
+			url = urlMatch[2] || urlMatch[5];
+
+			if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
+				urls.push(url);
+			}
+		}
+
+		return urls;
+	}
+
+	module.exports = getUrls;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	var isWindows = process.platform === 'win32';
+
+	// Regex to split a windows path into three parts: [*, device, slash,
+	// tail] windows-only
+	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+
+	// Regex to split the tail part of the above into [*, dir, basename, ext]
+	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+
+	var win32 = {};
+
+	// Function to split a filename into [root, dir, basename, ext]
+	function win32SplitPath(filename) {
+	  // Separate device+slash from tail
+	  var result = splitDeviceRe.exec(filename),
+	      device = (result[1] || '') + (result[2] || ''),
+	      tail = result[3] || '';
+	  // Split the tail into dir, basename and extension
+	  var result2 = splitTailRe.exec(tail),
+	      dir = result2[1],
+	      basename = result2[2],
+	      ext = result2[3];
+	  return [device, dir, basename, ext];
+	}
+
+	win32.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = win32SplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	// Split a filename into [root, dir, basename, ext], unix version
+	// 'root' is just a slash, or nothing.
+	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+	var posix = {};
+
+	function posixSplitPath(filename) {
+	  return splitPathRe.exec(filename).slice(1);
+	}
+
+	posix.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = posixSplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  allParts[1] = allParts[1] || '';
+	  allParts[2] = allParts[2] || '';
+	  allParts[3] = allParts[3] || '';
+
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	if (isWindows) module.exports = win32.parse;else /* posix */
+	  module.exports = posix.parse;
+
+	module.exports.posix = posix.parse;
+	module.exports.win32 = win32.parse;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ },
 /* 14 */
 /***/ function(module, exports) {
 
@@ -1141,12 +1164,12 @@ module.exports =
 	  return props => {
 
 	    const has = subscriptions.has(props.node);
-	    const prevState = store.getState();
+	    const state = store.getState();
 
 	    // Subscribe to the store only if we haven't done so already.
-	    !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState(), prevState) && props.render()));
+	    !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState(), state) && props.node.render()));
 
-	    return _extends({}, props, { store: store.getState(), dispatch: store.dispatch });
+	    return _extends({}, props, { redux: state, dispatch: store.dispatch });
 	  };
 	};
 
@@ -1552,7 +1575,7 @@ module.exports =
 	});
 	exports.pathFor = exports.path = undefined;
 
-	var _pathParse = __webpack_require__(12);
+	var _pathParse = __webpack_require__(13);
 
 	var _pathParse2 = _interopRequireDefault(_pathParse);
 

@@ -7,6 +7,33 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 const registry = new WeakMap();
 
 /**
+ * @constant env
+ * @type {String}
+ */
+const env = (() => {
+
+    try {
+        return process.env.NODE_ENV;
+    } catch (err) {
+        return 'development';
+    }
+
+})();
+
+/**
+ * @method warning
+ * @param {String} message
+ * @return {void}
+ */
+const warning = message => {
+
+    if (env === 'development') {
+        console.warn(`Switzerland: ${message}.`);
+    }
+
+};
+
+/**
  * @constant htmlKey
  * @type {Symbol}
  */
@@ -69,9 +96,7 @@ export const create = (name, render) => {
         [implementation.hooks[0]]() {
 
             const boundary = implementation.shadowBoundary(this);
-            const rerender = () => this.render();
-
-            const tree = htmlFor(render({ node: this, render: rerender }));
+            const tree = htmlFor(render({ node: this }));
             const root = createElement(tree);
 
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
@@ -108,14 +133,13 @@ export const create = (name, render) => {
                 // tick, but ideally the developer should setup sensible defaults and thus avoid a
                 // re-render during the start-up phase.
                 // Queue: setTimeout(this.render.bind(this));
+                warning('Casually ignoring an attempted re-render during the start-up phase of a component');
                 return;
 
             }
 
             const { tree: currentTree, root: currentRoot, node } = instance;
-            const rerender = () => this.render();
-
-            const tree = htmlFor(render({ node, render: rerender }));
+            const tree = htmlFor(render({ node }));
 
             if (node.isConnected) {
 
