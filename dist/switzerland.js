@@ -992,43 +992,38 @@ module.exports =
 	        const node = props.node;
 
 
-	        const addedFiles = (() => {
+	        if (node.isConnected) {
 
-	            if (node.isConnected) {
+	            const boundary = props.node.shadowRoot;
 
-	                const boundary = props.node.shadowRoot;
+	            const hasCurrent = includes.has(node);
+	            !hasCurrent && includes.set(node, []);
+	            const current = includes.get(node);
 
-	                const hasCurrent = includes.has(node);
-	                !hasCurrent && includes.set(node, []);
-	                const current = includes.get(node);
+	            // We don't want to load the same files again, so we'll see what was previously loaded.
+	            const addedFiles = (0, _ramda.difference)(files, current);
 
-	                // We don't want to load the same files again, so we'll see what was previously loaded.
-	                const addedFiles = (0, _ramda.difference)(files, current);
+	            // Memorise the current set of files.
+	            includes.set(node, files);
 
-	                // Memorise the current set of files.
-	                includes.set(node, files);
+	            if (addedFiles.length) {
 
-	                if (addedFiles.length) {
+	                props.node.classList.add('resolving');
+	                props.node.classList.remove('resolved');
 
-	                    props.node.classList.add('resolving');
-	                    props.node.classList.remove('resolved');
+	                attach(addedFiles).then(nodes => {
 
-	                    attach(addedFiles).then(nodes => {
+	                    // Remove any `null` values which means the content of the file was empty, and then append
+	                    // them to the component's shadow boundary.
+	                    nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
 
-	                        // Remove any `null` values which means the content of the file was empty, and then append
-	                        // them to the component's shadow boundary.
-	                        nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
-
-	                        props.node.classList.add('resolved');
-	                        props.node.classList.remove('resolving');
-	                    });
-	                }
-
-	                return addedFiles;
+	                    props.node.classList.add('resolved');
+	                    props.node.classList.remove('resolving');
+	                });
 	            }
 
-	            return [];
-	        })();
+	            return addedFiles;
+	        }
 
 	        return props;
 	    };

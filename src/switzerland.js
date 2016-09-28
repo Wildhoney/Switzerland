@@ -1,5 +1,5 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
-import { htmlFor, htmlKey } from './middleware/html';
+import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 
 /**

@@ -50,7 +50,7 @@ export default props => {
     const ref = fn => {
 
         // See: https://github.com/Matt-Esch/virtual-dom/blob/master/docs/hooks.md
-        const Hook = function() {};
+        const Hook = function () {};
         Hook.prototype.hook = node => refsLocal.set(node, fn);
         return new Hook();
 
