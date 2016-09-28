@@ -96,7 +96,7 @@ export default (...attachFiles) => {
 
         if (node.isConnected) {
 
-            const boundary = props.node.shadowRoot;
+            const boundary = node.shadowRoot;
 
             const hasCurrent = includes.has(node);
             !hasCurrent && includes.set(node, []);
@@ -110,8 +110,8 @@ export default (...attachFiles) => {
 
             if (addedFiles.length) {
 
-                props.node.classList.add('resolving');
-                props.node.classList.remove('resolved');
+                node.classList.add('resolving');
+                node.classList.remove('resolved');
 
                 attach(addedFiles).then(nodes => {
 
@@ -119,14 +119,12 @@ export default (...attachFiles) => {
                     // them to the component's shadow boundary.
                     nodes.filter(identity).forEach(node => boundary.appendChild(node));
 
-                    props.node.classList.add('resolved');
-                    props.node.classList.remove('resolving');
+                    node.classList.add('resolved');
+                    node.classList.remove('resolving');
 
                 });
 
             }
-
-            return addedFiles;
 
         }
 

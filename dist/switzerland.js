@@ -994,7 +994,7 @@ module.exports =
 
 	        if (node.isConnected) {
 
-	            const boundary = props.node.shadowRoot;
+	            const boundary = node.shadowRoot;
 
 	            const hasCurrent = includes.has(node);
 	            !hasCurrent && includes.set(node, []);
@@ -1008,8 +1008,8 @@ module.exports =
 
 	            if (addedFiles.length) {
 
-	                props.node.classList.add('resolving');
-	                props.node.classList.remove('resolved');
+	                node.classList.add('resolving');
+	                node.classList.remove('resolved');
 
 	                attach(addedFiles).then(nodes => {
 
@@ -1017,12 +1017,10 @@ module.exports =
 	                    // them to the component's shadow boundary.
 	                    nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
 
-	                    props.node.classList.add('resolved');
-	                    props.node.classList.remove('resolving');
+	                    node.classList.add('resolved');
+	                    node.classList.remove('resolving');
 	                });
 	            }
-
-	            return addedFiles;
 	        }
 
 	        return props;
