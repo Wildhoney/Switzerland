@@ -79,6 +79,7 @@ export const create = (name, render) => {
          * @constructor
          */
         constructor() {
+            super();
             this[key] = {};
         }
 

@@ -15,8 +15,8 @@ const includes = new WeakMap();
  * @type {Object}
  */
 const includeMap = [
-    { extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' }},
-    { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' }}
+    { extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } },
+    { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }
 ];
 
 /**
@@ -33,12 +33,12 @@ const fetchInclude = memoize(file => {
         const urls = parseUrls(content);
 
         // Update the URLs to make them relative to the CSS document.
-        return !urls.length ? content : urls.map(url => {
+        return urls.length ? urls.map(url => {
 
             const replacer = new RegExp(escapeRegExp(url), 'ig');
             return content.replace(replacer, `${cssPath}/${url}`);
 
-        }).toString();
+        }).toString() : content;
 
     };
 

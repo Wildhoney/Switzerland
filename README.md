@@ -102,7 +102,7 @@ It's fair to say that updating a component in this way is rather cumbersome for 
 
 ## Using State
 
-Since using attributes isn't the most friendly way to update components we can instead choose to use another state manager &ndash; such as React-esque's `setState`/`state` approach.
+Since using attributes isn't the most friendly way to update components we can instead choose to use another state manager &ndash; such as the React-esque `setState`/`state` approach.
 
 ```javascript
 import { create, element, pipe, state } from 'switzerland';
@@ -164,7 +164,7 @@ create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-chee
 }));
 ```
 
-> Note: Relative paths in the CSS document are retained.
+> Note: Relative paths in the CSS document are retained out-of-the-box.
 
 Once the component is mounted in the DOM, the attached CSS document will be fetched and loaded into the **shadow boundary** of our `swiss-cheese` component, and thus inherit Web Component's enviable [style encapsulation](http://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/#toc-style-scoped).
 
