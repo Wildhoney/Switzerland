@@ -2,6 +2,7 @@ import { difference, identity, memoize, groupBy } from 'ramda';
 import { get as fetch } from 'axios';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
+import escapeRegExp from 'escape-string-regexp';
 
 /**
  * @constant includes
@@ -32,7 +33,12 @@ const fetchInclude = memoize(file => {
         const urls = parseUrls(content);
 
         // Update the URLs to make them relative to the CSS document.
-        return urls.length ? urls.map(url => content.replace(url, `${cssPath}/${url}`)).toString() : content;
+        return !urls.length ? content : urls.map(url => {
+
+            const replacer = new RegExp(escapeRegExp(url), 'ig');
+            return content.replace(replacer, `${cssPath}/${url}`);
+
+        }).toString();
 
     };
 

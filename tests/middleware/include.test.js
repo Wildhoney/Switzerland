@@ -15,7 +15,7 @@ test('Should be able to include external documents', t => {
 
         const firstStylesheet = '* { border: 1px solid green }';
         const secondStylesheet = '* { border: 1px solid orange }';
-        const thirdStylesheet = `* { background-image: url('../images/example.png') }`;
+        const thirdStylesheet = `* { background-image: url('../images/example.png'), content: url('../images/example.png') }`;
 
         mockAdapter.onGet('/first.css').reply(200, firstStylesheet);
         mockAdapter.onGet('/second.css').reply(200, secondStylesheet);
@@ -31,7 +31,7 @@ test('Should be able to include external documents', t => {
         setTimeout(() => {
 
             // Should be updating the path to make the CSS paths relative to the CSS document.
-            const thirdStylesheet = `* { background-image: url('/components/css/../images/example.png') }`;
+            const thirdStylesheet = `* { background-image: url('/components/css/../images/example.png'), content: url('/components/css/../images/example.png') }`;
 
             t.deepEqual(props, { node, files });
             t.true(node.classList.contains('resolved'));
