@@ -1,6 +1,6 @@
 {
   "name": "switzerland",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Switzerland.js is a playground for experimenting with various Web Component techniques, approaches, and implementations.",
   "main": "dist/switzerland.js",
   "scripts": {
