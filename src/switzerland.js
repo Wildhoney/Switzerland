@@ -16,10 +16,10 @@ const env = (() => {
 })();
 
 /**
- * @constant key
+ * @constant registryKey
  * @type {Symbol}
  */
-const key = Symbol('switzerland/memory');
+const registryKey = Symbol('switzerland/registry');
 
 /**
  * @method warning
@@ -80,7 +80,7 @@ export const create = (name, render) => {
          */
         constructor() {
             super();
-            this[key] = {};
+            this[registryKey] = {};
         }
 
         /**
@@ -96,7 +96,7 @@ export const create = (name, render) => {
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
 
-            this[key] = { node: this, tree, root };
+            this[registryKey] = { node: this, tree, root };
 
         }
 
@@ -118,7 +118,7 @@ export const create = (name, render) => {
          */
         render() {
 
-            const instance = this[key];
+            const instance = this[registryKey];
 
             if (!instance) {
 
@@ -140,7 +140,7 @@ export const create = (name, render) => {
                 const patches = diff(currentTree, tree);
                 const root = patch(currentRoot, patches);
 
-                this[key] = { node, tree, root };
+                this[registryKey] = { node, tree, root };
 
             }
 
