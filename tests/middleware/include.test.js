@@ -25,7 +25,7 @@ test('Should be able to include external documents', t => {
         const files = ['/first.css', '/second.css', '/components/css/third.css', '/fourth.css'];
         const props = include(...files)({ node });
 
-        t.deepEqual(props, { node, files });
+        t.deepEqual(props, { node });
         t.true(node.classList.contains('resolving'));
 
         setTimeout(() => {
@@ -33,7 +33,7 @@ test('Should be able to include external documents', t => {
             // Should be updating the path to make the CSS paths relative to the CSS document.
             const thirdStylesheet = `* { background-image: url('/components/css/../images/example.png'), content: url('/components/css/../images/example.png') }`;
 
-            t.deepEqual(props, { node, files });
+            t.deepEqual(props, { node });
             t.true(node.classList.contains('resolved'));
             t.is(node.shadowRoot.querySelector('style').innerHTML, `${firstStylesheet} ${secondStylesheet} ${thirdStylesheet}`);
 

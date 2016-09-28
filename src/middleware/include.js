@@ -136,7 +136,7 @@ export default (...attachFiles) => {
 
         })();
 
-        return { ...props, files: addedFiles };
+        return props;
 
     };
 

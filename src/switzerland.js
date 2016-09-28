@@ -1,5 +1,6 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
-import { htmlFor } from './middleware/html';
+import { htmlFor, htmlKey } from './middleware/html';
+import { invokeFor, purgeFor } from './middleware/refs';
 
 /**
  * @constant env
@@ -89,14 +90,18 @@ export const create = (name, render) => {
          */
         [implementation.hooks[0]]() {
 
-            const boundary = implementation.shadowBoundary(this);
-            const tree = htmlFor(render({ node: this }));
+            const node = this;
+            const boundary = implementation.shadowBoundary(node);
+            const tree = htmlFor(render({ node }));
             const root = createElement(tree);
 
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
 
-            this[registryKey] = { node: this, tree, root };
+            // Invoke any ref callbacks defined in the component's `render` method.
+            invokeFor(node);
+
+            this[registryKey] = { node, tree, root };
 
         }
 
@@ -133,12 +138,19 @@ export const create = (name, render) => {
             }
 
             const { tree: currentTree, root: currentRoot, node } = instance;
+
+            // Clear any previously defined refs for the current component.
+            purgeFor(node);
+
             const tree = htmlFor(render({ node }));
 
             if (node.isConnected) {
 
                 const patches = diff(currentTree, tree);
                 const root = patch(currentRoot, patches);
+
+                // Invoke any ref callbacks defined in the component's `render` method.
+                invokeFor(node);
 
                 this[registryKey] = { node, tree, root };
 
@@ -157,6 +169,7 @@ export { default as attrs } from './middleware/attributes';
 export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
 export { default as redux } from './middleware/redux';
+export { default as refs } from './middleware/refs';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';
