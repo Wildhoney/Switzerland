@@ -83,6 +83,10 @@ export const printFor = node => {
  */
 export default props => {
 
+    if (!isDevelopment()) {
+        return props;
+    }
+
     const node = props.node;
     const has = measurements.has(node);
     !has && measurements.set(node, new Map());

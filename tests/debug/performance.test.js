@@ -24,7 +24,7 @@ test('Should be able to monitor performance and print the results;', t => {
     t.is(window.performance.now.callCount, isProduction ? 0 : 6);
     t.is(window.console.table.callCount, isProduction ? 0 : 1);
     t.is(window.console.log.callCount, isProduction ? 0 : 2);
-    t.true(performanceKey in props);
+    t[isProduction ? 'false' : 'true'](performanceKey in props);
 
     const devExpected = [
         { key: 'example #1', milliseconds: 0 },
