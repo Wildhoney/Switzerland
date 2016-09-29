@@ -1,5 +1,7 @@
 import { camelize } from 'humps';
 import { compose } from 'ramda';
+import { isDevelopment } from '../helpers/env';
+import { measureFor } from '../debug/performance';
 
 /**
  * @constant observers
@@ -45,6 +47,7 @@ const transform = attributes => {
  */
 export default props => {
 
+    const timeEnd = measureFor('attributes', props);
     const { node, render } = props;
 
     // Obtain the reference to the observer, using the WeakMap to query whether we have an existing
@@ -68,6 +71,7 @@ export default props => {
     // Clean up the observer if the node is no longer present in the DOM.
     !node.isConnected && observer.disconnect();
 
+    isDevelopment() && timeEnd();
     return { ...props, attrs };
 
 };

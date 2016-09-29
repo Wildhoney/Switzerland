@@ -2,6 +2,7 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { isDevelopment } from './helpers/env';
+import { measureFor, printFor } from './debug/performance';
 
 /**
  * @constant registryKey
@@ -74,17 +75,19 @@ export const create = (name, render) => {
             const node = this;
             const boundary = implementation.shadowBoundary(node);
 
-            const vnodes = render({ node });
-            const tree = htmlFor(vnodes);
+            const props = render({ node });
+            const timeEnd = measureFor('render', props);
+            const tree = htmlFor(props);
             const root = createElement(tree);
 
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
 
             // Invoke any ref callbacks defined in the component's `render` method.
-            'ref' in vnodes && invokeFor(node);
+            'ref' in props && invokeFor(node);
 
             this[registryKey] = { node, tree, root };
+            isDevelopment() && timeEnd() && printFor(node);
 
         }
 
@@ -122,11 +125,12 @@ export const create = (name, render) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            const vnodes = render({ node });
-            const tree = htmlFor(vnodes);
+            const props = render({ node });
+            const timeEnd = measureFor('render', props);
+            const tree = htmlFor(props);
 
             // Clear any previously defined refs for the current component.
-            'ref' in vnodes && purgeFor(node);
+            'ref' in props && purgeFor(node);
 
             if (node.isConnected) {
 
@@ -134,9 +138,10 @@ export const create = (name, render) => {
                 const root = patch(currentRoot, patches);
 
                 // Invoke any ref callbacks defined in the component's `render` method.
-                'ref' in vnodes && invokeFor(node);
+                'ref' in props && invokeFor(node);
 
                 this[registryKey] = { node, tree, root };
+                isDevelopment() && timeEnd() && printFor(node);
 
             }
 
@@ -157,6 +162,7 @@ export { default as refs } from './middleware/refs';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';
+export { default as performance } from './debug/performance';
 
 // Helpers.
 export { path, pathFor } from './helpers/path';

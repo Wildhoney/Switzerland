@@ -1,3 +1,6 @@
+import { isDevelopment } from '../helpers/env';
+import { measureFor } from '../debug/performance';
+
 /**
  * @constant states
  * @type {WeakMap}
@@ -12,6 +15,7 @@ export default initialState => {
 
     return props => {
 
+        const timeEnd = measureFor('state', props);
         const hasState = states.has(props.node);
         const state = hasState ? states.get(props.node) : initialState;
         !hasState && states.set(props.node, state);
@@ -26,6 +30,7 @@ export default initialState => {
             props.node.render();
         };
 
+        isDevelopment() && timeEnd();
         return { ...props, state, setState };
 
     };
