@@ -7,7 +7,7 @@
     "build": "webpack --config webpack.build.js && npm run dev",
     "dev": "webpack --config webpack.example.js",
     "test": "npm run lint && npm run spec",
-    "start": "npm i && npm run dev && (babel example/server/default.js | node &) && sleep 2 && open http://localhost:5000",
+    "start": "npm i && npm run dev && (babel example/server/default.js | node &) && sleep 2 && open http://localhost:5000 && lsof -i :5000",
     "spec": "npm run spec-dev && npm run spec-prod",
     "spec-dev": "NODE_ENV=development ava",
     "spec-prod": "NODE_ENV=production ava",
