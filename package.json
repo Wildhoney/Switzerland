@@ -7,7 +7,7 @@
     "build": "webpack --config webpack.build.js && npm run dev",
     "dev": "webpack --config webpack.example.js",
     "test": "npm run lint && npm run spec",
-    "spec": "ava",
+    "spec": "NODE_ENV=development ava",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules"
   },
