@@ -57,7 +57,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = undefined;
+	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.performance = exports.timeEnd = exports.time = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -86,7 +86,7 @@ module.exports =
 	    }
 	});
 
-	var _state = __webpack_require__(7);
+	var _state = __webpack_require__(10);
 
 	Object.defineProperty(exports, 'state', {
 	    enumerable: true,
@@ -95,7 +95,7 @@ module.exports =
 	    }
 	});
 
-	var _include = __webpack_require__(8);
+	var _include = __webpack_require__(11);
 
 	Object.defineProperty(exports, 'include', {
 	    enumerable: true,
@@ -104,7 +104,7 @@ module.exports =
 	    }
 	});
 
-	var _redux = __webpack_require__(15);
+	var _redux = __webpack_require__(17);
 
 	Object.defineProperty(exports, 'redux', {
 	    enumerable: true,
@@ -113,7 +113,7 @@ module.exports =
 	    }
 	});
 
-	var _refs = __webpack_require__(16);
+	var _refs = __webpack_require__(18);
 
 	Object.defineProperty(exports, 'refs', {
 	    enumerable: true,
@@ -122,7 +122,7 @@ module.exports =
 	    }
 	});
 
-	var _timer = __webpack_require__(17);
+	var _timer = __webpack_require__(19);
 
 	Object.defineProperty(exports, 'time', {
 	    enumerable: true,
@@ -137,7 +137,16 @@ module.exports =
 	    }
 	});
 
-	var _path = __webpack_require__(27);
+	var _performance = __webpack_require__(9);
+
+	Object.defineProperty(exports, 'performance', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_performance).default;
+	    }
+	});
+
+	var _path = __webpack_require__(29);
 
 	Object.defineProperty(exports, 'path', {
 	    enumerable: true,
@@ -167,7 +176,7 @@ module.exports =
 	    }
 	});
 
-	var _virtualDom = __webpack_require__(28);
+	var _virtualDom = __webpack_require__(30);
 
 	Object.defineProperty(exports, 'element', {
 	    enumerable: true,
@@ -176,7 +185,7 @@ module.exports =
 	    }
 	});
 
-	var _env = __webpack_require__(63);
+	var _env = __webpack_require__(7);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -251,17 +260,19 @@ module.exports =
 	            const node = this;
 	            const boundary = implementation.shadowBoundary(node);
 
-	            const vnodes = render({ node });
-	            const tree = (0, _html.htmlFor)(vnodes);
+	            const props = render({ node });
+	            const timeEnd = (0, _performance.measureFor)('render', props);
+	            const tree = (0, _html.htmlFor)(props);
 	            const root = (0, _virtualDom.create)(tree);
 
 	            // See: https://github.com/Matt-Esch/virtual-dom/pull/413
 	            boundary.appendChild(root);
 
 	            // Invoke any ref callbacks defined in the component's `render` method.
-	            'ref' in vnodes && (0, _refs.invokeFor)(node);
+	            'ref' in props && (0, _refs.invokeFor)(node);
 
 	            this[registryKey] = { node, tree, root };
+	            (0, _env.isDevelopment)() && timeEnd() && (0, _performance.printFor)(node);
 	        }
 
 	        /**
@@ -299,11 +310,12 @@ module.exports =
 	            const node = instance.node;
 
 
-	            const vnodes = render({ node });
-	            const tree = (0, _html.htmlFor)(vnodes);
+	            const props = render({ node });
+	            const timeEnd = (0, _performance.measureFor)('render', props);
+	            const tree = (0, _html.htmlFor)(props);
 
 	            // Clear any previously defined refs for the current component.
-	            'ref' in vnodes && (0, _refs.purgeFor)(node);
+	            'ref' in props && (0, _refs.purgeFor)(node);
 
 	            if (node.isConnected) {
 
@@ -311,9 +323,10 @@ module.exports =
 	                const root = (0, _virtualDom.patch)(currentRoot, patches);
 
 	                // Invoke any ref callbacks defined in the component's `render` method.
-	                'ref' in vnodes && (0, _refs.invokeFor)(node);
+	                'ref' in props && (0, _refs.invokeFor)(node);
 
 	                this[registryKey] = { node, tree, root };
+	                (0, _env.isDevelopment)() && timeEnd() && (0, _performance.printFor)(node);
 	            }
 	        }
 
@@ -417,6 +430,10 @@ module.exports =
 
 	var _ramda = __webpack_require__(6);
 
+	var _env = __webpack_require__(7);
+
+	var _performance = __webpack_require__(9);
+
 	/**
 	 * @constant observers
 	 * @type {WeakMap}
@@ -459,6 +476,8 @@ module.exports =
 	 */
 
 	exports.default = props => {
+
+	  const timeEnd = (0, _performance.measureFor)('attributes', props);
 	  const node = props.node;
 	  const render = props.render;
 
@@ -483,6 +502,7 @@ module.exports =
 	  // Clean up the observer if the node is no longer present in the DOM.
 	  !node.isConnected && observer.disconnect();
 
+	  (0, _env.isDevelopment)() && timeEnd();
 	  return _extends({}, props, { attrs });
 	};
 
@@ -637,330 +657,39 @@ module.exports =
 
 /***/ },
 /* 7 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	/**
-	 * @constant states
-	 * @type {WeakMap}
-	 */
-	const states = new WeakMap();
-
-	/**
-	 * @param {Object} initialState
-	 * @return {Function}
-	 */
-
-	exports.default = initialState => {
-
-	  return props => {
-
-	    const hasState = states.has(props.node);
-	    const state = hasState ? states.get(props.node) : initialState;
-	    !hasState && states.set(props.node, state);
-
-	    /**
-	     * @method setState
-	     * @param {Object} updatedState
-	     * @return {void}
-	     */
-	    const setState = updatedState => {
-	      states.set(props.node, _extends({}, state, updatedState));
-	      props.node.render();
-	    };
-
-	    return _extends({}, props, { state, setState });
-	  };
-	};
-
-/***/ },
-/* 8 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _ramda = __webpack_require__(6);
-
-	var _axios = __webpack_require__(9);
-
-	var _cssUrlParser = __webpack_require__(10);
-
-	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
-
-	var _pathParse = __webpack_require__(12);
-
-	var _pathParse2 = _interopRequireDefault(_pathParse);
-
-	var _escapeStringRegexp = __webpack_require__(14);
-
-	var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * @constant includes
-	 * @type {WeakMap}
-	 */
-	const includes = new WeakMap();
-
-	/**
-	 * @constant includeMap
-	 * @type {Object}
-	 */
-	const includeMap = [{ extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } }, { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }];
-
-	/**
-	 * @method fetchInclude
-	 * @param {String} file
-	 * @return {Promise}
-	 */
-	const fetchInclude = (0, _ramda.memoize)(file => {
-
-	    const cssPath = (0, _pathParse2.default)(file).dir;
-
-	    const transformPaths = content => {
-
-	        const urls = (0, _cssUrlParser2.default)(content);
-
-	        // Update the URLs to make them relative to the CSS document.
-	        return urls.length ? urls.map(url => {
-
-	            const replacer = new RegExp((0, _escapeStringRegexp2.default)(url), 'ig');
-	            return content.replace(replacer, `${ cssPath }/${ url }`);
-	        }).toString() : content;
-	    };
-
-	    return new Promise(resolve => {
-	        (0, _axios.get)(file).then(response => transformPaths(response.data)).then(resolve).catch(() => resolve(''));
-	    });
-	});
-
-	/**
-	 * @method attach
-	 * @param files {Array|String}
-	 * @return {Promise}
-	 */
-	const attach = files => {
-
-	    // Group all of the files by their extension.
-	    const groupedFiles = (0, _ramda.groupBy)(file => file.extension)(files.map(path => ({ path, extension: path.split('.').pop() })));
-
-	    const mappedFiles = Object.keys(groupedFiles).map(extension => {
-
-	        const nodeData = includeMap.find(model => model.extensions.includes(extension));
-	        const files = groupedFiles[extension].map(model => model.path);
-	        const containerNode = document.createElement(nodeData.tag);
-
-	        // Apply all of the attributes defined in the `includeMap` to the node.
-	        Object.keys(nodeData.attrs).map(key => containerNode.setAttribute(key, nodeData.attrs[key]));
-
-	        // Load each file individually and then concatenate them.
-	        return Promise.all(files.map(fetchInclude)).then(fileData => {
-
-	            // Concatenate all of the content from the documents.
-	            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${ acc } ${ fileDatum }`).trim();
-	            return containerNode.innerHTML.length ? containerNode : null;
-	        });
-	    });
-
-	    return Promise.all(mappedFiles);
-	};
-
-	/**
-	 * @param {Array|String} attachFiles
-	 * @return {Function}
-	 */
-
-	exports.default = (...attachFiles) => {
-
-	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
-
-	    return props => {
-	        const node = props.node;
-
-
-	        if (node.isConnected) {
-
-	            const boundary = node.shadowRoot;
-
-	            const hasCurrent = includes.has(node);
-	            !hasCurrent && includes.set(node, []);
-	            const current = includes.get(node);
-
-	            // We don't want to load the same files again, so we'll see what was previously loaded.
-	            const addedFiles = (0, _ramda.difference)(files, current);
-
-	            // Memorise the current set of files.
-	            includes.set(node, files);
-
-	            if (addedFiles.length) {
-
-	                node.classList.add('resolving');
-	                node.classList.remove('resolved');
-
-	                attach(addedFiles).then(nodes => {
-
-	                    // Remove any `null` values which means the content of the file was empty, and then append
-	                    // them to the component's shadow boundary.
-	                    nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
-
-	                    node.classList.add('resolved');
-	                    node.classList.remove('resolving');
-	                });
-	            }
-	        }
-
-	        return props;
-	    };
-	};
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	module.exports = require("axios");
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var parseCssUrls = __webpack_require__(11);
-	module.exports = parseCssUrls;
-
-/***/ },
-/* 11 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var embeddedRegexp = /data:(.*?);base64,/;
-	var commentRegexp = /\/\*([\s\S]*?)\*\//g;
-	var urlsRegexp = /((?:@import\s+)?url\s*\(['"]?)(\S*?)(['"]?\s*\))|(@import\s+['"]?)([^;'"]+)/ig;
-
-	function isEmbedded(src) {
-		return embeddedRegexp.test(src);
-	}
-
-	function getUrls(text) {
-		var urls = [];
-		var urlMatch, url;
-
-		text = text.replace(commentRegexp, '');
-
-		while (urlMatch = urlsRegexp.exec(text)) {
-			// Match 2 group if '[@import] url(path)', match 5 group if '@import path'
-			url = urlMatch[2] || urlMatch[5];
-
-			if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
-				urls.push(url);
-			}
-		}
-
-		return urls;
-	}
-
-	module.exports = getUrls;
-
-/***/ },
-/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var isWindows = process.platform === 'win32';
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.isDevelopment = undefined;
 
-	// Regex to split a windows path into three parts: [*, device, slash,
-	// tail] windows-only
-	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+	var _ramda = __webpack_require__(6);
 
-	// Regex to split the tail part of the above into [*, dir, basename, ext]
-	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+	/**
+	 * @constant env
+	 * @type {String}
+	 */
+	const env = (() => {
 
-	var win32 = {};
+	    try {
+	        return process.env.NODE_ENV;
+	    } catch (err) {
+	        return 'development';
+	    }
+	})();
 
-	// Function to split a filename into [root, dir, basename, ext]
-	function win32SplitPath(filename) {
-	  // Separate device+slash from tail
-	  var result = splitDeviceRe.exec(filename),
-	      device = (result[1] || '') + (result[2] || ''),
-	      tail = result[3] || '';
-	  // Split the tail into dir, basename and extension
-	  var result2 = splitTailRe.exec(tail),
-	      dir = result2[1],
-	      basename = result2[2],
-	      ext = result2[3];
-	  return [device, dir, basename, ext];
-	}
-
-	win32.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = win32SplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	// Split a filename into [root, dir, basename, ext], unix version
-	// 'root' is just a slash, or nothing.
-	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-	var posix = {};
-
-	function posixSplitPath(filename) {
-	  return splitPathRe.exec(filename).slice(1);
-	}
-
-	posix.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = posixSplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  allParts[1] = allParts[1] || '';
-	  allParts[2] = allParts[2] || '';
-	  allParts[3] = allParts[3] || '';
-
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	if (isWindows) module.exports = win32.parse;else /* posix */
-	  module.exports = posix.parse;
-
-	module.exports.posix = posix.parse;
-	module.exports.win32 = win32.parse;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+	/**
+	 * @method isDevelopment
+	 * @return {Boolean}
+	 */
+	const isDevelopment = exports.isDevelopment = (0, _ramda.once)(() => env === 'development');
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 13 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1146,7 +875,460 @@ module.exports =
 	};
 
 /***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.printFor = exports.measureFor = exports.performanceKey = exports.milliseconds = undefined;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _env = __webpack_require__(7);
+
+	/**
+	 * @constant measurements
+	 * @type {WeakMap}
+	 */
+	const measurements = new WeakMap();
+
+	/**
+	 * @method milliseconds
+	 * @return {Number}
+	 */
+	const milliseconds = exports.milliseconds = () => {
+
+	    if ((0, _env.isDevelopment)()) {
+	        return 'performance' in window ? window.performance.now() : Date.now();
+	    }
+
+	    return 0;
+	};
+
+	/**
+	 * @constant performanceKey
+	 * @type {Symbol}
+	 */
+	const performanceKey = exports.performanceKey = Symbol('switzerland/measurements');
+
+	/**
+	 * @method hasMiddleware
+	 * @return {Boolean}
+	 */
+	const hasMiddleware = props => performanceKey in props;
+
+	/**
+	 * @method measureFor
+	 * @param {String} key
+	 * @param {Object} props
+	 * @return {Function}
+	 */
+	const measureFor = exports.measureFor = (key, props) => {
+
+	    if (!(0, _env.isDevelopment)() || !hasMiddleware(props)) {
+	        return () => {};
+	    }
+
+	    return props[performanceKey](key);
+	};
+
+	/**
+	 * @method printFor
+	 * @param {HTMLElement} node
+	 * @return {Array}
+	 */
+	const printFor = exports.printFor = node => {
+
+	    const store = measurements.get(node);
+	    const data = Array.from(store.keys()).map(key => {
+
+	        const start = store.get(key).start;
+	        const end = store.get(key).end;
+
+	        return { key, milliseconds: end - start };
+	    });
+
+	    window.console.log(`🇨🇭 ${ node.nodeName.toLowerCase() }:`);
+	    window.console.table(data);
+	    window.console.log('---');
+
+	    return data;
+	};
+
+	/**
+	 * @param {Object} props
+	 * @return {Object}
+	 */
+
+	exports.default = props => {
+
+	    const node = props.node;
+	    const has = measurements.has(node);
+	    !has && measurements.set(node, new Map());
+	    const store = measurements.get(node);
+
+	    /**
+	     * @method time
+	     * @param {String} key
+	     * @return {Function}
+	     */
+	    const time = key => {
+
+	        const start = milliseconds();
+	        store.set(key, { start });
+
+	        return () => {
+	            const model = store.get(key);
+	            const end = milliseconds();
+	            store.set(key, _extends({}, model, { end }));
+	            return end - start;
+	        };
+	    };
+
+	    return _extends({}, props, { [performanceKey]: time });
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _env = __webpack_require__(7);
+
+	var _performance = __webpack_require__(9);
+
+	/**
+	 * @constant states
+	 * @type {WeakMap}
+	 */
+	const states = new WeakMap();
+
+	/**
+	 * @param {Object} initialState
+	 * @return {Function}
+	 */
+
+	exports.default = initialState => {
+
+	  return props => {
+
+	    const timeEnd = (0, _performance.measureFor)('state', props);
+	    const hasState = states.has(props.node);
+	    const state = hasState ? states.get(props.node) : initialState;
+	    !hasState && states.set(props.node, state);
+
+	    /**
+	     * @method setState
+	     * @param {Object} updatedState
+	     * @return {void}
+	     */
+	    const setState = updatedState => {
+	      states.set(props.node, _extends({}, state, updatedState));
+	      props.node.render();
+	    };
+
+	    (0, _env.isDevelopment)() && timeEnd();
+	    return _extends({}, props, { state, setState });
+	  };
+	};
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _ramda = __webpack_require__(6);
+
+	var _axios = __webpack_require__(12);
+
+	var _cssUrlParser = __webpack_require__(13);
+
+	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
+
+	var _pathParse = __webpack_require__(15);
+
+	var _pathParse2 = _interopRequireDefault(_pathParse);
+
+	var _escapeStringRegexp = __webpack_require__(16);
+
+	var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
+
+	var _env = __webpack_require__(7);
+
+	var _performance = __webpack_require__(9);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @constant includes
+	 * @type {WeakMap}
+	 */
+	const includes = new WeakMap();
+
+	/**
+	 * @constant includeMap
+	 * @type {Object}
+	 */
+	const includeMap = [{ extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } }, { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }];
+
+	/**
+	 * @method fetchInclude
+	 * @param {String} file
+	 * @return {Promise}
+	 */
+	const fetchInclude = (0, _ramda.memoize)(file => {
+
+	    const cssPath = (0, _pathParse2.default)(file).dir;
+
+	    const transformPaths = content => {
+
+	        const urls = (0, _cssUrlParser2.default)(content);
+
+	        // Update the URLs to make them relative to the CSS document.
+	        return urls.length ? urls.map(url => {
+
+	            const replacer = new RegExp((0, _escapeStringRegexp2.default)(url), 'ig');
+	            return content.replace(replacer, `${ cssPath }/${ url }`);
+	        }).toString() : content;
+	    };
+
+	    return new Promise(resolve => {
+	        (0, _axios.get)(file).then(response => transformPaths(response.data)).then(resolve).catch(() => resolve(''));
+	    });
+	});
+
+	/**
+	 * @method attach
+	 * @param files {Array|String}
+	 * @return {Promise}
+	 */
+	const attach = files => {
+
+	    // Group all of the files by their extension.
+	    const groupedFiles = (0, _ramda.groupBy)(file => file.extension)(files.map(path => ({ path, extension: path.split('.').pop() })));
+
+	    const mappedFiles = Object.keys(groupedFiles).map(extension => {
+
+	        const nodeData = includeMap.find(model => model.extensions.includes(extension));
+	        const files = groupedFiles[extension].map(model => model.path);
+	        const containerNode = document.createElement(nodeData.tag);
+
+	        // Apply all of the attributes defined in the `includeMap` to the node.
+	        Object.keys(nodeData.attrs).map(key => containerNode.setAttribute(key, nodeData.attrs[key]));
+
+	        // Load each file individually and then concatenate them.
+	        return Promise.all(files.map(fetchInclude)).then(fileData => {
+
+	            // Concatenate all of the content from the documents.
+	            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${ acc } ${ fileDatum }`).trim();
+	            return containerNode.innerHTML.length ? containerNode : null;
+	        });
+	    });
+
+	    return Promise.all(mappedFiles);
+	};
+
+	/**
+	 * @param {Array|String} attachFiles
+	 * @return {Function}
+	 */
+
+	exports.default = (...attachFiles) => {
+
+	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
+
+	    return props => {
+	        const node = props.node;
+
+	        const timeEnd = (0, _performance.measureFor)('include', props);
+
+	        if (node.isConnected) {
+
+	            const boundary = node.shadowRoot;
+
+	            const hasCurrent = includes.has(node);
+	            !hasCurrent && includes.set(node, []);
+	            const current = includes.get(node);
+
+	            // We don't want to load the same files again, so we'll see what was previously loaded.
+	            const addedFiles = (0, _ramda.difference)(files, current);
+
+	            // Memorise the current set of files.
+	            includes.set(node, files);
+
+	            if (addedFiles.length) {
+
+	                node.classList.add('resolving');
+	                node.classList.remove('resolved');
+
+	                attach(addedFiles).then(nodes => {
+
+	                    // Remove any `null` values which means the content of the file was empty, and then append
+	                    // them to the component's shadow boundary.
+	                    nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
+
+	                    node.classList.add('resolved');
+	                    node.classList.remove('resolving');
+	                });
+	            }
+	        }
+
+	        (0, _env.isDevelopment)() && timeEnd();
+	        return props;
+	    };
+	};
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	module.exports = require("axios");
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var parseCssUrls = __webpack_require__(14);
+	module.exports = parseCssUrls;
+
+/***/ },
 /* 14 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var embeddedRegexp = /data:(.*?);base64,/;
+	var commentRegexp = /\/\*([\s\S]*?)\*\//g;
+	var urlsRegexp = /((?:@import\s+)?url\s*\(['"]?)(\S*?)(['"]?\s*\))|(@import\s+['"]?)([^;'"]+)/ig;
+
+	function isEmbedded(src) {
+		return embeddedRegexp.test(src);
+	}
+
+	function getUrls(text) {
+		var urls = [];
+		var urlMatch, url;
+
+		text = text.replace(commentRegexp, '');
+
+		while (urlMatch = urlsRegexp.exec(text)) {
+			// Match 2 group if '[@import] url(path)', match 5 group if '@import path'
+			url = urlMatch[2] || urlMatch[5];
+
+			if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
+				urls.push(url);
+			}
+		}
+
+		return urls;
+	}
+
+	module.exports = getUrls;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	var isWindows = process.platform === 'win32';
+
+	// Regex to split a windows path into three parts: [*, device, slash,
+	// tail] windows-only
+	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+
+	// Regex to split the tail part of the above into [*, dir, basename, ext]
+	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+
+	var win32 = {};
+
+	// Function to split a filename into [root, dir, basename, ext]
+	function win32SplitPath(filename) {
+	  // Separate device+slash from tail
+	  var result = splitDeviceRe.exec(filename),
+	      device = (result[1] || '') + (result[2] || ''),
+	      tail = result[3] || '';
+	  // Split the tail into dir, basename and extension
+	  var result2 = splitTailRe.exec(tail),
+	      dir = result2[1],
+	      basename = result2[2],
+	      ext = result2[3];
+	  return [device, dir, basename, ext];
+	}
+
+	win32.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = win32SplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	// Split a filename into [root, dir, basename, ext], unix version
+	// 'root' is just a slash, or nothing.
+	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+	var posix = {};
+
+	function posixSplitPath(filename) {
+	  return splitPathRe.exec(filename).slice(1);
+	}
+
+	posix.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = posixSplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  allParts[1] = allParts[1] || '';
+	  allParts[2] = allParts[2] || '';
+	  allParts[3] = allParts[3] || '';
+
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	if (isWindows) module.exports = win32.parse;else /* posix */
+	  module.exports = posix.parse;
+
+	module.exports.posix = posix.parse;
+	module.exports.win32 = win32.parse;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
+/***/ },
+/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1162,16 +1344,20 @@ module.exports =
 	};
 
 /***/ },
-/* 15 */
-/***/ function(module, exports) {
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _env = __webpack_require__(7);
+
+	var _performance = __webpack_require__(9);
 
 	/**
 	 * @constant subscriptions
@@ -1187,29 +1373,36 @@ module.exports =
 
 	exports.default = (store, handler = () => true) => {
 
-	  return props => {
+	    return props => {
 
-	    const has = subscriptions.has(props.node);
-	    const state = store.getState();
+	        const timeEnd = (0, _performance.measureFor)('redux', props);
+	        const has = subscriptions.has(props.node);
+	        const state = store.getState();
 
-	    // Subscribe to the store only if we haven't done so already.
-	    !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState(), state) && props.node.render()));
+	        // Subscribe to the store only if we haven't done so already.
+	        !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState(), state) && props.node.render()));
 
-	    return _extends({}, props, { redux: state, dispatch: store.dispatch });
-	  };
+	        (0, _env.isDevelopment)() && timeEnd();
+	        return _extends({}, props, { redux: state, dispatch: store.dispatch });
+	    };
 	};
 
 /***/ },
-/* 16 */
-/***/ function(module, exports) {
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.purgeFor = exports.invokeFor = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _env = __webpack_require__(7);
+
+	var _performance = __webpack_require__(9);
 
 	/**
 	 * @constant refs
@@ -1256,6 +1449,7 @@ module.exports =
 
 	exports.default = props => {
 
+	    const timeEnd = (0, _performance.measureFor)('refs', props);
 	    const has = refs.has(props.node);
 	    !has && refs.set(props.node, new Map());
 	    const refsLocal = refs.get(props.node);
@@ -1271,11 +1465,12 @@ module.exports =
 	    // Delete the refs is the node has been removed from the DOM.
 	    has && !props.node.isConnected && refs.delete(props.node);
 
+	    (0, _env.isDevelopment)() && timeEnd();
 	    return _extends({}, props, { ref });
 	};
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1287,7 +1482,7 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _shortid = __webpack_require__(18);
+	var _shortid = __webpack_require__(20);
 
 	/**
 	 * @constant timers
@@ -1323,23 +1518,23 @@ module.exports =
 	};
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(19);
+	module.exports = __webpack_require__(21);
 
 /***/ },
-/* 19 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(20);
-	var encode = __webpack_require__(22);
-	var decode = __webpack_require__(24);
-	var isValid = __webpack_require__(25);
+	var alphabet = __webpack_require__(22);
+	var encode = __webpack_require__(24);
+	var decode = __webpack_require__(26);
+	var isValid = __webpack_require__(27);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -1354,7 +1549,7 @@ module.exports =
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(26) || 0;
+	var clusterWorkerId = __webpack_require__(28) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -1434,12 +1629,12 @@ module.exports =
 	module.exports.isValid = isValid;
 
 /***/ },
-/* 20 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(21);
+	var randomFromSeed = __webpack_require__(23);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -1537,7 +1732,7 @@ module.exports =
 	};
 
 /***/ },
-/* 21 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1567,12 +1762,12 @@ module.exports =
 	};
 
 /***/ },
-/* 22 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(23);
+	var randomByte = __webpack_require__(25);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -1591,7 +1786,7 @@ module.exports =
 	module.exports = encode;
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1610,12 +1805,12 @@ module.exports =
 	module.exports = randomByte;
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(20);
+	var alphabet = __webpack_require__(22);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -1633,12 +1828,12 @@ module.exports =
 	module.exports = decode;
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(20);
+	var alphabet = __webpack_require__(22);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6) {
@@ -1658,7 +1853,7 @@ module.exports =
 	module.exports = isShortId;
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1666,7 +1861,7 @@ module.exports =
 	module.exports = 0;
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1676,7 +1871,7 @@ module.exports =
 	});
 	exports.pathFor = exports.path = undefined;
 
-	var _pathParse = __webpack_require__(12);
+	var _pathParse = __webpack_require__(15);
 
 	var _pathParse2 = _interopRequireDefault(_pathParse);
 
@@ -1702,17 +1897,17 @@ module.exports =
 	const pathFor = exports.pathFor = file => `${ scriptPath }/${ file }`;
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var diff = __webpack_require__(29);
-	var patch = __webpack_require__(42);
-	var h = __webpack_require__(51);
-	var create = __webpack_require__(62);
-	var VNode = __webpack_require__(53);
-	var VText = __webpack_require__(54);
+	var diff = __webpack_require__(31);
+	var patch = __webpack_require__(44);
+	var h = __webpack_require__(53);
+	var create = __webpack_require__(64);
+	var VNode = __webpack_require__(55);
+	var VText = __webpack_require__(56);
 
 	module.exports = {
 	    diff: diff,
@@ -1724,31 +1919,31 @@ module.exports =
 	};
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var diff = __webpack_require__(30);
+	var diff = __webpack_require__(32);
 
 	module.exports = diff;
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isArray = __webpack_require__(31);
+	var isArray = __webpack_require__(33);
 
-	var VPatch = __webpack_require__(32);
-	var isVNode = __webpack_require__(34);
-	var isVText = __webpack_require__(35);
-	var isWidget = __webpack_require__(36);
-	var isThunk = __webpack_require__(37);
-	var handleThunk = __webpack_require__(38);
+	var VPatch = __webpack_require__(34);
+	var isVNode = __webpack_require__(36);
+	var isVText = __webpack_require__(37);
+	var isWidget = __webpack_require__(38);
+	var isThunk = __webpack_require__(39);
+	var handleThunk = __webpack_require__(40);
 
-	var diffProps = __webpack_require__(39);
+	var diffProps = __webpack_require__(41);
 
 	module.exports = diff;
 
@@ -2144,7 +2339,7 @@ module.exports =
 	}
 
 /***/ },
-/* 31 */
+/* 33 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2159,12 +2354,12 @@ module.exports =
 	}
 
 /***/ },
-/* 32 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(33);
+	var version = __webpack_require__(35);
 
 	VirtualPatch.NONE = 0;
 	VirtualPatch.VTEXT = 1;
@@ -2188,7 +2383,7 @@ module.exports =
 	VirtualPatch.prototype.type = "VirtualPatch";
 
 /***/ },
-/* 33 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2196,12 +2391,12 @@ module.exports =
 	module.exports = "2";
 
 /***/ },
-/* 34 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(33);
+	var version = __webpack_require__(35);
 
 	module.exports = isVirtualNode;
 
@@ -2210,12 +2405,12 @@ module.exports =
 	}
 
 /***/ },
-/* 35 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(33);
+	var version = __webpack_require__(35);
 
 	module.exports = isVirtualText;
 
@@ -2224,7 +2419,7 @@ module.exports =
 	}
 
 /***/ },
-/* 36 */
+/* 38 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2236,7 +2431,7 @@ module.exports =
 	}
 
 /***/ },
-/* 37 */
+/* 39 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2248,15 +2443,15 @@ module.exports =
 	}
 
 /***/ },
-/* 38 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isVNode = __webpack_require__(34);
-	var isVText = __webpack_require__(35);
-	var isWidget = __webpack_require__(36);
-	var isThunk = __webpack_require__(37);
+	var isVNode = __webpack_require__(36);
+	var isVText = __webpack_require__(37);
+	var isWidget = __webpack_require__(38);
+	var isThunk = __webpack_require__(39);
 
 	module.exports = handleThunk;
 
@@ -2293,13 +2488,13 @@ module.exports =
 	}
 
 /***/ },
-/* 39 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(40);
-	var isHook = __webpack_require__(41);
+	var isObject = __webpack_require__(42);
+	var isHook = __webpack_require__(43);
 
 	module.exports = diffProps;
 
@@ -2358,7 +2553,7 @@ module.exports =
 	}
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2368,7 +2563,7 @@ module.exports =
 	};
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2380,27 +2575,27 @@ module.exports =
 	}
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var patch = __webpack_require__(43);
+	var patch = __webpack_require__(45);
 
 	module.exports = patch;
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(44);
-	var isArray = __webpack_require__(31);
+	var document = __webpack_require__(46);
+	var isArray = __webpack_require__(33);
 
-	var render = __webpack_require__(46);
-	var domIndex = __webpack_require__(48);
-	var patchOp = __webpack_require__(49);
+	var render = __webpack_require__(48);
+	var domIndex = __webpack_require__(50);
+	var patchOp = __webpack_require__(51);
 	module.exports = patch;
 
 	function patch(rootNode, patches, renderOptions) {
@@ -2472,13 +2667,13 @@ module.exports =
 	}
 
 /***/ },
-/* 44 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
 	var topLevel = typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : {};
-	var minDoc = __webpack_require__(45);
+	var minDoc = __webpack_require__(47);
 
 	if (typeof document !== 'undefined') {
 	    module.exports = document;
@@ -2494,25 +2689,25 @@ module.exports =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 45 */
+/* 47 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 46 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(44);
+	var document = __webpack_require__(46);
 
-	var applyProperties = __webpack_require__(47);
+	var applyProperties = __webpack_require__(49);
 
-	var isVNode = __webpack_require__(34);
-	var isVText = __webpack_require__(35);
-	var isWidget = __webpack_require__(36);
-	var handleThunk = __webpack_require__(38);
+	var isVNode = __webpack_require__(36);
+	var isVText = __webpack_require__(37);
+	var isWidget = __webpack_require__(38);
+	var handleThunk = __webpack_require__(40);
 
 	module.exports = createElement;
 
@@ -2551,13 +2746,13 @@ module.exports =
 	}
 
 /***/ },
-/* 47 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(40);
-	var isHook = __webpack_require__(41);
+	var isObject = __webpack_require__(42);
+	var isHook = __webpack_require__(43);
 
 	module.exports = applyProperties;
 
@@ -2652,7 +2847,7 @@ module.exports =
 	}
 
 /***/ },
-/* 48 */
+/* 50 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2743,17 +2938,17 @@ module.exports =
 	}
 
 /***/ },
-/* 49 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var applyProperties = __webpack_require__(47);
+	var applyProperties = __webpack_require__(49);
 
-	var isWidget = __webpack_require__(36);
-	var VPatch = __webpack_require__(32);
+	var isWidget = __webpack_require__(38);
+	var VPatch = __webpack_require__(34);
 
-	var updateWidget = __webpack_require__(50);
+	var updateWidget = __webpack_require__(52);
 
 	module.exports = applyPatch;
 
@@ -2900,12 +3095,12 @@ module.exports =
 	}
 
 /***/ },
-/* 50 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isWidget = __webpack_require__(36);
+	var isWidget = __webpack_require__(38);
 
 	module.exports = updateWidget;
 
@@ -2922,34 +3117,34 @@ module.exports =
 	}
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var h = __webpack_require__(52);
+	var h = __webpack_require__(54);
 
 	module.exports = h;
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isArray = __webpack_require__(31);
+	var isArray = __webpack_require__(33);
 
-	var VNode = __webpack_require__(53);
-	var VText = __webpack_require__(54);
-	var isVNode = __webpack_require__(34);
-	var isVText = __webpack_require__(35);
-	var isWidget = __webpack_require__(36);
-	var isHook = __webpack_require__(41);
-	var isVThunk = __webpack_require__(37);
+	var VNode = __webpack_require__(55);
+	var VText = __webpack_require__(56);
+	var isVNode = __webpack_require__(36);
+	var isVText = __webpack_require__(37);
+	var isWidget = __webpack_require__(38);
+	var isHook = __webpack_require__(43);
+	var isVThunk = __webpack_require__(39);
 
-	var parseTag = __webpack_require__(55);
-	var softSetHook = __webpack_require__(57);
-	var evHook = __webpack_require__(58);
+	var parseTag = __webpack_require__(57);
+	var softSetHook = __webpack_require__(59);
+	var evHook = __webpack_require__(60);
 
 	module.exports = h;
 
@@ -3061,16 +3256,16 @@ module.exports =
 	}
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(33);
-	var isVNode = __webpack_require__(34);
-	var isWidget = __webpack_require__(36);
-	var isThunk = __webpack_require__(37);
-	var isVHook = __webpack_require__(41);
+	var version = __webpack_require__(35);
+	var isVNode = __webpack_require__(36);
+	var isWidget = __webpack_require__(38);
+	var isThunk = __webpack_require__(39);
+	var isVHook = __webpack_require__(43);
 
 	module.exports = VirtualNode;
 
@@ -3140,12 +3335,12 @@ module.exports =
 	VirtualNode.prototype.type = "VirtualNode";
 
 /***/ },
-/* 54 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(33);
+	var version = __webpack_require__(35);
 
 	module.exports = VirtualText;
 
@@ -3157,12 +3352,12 @@ module.exports =
 	VirtualText.prototype.type = "VirtualText";
 
 /***/ },
-/* 55 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var split = __webpack_require__(56);
+	var split = __webpack_require__(58);
 
 	var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 	var notClassId = /^\.|#/;
@@ -3216,7 +3411,7 @@ module.exports =
 	}
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -3335,7 +3530,7 @@ module.exports =
 	}();
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3357,12 +3552,12 @@ module.exports =
 	};
 
 /***/ },
-/* 58 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var EvStore = __webpack_require__(59);
+	var EvStore = __webpack_require__(61);
 
 	module.exports = EvHook;
 
@@ -3389,12 +3584,12 @@ module.exports =
 	};
 
 /***/ },
-/* 59 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var OneVersionConstraint = __webpack_require__(60);
+	var OneVersionConstraint = __webpack_require__(62);
 
 	var MY_VERSION = '7';
 	OneVersionConstraint('ev-store', MY_VERSION);
@@ -3414,12 +3609,12 @@ module.exports =
 	}
 
 /***/ },
-/* 60 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Individual = __webpack_require__(61);
+	var Individual = __webpack_require__(63);
 
 	module.exports = OneVersion;
 
@@ -3437,7 +3632,7 @@ module.exports =
 	}
 
 /***/ },
-/* 61 */
+/* 63 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -3460,47 +3655,14 @@ module.exports =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 62 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var createElement = __webpack_require__(46);
+	var createElement = __webpack_require__(48);
 
 	module.exports = createElement;
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.isDevelopment = undefined;
-
-	var _ramda = __webpack_require__(6);
-
-	/**
-	 * @constant env
-	 * @type {String}
-	 */
-	const env = (() => {
-
-	    try {
-	        return process.env.NODE_ENV;
-	    } catch (err) {
-	        return 'development';
-	    }
-	})();
-
-	/**
-	 * @method isDevelopment
-	 * @return {Boolean}
-	 */
-	const isDevelopment = exports.isDevelopment = (0, _ramda.once)(() => env === 'development');
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }
 /******/ ]);
