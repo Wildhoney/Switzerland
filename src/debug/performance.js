@@ -55,6 +55,10 @@ export const measureFor = (key, props) => {
  */
 export const printFor = node => {
 
+    if (!isDevelopment()) {
+        return [];
+    }
+
     const store = measurements.get(node);
     const data = Array.from(store.keys()).map(key => {
 
