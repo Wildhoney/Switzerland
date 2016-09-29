@@ -1,6 +1,12 @@
 import { isDevelopment } from '../helpers/env';
 
 /**
+ * @constant performanceKey
+ * @type {Symbol}
+ */
+export const performanceKey = Symbol('switzerland/measurements');
+
+/**
  * @constant measurements
  * @type {WeakMap}
  */
@@ -19,12 +25,6 @@ export const milliseconds = () => {
     return 0;
 
 };
-
-/**
- * @constant performanceKey
- * @type {Symbol}
- */
-export const performanceKey = Symbol('switzerland/measurements');
 
 /**
  * @method hasMiddleware

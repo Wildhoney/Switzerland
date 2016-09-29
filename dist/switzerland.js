@@ -883,11 +883,17 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.printFor = exports.measureFor = exports.performanceKey = exports.milliseconds = undefined;
+	exports.printFor = exports.measureFor = exports.milliseconds = exports.performanceKey = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _env = __webpack_require__(7);
+
+	/**
+	 * @constant performanceKey
+	 * @type {Symbol}
+	 */
+	const performanceKey = exports.performanceKey = Symbol('switzerland/measurements');
 
 	/**
 	 * @constant measurements
@@ -907,12 +913,6 @@ module.exports =
 
 	    return 0;
 	};
-
-	/**
-	 * @constant performanceKey
-	 * @type {Symbol}
-	 */
-	const performanceKey = exports.performanceKey = Symbol('switzerland/measurements');
 
 	/**
 	 * @method hasMiddleware
@@ -942,6 +942,10 @@ module.exports =
 	 */
 	const printFor = exports.printFor = node => {
 
+	    if (!(0, _env.isDevelopment)()) {
+	        return [];
+	    }
+
 	    const store = measurements.get(node);
 	    const data = Array.from(store.keys()).map(key => {
 
@@ -964,6 +968,10 @@ module.exports =
 	 */
 
 	exports.default = props => {
+
+	    if (!(0, _env.isDevelopment)()) {
+	        return props;
+	    }
 
 	    const node = props.node;
 	    const has = measurements.has(node);
