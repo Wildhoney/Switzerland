@@ -1,4 +1,4 @@
-import { create, include, once, redux, element, pathFor, connected } from '../../../src/switzerland';
+import { create, element, html, include, once, redux, pathFor } from '../../../src/switzerland';
 import { pipe } from 'ramda';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
@@ -36,7 +36,7 @@ const fetch = once(props => props.dispatch(update()));
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), fetch, props => {
+create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), fetch, html(props => {
 
     const { redux, dispatch } = props;
     const image = pathFor(`images/flags/${redux.flag}`);
@@ -75,9 +75,9 @@ create('iss-position', pipe(redux(store), include(pathFor('css/default.css')), f
         </section>
     );
 
-}));
+})));
 
-create('iss-astronauts', pipe(redux(store), include(pathFor('css/astronauts.css')), props => {
+create('iss-astronauts', pipe(redux(store), include(pathFor('css/astronauts.css')), html(props => {
 
     return (
         <div className="astronauts">
@@ -91,9 +91,9 @@ create('iss-astronauts', pipe(redux(store), include(pathFor('css/astronauts.css'
         </div>
     );
 
-}));
+})));
 
-create('iss-updated', pipe(redux(store), interval, props => {
+create('iss-updated', pipe(redux(store), interval, html(props => {
 
     return (
         <datetime>
@@ -101,4 +101,4 @@ create('iss-updated', pipe(redux(store), interval, props => {
         </datetime>
     );
 
-}));
+})));

@@ -34,9 +34,9 @@ Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elemen
 Components are typically defined using [`pipe`](http://ramdajs.com/docs/#pipe) or [`compose`](http://ramdajs.com/docs/#compose) depending on preference &mdash; however for the simplest component all you need to pass is the name of the component and its render function, which contains the [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) or [`virtual-dom/h`](https://github.com/Matt-Esch/virtual-dom#example) markup.
 
 ```javascript
-import { create, element } from 'switzerland';
+import { create, html, element } from 'switzerland';
 
-create('swiss-cheese', () => {
+create('swiss-cheese', html(() => {
 
     return (
         <ul>
@@ -46,7 +46,7 @@ create('swiss-cheese', () => {
         </ul>
     );
 
-});
+}));
 ```
 
 > Note: You need to import `element` if you're using the JSX syntax.
@@ -65,9 +65,9 @@ Needless to say that our `swiss-cheese` component is fairly uninteresting as it 
 Let's allow our users to add cheeses to our `swiss-cheese` component by updating the element's attributes &mdash; for this we can either build our own, or use the pre-existing `attrs` middleware.
 
 ```javascript
-import { create, element, pipe, attrs } from 'switzerland';
+import { create, html, element, pipe, attrs } from 'switzerland';
 
-create('swiss-cheese', pipe(attrs, props => {
+create('swiss-cheese', pipe(attrs, html(props => {
 
     const cheeses = props.attrs.cheeses.split(',');
 
@@ -79,7 +79,7 @@ create('swiss-cheese', pipe(attrs, props => {
         </ul>
     );
 
-}));
+})));
 ```
 
 Using HTML directly we can add the `swiss-cheese` component to our document, passing in the expected `cheeses` attribute as a [data attribute](http://html5doctor.com/html5-custom-data-attributes/).
@@ -105,13 +105,13 @@ It's fair to say that updating a component in this way is rather cumbersome for 
 Since using attributes isn't the most friendly way to update components we can instead choose to use another state manager &ndash; such as the React-esque `setState`/`state` approach.
 
 ```javascript
-import { create, element, pipe, state } from 'switzerland';
+import { create, html, element, pipe, state } from 'switzerland';
 
 const initialState = {
     cheeses: ['Swiss', 'Feta', 'Cheddar']
 };
 
-create('swiss-cheese', pipe(state(initialState), props => {
+create('swiss-cheese', pipe(state(initialState), html(props => {
 
     const cheeses = props.state.cheeses;
 
@@ -128,7 +128,7 @@ create('swiss-cheese', pipe(state(initialState), props => {
         </ul>
     );
 
-}));
+})));
 ```
 
 By applying the `state` middleware to the `swiss-cheese` component, we have two additional properties added to our `props` &ndash; `setState` and `state`. Each **instance of a component** will receive a fresh `state` and thus can be mutated independently regardless of how many `swiss-cheese` nodes there are present in the DOM.
@@ -138,13 +138,13 @@ By applying the `state` middleware to the `swiss-cheese` component, we have two 
 Now that we have a functioning `swiss-cheese` component, the next logical step would be applying styles to the component. Switzerland supports attaching CSS and JS files to the component by using the `include` middleware.
 
 ```javascript
-import { create, element, pipe, state, include, pathFor } from 'switzerland';
+import { create, html, element, pipe, state, include, pathFor } from 'switzerland';
 
 const initialState = {
     cheeses: ['Swiss', 'Feta', 'Cheddar']
 };
 
-create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-cheese.css')), props => {
+create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-cheese.css')), html(props => {
 
     const cheeses = props.state.cheeses;
 
@@ -161,7 +161,7 @@ create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-chee
         </ul>
     );
 
-}));
+})));
 ```
 
 > Note: Relative paths in the CSS document are retained out-of-the-box.

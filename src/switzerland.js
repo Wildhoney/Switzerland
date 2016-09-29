@@ -1,20 +1,7 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
-
-/**
- * @constant env
- * @type {String}
- */
-const env = (() => {
-
-    try {
-        return process.env.NODE_ENV;
-    } catch (err) {
-        return 'development';
-    }
-
-})();
+import { isDevelopment } from './helpers/env';
 
 /**
  * @constant registryKey
@@ -27,13 +14,7 @@ const registryKey = Symbol('switzerland/registry');
  * @param {String} message
  * @return {void}
  */
-const warning = message => {
-
-    if (env === 'development') {
-        console.warn(`Switzerland 🇨🇭 ${message}.`);
-    }
-
-};
+const warning = message => isDevelopment() && console.warn(`Switzerland 🇨🇭 ${message}.`);
 
 /**
  * @constant implementations
@@ -92,14 +73,16 @@ export const create = (name, render) => {
 
             const node = this;
             const boundary = implementation.shadowBoundary(node);
-            const tree = htmlFor(render({ node }));
+
+            const vnodes = render({ node });
+            const tree = htmlFor(vnodes);
             const root = createElement(tree);
 
             // See: https://github.com/Matt-Esch/virtual-dom/pull/413
             boundary.appendChild(root);
 
             // Invoke any ref callbacks defined in the component's `render` method.
-            invokeFor(node);
+            'ref' in vnodes && invokeFor(node);
 
             this[registryKey] = { node, tree, root };
 
@@ -139,10 +122,11 @@ export const create = (name, render) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            // Clear any previously defined refs for the current component.
-            purgeFor(node);
+            const vnodes = render({ node });
+            const tree = htmlFor(vnodes);
 
-            const tree = htmlFor(render({ node }));
+            // Clear any previously defined refs for the current component.
+            'ref' in vnodes && purgeFor(node);
 
             if (node.isConnected) {
 
@@ -150,7 +134,7 @@ export const create = (name, render) => {
                 const root = patch(currentRoot, patches);
 
                 // Invoke any ref callbacks defined in the component's `render` method.
-                invokeFor(node);
+                'ref' in vnodes && invokeFor(node);
 
                 this[registryKey] = { node, tree, root };
 
