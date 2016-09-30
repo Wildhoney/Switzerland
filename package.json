@@ -1,10 +1,10 @@
 {
   "name": "switzerland",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Switzerland.js is a playground for experimenting with various Web Component techniques, approaches, and implementations.",
   "main": "dist/switzerland.js",
   "scripts": {
-    "build": "webpack --config webpack.build.js && npm run dev",
+    "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js && npm run dev",
     "dev": "webpack --config webpack.example.js",
     "test": "npm run lint && npm run spec",
     "spec": "npm run spec/dev && npm run spec/prod",
