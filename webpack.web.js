@@ -10,10 +10,6 @@ module.exports = {
         library: 'switzerland',
         libraryTarget: 'var'
     },
-    externals: {
-        'axios': true,
-        'ramda': true
-    },
     module: {
         loaders: [
             {
