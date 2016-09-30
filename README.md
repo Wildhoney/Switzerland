@@ -10,16 +10,20 @@
 &nbsp;
 ![License MIT](http://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)
 
-![Screenshot](media/screenshot.png)
+![Screenshot](media/screenshot-introduction.png)
 
 ---
 
 ## Table of Contents
 
-1. [Getting Started](#getting-started)
-2. [Browser Support](#browser-support)
-3. [Middleware](docs/03-middleware.md)
-  1. [Once](docs/03-middleware.md#once)
+1. [Browser Support](#browser-support)
+2. [Getting Started](#getting-started)
+  1. [Via Attributes](#via-attributes)
+  2. [Using State](#using-state)
+  3. [Applying Styles](#applying-styles)
+  3. [Redux Migration](#redux-migration)
+1. [Advanced Usage](#advanced-usage)
+  1. [Local Redux](#local-redux)
 
 ## Browser Support
 
@@ -59,6 +63,8 @@ document.body.appendChild(swissCheese);
 ```
 
 > Note: `swissCheese` has a `render` function which you can invoke to cause a re-render from outside.
+
+## Via Attributes
 
 Needless to say that our `swiss-cheese` component is fairly uninteresting as it never updates. Switzerland allows you to add behaviours to your components by applying middleware via `pipe` or `compose`. Middleware allows you to incrementally compose an object of `props` to pass into your component.
 
@@ -185,3 +191,99 @@ During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash;
 ```
 
 You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `pathFor` function which determines the path of the current component which allows us to handily declare the path to the CSS document relatively. It's worth noting that the `path` constant is simply the path to the current component.
+
+## Redux Migration
+
+While using `state` and `setState` work just fine, the functional approach these days to managing state is via [Redux](https://github.com/reactjs/redux) which can be enabled in Switzerland by using the tiny `redux` middleware.
+
+> Note: It's worth remembering that **all** middleware should be tiny.
+
+If you're unsure how Redux works then it's worth [glancing over the docs](http://redux.js.org/), as the intricacies of Redux won't be covered. Assuming we want to keep the same functionality as before, we can simply migrate piece-by-piece until we achieve that.
+
+```javascript
+import { create, html, element, pipe, redux, include, pathFor } from 'switzerland';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+
+const initialState = {
+    cheeses: ['Swiss', 'Feta', 'Cheddar']
+};
+
+function cheese(state = initialState, action) {
+
+    switch (action.type) {
+        case 'ADD': return { ...state, cheeses: [action.cheese, ...state.cheeses] };
+        default:    return state;
+    }
+
+}
+
+const store = createStore(cheese, applyMiddleware(thunk));
+
+create('swiss-cheese', pipe(redux(store), include(pathFor('css/swiss-cheese.css')), html(props => {
+
+    const cheeses = props.redux.cheeses;
+
+    return (
+        <ul>
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+        </ul>
+    );
+
+})));
+```
+
+For the most part the above example is largely Redux boilerplate &ndash; the actual integration with Switzerland occurs in the `redux` middleware which takes the store instance created by Redux's `createStore`. Whenever an event is dispatched &mdash; in our case adding Mozarella &mdash; the `swiss-cheese` component is re-rendered.
+
+## Advanced Usage
+
+![Screenshot](media/screenshot-advanced.png)
+
+### Local Redux
+
+Using Switzerland's middleware makes it exceptionally simple to have a [local Redux store **per instance**](https://github.com/threepointone/redux-react-local). In Redux you are highly encouraged to maintain a single state tree for your entire application, as this has untold benefits for application development &ndash; nonetheless, the concept of a local Redux store is an interesting one, and may have its own benefits if `state`/`setState` isn't your cup of tea.
+
+```javascript
+// ...
+
+const localStore = props => {
+    const local = createStore(cheese, applyMiddleware(thunk));
+    return { ...redux(local)(props), redux: local };
+};
+
+const storeProps = props => {
+    return { ...props, redux: props.redux.getState() };
+};
+
+create('swiss-cheese', pipe(once(localStore), storeProps, include(pathFor('css/swiss-cheese.css')), html(props => {
+
+    const cheeses = props.redux.cheeses;
+
+    return (
+        <ul>
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+        </ul>
+    );
+
+})));
+```
+
+> Note: When using the `once` middleware, the return value is automatically merged into the `props`.
+
+Previously if you had multiple `swiss-cheese` nodes in the DOM, they would **all** share the same store and thus update simultaneously &ndash; using the concept of a local Redux store, each `swiss-cheese` node maintains its own state.
+
+In the component's `pipe` you'll notice two additional middleware items being passed &ndash; firstly `localStore` which is wrapped in the `once` middleware, meaning it's only invoked **once per instance** and any subsequent invocations will merely yield the cached `store` result, and secondly the `storeProps` middleware which overwrites the `redux` property by passing a fresh copy of the current state to our component, otherwise the state from the `localStore` middleware would be passed, and as that's wrapped in `once` would yield a stale state tree after the first invocation.
