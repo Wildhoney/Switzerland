@@ -15,7 +15,7 @@ const registryKey = Symbol('switzerland/registry');
  * @param {String} message
  * @return {void}
  */
-const warning = message => isDevelopment() && console.warn(`Switzerland 🇨🇭 ${message}.`);
+const warning = message => isDevelopment() && console.warn(`Switzerland \uD83C\uDDE8\uD83C\uDDED ${message}.`);
 
 /**
  * @constant implementations

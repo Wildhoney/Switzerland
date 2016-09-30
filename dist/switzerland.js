@@ -200,7 +200,9 @@ module.exports =
 	 * @param {String} message
 	 * @return {void}
 	 */
-	const warning = message => (0, _env.isDevelopment)() && console.warn(`Switzerland 🇨🇭 ${ message }.`);
+	const warning = function (message) {
+	    return (0, _env.isDevelopment)() && console.warn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + message + '.');
+	};
 
 	/**
 	 * @constant implementations
@@ -210,13 +212,21 @@ module.exports =
 
 	    v0: {
 	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: (name, blueprint) => document.registerElement(name, blueprint),
-	        shadowBoundary: node => node.createShadowRoot()
+	        customElement: function (name, blueprint) {
+	            return document.registerElement(name, blueprint);
+	        },
+	        shadowBoundary: function (node) {
+	            return node.createShadowRoot();
+	        }
 	    },
 	    v1: {
 	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: (name, blueprint) => window.customElements.define(name, blueprint),
-	        shadowBoundary: node => node.attachShadow({ mode: 'open' })
+	        customElement: function (name, blueprint) {
+	            return window.customElements.define(name, blueprint);
+	        },
+	        shadowBoundary: function (node) {
+	            return node.attachShadow({ mode: 'open' });
+	        }
 	    }
 
 	};
@@ -227,7 +237,7 @@ module.exports =
 	 * @param {Function} render
 	 * @return {void}
 	 */
-	const create = exports.create = (name, render) => {
+	const create = exports.create = function (name, render) {
 
 	    /**
 	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -358,16 +368,18 @@ module.exports =
 	 * @param {Object} model
 	 * @return {Object}
 	 */
-	const htmlFor = exports.htmlFor = model => model[htmlKey];
+	const htmlFor = exports.htmlFor = function (model) {
+	  return model[htmlKey];
+	};
 
 	/**
 	 * @param {Function} html
 	 * @return {Function}
 	 */
 
-	exports.default = html => {
+	exports.default = function (html) {
 
-	  return props => {
+	  return function (props) {
 	    return _extends({}, props, { [htmlKey]: html(props) });
 	  };
 	};
@@ -396,9 +408,11 @@ module.exports =
 	 * @return {Function}
 	 */
 
-	exports.default = (callback, keyFrom = props => props.node) => {
+	exports.default = function (callback, keyFrom = function (props) {
+	    return props.node;
+	}) {
 
-	    return props => {
+	    return function (props) {
 
 	        const key = keyFrom(props);
 
@@ -451,16 +465,18 @@ module.exports =
 	 * @param {String} name
 	 * @return {String}
 	 */
-	const removePrefix = name => name.replace('data-', '');
+	const removePrefix = function (name) {
+	  return name.replace('data-', '');
+	};
 
 	/**
 	 * @method transform
 	 * @param {NamedNodeMap} attributes
 	 * @return {Object}
 	 */
-	const transform = attributes => {
+	const transform = function (attributes) {
 
-	  return Object.keys(attributes).reduce((acc, index) => {
+	  return Object.keys(attributes).reduce(function (acc, index) {
 
 	    // Transform each attribute into a plain object.
 	    const model = attributes[index];
@@ -475,7 +491,7 @@ module.exports =
 	 * @return {Object}
 	 */
 
-	exports.default = props => {
+	exports.default = function (props) {
 
 	  const timeEnd = (0, _performance.measureFor)('attributes', props);
 	  const node = props.node;
@@ -485,7 +501,7 @@ module.exports =
 	  // one to utilise before creating another.
 
 	  const hasObserver = observers.has(node);
-	  const observer = hasObserver ? observers.get(node) : new window.MutationObserver(() => {
+	  const observer = hasObserver ? observers.get(node) : new window.MutationObserver(function () {
 
 	    // Remove the existing memorisation of the node's attributes before re-rendering.
 	    attributes.delete(node);
@@ -672,20 +688,22 @@ module.exports =
 	 * @constant env
 	 * @type {String}
 	 */
-	const env = (() => {
+	const env = function () {
 
 	    try {
 	        return process.env.NODE_ENV;
 	    } catch (err) {
 	        return 'development';
 	    }
-	})();
+	}();
 
 	/**
 	 * @method isDevelopment
 	 * @return {Boolean}
 	 */
-	const isDevelopment = exports.isDevelopment = (0, _ramda.once)(() => env === 'development');
+	const isDevelopment = exports.isDevelopment = (0, _ramda.once)(function () {
+	    return env === 'development';
+	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
@@ -905,7 +923,7 @@ module.exports =
 	 * @method milliseconds
 	 * @return {Number}
 	 */
-	const milliseconds = exports.milliseconds = () => {
+	const milliseconds = exports.milliseconds = function () {
 
 	    if ((0, _env.isDevelopment)()) {
 	        return 'performance' in window ? window.performance.now() : Date.now();
@@ -918,7 +936,9 @@ module.exports =
 	 * @method hasMiddleware
 	 * @return {Boolean}
 	 */
-	const hasMiddleware = props => performanceKey in props;
+	const hasMiddleware = function (props) {
+	    return performanceKey in props;
+	};
 
 	/**
 	 * @method measureFor
@@ -926,10 +946,10 @@ module.exports =
 	 * @param {Object} props
 	 * @return {Function}
 	 */
-	const measureFor = exports.measureFor = (key, props) => {
+	const measureFor = exports.measureFor = function (key, props) {
 
 	    if (!(0, _env.isDevelopment)() || !hasMiddleware(props)) {
-	        return () => {};
+	        return function () {};
 	    }
 
 	    return props[performanceKey](key);
@@ -940,14 +960,14 @@ module.exports =
 	 * @param {HTMLElement} node
 	 * @return {Array}
 	 */
-	const printFor = exports.printFor = node => {
+	const printFor = exports.printFor = function (node) {
 
 	    if (!(0, _env.isDevelopment)()) {
 	        return [];
 	    }
 
 	    const store = measurements.get(node);
-	    const data = Array.from(store.keys()).map(key => {
+	    const data = Array.from(store.keys()).map(function (key) {
 
 	        const start = store.get(key).start;
 	        const end = store.get(key).end;
@@ -955,7 +975,7 @@ module.exports =
 	        return { key, milliseconds: end - start };
 	    });
 
-	    window.console.log(`🇨🇭 ${ node.nodeName.toLowerCase() }:`);
+	    window.console.log('\uD83C\uDDE8\uD83C\uDDED ' + node.nodeName.toLowerCase() + ':');
 	    window.console.table(data);
 	    window.console.log('---');
 
@@ -967,7 +987,7 @@ module.exports =
 	 * @return {Object}
 	 */
 
-	exports.default = props => {
+	exports.default = function (props) {
 
 	    if (!(0, _env.isDevelopment)()) {
 	        return props;
@@ -983,12 +1003,12 @@ module.exports =
 	     * @param {String} key
 	     * @return {Function}
 	     */
-	    const time = key => {
+	    const time = function (key) {
 
 	        const start = milliseconds();
 	        store.set(key, { start });
 
-	        return () => {
+	        return function () {
 	            const model = store.get(key);
 	            const end = milliseconds();
 	            store.set(key, _extends({}, model, { end }));
@@ -1026,9 +1046,9 @@ module.exports =
 	 * @return {Function}
 	 */
 
-	exports.default = initialState => {
+	exports.default = function (initialState) {
 
-	  return props => {
+	  return function (props) {
 
 	    const timeEnd = (0, _performance.measureFor)('state', props);
 	    const hasState = states.has(props.node);
@@ -1040,7 +1060,7 @@ module.exports =
 	     * @param {Object} updatedState
 	     * @return {void}
 	     */
-	    const setState = updatedState => {
+	    const setState = function (updatedState) {
 	      states.set(props.node, _extends({}, state, updatedState));
 	      props.node.render();
 	    };
@@ -1099,24 +1119,28 @@ module.exports =
 	 * @param {String} file
 	 * @return {Promise}
 	 */
-	const fetchInclude = (0, _ramda.memoize)(file => {
+	const fetchInclude = (0, _ramda.memoize)(function (file) {
 
 	    const cssPath = (0, _pathParse2.default)(file).dir;
 
-	    const transformPaths = content => {
+	    const transformPaths = function (content) {
 
 	        const urls = (0, _cssUrlParser2.default)(content);
 
 	        // Update the URLs to make them relative to the CSS document.
-	        return urls.length ? urls.map(url => {
+	        return urls.length ? urls.map(function (url) {
 
 	            const replacer = new RegExp((0, _escapeStringRegexp2.default)(url), 'ig');
-	            return content.replace(replacer, `${ cssPath }/${ url }`);
+	            return content.replace(replacer, cssPath + '/' + url);
 	        }).toString() : content;
 	    };
 
-	    return new Promise(resolve => {
-	        (0, _axios.get)(file).then(response => transformPaths(response.data)).then(resolve).catch(() => resolve(''));
+	    return new Promise(function (resolve) {
+	        (0, _axios.get)(file).then(function (response) {
+	            return transformPaths(response.data);
+	        }).then(resolve).catch(function () {
+	            return resolve('');
+	        });
 	    });
 	});
 
@@ -1125,25 +1149,37 @@ module.exports =
 	 * @param files {Array|String}
 	 * @return {Promise}
 	 */
-	const attach = files => {
+	const attach = function (files) {
 
 	    // Group all of the files by their extension.
-	    const groupedFiles = (0, _ramda.groupBy)(file => file.extension)(files.map(path => ({ path, extension: path.split('.').pop() })));
+	    const groupedFiles = (0, _ramda.groupBy)(function (file) {
+	        return file.extension;
+	    })(files.map(function (path) {
+	        return { path, extension: path.split('.').pop() };
+	    }));
 
-	    const mappedFiles = Object.keys(groupedFiles).map(extension => {
+	    const mappedFiles = Object.keys(groupedFiles).map(function (extension) {
 
-	        const nodeData = includeMap.find(model => model.extensions.includes(extension));
-	        const files = groupedFiles[extension].map(model => model.path);
+	        const nodeData = includeMap.find(function (model) {
+	            return model.extensions.includes(extension);
+	        });
+	        const files = groupedFiles[extension].map(function (model) {
+	            return model.path;
+	        });
 	        const containerNode = document.createElement(nodeData.tag);
 
 	        // Apply all of the attributes defined in the `includeMap` to the node.
-	        Object.keys(nodeData.attrs).map(key => containerNode.setAttribute(key, nodeData.attrs[key]));
+	        Object.keys(nodeData.attrs).map(function (key) {
+	            return containerNode.setAttribute(key, nodeData.attrs[key]);
+	        });
 
 	        // Load each file individually and then concatenate them.
-	        return Promise.all(files.map(fetchInclude)).then(fileData => {
+	        return Promise.all(files.map(fetchInclude)).then(function (fileData) {
 
 	            // Concatenate all of the content from the documents.
-	            containerNode.innerHTML = fileData.reduce((acc, fileDatum) => `${ acc } ${ fileDatum }`).trim();
+	            containerNode.innerHTML = fileData.reduce(function (acc, fileDatum) {
+	                return acc + ' ' + fileDatum;
+	            }).trim();
 	            return containerNode.innerHTML.length ? containerNode : null;
 	        });
 	    });
@@ -1156,11 +1192,11 @@ module.exports =
 	 * @return {Function}
 	 */
 
-	exports.default = (...attachFiles) => {
+	exports.default = function (...attachFiles) {
 
 	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
 
-	    return props => {
+	    return function (props) {
 	        const node = props.node;
 
 	        const timeEnd = (0, _performance.measureFor)('include', props);
@@ -1184,11 +1220,13 @@ module.exports =
 	                node.classList.add('resolving');
 	                node.classList.remove('resolved');
 
-	                attach(addedFiles).then(nodes => {
+	                attach(addedFiles).then(function (nodes) {
 
 	                    // Remove any `null` values which means the content of the file was empty, and then append
 	                    // them to the component's shadow boundary.
-	                    nodes.filter(_ramda.identity).forEach(node => boundary.appendChild(node));
+	                    nodes.filter(_ramda.identity).forEach(function (node) {
+	                        return boundary.appendChild(node);
+	                    });
 
 	                    node.classList.add('resolved');
 	                    node.classList.remove('resolving');
@@ -1379,16 +1417,20 @@ module.exports =
 	 * @return {Function}
 	 */
 
-	exports.default = (store, handler = () => true) => {
+	exports.default = function (store, handler = function () {
+	    return true;
+	}) {
 
-	    return props => {
+	    return function (props) {
 
 	        const timeEnd = (0, _performance.measureFor)('redux', props);
 	        const has = subscriptions.has(props.node);
 	        const state = store.getState();
 
 	        // Subscribe to the store only if we haven't done so already.
-	        !has && subscriptions.set(props.node, store.subscribe(() => handler(store.getState(), state) && props.node.render()));
+	        !has && subscriptions.set(props.node, store.subscribe(function () {
+	            return handler(store.getState(), state) && props.node.render();
+	        }));
 
 	        (0, _env.isDevelopment)() && timeEnd();
 	        return _extends({}, props, { redux: state, dispatch: store.dispatch });
@@ -1428,12 +1470,12 @@ module.exports =
 	 * @props {HTMLElement} node
 	 * @return {Array}
 	 */
-	const invokeFor = exports.invokeFor = node => {
+	const invokeFor = exports.invokeFor = function (node) {
 
 	    const refsLocal = refs.get(node) || [];
 
 	    // Iterate over each defined refs and invoke it.
-	    Array.from(refsLocal.keys()).forEach(key => {
+	    Array.from(refsLocal.keys()).forEach(function (key) {
 	        refsLocal.get(key)(key);
 	    });
 	};
@@ -1445,7 +1487,7 @@ module.exports =
 	 * @param {HTMLElement} node
 	 * @return {void}
 	 */
-	const purgeFor = exports.purgeFor = node => {
+	const purgeFor = exports.purgeFor = function (node) {
 	    const refsLocal = refs.get(node);
 	    refsLocal && refsLocal.clear(node);
 	};
@@ -1455,18 +1497,20 @@ module.exports =
 	 * @return {Object}
 	 */
 
-	exports.default = props => {
+	exports.default = function (props) {
 
 	    const timeEnd = (0, _performance.measureFor)('refs', props);
 	    const has = refs.has(props.node);
 	    !has && refs.set(props.node, new Map());
 	    const refsLocal = refs.get(props.node);
 
-	    const ref = fn => {
+	    const ref = function (fn) {
 
 	        // See: https://github.com/Matt-Esch/virtual-dom/blob/master/docs/hooks.md
 	        const Hook = function () {};
-	        Hook.prototype.hook = node => refsLocal.set(node, fn);
+	        Hook.prototype.hook = function (node) {
+	            return refsLocal.set(node, fn);
+	        };
 	        return new Hook();
 	    };
 
@@ -1503,11 +1547,11 @@ module.exports =
 	 * @param {Object} props
 	 * @return {Object}
 	 */
-	const time = exports.time = props => {
+	const time = exports.time = function (props) {
 
 	  const node = props.node;
 	  const has = timers.has(props.node);
-	  const id = has ? timers.get(node) : `${ node.nodeName.toLowerCase() } (${ (0, _shortid.generate)() })`;
+	  const id = has ? timers.get(node) : node.nodeName.toLowerCase() + ' (' + (0, _shortid.generate)() + ')';
 	  !has && timers.set(node, id);
 	  console.time(id);
 	  return _extends({}, props, { timer: id });
@@ -1518,7 +1562,7 @@ module.exports =
 	 * @param {Object} props
 	 * @return {Object}
 	 */
-	const timeEnd = exports.timeEnd = props => {
+	const timeEnd = exports.timeEnd = function (props) {
 
 	  const id = timers.get(props.node);
 	  console.timeEnd(id);
@@ -1902,7 +1946,9 @@ module.exports =
 	 * @param {String} file
 	 * @return {String}
 	 */
-	const pathFor = exports.pathFor = file => `${ scriptPath }/${ file }`;
+	const pathFor = exports.pathFor = function (file) {
+	  return scriptPath + '/' + file;
+	};
 
 /***/ },
 /* 30 */
