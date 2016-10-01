@@ -289,3 +289,5 @@ create('swiss-cheese', pipe(once(localStore), storeProps, include(pathFor('css/s
 Previously if you had multiple `swiss-cheese` nodes in the DOM, they would **all** share the same store and thus update simultaneously &ndash; using the concept of a local Redux store, each `swiss-cheese` node maintains its own state.
 
 In the component's `pipe` you'll notice two additional middleware items being passed &ndash; firstly `localStore` which is wrapped in the `once` middleware, meaning it's only invoked **once per instance** and any subsequent invocations will merely yield the cached `store` result, and secondly the `storeProps` middleware which overwrites the `redux` property by passing a fresh copy of the current state to our component, otherwise the state from the `localStore` middleware would be passed, and as that's wrapped in `once` would yield a stale state tree after the first invocation.
+
+![Functional](https://cdn-images-1.medium.com/max/800/1*AM83LP9sGGjIul3c5hIsWg.png)
