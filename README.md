@@ -110,6 +110,8 @@ It's fair to say that updating a component in this way is rather cumbersome for 
 
 Since using attributes isn't the most friendly way to update components we can instead choose to use another state manager &ndash; such as the React-esque `setState`/`state` approach.
 
+> Note: Try playing with the [JSFiddle we've created](https://jsfiddle.net/chs2fnod/)!
+
 ```javascript
 import { create, html, element, pipe, state } from 'switzerland';
 
