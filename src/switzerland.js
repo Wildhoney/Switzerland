@@ -2,7 +2,6 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { isDevelopment } from './helpers/env';
-import { measureFor, printFor } from './debug/performance';
 
 /**
  * @constant registryKey
@@ -158,7 +157,6 @@ export { default as refs } from './middleware/refs';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';
-export { default as performance } from './debug/performance';
 
 // Helpers.
 export { path, pathFor } from './helpers/path';

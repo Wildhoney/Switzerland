@@ -3,8 +3,6 @@ import { get as fetch } from 'axios';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
-import { isDevelopment } from '../helpers/env';
-import { measureFor } from '../debug/performance';
 
 /**
  * @constant includes

@@ -1,7 +1,5 @@
 import { camelize } from 'humps';
 import { compose } from 'ramda';
-import { isDevelopment } from '../helpers/env';
-import { measureFor } from '../debug/performance';
 
 /**
  * @constant observers

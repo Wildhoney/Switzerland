@@ -1,6 +1,3 @@
-import { isDevelopment } from '../helpers/env';
-import { measureFor } from '../debug/performance';
-
 /**
  * @constant subscriptions
  * @type {WeakMap}
