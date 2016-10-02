@@ -76,7 +76,6 @@ export const create = (name, render) => {
             const boundary = implementation.shadowBoundary(node);
 
             const props = render({ node });
-            const timeEnd = measureFor('render', props);
             const tree = htmlFor(props);
             const root = createElement(tree);
 
@@ -87,7 +86,6 @@ export const create = (name, render) => {
             'ref' in props && invokeFor(node);
 
             this[registryKey] = { node, tree, root };
-            isDevelopment() && timeEnd() && printFor(node);
 
         }
 
@@ -126,7 +124,6 @@ export const create = (name, render) => {
             const { tree: currentTree, root: currentRoot, node } = instance;
 
             const props = render({ node });
-            const timeEnd = measureFor('render', props);
             const tree = htmlFor(props);
 
             // Clear any previously defined refs for the current component.
@@ -141,7 +138,6 @@ export const create = (name, render) => {
                 'ref' in props && invokeFor(node);
 
                 this[registryKey] = { node, tree, root };
-                isDevelopment() && timeEnd() && printFor(node);
 
             }
 
