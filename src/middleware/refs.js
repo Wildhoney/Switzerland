@@ -46,7 +46,6 @@ export const purgeFor = node => {
  */
 export default props => {
 
-    const timeEnd = measureFor('refs', props);
     const has = refs.has(props.node);
     !has && refs.set(props.node, new Map());
     const refsLocal = refs.get(props.node);
@@ -63,7 +62,6 @@ export default props => {
     // Delete the refs is the node has been removed from the DOM.
     has && !props.node.isConnected && refs.delete(props.node);
 
-    isDevelopment() && timeEnd();
     return { ...props, ref };
 
 };

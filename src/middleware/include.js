@@ -95,7 +95,6 @@ export default (...attachFiles) => {
     return props => {
 
         const { node } = props;
-        const timeEnd = measureFor('include', props);
 
         if (node.isConnected) {
 
@@ -131,7 +130,6 @@ export default (...attachFiles) => {
 
         }
 
-        isDevelopment() && timeEnd();
         return props;
 
     };

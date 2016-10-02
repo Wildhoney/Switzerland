@@ -180,6 +180,7 @@ Once the component is mounted in the DOM, the attached CSS document will be fetc
 
 ```css
 :host {
+    display: block;
     background: yellow url('../images/cheese.png');
     border-radius: 3px;
     font-size: 8rem;
@@ -246,7 +247,7 @@ create('swiss-cheese', pipe(redux(store), include(pathFor('css/swiss-cheese.css'
 
 For the most part the above example is largely Redux boilerplate &ndash; the actual integration with Switzerland occurs in the `redux` middleware which takes the store instance created by Redux's `createStore`. Whenever an event is dispatched &mdash; in our case adding Mozarella &mdash; the `swiss-cheese` component is re-rendered.
 
-It's worth noting that the `redux` middleware accepts an *optional* second argument which acts like React's `shouldComponentUpdate` to avoid reconciling the DOM on `props` that don't affect a component. It passes the updated state as the first argument, followed by the previous state as the second: `state, prevState`. It expects either a boolean value to be yielded, where `false` is not to update the component.
+It's worth noting that the `redux` middleware accepts an *optional* second argument which acts like React's `shouldComponentUpdate` to avoid reconciling the DOM on `props` that don't affect a component. It passes the updated state as the first argument, followed by the previous state as the second: `state, prevState`. It expects a boolean value to be yielded, where `false` is not to update the component.
 
 ## Advanced Usage
 
