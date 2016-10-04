@@ -155,6 +155,7 @@ export { default as include } from './middleware/include';
 export { default as redux } from './middleware/redux';
 export { default as refs } from './middleware/refs';
 export { default as methods } from './middleware/methods';
+export { default as events } from './middleware/events';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';

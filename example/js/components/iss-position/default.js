@@ -1,4 +1,4 @@
-import { create, element, html, methods, include, once, redux, pathFor } from '../../../../src/switzerland';
+import { create, element, events, html, include, once, redux, pathFor } from '../../../../src/switzerland';
 import { pipe } from 'ramda';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
@@ -30,22 +30,15 @@ const update = () => {
 const fetch = once(props => props.dispatch(update()));
 
 /**
- * @method forceUpdate
- * @param {Object} props
- * @return {void}
- */
-const forceUpdate = props => {
-    props.dispatch(update());
-};
-
-/**
  * @constant interval
  * @param {Object} props
  * @return {void}
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(redux(store), methods({ forceUpdate }), include(pathFor('css/default.css')), fetch, html(props => {
+create('iss-position', pipe(events, redux(store), include(pathFor('css/default.css')), fetch, html(props => {
+
+    props.event('location', props.redux);
 
     const { redux, dispatch } = props;
     const image = pathFor(`images/flags/${redux.flag}`);
