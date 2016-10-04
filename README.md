@@ -155,8 +155,7 @@ const initialState = {
     cheeses: ['Swiss', 'Feta', 'Cheddar']
 };
 
-+ create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-cheese.css')), html(props => {
-- create('swiss-cheese', pipe(state(initialState), html(props => {
+create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-cheese.css')), html(props => {
 
     const cheeses = props.state.cheeses;
 
