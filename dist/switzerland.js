@@ -57,7 +57,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.performance = exports.timeEnd = exports.time = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = undefined;
+	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.registryKey = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -86,7 +86,7 @@ module.exports =
 	    }
 	});
 
-	var _state = __webpack_require__(10);
+	var _state = __webpack_require__(7);
 
 	Object.defineProperty(exports, 'state', {
 	    enumerable: true,
@@ -95,7 +95,7 @@ module.exports =
 	    }
 	});
 
-	var _include = __webpack_require__(11);
+	var _include = __webpack_require__(8);
 
 	Object.defineProperty(exports, 'include', {
 	    enumerable: true,
@@ -104,7 +104,7 @@ module.exports =
 	    }
 	});
 
-	var _redux = __webpack_require__(17);
+	var _redux = __webpack_require__(15);
 
 	Object.defineProperty(exports, 'redux', {
 	    enumerable: true,
@@ -113,12 +113,30 @@ module.exports =
 	    }
 	});
 
-	var _refs = __webpack_require__(18);
+	var _refs = __webpack_require__(16);
 
 	Object.defineProperty(exports, 'refs', {
 	    enumerable: true,
 	    get: function () {
 	        return _interopRequireDefault(_refs).default;
+	    }
+	});
+
+	var _methods = __webpack_require__(17);
+
+	Object.defineProperty(exports, 'methods', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_methods).default;
+	    }
+	});
+
+	var _events = __webpack_require__(18);
+
+	Object.defineProperty(exports, 'events', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_events).default;
 	    }
 	});
 
@@ -134,15 +152,6 @@ module.exports =
 	    enumerable: true,
 	    get: function () {
 	        return _timer.timeEnd;
-	    }
-	});
-
-	var _performance = __webpack_require__(9);
-
-	Object.defineProperty(exports, 'performance', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_performance).default;
 	    }
 	});
 
@@ -185,7 +194,7 @@ module.exports =
 	    }
 	});
 
-	var _env = __webpack_require__(7);
+	var _env = __webpack_require__(65);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -193,7 +202,7 @@ module.exports =
 	 * @constant registryKey
 	 * @type {Symbol}
 	 */
-	const registryKey = Symbol('switzerland/registry');
+	const registryKey = exports.registryKey = Symbol('switzerland/registry');
 
 	/**
 	 * @method warning
@@ -271,7 +280,6 @@ module.exports =
 	            const boundary = implementation.shadowBoundary(node);
 
 	            const props = render({ node });
-	            const timeEnd = (0, _performance.measureFor)('render', props);
 	            const tree = (0, _html.htmlFor)(props);
 	            const root = (0, _virtualDom.create)(tree);
 
@@ -281,8 +289,7 @@ module.exports =
 	            // Invoke any ref callbacks defined in the component's `render` method.
 	            'ref' in props && (0, _refs.invokeFor)(node);
 
-	            this[registryKey] = { node, tree, root };
-	            (0, _env.isDevelopment)() && timeEnd() && (0, _performance.printFor)(node);
+	            this[registryKey] = { node, tree, root, props };
 	        }
 
 	        /**
@@ -321,7 +328,6 @@ module.exports =
 
 
 	            const props = render({ node });
-	            const timeEnd = (0, _performance.measureFor)('render', props);
 	            const tree = (0, _html.htmlFor)(props);
 
 	            // Clear any previously defined refs for the current component.
@@ -335,8 +341,7 @@ module.exports =
 	                // Invoke any ref callbacks defined in the component's `render` method.
 	                'ref' in props && (0, _refs.invokeFor)(node);
 
-	                this[registryKey] = { node, tree, root };
-	                (0, _env.isDevelopment)() && timeEnd() && (0, _performance.printFor)(node);
+	                this[registryKey] = { node, tree, root, props };
 	            }
 	        }
 
@@ -444,10 +449,6 @@ module.exports =
 
 	var _ramda = __webpack_require__(6);
 
-	var _env = __webpack_require__(7);
-
-	var _performance = __webpack_require__(9);
-
 	/**
 	 * @constant observers
 	 * @type {WeakMap}
@@ -492,8 +493,6 @@ module.exports =
 	 */
 
 	exports.default = function (props) {
-
-	  const timeEnd = (0, _performance.measureFor)('attributes', props);
 	  const node = props.node;
 	  const render = props.render;
 
@@ -518,7 +517,6 @@ module.exports =
 	  // Clean up the observer if the node is no longer present in the DOM.
 	  !node.isConnected && observer.disconnect();
 
-	  (0, _env.isDevelopment)() && timeEnd();
 	  return _extends({}, props, { attrs });
 	};
 
@@ -673,41 +671,348 @@ module.exports =
 
 /***/ },
 /* 7 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @constant states
+	 * @type {WeakMap}
+	 */
+	const states = new WeakMap();
+
+	/**
+	 * @param {Object} initialState
+	 * @return {Function}
+	 */
+
+	exports.default = function (initialState) {
+
+	  return function (props) {
+
+	    const hasState = states.has(props.node);
+	    const state = hasState ? states.get(props.node) : initialState;
+	    !hasState && states.set(props.node, state);
+
+	    /**
+	     * @method setState
+	     * @param {Object} updatedState
+	     * @return {void}
+	     */
+	    const setState = function (updatedState) {
+	      states.set(props.node, _extends({}, state, updatedState));
+	      props.node.render();
+	    };
+
+	    return _extends({}, props, { state, setState });
+	  };
+	};
+
+/***/ },
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.isDevelopment = undefined;
 
 	var _ramda = __webpack_require__(6);
 
-	/**
-	 * @constant env
-	 * @type {String}
-	 */
-	const env = function () {
+	var _axios = __webpack_require__(9);
 
-	    try {
-	        return process.env.NODE_ENV;
-	    } catch (err) {
-	        return 'development';
-	    }
-	}();
+	var _cssUrlParser = __webpack_require__(10);
+
+	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
+
+	var _pathParse = __webpack_require__(12);
+
+	var _pathParse2 = _interopRequireDefault(_pathParse);
+
+	var _escapeStringRegexp = __webpack_require__(14);
+
+	var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
-	 * @method isDevelopment
-	 * @return {Boolean}
+	 * @constant includes
+	 * @type {WeakMap}
 	 */
-	const isDevelopment = exports.isDevelopment = (0, _ramda.once)(function () {
-	    return env === 'development';
+	const includes = new WeakMap();
+
+	/**
+	 * @constant includeMap
+	 * @type {Object}
+	 */
+	const includeMap = [{ extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } }, { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }];
+
+	/**
+	 * @method fetchInclude
+	 * @param {String} file
+	 * @return {Promise}
+	 */
+	const fetchInclude = (0, _ramda.memoize)(function (file) {
+
+	    const cssPath = (0, _pathParse2.default)(file).dir;
+
+	    const transformPaths = function (content) {
+
+	        const urls = (0, _cssUrlParser2.default)(content);
+
+	        // Update the URLs to make them relative to the CSS document.
+	        return urls.length ? urls.map(function (url) {
+
+	            const replacer = new RegExp((0, _escapeStringRegexp2.default)(url), 'ig');
+	            return content.replace(replacer, cssPath + '/' + url);
+	        }).toString() : content;
+	    };
+
+	    return new Promise(function (resolve) {
+	        (0, _axios.get)(file).then(function (response) {
+	            return transformPaths(response.data);
+	        }).then(resolve).catch(function () {
+	            return resolve('');
+	        });
+	    });
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
+	/**
+	 * @method attach
+	 * @param files {Array|String}
+	 * @return {Promise}
+	 */
+	const attach = function (files) {
+
+	    // Group all of the files by their extension.
+	    const groupedFiles = (0, _ramda.groupBy)(function (file) {
+	        return file.extension;
+	    })(files.map(function (path) {
+	        return { path, extension: path.split('.').pop() };
+	    }));
+
+	    const mappedFiles = Object.keys(groupedFiles).map(function (extension) {
+
+	        const nodeData = includeMap.find(function (model) {
+	            return model.extensions.includes(extension);
+	        });
+	        const files = groupedFiles[extension].map(function (model) {
+	            return model.path;
+	        });
+	        const containerNode = document.createElement(nodeData.tag);
+
+	        // Apply all of the attributes defined in the `includeMap` to the node.
+	        Object.keys(nodeData.attrs).map(function (key) {
+	            return containerNode.setAttribute(key, nodeData.attrs[key]);
+	        });
+
+	        // Load each file individually and then concatenate them.
+	        return Promise.all(files.map(fetchInclude)).then(function (fileData) {
+
+	            // Concatenate all of the content from the documents.
+	            containerNode.innerHTML = fileData.reduce(function (acc, fileDatum) {
+	                return acc + ' ' + fileDatum;
+	            }).trim();
+	            return containerNode.innerHTML.length ? containerNode : null;
+	        });
+	    });
+
+	    return Promise.all(mappedFiles);
+	};
+
+	/**
+	 * @param {Array|String} attachFiles
+	 * @return {Function}
+	 */
+
+	exports.default = function (...attachFiles) {
+
+	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
+
+	    return function (props) {
+	        const node = props.node;
+
+
+	        if (node.isConnected) {
+
+	            const boundary = node.shadowRoot;
+
+	            const hasCurrent = includes.has(node);
+	            !hasCurrent && includes.set(node, []);
+	            const current = includes.get(node);
+
+	            // We don't want to load the same files again, so we'll see what was previously loaded.
+	            const addedFiles = (0, _ramda.difference)(files, current);
+
+	            // Memorise the current set of files.
+	            includes.set(node, files);
+
+	            if (addedFiles.length) {
+
+	                node.classList.add('resolving');
+	                node.classList.remove('resolved');
+
+	                attach(addedFiles).then(function (nodes) {
+
+	                    // Remove any `null` values which means the content of the file was empty, and then append
+	                    // them to the component's shadow boundary.
+	                    nodes.filter(_ramda.identity).forEach(function (node) {
+	                        return boundary.appendChild(node);
+	                    });
+
+	                    node.classList.add('resolved');
+	                    node.classList.remove('resolving');
+	                });
+	            }
+	        }
+
+	        return props;
+	    };
+	};
 
 /***/ },
-/* 8 */
+/* 9 */
+/***/ function(module, exports) {
+
+	module.exports = require("axios");
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var parseCssUrls = __webpack_require__(11);
+	module.exports = parseCssUrls;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var embeddedRegexp = /data:(.*?);base64,/;
+	var commentRegexp = /\/\*([\s\S]*?)\*\//g;
+	var urlsRegexp = /((?:@import\s+)?url\s*\(['"]?)(\S*?)(['"]?\s*\))|(@import\s+['"]?)([^;'"]+)/ig;
+
+	function isEmbedded(src) {
+		return embeddedRegexp.test(src);
+	}
+
+	function getUrls(text) {
+		var urls = [];
+		var urlMatch, url;
+
+		text = text.replace(commentRegexp, '');
+
+		while (urlMatch = urlsRegexp.exec(text)) {
+			// Match 2 group if '[@import] url(path)', match 5 group if '@import path'
+			url = urlMatch[2] || urlMatch[5];
+
+			if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
+				urls.push(url);
+			}
+		}
+
+		return urls;
+	}
+
+	module.exports = getUrls;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	var isWindows = process.platform === 'win32';
+
+	// Regex to split a windows path into three parts: [*, device, slash,
+	// tail] windows-only
+	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
+
+	// Regex to split the tail part of the above into [*, dir, basename, ext]
+	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
+
+	var win32 = {};
+
+	// Function to split a filename into [root, dir, basename, ext]
+	function win32SplitPath(filename) {
+	  // Separate device+slash from tail
+	  var result = splitDeviceRe.exec(filename),
+	      device = (result[1] || '') + (result[2] || ''),
+	      tail = result[3] || '';
+	  // Split the tail into dir, basename and extension
+	  var result2 = splitTailRe.exec(tail),
+	      dir = result2[1],
+	      basename = result2[2],
+	      ext = result2[3];
+	  return [device, dir, basename, ext];
+	}
+
+	win32.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = win32SplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	// Split a filename into [root, dir, basename, ext], unix version
+	// 'root' is just a slash, or nothing.
+	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+	var posix = {};
+
+	function posixSplitPath(filename) {
+	  return splitPathRe.exec(filename).slice(1);
+	}
+
+	posix.parse = function (pathString) {
+	  if (typeof pathString !== 'string') {
+	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
+	  }
+	  var allParts = posixSplitPath(pathString);
+	  if (!allParts || allParts.length !== 4) {
+	    throw new TypeError("Invalid path '" + pathString + "'");
+	  }
+	  allParts[1] = allParts[1] || '';
+	  allParts[2] = allParts[2] || '';
+	  allParts[3] = allParts[3] || '';
+
+	  return {
+	    root: allParts[0],
+	    dir: allParts[0] + allParts[1].slice(0, -1),
+	    base: allParts[2],
+	    ext: allParts[3],
+	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
+	  };
+	};
+
+	if (isWindows) module.exports = win32.parse;else /* posix */
+	  module.exports = posix.parse;
+
+	module.exports.posix = posix.parse;
+	module.exports.win32 = win32.parse;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
+
+/***/ },
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -893,488 +1198,7 @@ module.exports =
 	};
 
 /***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.printFor = exports.measureFor = exports.milliseconds = exports.performanceKey = undefined;
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _env = __webpack_require__(7);
-
-	/**
-	 * @constant performanceKey
-	 * @type {Symbol}
-	 */
-	const performanceKey = exports.performanceKey = Symbol('switzerland/measurements');
-
-	/**
-	 * @constant measurements
-	 * @type {WeakMap}
-	 */
-	const measurements = new WeakMap();
-
-	/**
-	 * @method milliseconds
-	 * @return {Number}
-	 */
-	const milliseconds = exports.milliseconds = function () {
-
-	    if ((0, _env.isDevelopment)()) {
-	        return 'performance' in window ? window.performance.now() : Date.now();
-	    }
-
-	    return 0;
-	};
-
-	/**
-	 * @method hasMiddleware
-	 * @return {Boolean}
-	 */
-	const hasMiddleware = function (props) {
-	    return performanceKey in props;
-	};
-
-	/**
-	 * @method measureFor
-	 * @param {String} key
-	 * @param {Object} props
-	 * @return {Function}
-	 */
-	const measureFor = exports.measureFor = function (key, props) {
-
-	    if (!(0, _env.isDevelopment)() || !hasMiddleware(props)) {
-	        return function () {};
-	    }
-
-	    return props[performanceKey](key);
-	};
-
-	/**
-	 * @method printFor
-	 * @param {HTMLElement} node
-	 * @return {Array}
-	 */
-	const printFor = exports.printFor = function (node) {
-
-	    if (!(0, _env.isDevelopment)()) {
-	        return [];
-	    }
-
-	    const store = measurements.get(node);
-	    const data = Array.from(store.keys()).map(function (key) {
-
-	        const start = store.get(key).start;
-	        const end = store.get(key).end;
-
-	        return { key, milliseconds: end - start };
-	    });
-
-	    window.console.log('\uD83C\uDDE8\uD83C\uDDED ' + node.nodeName.toLowerCase() + ':');
-	    window.console.table(data);
-	    window.console.log('---');
-
-	    return data;
-	};
-
-	/**
-	 * @param {Object} props
-	 * @return {Object}
-	 */
-
-	exports.default = function (props) {
-
-	    if (!(0, _env.isDevelopment)()) {
-	        return props;
-	    }
-
-	    const node = props.node;
-	    const has = measurements.has(node);
-	    !has && measurements.set(node, new Map());
-	    const store = measurements.get(node);
-
-	    /**
-	     * @method time
-	     * @param {String} key
-	     * @return {Function}
-	     */
-	    const time = function (key) {
-
-	        const start = milliseconds();
-	        store.set(key, { start });
-
-	        return function () {
-	            const model = store.get(key);
-	            const end = milliseconds();
-	            store.set(key, _extends({}, model, { end }));
-	            return end - start;
-	        };
-	    };
-
-	    return _extends({}, props, { [performanceKey]: time });
-	};
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _env = __webpack_require__(7);
-
-	var _performance = __webpack_require__(9);
-
-	/**
-	 * @constant states
-	 * @type {WeakMap}
-	 */
-	const states = new WeakMap();
-
-	/**
-	 * @param {Object} initialState
-	 * @return {Function}
-	 */
-
-	exports.default = function (initialState) {
-
-	  return function (props) {
-
-	    const timeEnd = (0, _performance.measureFor)('state', props);
-	    const hasState = states.has(props.node);
-	    const state = hasState ? states.get(props.node) : initialState;
-	    !hasState && states.set(props.node, state);
-
-	    /**
-	     * @method setState
-	     * @param {Object} updatedState
-	     * @return {void}
-	     */
-	    const setState = function (updatedState) {
-	      states.set(props.node, _extends({}, state, updatedState));
-	      props.node.render();
-	    };
-
-	    (0, _env.isDevelopment)() && timeEnd();
-	    return _extends({}, props, { state, setState });
-	  };
-	};
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _ramda = __webpack_require__(6);
-
-	var _axios = __webpack_require__(12);
-
-	var _cssUrlParser = __webpack_require__(13);
-
-	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
-
-	var _pathParse = __webpack_require__(15);
-
-	var _pathParse2 = _interopRequireDefault(_pathParse);
-
-	var _escapeStringRegexp = __webpack_require__(16);
-
-	var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
-
-	var _env = __webpack_require__(7);
-
-	var _performance = __webpack_require__(9);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * @constant includes
-	 * @type {WeakMap}
-	 */
-	const includes = new WeakMap();
-
-	/**
-	 * @constant includeMap
-	 * @type {Object}
-	 */
-	const includeMap = [{ extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } }, { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }];
-
-	/**
-	 * @method fetchInclude
-	 * @param {String} file
-	 * @return {Promise}
-	 */
-	const fetchInclude = (0, _ramda.memoize)(function (file) {
-
-	    const cssPath = (0, _pathParse2.default)(file).dir;
-
-	    const transformPaths = function (content) {
-
-	        const urls = (0, _cssUrlParser2.default)(content);
-
-	        // Update the URLs to make them relative to the CSS document.
-	        return urls.length ? urls.map(function (url) {
-
-	            const replacer = new RegExp((0, _escapeStringRegexp2.default)(url), 'ig');
-	            return content.replace(replacer, cssPath + '/' + url);
-	        }).toString() : content;
-	    };
-
-	    return new Promise(function (resolve) {
-	        (0, _axios.get)(file).then(function (response) {
-	            return transformPaths(response.data);
-	        }).then(resolve).catch(function () {
-	            return resolve('');
-	        });
-	    });
-	});
-
-	/**
-	 * @method attach
-	 * @param files {Array|String}
-	 * @return {Promise}
-	 */
-	const attach = function (files) {
-
-	    // Group all of the files by their extension.
-	    const groupedFiles = (0, _ramda.groupBy)(function (file) {
-	        return file.extension;
-	    })(files.map(function (path) {
-	        return { path, extension: path.split('.').pop() };
-	    }));
-
-	    const mappedFiles = Object.keys(groupedFiles).map(function (extension) {
-
-	        const nodeData = includeMap.find(function (model) {
-	            return model.extensions.includes(extension);
-	        });
-	        const files = groupedFiles[extension].map(function (model) {
-	            return model.path;
-	        });
-	        const containerNode = document.createElement(nodeData.tag);
-
-	        // Apply all of the attributes defined in the `includeMap` to the node.
-	        Object.keys(nodeData.attrs).map(function (key) {
-	            return containerNode.setAttribute(key, nodeData.attrs[key]);
-	        });
-
-	        // Load each file individually and then concatenate them.
-	        return Promise.all(files.map(fetchInclude)).then(function (fileData) {
-
-	            // Concatenate all of the content from the documents.
-	            containerNode.innerHTML = fileData.reduce(function (acc, fileDatum) {
-	                return acc + ' ' + fileDatum;
-	            }).trim();
-	            return containerNode.innerHTML.length ? containerNode : null;
-	        });
-	    });
-
-	    return Promise.all(mappedFiles);
-	};
-
-	/**
-	 * @param {Array|String} attachFiles
-	 * @return {Function}
-	 */
-
-	exports.default = function (...attachFiles) {
-
-	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
-
-	    return function (props) {
-	        const node = props.node;
-
-	        const timeEnd = (0, _performance.measureFor)('include', props);
-
-	        if (node.isConnected) {
-
-	            const boundary = node.shadowRoot;
-
-	            const hasCurrent = includes.has(node);
-	            !hasCurrent && includes.set(node, []);
-	            const current = includes.get(node);
-
-	            // We don't want to load the same files again, so we'll see what was previously loaded.
-	            const addedFiles = (0, _ramda.difference)(files, current);
-
-	            // Memorise the current set of files.
-	            includes.set(node, files);
-
-	            if (addedFiles.length) {
-
-	                node.classList.add('resolving');
-	                node.classList.remove('resolved');
-
-	                attach(addedFiles).then(function (nodes) {
-
-	                    // Remove any `null` values which means the content of the file was empty, and then append
-	                    // them to the component's shadow boundary.
-	                    nodes.filter(_ramda.identity).forEach(function (node) {
-	                        return boundary.appendChild(node);
-	                    });
-
-	                    node.classList.add('resolved');
-	                    node.classList.remove('resolving');
-	                });
-	            }
-	        }
-
-	        (0, _env.isDevelopment)() && timeEnd();
-	        return props;
-	    };
-	};
-
-/***/ },
-/* 12 */
-/***/ function(module, exports) {
-
-	module.exports = require("axios");
-
-/***/ },
-/* 13 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var parseCssUrls = __webpack_require__(14);
-	module.exports = parseCssUrls;
-
-/***/ },
 /* 14 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var embeddedRegexp = /data:(.*?);base64,/;
-	var commentRegexp = /\/\*([\s\S]*?)\*\//g;
-	var urlsRegexp = /((?:@import\s+)?url\s*\(['"]?)(\S*?)(['"]?\s*\))|(@import\s+['"]?)([^;'"]+)/ig;
-
-	function isEmbedded(src) {
-		return embeddedRegexp.test(src);
-	}
-
-	function getUrls(text) {
-		var urls = [];
-		var urlMatch, url;
-
-		text = text.replace(commentRegexp, '');
-
-		while (urlMatch = urlsRegexp.exec(text)) {
-			// Match 2 group if '[@import] url(path)', match 5 group if '@import path'
-			url = urlMatch[2] || urlMatch[5];
-
-			if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
-				urls.push(url);
-			}
-		}
-
-		return urls;
-	}
-
-	module.exports = getUrls;
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
-
-	var isWindows = process.platform === 'win32';
-
-	// Regex to split a windows path into three parts: [*, device, slash,
-	// tail] windows-only
-	var splitDeviceRe = /^([a-zA-Z]:|[\\\/]{2}[^\\\/]+[\\\/]+[^\\\/]+)?([\\\/])?([\s\S]*?)$/;
-
-	// Regex to split the tail part of the above into [*, dir, basename, ext]
-	var splitTailRe = /^([\s\S]*?)((?:\.{1,2}|[^\\\/]+?|)(\.[^.\/\\]*|))(?:[\\\/]*)$/;
-
-	var win32 = {};
-
-	// Function to split a filename into [root, dir, basename, ext]
-	function win32SplitPath(filename) {
-	  // Separate device+slash from tail
-	  var result = splitDeviceRe.exec(filename),
-	      device = (result[1] || '') + (result[2] || ''),
-	      tail = result[3] || '';
-	  // Split the tail into dir, basename and extension
-	  var result2 = splitTailRe.exec(tail),
-	      dir = result2[1],
-	      basename = result2[2],
-	      ext = result2[3];
-	  return [device, dir, basename, ext];
-	}
-
-	win32.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = win32SplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	// Split a filename into [root, dir, basename, ext], unix version
-	// 'root' is just a slash, or nothing.
-	var splitPathRe = /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
-	var posix = {};
-
-	function posixSplitPath(filename) {
-	  return splitPathRe.exec(filename).slice(1);
-	}
-
-	posix.parse = function (pathString) {
-	  if (typeof pathString !== 'string') {
-	    throw new TypeError("Parameter 'pathString' must be a string, not " + typeof pathString);
-	  }
-	  var allParts = posixSplitPath(pathString);
-	  if (!allParts || allParts.length !== 4) {
-	    throw new TypeError("Invalid path '" + pathString + "'");
-	  }
-	  allParts[1] = allParts[1] || '';
-	  allParts[2] = allParts[2] || '';
-	  allParts[3] = allParts[3] || '';
-
-	  return {
-	    root: allParts[0],
-	    dir: allParts[0] + allParts[1].slice(0, -1),
-	    base: allParts[2],
-	    ext: allParts[3],
-	    name: allParts[2].slice(0, allParts[2].length - allParts[3].length)
-	  };
-	};
-
-	if (isWindows) module.exports = win32.parse;else /* posix */
-	  module.exports = posix.parse;
-
-	module.exports.posix = posix.parse;
-	module.exports.win32 = win32.parse;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
-
-/***/ },
-/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1390,20 +1214,16 @@ module.exports =
 	};
 
 /***/ },
-/* 17 */
-/***/ function(module, exports, __webpack_require__) {
+/* 15 */
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _env = __webpack_require__(7);
-
-	var _performance = __webpack_require__(9);
 
 	/**
 	 * @constant subscriptions
@@ -1418,41 +1238,34 @@ module.exports =
 	 */
 
 	exports.default = function (store, handler = function () {
-	    return true;
+	  return true;
 	}) {
 
-	    return function (props) {
+	  return function (props) {
 
-	        const timeEnd = (0, _performance.measureFor)('redux', props);
-	        const has = subscriptions.has(props.node);
-	        const state = store.getState();
+	    const has = subscriptions.has(props.node);
+	    const state = store.getState();
 
-	        // Subscribe to the store only if we haven't done so already.
-	        !has && subscriptions.set(props.node, store.subscribe(function () {
-	            return handler(store.getState(), state) && props.node.render();
-	        }));
+	    // Subscribe to the store only if we haven't done so already.
+	    !has && subscriptions.set(props.node, store.subscribe(function () {
+	      return handler(store.getState(), state) && props.node.render();
+	    }));
 
-	        (0, _env.isDevelopment)() && timeEnd();
-	        return _extends({}, props, { redux: state, dispatch: store.dispatch });
-	    };
+	    return _extends({}, props, { redux: state, dispatch: store.dispatch });
+	  };
 	};
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
+/* 16 */
+/***/ function(module, exports) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.purgeFor = exports.invokeFor = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _env = __webpack_require__(7);
-
-	var _performance = __webpack_require__(9);
 
 	/**
 	 * @constant refs
@@ -1499,7 +1312,6 @@ module.exports =
 
 	exports.default = function (props) {
 
-	    const timeEnd = (0, _performance.measureFor)('refs', props);
 	    const has = refs.has(props.node);
 	    !has && refs.set(props.node, new Map());
 	    const refsLocal = refs.get(props.node);
@@ -1517,8 +1329,94 @@ module.exports =
 	    // Delete the refs is the node has been removed from the DOM.
 	    has && !props.node.isConnected && refs.delete(props.node);
 
-	    (0, _env.isDevelopment)() && timeEnd();
 	    return _extends({}, props, { ref });
+	};
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _switzerland = __webpack_require__(1);
+
+	var _once = __webpack_require__(3);
+
+	var _once2 = _interopRequireDefault(_once);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @method registerFor
+	 * @param {Array} methods
+	 * @param {Object} props
+	 * @return {void}
+	 */
+	const registerFor = function (methods, props) {
+	    const node = props.node;
+
+
+	    Object.keys(methods).forEach(function (name) {
+
+	        const fn = methods[name];
+
+	        node[name] = function (...args) {
+
+	            // Gather the props that caused the last render of the component.
+	            const lastProps = props.node[_switzerland.registryKey].props;
+
+	            fn.call(props.node, _extends({}, lastProps, { args }));
+	        };
+	    });
+	};
+
+	/**
+	 * @param {Object} methods
+	 * @return {Function}
+	 */
+
+	exports.default = function (methods) {
+
+	    return function (props) {
+	        (0, _once2.default)(registerFor.bind(null, methods))(props);
+	        return props;
+	    };
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @param {Object} props
+	 * @return {Object}
+	 */
+	exports.default = function (props) {
+
+	    return _extends({}, props, { event: function (name, model) {
+
+	            const eventName = props.node.nodeName.toLowerCase() + "/" + name;
+
+	            props.node.dispatchEvent(new window.CustomEvent(eventName, {
+	                detail: Object.freeze(model),
+	                bubbles: true,
+	                composed: true
+	            }));
+	        } });
 	};
 
 /***/ },
@@ -1923,7 +1821,7 @@ module.exports =
 	});
 	exports.pathFor = exports.path = undefined;
 
-	var _pathParse = __webpack_require__(15);
+	var _pathParse = __webpack_require__(12);
 
 	var _pathParse2 = _interopRequireDefault(_pathParse);
 
@@ -3717,6 +3615,41 @@ module.exports =
 	var createElement = __webpack_require__(48);
 
 	module.exports = createElement;
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.isDevelopment = undefined;
+
+	var _ramda = __webpack_require__(6);
+
+	/**
+	 * @constant env
+	 * @type {String}
+	 */
+	const env = function () {
+
+	    try {
+	        return process.env.NODE_ENV;
+	    } catch (err) {
+	        return 'development';
+	    }
+	}();
+
+	/**
+	 * @method isDevelopment
+	 * @return {Boolean}
+	 */
+	const isDevelopment = exports.isDevelopment = (0, _ramda.once)(function () {
+	    return env === 'development';
+	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13)))
 
 /***/ }
 /******/ ]);
