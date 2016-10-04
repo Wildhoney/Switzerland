@@ -252,7 +252,7 @@ It's worth noting that the `redux` middleware accepts an *optional* second argum
 
 ### Element Methods
 
-By migrating our `swiss-cheese` component to Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a DOM internal to the component. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
+By migrating our `swiss-cheese` component to Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
 
 ```javascript
 import { create, html, element, pipe, redux, include, methods, pathFor } from 'switzerland';
@@ -294,7 +294,7 @@ create('swiss-cheese', pipe(methods({ add }), redux(store), include(pathFor('css
 
 > Note: By using the `methods` middleware, the `props` which were used for the current render pass are forwarded to the defined methods.
 
-In the preceding example we are adding **one** method to the `swiss-cheese` component &mdash; `add` &mdash; which will enhance our component with the ability to add cheeses from the outside. We have removed the ability to add Mozarella from the component, and instead placed that ability on the `swiss-cheese` node itself, which we can invoke once have a reference to the node.
+In the preceding example we are adding **one** method to the `swiss-cheese` component via the `methods` middleware &mdash; `add` &mdash; which will enhance our component with the ability to add cheeses from the outside. We have also removed the ability to add Mozarella from the component itself, and instead placed that ability on the `swiss-cheese` node, which we can invoke once have a reference to the node &ndash; nothing else changed.
 
 ```javascript
 const swissCheese = document.querySelector('swiss-cheese');
