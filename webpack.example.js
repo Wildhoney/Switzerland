@@ -1,10 +1,12 @@
+const webpack = require('webpack');
+
 module.exports = {
     entry: {
-        iss: ['./example/components/iss-position/default.js']
+        './example/components/iss-position/build.js': ['./example/components/iss-position/default.js'],
+        './example/vendor.js': ['./src/switzerland']
     },
     output: {
-        path: __dirname + '/example/components/iss-position',
-        filename: 'build.js',
+        filename: '[name]',
         libraryTarget: 'var'
     },
     module: {
@@ -14,5 +16,8 @@ module.exports = {
                 loaders: ['envify-loader', 'babel-loader', 'virtual-dom?jsx=element']
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('./example/vendor')
+    ]
 };
