@@ -2,11 +2,11 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        './example/components/iss-position/build.js': ['./example/components/iss-position/default.js'],
-        './example/vendor.js': ['./src/switzerland']
+        './example/js/components/iss-position/build': ['./example/js/components/iss-position/default.js'],
+        './example/js/vendor': ['./src/switzerland']
     },
     output: {
-        filename: '[name]',
+        filename: '[name].js',
         libraryTarget: 'var'
     },
     module: {
@@ -18,6 +18,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin('./example/vendor')
+        new webpack.optimize.CommonsChunkPlugin('./example/js/vendor.js')
     ]
 };

@@ -1,4 +1,4 @@
-import { create, element, html, include, once, redux, pathFor } from '../../../src/switzerland';
+import { create, element, html, include, once, redux, pathFor } from '../../../../src/switzerland';
 import { pipe } from 'ramda';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
