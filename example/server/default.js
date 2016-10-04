@@ -31,7 +31,7 @@ app.get('/current', (request, response) => {
 
             const country = model.data.address.country;
             const flagName = country.replace(/\s+/g, '-').toLowerCase();
-            const imagePath = `${__dirname}/example/components/iss-position/images/flags/${flagName}.png`;
+            const imagePath = `${__dirname}/example/js/components/iss-position/images/flags/${flagName}.png`;
             const flag = existsSync(imagePath) ? basename(imagePath) : undefined;
 
             response.send({ people, country, flag, latitude, longitude });

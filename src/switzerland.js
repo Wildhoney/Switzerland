@@ -7,7 +7,7 @@ import { isDevelopment } from './helpers/env';
  * @constant registryKey
  * @type {Symbol}
  */
-const registryKey = Symbol('switzerland/registry');
+export const registryKey = Symbol('switzerland/registry');
 
 /**
  * @method warning
@@ -84,7 +84,7 @@ export const create = (name, render) => {
             // Invoke any ref callbacks defined in the component's `render` method.
             'ref' in props && invokeFor(node);
 
-            this[registryKey] = { node, tree, root };
+            this[registryKey] = { node, tree, root, props };
 
         }
 
@@ -136,7 +136,7 @@ export const create = (name, render) => {
                 // Invoke any ref callbacks defined in the component's `render` method.
                 'ref' in props && invokeFor(node);
 
-                this[registryKey] = { node, tree, root };
+                this[registryKey] = { node, tree, root, props };
 
             }
 
@@ -154,6 +154,7 @@ export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
 export { default as redux } from './middleware/redux';
 export { default as refs } from './middleware/refs';
+export { default as methods } from './middleware/methods';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';
