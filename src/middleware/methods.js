@@ -1,5 +1,5 @@
-import { registryKey } from '../switzerland';
-import once from './once';
+import { memoize } from 'ramda';
+import { registryKey, error } from '../switzerland';
 
 /**
  * @method registerFor
@@ -7,25 +7,28 @@ import once from './once';
  * @param {Object} props
  * @return {void}
  */
-const registerFor = (methods, props) => {
-
-    const { node } = props;
+const registerFor = memoize((nodeName, node, methods) => {
 
     Object.keys(methods).forEach(name => {
 
         const fn = methods[name];
 
-        node[name] = (...args) => {
+        Object.getPrototypeOf(node)[name] = function(...args) {
+
+            if (!(registryKey in this)) {
+                error('You have passed an invalid context when invoking the node method');
+                return;
+            }
 
             // Gather the props that caused the last render of the component.
-            const { props: lastProps } = props.node[registryKey];
-            fn.call(props.node, { ...lastProps, args });
+            const { props: lastProps } = this[registryKey];
+            fn.call(this, { ...lastProps, args });
 
         };
 
     });
 
-};
+});
 
 /**
  * @param {Object} methods
@@ -34,7 +37,7 @@ const registerFor = (methods, props) => {
 export default methods => {
 
     return props => {
-        once(registerFor.bind(null, methods))(props);
+        registerFor(props.node.nodeName, props.node, methods);
         return props;
     };
 

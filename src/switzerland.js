@@ -10,11 +10,25 @@ import { isDevelopment } from './helpers/env';
 export const registryKey = Symbol('switzerland/registry');
 
 /**
- * @method warning
- * @param {String} message
+ * @method message
+ * @param {String} text
+ * @return {String}
+ */
+const message = text => `Switzerland \uD83C\uDDE8\uD83C\uDDED ${text}.`;
+
+/**
+ * @method error
+ * @param {String} text
  * @return {void}
  */
-const warning = message => isDevelopment() && console.warn(`Switzerland \uD83C\uDDE8\uD83C\uDDED ${message}.`);
+export const error = text => isDevelopment() && console.error(message(text));
+
+/**
+ * @method warning
+ * @param {String} text
+ * @return {void}
+ */
+export const warning = text => isDevelopment() && console.warn(message(text));
 
 /**
  * @constant implementations
