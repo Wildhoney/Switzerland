@@ -74,7 +74,7 @@ export const create = (name, render) => {
             const node = this;
             const boundary = implementation.shadowBoundary(node);
 
-            const props = render({ node });
+            const props = render({ node, render: node.render.bind(node) });
             const tree = htmlFor(props);
             const root = createElement(tree);
 
@@ -122,7 +122,7 @@ export const create = (name, render) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            const props = render({ node });
+            const props = render({ node, render: node.render.bind(node) });
             const tree = htmlFor(props);
 
             // Clear any previously defined refs for the current component.
