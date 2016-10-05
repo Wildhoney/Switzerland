@@ -279,7 +279,7 @@ var switzerland =
 	            const node = this;
 	            const boundary = implementation.shadowBoundary(node);
 
-	            const props = render({ node });
+	            const props = render({ node, render: node.render.bind(node) });
 	            const tree = (0, _html.htmlFor)(props);
 	            const root = (0, _virtualDom.create)(tree);
 
@@ -327,7 +327,7 @@ var switzerland =
 	            const node = instance.node;
 
 
-	            const props = render({ node });
+	            const props = render({ node, render: node.render.bind(node) });
 	            const tree = (0, _html.htmlFor)(props);
 
 	            // Clear any previously defined refs for the current component.
