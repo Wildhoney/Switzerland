@@ -55,143 +55,143 @@ module.exports =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.registryKey = undefined;
+	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
 
 	var _html = __webpack_require__(2);
 
 	Object.defineProperty(exports, 'html', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_html).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_html).default;
+	  }
 	});
 
 	var _once = __webpack_require__(3);
 
 	Object.defineProperty(exports, 'once', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_once).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_once).default;
+	  }
 	});
 
 	var _attributes = __webpack_require__(4);
 
 	Object.defineProperty(exports, 'attrs', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_attributes).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_attributes).default;
+	  }
 	});
 
 	var _state = __webpack_require__(7);
 
 	Object.defineProperty(exports, 'state', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_state).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_state).default;
+	  }
 	});
 
 	var _include = __webpack_require__(8);
 
 	Object.defineProperty(exports, 'include', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_include).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_include).default;
+	  }
 	});
 
 	var _redux = __webpack_require__(15);
 
 	Object.defineProperty(exports, 'redux', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_redux).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_redux).default;
+	  }
 	});
 
 	var _refs = __webpack_require__(16);
 
 	Object.defineProperty(exports, 'refs', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_refs).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_refs).default;
+	  }
 	});
 
 	var _methods = __webpack_require__(17);
 
 	Object.defineProperty(exports, 'methods', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_methods).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_methods).default;
+	  }
 	});
 
 	var _events = __webpack_require__(18);
 
 	Object.defineProperty(exports, 'events', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_events).default;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_events).default;
+	  }
 	});
 
 	var _timer = __webpack_require__(19);
 
 	Object.defineProperty(exports, 'time', {
-	    enumerable: true,
-	    get: function () {
-	        return _timer.time;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _timer.time;
+	  }
 	});
 	Object.defineProperty(exports, 'timeEnd', {
-	    enumerable: true,
-	    get: function () {
-	        return _timer.timeEnd;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _timer.timeEnd;
+	  }
 	});
 
 	var _path = __webpack_require__(29);
 
 	Object.defineProperty(exports, 'path', {
-	    enumerable: true,
-	    get: function () {
-	        return _path.path;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _path.path;
+	  }
 	});
 	Object.defineProperty(exports, 'pathFor', {
-	    enumerable: true,
-	    get: function () {
-	        return _path.pathFor;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _path.pathFor;
+	  }
 	});
 
 	var _ramda = __webpack_require__(6);
 
 	Object.defineProperty(exports, 'pipe', {
-	    enumerable: true,
-	    get: function () {
-	        return _ramda.pipe;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _ramda.pipe;
+	  }
 	});
 	Object.defineProperty(exports, 'compose', {
-	    enumerable: true,
-	    get: function () {
-	        return _ramda.compose;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _ramda.compose;
+	  }
 	});
 
 	var _virtualDom = __webpack_require__(30);
 
 	Object.defineProperty(exports, 'element', {
-	    enumerable: true,
-	    get: function () {
-	        return _virtualDom.h;
-	    }
+	  enumerable: true,
+	  get: function () {
+	    return _virtualDom.h;
+	  }
 	});
 
 	var _env = __webpack_require__(65);
@@ -205,12 +205,30 @@ module.exports =
 	const registryKey = exports.registryKey = Symbol('switzerland/registry');
 
 	/**
-	 * @method warning
-	 * @param {String} message
+	 * @method message
+	 * @param {String} text
+	 * @return {String}
+	 */
+	const message = function (text) {
+	  return 'Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.';
+	};
+
+	/**
+	 * @method error
+	 * @param {String} text
 	 * @return {void}
 	 */
-	const warning = function (message) {
-	    return (0, _env.isDevelopment)() && console.warn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + message + '.');
+	const error = exports.error = function (text) {
+	  return (0, _env.isDevelopment)() && console.error(message(text));
+	};
+
+	/**
+	 * @method warning
+	 * @param {String} text
+	 * @return {void}
+	 */
+	const warning = exports.warning = function (text) {
+	  return (0, _env.isDevelopment)() && console.warn(message(text));
 	};
 
 	/**
@@ -219,24 +237,24 @@ module.exports =
 	 */
 	const implementations = {
 
-	    v0: {
-	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: function (name, blueprint) {
-	            return document.registerElement(name, blueprint);
-	        },
-	        shadowBoundary: function (node) {
-	            return node.createShadowRoot();
-	        }
+	  v0: {
+	    hooks: ['attachedCallback', 'detachedCallback'],
+	    customElement: function (name, blueprint) {
+	      return document.registerElement(name, blueprint);
 	    },
-	    v1: {
-	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: function (name, blueprint) {
-	            return window.customElements.define(name, blueprint);
-	        },
-	        shadowBoundary: function (node) {
-	            return node.attachShadow({ mode: 'open' });
-	        }
+	    shadowBoundary: function (node) {
+	      return node.createShadowRoot();
 	    }
+	  },
+	  v1: {
+	    hooks: ['connectedCallback', 'disconnectedCallback'],
+	    customElement: function (name, blueprint) {
+	      return window.customElements.define(name, blueprint);
+	    },
+	    shadowBoundary: function (node) {
+	      return node.attachShadow({ mode: 'open' });
+	    }
+	  }
 
 	};
 
@@ -248,104 +266,104 @@ module.exports =
 	 */
 	const create = exports.create = function (name, render) {
 
-	    /**
-	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
-	     *
-	     * @constant implementation
-	     * @type {Object}
-	     */
-	    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+	  /**
+	   * Determines whether we use the v0 or v1 implementation of Custom Elements.
+	   *
+	   * @constant implementation
+	   * @type {Object}
+	   */
+	  const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+
+	  /**
+	   * @constant blueprint
+	   * @type {Object}
+	   */
+	  implementation.customElement(name, class extends window.HTMLElement {
 
 	    /**
-	     * @constant blueprint
-	     * @type {Object}
+	     * @constructor
 	     */
-	    implementation.customElement(name, class extends window.HTMLElement {
+	    constructor() {
+	      super();
+	      this[registryKey] = {};
+	    }
 
-	        /**
-	         * @constructor
-	         */
-	        constructor() {
-	            super();
-	            this[registryKey] = {};
-	        }
+	    /**
+	     * @method connectedCallback
+	     * @return {void}
+	     */
+	    [implementation.hooks[0]]() {
 
-	        /**
-	         * @method connectedCallback
-	         * @return {void}
-	         */
-	        [implementation.hooks[0]]() {
+	      const node = this;
+	      const boundary = implementation.shadowBoundary(node);
 
-	            const node = this;
-	            const boundary = implementation.shadowBoundary(node);
+	      const props = render({ node, render: node.render.bind(node) });
+	      const tree = (0, _html.htmlFor)(props);
+	      const root = (0, _virtualDom.create)(tree);
 
-	            const props = render({ node, render: node.render.bind(node) });
-	            const tree = (0, _html.htmlFor)(props);
-	            const root = (0, _virtualDom.create)(tree);
+	      // See: https://github.com/Matt-Esch/virtual-dom/pull/413
+	      boundary.appendChild(root);
 
-	            // See: https://github.com/Matt-Esch/virtual-dom/pull/413
-	            boundary.appendChild(root);
+	      // Invoke any ref callbacks defined in the component's `render` method.
+	      'ref' in props && (0, _refs.invokeFor)(node);
 
-	            // Invoke any ref callbacks defined in the component's `render` method.
-	            'ref' in props && (0, _refs.invokeFor)(node);
+	      this[registryKey] = { node, tree, root, props };
+	    }
 
-	            this[registryKey] = { node, tree, root, props };
-	        }
+	    /**
+	     * @method disconnectedCallback
+	     * @return {void}
+	     */
+	    [implementation.hooks[1]]() {
 
-	        /**
-	         * @method disconnectedCallback
-	         * @return {void}
-	         */
-	        [implementation.hooks[1]]() {
+	      // Once the node has been removed then we perform one last pass, however the render function
+	      // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
+	      this.render();
+	    }
 
-	            // Once the node has been removed then we perform one last pass, however the render function
-	            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
-	            this.render();
-	        }
+	    /**
+	     * @method render
+	     * @return {void}
+	     */
+	    render() {
 
-	        /**
-	         * @method render
-	         * @return {void}
-	         */
-	        render() {
+	      const instance = this[registryKey];
 
-	            const instance = this[registryKey];
+	      if (!instance) {
 
-	            if (!instance) {
+	        // Rejected as developer has attempted to re-render during the start-up phase.
+	        // As an alternative we could queue the re-render using `setTimeout` for the next
+	        // tick, but ideally the developer should setup sensible defaults and thus avoid a
+	        // re-render during the start-up phase.
+	        // Queue: setTimeout(this.render.bind(this));
+	        warning('Casually ignoring an attempted re-render during the start-up phase of a component');
+	        return;
+	      }
 
-	                // Rejected as developer has attempted to re-render during the start-up phase.
-	                // As an alternative we could queue the re-render using `setTimeout` for the next
-	                // tick, but ideally the developer should setup sensible defaults and thus avoid a
-	                // re-render during the start-up phase.
-	                // Queue: setTimeout(this.render.bind(this));
-	                warning('Casually ignoring an attempted re-render during the start-up phase of a component');
-	                return;
-	            }
-
-	            const currentTree = instance.tree;
-	            const currentRoot = instance.root;
-	            const node = instance.node;
+	      const currentTree = instance.tree;
+	      const currentRoot = instance.root;
+	      const node = instance.node;
 
 
-	            const props = render({ node, render: node.render.bind(node) });
-	            const tree = (0, _html.htmlFor)(props);
+	      const props = render({ node, render: node.render.bind(node) });
+	      const tree = (0, _html.htmlFor)(props);
 
-	            // Clear any previously defined refs for the current component.
-	            'ref' in props && (0, _refs.purgeFor)(node);
+	      // Clear any previously defined refs for the current component.
+	      'ref' in props && (0, _refs.purgeFor)(node);
 
-	            if (node.isConnected) {
+	      if (node.isConnected) {
 
-	                const patches = (0, _virtualDom.diff)(currentTree, tree);
-	                const root = (0, _virtualDom.patch)(currentRoot, patches);
+	        const patches = (0, _virtualDom.diff)(currentTree, tree);
+	        const root = (0, _virtualDom.patch)(currentRoot, patches);
 
-	                // Invoke any ref callbacks defined in the component's `render` method.
-	                'ref' in props && (0, _refs.invokeFor)(node);
+	        // Invoke any ref callbacks defined in the component's `render` method.
+	        'ref' in props && (0, _refs.invokeFor)(node);
 
-	                this[registryKey] = { node, tree, root, props };
-	            }
-	        }
+	        this[registryKey] = { node, tree, root, props };
+	      }
+	    }
 
-	    });
+	  });
 	};
 
 	// Middleware.
@@ -1344,13 +1362,9 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
+	var _ramda = __webpack_require__(6);
+
 	var _switzerland = __webpack_require__(1);
-
-	var _once = __webpack_require__(3);
-
-	var _once2 = _interopRequireDefault(_once);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * @method registerFor
@@ -1358,23 +1372,26 @@ module.exports =
 	 * @param {Object} props
 	 * @return {void}
 	 */
-	const registerFor = function (methods, props) {
-	    const node = props.node;
-
+	const registerFor = (0, _ramda.memoize)(function (nodeName, node, methods) {
 
 	    Object.keys(methods).forEach(function (name) {
 
 	        const fn = methods[name];
 
-	        node[name] = function (...args) {
+	        Object.getPrototypeOf(node)[name] = function (...args) {
+
+	            if (!(_switzerland.registryKey in this)) {
+	                (0, _switzerland.error)('You have passed an invalid context when invoking the node method');
+	                return;
+	            }
 
 	            // Gather the props that caused the last render of the component.
-	            const lastProps = props.node[_switzerland.registryKey].props;
+	            const lastProps = this[_switzerland.registryKey].props;
 
-	            fn.call(props.node, _extends({}, lastProps, { args }));
+	            fn.call(this, _extends({}, lastProps, { args }));
 	        };
 	    });
-	};
+	});
 
 	/**
 	 * @param {Object} methods
@@ -1384,7 +1401,7 @@ module.exports =
 	exports.default = function (methods) {
 
 	    return function (props) {
-	        (0, _once2.default)(registerFor.bind(null, methods))(props);
+	        registerFor(props.node.nodeName, props.node, methods);
 	        return props;
 	    };
 	};
