@@ -17,22 +17,31 @@ const initialState = {
  * @constant store
  * @type {Object}
  */
-export const store = createStore(locator, applyMiddleware(thunk));
+export const store = createStore(reducer, applyMiddleware(thunk));
 
 /**
- * @method locator
+ * @constant event
+ * @type {Object}
+ */
+export const event = {
+    UPDATE: Symbol('update'),
+    LOADING: Symbol('loading')
+};
+
+/**
+ * @method reducer
  * @param {Object} state
  * @param {Object} action
  * @return {Object}
  */
-function locator(state = initialState, action) {
+function reducer(state = initialState, action) {
 
     switch (action.type) {
 
-        case 'UPDATE':
+        case event.UPDATE:
             return { ...state, ...action.model, updated: Date.now(), loading: false };
 
-        case 'LOADING':
+        case event.LOADING:
             return { ...state, loading: true };
 
         default:
