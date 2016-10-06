@@ -149,13 +149,13 @@ By applying the `state` middleware to the `swiss-cheese` component, we have two 
 Now that we have a functioning `swiss-cheese` component, the next logical step would be applying styles to the component. Switzerland supports attaching CSS and JS files to the component by using the `include` middleware.
 
 ```javascript
-import { create, html, element, pipe, state, include, pathFor } from 'switzerland';
+import { create, html, element, pipe, state, include, path } from 'switzerland';
 
 const initialState = {
     cheeses: ['Swiss', 'Feta', 'Cheddar']
 };
 
-create('swiss-cheese', pipe(state(initialState), include(pathFor('css/swiss-cheese.css')), html(props => {
+create('swiss-cheese', pipe(state(initialState), include(path('css/swiss-cheese.css')), html(props => {
 
     const cheeses = props.state.cheeses;
 
@@ -196,7 +196,7 @@ During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash;
 </swiss-cheese>
 ```
 
-You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `pathFor` function which determines the path of the current component which allows us to handily declare the path to the CSS document relatively. It's worth noting that the `path` constant is simply the path to the current component.
+You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `path` function which determines the path of the current component which allows us to handily declare the path to the CSS document relatively. It's worth noting that `path` has a `toString` function which simply resolves to the current component's path.
 
 ### Redux Migration
 
@@ -207,7 +207,7 @@ While using `state` and `setState` work just fine, the functional approach these
 If you're unsure how Redux works then it's worth [glancing over the docs](http://redux.js.org/), as the intricacies of Redux won't be covered. Assuming we want to keep the same functionality as before, we can simply migrate piece-by-piece until we achieve that.
 
 ```javascript
-import { create, html, element, pipe, redux, include, pathFor } from 'switzerland';
+import { create, html, element, pipe, redux, include, path } from 'switzerland';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -226,7 +226,7 @@ function cheese(state = initialState, action) {
 
 const store = createStore(cheese, applyMiddleware(thunk));
 
-create('swiss-cheese', pipe(redux(store), include(pathFor('css/swiss-cheese.css')), html(props => {
+create('swiss-cheese', pipe(redux(store), include(path('css/swiss-cheese.css')), html(props => {
 
     const cheeses = props.redux.cheeses;
 
@@ -255,7 +255,7 @@ It's worth noting that the `redux` middleware accepts an *optional* second argum
 By migrating our `swiss-cheese` component to Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
 
 ```javascript
-import { create, html, element, pipe, redux, include, methods, pathFor } from 'switzerland';
+import { create, html, element, pipe, redux, include, methods, path } from 'switzerland';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -277,7 +277,7 @@ const store = createStore(cheese, applyMiddleware(thunk));
 // Middleware merges the last rendered `props` with the arguments passed in to `args`.
 const add = props => props.dispatch({ type: 'ADD', cheese: props.args });
 
-create('swiss-cheese', pipe(methods({ add }), redux(store), include(pathFor('css/swiss-cheese.css')), html(props => {
+create('swiss-cheese', pipe(methods({ add }), redux(store), include(path('css/swiss-cheese.css')), html(props => {
 
     const cheeses = props.redux.cheeses;
 
@@ -321,7 +321,7 @@ const storeProps = props => {
     return { ...props, redux: props.redux.getState() };
 };
 
-create('swiss-cheese', pipe(once(localStore), storeProps, include(pathFor('css/swiss-cheese.css')), html(props => {
+create('swiss-cheese', pipe(once(localStore), storeProps, include(path('css/swiss-cheese.css')), html(props => {
 
     const cheeses = props.redux.cheeses;
 

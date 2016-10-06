@@ -7,14 +7,14 @@ import parsePath from 'path-parse';
 const scriptPath = document.currentScript ? parsePath(document.currentScript.getAttribute('src')).dir : './';
 
 /**
- * @constant path
- * @type {String}
- */
-export const path = scriptPath;
-
-/**
- * @method pathFor
+ * @method path
  * @param {String} file
  * @return {String}
  */
-export const pathFor = file => `${scriptPath}/${file}`;
+export const path = file => `${scriptPath}/${file}`;
+
+/**
+ * @method toString
+ * @return {String}
+ */
+path.toString = () => scriptPath;

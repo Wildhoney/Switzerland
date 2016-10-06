@@ -57,7 +57,7 @@ var switzerland =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.pathFor = exports.path = exports.timeEnd = exports.time = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
+	exports.element = exports.compose = exports.pipe = exports.path = exports.timeEnd = exports.time = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -161,12 +161,6 @@ var switzerland =
 	  enumerable: true,
 	  get: function () {
 	    return _path.path;
-	  }
-	});
-	Object.defineProperty(exports, 'pathFor', {
-	  enumerable: true,
-	  get: function () {
-	    return _path.pathFor;
 	  }
 	});
 
@@ -7825,17 +7819,23 @@ var switzerland =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _ramda = __webpack_require__(6);
-
 	var _switzerland = __webpack_require__(1);
 
 	/**
-	 * @method registerFor
+	 * @constant registered
+	 * @type {Set}
+	 */
+	const registered = new Set();
+
+	/**
+	 * @method setPrototypeFor
+	 * @param {HTMLElement} node
 	 * @param {Array} methods
-	 * @param {Object} props
 	 * @return {void}
 	 */
-	const registerFor = (0, _ramda.memoize)(function (nodeName, node, methods) {
+	const setPrototypeFor = function (node, methods) {
+
+	    registered.add(node.nodeName);
 
 	    Object.keys(methods).forEach(function (name) {
 
@@ -7848,13 +7848,14 @@ var switzerland =
 	                return;
 	            }
 
-	            // Gather the props that caused the last render of the component.
+	            // Gather the props that caused the last render of the component, and then invoke
+	            // the prototype function.
 	            const lastProps = this[_switzerland.registryKey].props;
 
-	            fn.call(this, _extends({}, lastProps, { args }));
+	            fn(_extends({}, lastProps, { args }));
 	        };
 	    });
-	});
+	};
 
 	/**
 	 * @param {Object} methods
@@ -7864,7 +7865,11 @@ var switzerland =
 	exports.default = function (methods) {
 
 	    return function (props) {
-	        registerFor(props.node.nodeName, props.node, methods);
+	        const node = props.node;
+
+	        const has = registered.has(node.nodeName);
+	        !has && setPrototypeFor(node, methods);
+
 	        return props;
 	    };
 	};
@@ -8299,7 +8304,7 @@ var switzerland =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.pathFor = exports.path = undefined;
+	exports.path = undefined;
 
 	var _pathParse = __webpack_require__(34);
 
@@ -8314,18 +8319,20 @@ var switzerland =
 	const scriptPath = document.currentScript ? (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir : './';
 
 	/**
-	 * @constant path
-	 * @type {String}
-	 */
-	const path = exports.path = scriptPath;
-
-	/**
-	 * @method pathFor
+	 * @method path
 	 * @param {String} file
 	 * @return {String}
 	 */
-	const pathFor = exports.pathFor = function (file) {
+	const path = exports.path = function (file) {
 	  return scriptPath + '/' + file;
+	};
+
+	/**
+	 * @method toString
+	 * @return {String}
+	 */
+	path.toString = function () {
+	  return scriptPath;
 	};
 
 /***/ },

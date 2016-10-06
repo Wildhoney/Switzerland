@@ -175,7 +175,7 @@ export { default as events } from './middleware/events';
 export { time, timeEnd } from './debug/timer';
 
 // Helpers.
-export { path, pathFor } from './helpers/path';
+export { path } from './helpers/path';
 
 // Third-party.
 export { pipe, compose } from 'ramda';

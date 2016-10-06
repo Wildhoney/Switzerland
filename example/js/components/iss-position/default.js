@@ -1,4 +1,4 @@
-import { create, element, html, include, once, redux, pathFor } from '../../../../src/switzerland';
+import { create, element, html, include, once, redux, path } from '../../../../src/switzerland';
 import { pipe } from 'ramda';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
@@ -19,6 +19,7 @@ const update = () => {
             const model = camelizeKeys(response.data);
             dispatch({ type: event.UPDATE, model });
         });
+
     };
 
 };
@@ -36,10 +37,10 @@ const fetch = once(props => props.dispatch(update()));
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(redux(store), fetch, include(pathFor('css/default.css')), html(props => {
+create('iss-position', pipe(redux(store), fetch, include(path('css/default.css')), html(props => {
 
     const { redux, dispatch } = props;
-    const image = pathFor(`images/flags/${redux.flag}`);
+    const image = path(`images/flags/${redux.flag}`);
 
     return (
         <section>
@@ -60,7 +61,7 @@ create('iss-position', pipe(redux(store), fetch, include(pathFor('css/default.cs
 
                 </span>
 
-            ) : <img className="loading" src={pathFor('images/loading.svg')} />}
+            ) : <img className="loading" src={path('images/loading.svg')} />}
 
             <button
                 className={redux.loading ? 'loading' : ''}
@@ -77,7 +78,7 @@ create('iss-position', pipe(redux(store), fetch, include(pathFor('css/default.cs
 
 })));
 
-create('iss-astronauts', pipe(redux(store), include(pathFor('css/astronauts.css')), html(props => {
+create('iss-astronauts', pipe(redux(store), include(path('css/astronauts.css')), html(props => {
 
     return (
         <div className="astronauts">
