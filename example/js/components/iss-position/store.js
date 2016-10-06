@@ -14,12 +14,6 @@ const initialState = {
 };
 
 /**
- * @constant store
- * @type {Object}
- */
-export const store = createStore(reducer, applyMiddleware(thunk));
-
-/**
  * @constant event
  * @type {Object}
  */
@@ -27,6 +21,12 @@ export const event = {
     UPDATE: Symbol('update'),
     LOADING: Symbol('loading')
 };
+
+/**
+ * @constant store
+ * @type {Object}
+ */
+export const store = createStore(reducer, applyMiddleware(thunk));
 
 /**
  * @method reducer

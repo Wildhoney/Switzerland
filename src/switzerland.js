@@ -170,6 +170,7 @@ export { default as redux } from './middleware/redux';
 export { default as refs } from './middleware/refs';
 export { default as methods } from './middleware/methods';
 export { default as events } from './middleware/events';
+export { default as validate } from './middleware/validate';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';
