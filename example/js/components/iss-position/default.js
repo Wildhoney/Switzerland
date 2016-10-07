@@ -15,7 +15,7 @@ const update = () => {
 
         dispatch({ type: event.LOADING });
 
-        get('/current').then(response => {
+        get('/position').then(response => {
             const model = camelizeKeys(response.data);
             dispatch({ type: event.UPDATE, model });
         });

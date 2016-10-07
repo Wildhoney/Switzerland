@@ -12,7 +12,7 @@ const server = http.createServer(app);
 app.use(express.static(__dirname + '/example'));
 app.use(cors());
 
-app.get('/current', (request, response) => {
+app.get('/position', (request, response) => {
 
     const position = get('http://api.open-notify.org/iss-now.json');
     const astronauts = get('http://api.open-notify.org/astros.json');
@@ -38,9 +38,7 @@ app.get('/current', (request, response) => {
 
             response.send({ people, country, flag, latitude, longitude });
 
-        }).catch(() => {
-            response.send({ people, latitude, longitude });
-        });
+        }).catch(() => response.send({ people, latitude, longitude }));
 
     });
 

@@ -1438,16 +1438,24 @@ module.exports =
 	 */
 	exports.default = function (props) {
 
-	    return _extends({}, props, { event: function (name, model) {
+	    /**
+	     * @method event
+	     * @param {String} name
+	     * @param {Object} model
+	     * @return {void}
+	     */
+	    const event = function (name, model) {
 
-	            const eventName = props.node.nodeName.toLowerCase() + "/" + name;
+	        const eventName = props.node.nodeName.toLowerCase() + "/" + name;
 
-	            props.node.dispatchEvent(new window.CustomEvent(eventName, {
-	                detail: Object.freeze(model),
-	                bubbles: true,
-	                composed: true
-	            }));
-	        } });
+	        props.node.dispatchEvent(new window.CustomEvent(eventName, {
+	            detail: Object.freeze(model),
+	            bubbles: true,
+	            composed: true
+	        }));
+	    };
+
+	    return _extends({}, props, { event });
 	};
 
 /***/ },
