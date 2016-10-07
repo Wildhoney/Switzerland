@@ -284,9 +284,9 @@ As you'll notice, the `events` middleware automatically prepends the current nod
 
 ### Prop Validation
 
-Validating props allows you to ensure your components are used correctly &ndash; if you have used React before, then prop validation [you should already be familiar](https://facebook.github.io/react/docs/reusable-components.html). In Switzerland we can perform prop validation using the `validate` middleware, and using the [`prop-types` documentation](https://github.com/aackerman/PropTypes) for reference.
+Validating props allows you to ensure your components are used correctly &ndash; if you have used React before, then prop validation [should already be familiar](https://facebook.github.io/react/docs/reusable-components.html) to you. In Switzerland we can perform prop validation using the `validate` middleware, along with the [`prop-types` documentation](https://github.com/aackerman/PropTypes) for reference.
 
-In the previous examples we have been referencing `props.redux.cheese` by **assuming** it exists &ndash; however using `validate` we can **assert** that the expected prop exists, otherwise a warning is thrown.
+In the previous examples we have been referencing `props.redux.cheese` by **assuming** it exists &ndash; however using `validate` we can **assert** that it definitely exists otherwise a warning is thrown.
 
 ```javascript
 import { create, html, element, pipe, redux, methods, validate } from 'switzerland';
@@ -300,7 +300,7 @@ const propTypes = {
     }).isRequired
 };
 
-create('swiss-cheese', pipe(validate(propTypes), redux(store), html(props => {
+create('swiss-cheese', pipe(redux(store), validate(propTypes), html(props => {
 
     return (
         <ul>
