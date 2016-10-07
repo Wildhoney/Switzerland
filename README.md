@@ -16,8 +16,9 @@
 
 ## Table of Contents
 
-1. [Browser Support](#browser-support)
-2. [Getting Started](#getting-started)
+1. [Advantages](#advantages)
+2. [Browser Support](#browser-support)
+3. [Getting Started](#getting-started)
   1. [Via Attributes](#via-attributes)
   2. [Using State](#using-state)
   3. [Redux Migration](#redux-migration)
@@ -25,8 +26,20 @@
   5. [Sending Events](#sending-events)
   5. [Prop Validation](#prop-validation)
   6. [Applying Styles](#applying-styles)
-1. [Advanced Usage](#advanced-usage)
+4. [Advanced Usage](#advanced-usage)
   1. [Local Redux](#local-redux)
+  
+## Advantages
+
+[x] Uses [native concepts](https://www.w3.org/TR/custom-elements/) which results in performance and bandwidth gains.
+[x] Components are created using functional `pipe` or `compose` meaning you already know Switzerland.
+[x] All behaviours are applied using lightweight middleware, allowing for the creation of custom middleware.
+[x] As [Switzerland is tiny](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js) there's no esoteric black magic happening.
+[x] Templates are created using [`virtual-dom`](https://github.com/Matt-Esch/virtual-dom) which you're already familiar with.
+[x] Components can be transported anywhere, including vanilla, React, Angular environments.
+[x] Shadow DOM allows for style encapsulation meaning no CSS Modules and/or BEM.
+  
+![Functional](https://cdn-images-1.medium.com/max/800/1*AM83LP9sGGjIul3c5hIsWg.png)
 
 ## Browser Support
 
@@ -37,8 +50,6 @@
 Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elements) and [Shadow DOM](http://caniuse.com/#feat=shadowdom) &mdash; both v0 and v1 implementations are supported by Switzerland.
 
 ## Getting Started
-  
-![Functional](https://cdn-images-1.medium.com/max/800/1*AM83LP9sGGjIul3c5hIsWg.png)
 
 Components are typically defined using [`pipe`](http://ramdajs.com/docs/#pipe) or [`compose`](http://ramdajs.com/docs/#compose) depending on preference &mdash; however for the simplest component all you need to pass is the name of the component and its render function, which contains the [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) or [`virtual-dom/h`](https://github.com/Matt-Esch/virtual-dom#example) markup.
 
@@ -233,7 +244,7 @@ create('swiss-cheese', pipe(methods({ add }), redux(store), html(props => {
 
 > Note: By using the `methods` middleware, the `props` which were used for the current render pass are forwarded to the defined methods.
 
-In the preceding example we are adding **one** method to the `swiss-cheese` component via the `methods` middleware &mdash; `add` &mdash; which will enhance our component with the ability to add cheeses from the outside. We have also removed the ability to add Mozarella from the component itself, and instead placed that ability on the `swiss-cheese` node, which we can invoke once have a reference to the node &ndash; nothing else changed.
+In the preceding example we are adding **one** method to the `swiss-cheese` component via the `methods` middleware &mdash; `add` &mdash; which will enhance our component with the ability to add cheeses once have a reference to the node.
 
 ```javascript
 const swissCheese = document.querySelector('swiss-cheese');
@@ -242,7 +253,7 @@ swissCheese.add('Mozarella');
 
 ### Sending Events
 
-Previously we attached an `add` function to the `HTMLElement.prototype` for our `swiss-cheese` component. However, we may often wish to communicate from within inside our components to the outside world. Using the simple `events` middleware allows us to send events from our component &ndash; although we could quite easily have emitted our own events using `props.node.dispatchEvent`.
+Previously we attached an `add` function to the `HTMLElement.prototype` for our `swiss-cheese` component. However, we may often wish to communicate **from inside our component** to the outside world &ndash; using the simple `events` middleware allows us to achieve just this. It's worth noting that we can easily emit our own events using `props.node.dispatchEvent`.
 
 ```javascript
 import { create, html, element, pipe, redux, methods, events } from 'switzerland';
@@ -273,7 +284,7 @@ create('swiss-cheese', pipe(events, redux(store), html(props => {
 
 > Note: By default events don't cross the shadow boundary unless the event has the `composed: true` option set.
 
-By using the `events` middleware, we gain access to the `event` function in our `props`. Each time our component re-renders an event is dispatched passing all of the current cheeses in the payload &ndash; we then use the native `addEventListener` to listen for these events.
+By using the `events` middleware, we gain access to the `event` function in our `props`. In our example, each time our component re-renders an event is dispatched passing all of the current cheeses in the payload &ndash; we then use the native `addEventListener` to listen for these events.
 
 ```javascript
 const swissCheese = document.querySelector('swiss-cheese');
@@ -284,9 +295,9 @@ As you'll notice, the `events` middleware automatically prepends the current nod
 
 ### Prop Validation
 
-Validating props allows you to ensure your components are used correctly &ndash; if you have used React before, then prop validation [should already be familiar](https://facebook.github.io/react/docs/reusable-components.html) to you. In Switzerland we can perform prop validation using the `validate` middleware, along with the [`prop-types` documentation](https://github.com/aackerman/PropTypes) for reference.
+Validating props allows you to ensure your components are used correctly &ndash; if you have used React before then prop validation [should already be familiar](https://facebook.github.io/react/docs/reusable-components.html) to you. In Switzerland we can perform prop validation using the `validate` middleware, using the [`prop-types` documentation](https://github.com/aackerman/PropTypes#proptypes) for reference.
 
-In the previous examples we have been referencing `props.redux.cheese` by **assuming** it exists &ndash; however using `validate` we can **assert** that it definitely exists otherwise a warning is thrown.
+In the previous examples we have been referencing `props.redux.cheese` by **assuming** it exists &ndash; however using `validate` we can **assert** that it exists otherwise a warning is thrown.
 
 ```javascript
 import { create, html, element, pipe, redux, methods, validate } from 'switzerland';
@@ -323,7 +334,7 @@ create('swiss-cheese', pipe(redux(store), validate(propTypes), html(props => {
 
 > Note: Prop validation **only** works when `NODE_ENV=development` to improve production performance.
 
-As we're using `pipe` to construct our component it matters where we place the `validate` middleware, since we need to ensure the `redux` middleware has added the store props before asserting that they exist. We have asserted that **both** `redux.cheeses` and `dispatch` exist in the component's props, which offers us a certain amount of trust that our component will behave as expected.
+As we're using `pipe` to construct our component it matters where we place the `validate` middleware, since we need to ensure the `redux` middleware has added the store props before asserting that they exist. We have asserted that **both** `redux.cheeses` and `dispatch` exist in the component's props, which offers us a certain amount of confidence that our component will behave as expected.
 
 ### Applying Styles
 

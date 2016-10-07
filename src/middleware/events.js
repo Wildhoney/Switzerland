@@ -4,7 +4,13 @@
  */
 export default props => {
 
-    return { ...props, event: (name, model) => {
+    /**
+     * @method event
+     * @param {String} name
+     * @param {Object} model
+     * @return {void}
+     */
+    const event = (name, model) => {
 
         const eventName = `${props.node.nodeName.toLowerCase()}/${name}`;
 
@@ -14,6 +20,8 @@ export default props => {
             composed: true
         }));
 
-    } };
+    };
+
+    return { ...props, event };
 
 };
