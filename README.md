@@ -129,14 +129,17 @@ create('swiss-cheese', pipe(state(initialState), html(props => {
 
     return (
         <ul>
+        
             {cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
+            
             <li>
-                <a onclick={() => props.setState({ cheeses: ['Mozarella', ...cheeses] })}>
+                <a onclick={() => props.setState({ cheeses: [...cheeses, 'Mozarella'] })}>
                     Add Mozarella
                 </a>
             </li>
+            
         </ul>
     );
 
@@ -175,18 +178,19 @@ const store = createStore(cheese, applyMiddleware(thunk));
 
 create('swiss-cheese', pipe(redux(store), html(props => {
 
-    const cheeses = props.redux.cheeses;
-
     return (
         <ul>
-            {cheeses.map(cheese => {
+        
+            {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
+            
             <li>
                 <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>
+            
         </ul>
     );
 
@@ -209,11 +213,9 @@ const add = props => props.dispatch({ type: 'ADD', cheese: props.args });
 
 create('swiss-cheese', pipe(methods({ add }), redux(store), html(props => {
 
-    const cheeses = props.redux.cheeses;
-
     return (
         <ul>
-            {cheeses.map(cheese => {
+            {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
         </ul>
@@ -241,13 +243,11 @@ import { store } from './the-swiss-cheese-store';
 
 create('swiss-cheese', pipe(events, redux(store), html(props => {
 
-    const cheeses = props.redux.cheeses;
-
-    props.event('all', cheeses);
+    props.event('all', props.redux.cheeses);
 
     return (
         <ul>
-            {cheeses.map(cheese => {
+            {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
         </ul>
@@ -281,14 +281,17 @@ create('swiss-cheese', pipe(redux(store), include(path('css/swiss-cheese.css')),
 
     return (
         <ul>
+        
             {cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
+            
             <li>
-                <a onclick={() => props.setState({ cheeses: ['Mozarella', ...cheeses] })}>
+                <a onclick={() => props.setState({ cheeses: [...cheeses, 'Mozarella'] })}>
                     Add Mozarella
                 </a>
             </li>
+            
         </ul>
     );
 
