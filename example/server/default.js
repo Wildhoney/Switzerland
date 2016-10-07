@@ -1,6 +1,7 @@
 import { basename } from 'path';
 import { existsSync } from 'fs';
 import http from 'http';
+import cors from 'cors';
 import express from 'express';
 import { get, create } from 'axios';
 import { camelizeKeys } from 'humps';
@@ -9,6 +10,7 @@ const app = express();
 const server = http.createServer(app);
 
 app.use(express.static(__dirname + '/example'));
+app.use(cors());
 
 app.get('/current', (request, response) => {
 
