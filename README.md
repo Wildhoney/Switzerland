@@ -20,9 +20,10 @@
 2. [Getting Started](#getting-started)
   1. [Via Attributes](#via-attributes)
   2. [Using State](#using-state)
-  3. [Applying Styles](#applying-styles)
   3. [Redux Migration](#redux-migration)
-  3. [Element Methods](#element-methods)
+  4. [Element Methods](#element-methods)
+  5. [Sending Events](#sending-events)
+  6. [Applying Styles](#applying-styles)
 1. [Advanced Usage](#advanced-usage)
   1. [Local Redux](#local-redux)
 
@@ -144,18 +145,137 @@ create('swiss-cheese', pipe(state(initialState), html(props => {
 
 By applying the `state` middleware to the `swiss-cheese` component, we have two additional properties added to our `props` &ndash; `setState` and `state`. Each **instance of a component** will receive a fresh `state` and thus can be mutated independently regardless of how many `swiss-cheese` nodes there are present in the DOM.
 
-### Applying Styles
+### Redux Migration
 
-Now that we have a functioning `swiss-cheese` component, the next logical step would be applying styles to the component. Switzerland supports attaching CSS and JS files to the component by using the `include` middleware.
+While using `state` and `setState` work just fine, the functional approach these days to managing state is via [Redux](https://github.com/reactjs/redux) which can be enabled in Switzerland by using the tiny `redux` middleware.
+
+> Note: It's worth remembering that **all** middleware should be tiny.
+
+If you're unsure how Redux works then it's worth [glancing over the docs](http://redux.js.org/), as the intricacies of Redux won't be covered. Assuming we want to keep the same functionality as before, we can simply migrate piece-by-piece until we achieve that.
 
 ```javascript
-import { create, html, element, pipe, state, include, path } from 'switzerland';
+import { create, html, element, pipe, redux } from 'switzerland';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 const initialState = {
     cheeses: ['Swiss', 'Feta', 'Cheddar']
 };
 
-create('swiss-cheese', pipe(state(initialState), include(path('css/swiss-cheese.css')), html(props => {
+function cheese(state = initialState, action) {
+
+    switch (action.type) {
+        case 'ADD': return { ...state, cheeses: [action.cheese, ...state.cheeses] };
+        default:    return state;
+    }
+
+}
+
+const store = createStore(cheese, applyMiddleware(thunk));
+
+create('swiss-cheese', pipe(redux(store), html(props => {
+
+    const cheeses = props.redux.cheeses;
+
+    return (
+        <ul>
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+        </ul>
+    );
+
+})));
+```
+
+For the most part the above example is largely Redux boilerplate &ndash; the actual integration with Switzerland occurs in the `redux` middleware which takes the store instance created by Redux's `createStore`. Whenever an event is dispatched &mdash; in our case adding Mozarella &mdash; the `swiss-cheese` component is re-rendered.
+
+It's worth noting that the `redux` middleware accepts an *optional* second argument which acts like React's `shouldComponentUpdate` to avoid reconciling the DOM on `props` that don't affect a component. It passes the updated state as the first argument, followed by the previous state as the second: `state, prevState`. It expects a boolean value to be yielded, where `false` is not to update the component.
+
+### Element Methods
+
+By migrating our `swiss-cheese` component to Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
+
+```javascript
+import { create, html, element, pipe, redux methods } from 'switzerland';
+import { store } from './the-swiss-cheese-store';
+
+const add = props => props.dispatch({ type: 'ADD', cheese: props.args });
+
+create('swiss-cheese', pipe(methods({ add }), redux(store), html(props => {
+
+    const cheeses = props.redux.cheeses;
+
+    return (
+        <ul>
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+        </ul>
+    );
+
+})));
+```
+
+> Note: By using the `methods` middleware, the `props` which were used for the current render pass are forwarded to the defined methods.
+
+In the preceding example we are adding **one** method to the `swiss-cheese` component via the `methods` middleware &mdash; `add` &mdash; which will enhance our component with the ability to add cheeses from the outside. We have also removed the ability to add Mozarella from the component itself, and instead placed that ability on the `swiss-cheese` node, which we can invoke once have a reference to the node &ndash; nothing else changed.
+
+```javascript
+const swissCheese = document.querySelector('swiss-cheese');
+swissCheese.add('Mozarella');
+```
+
+### Sending Events
+
+Previously we attached an `add` function to the `HTMLElement.prototype` for our `swiss-cheese` component. However, we may often wish to communicate from within inside our components to the outside world. Using the simple `events` middleware allows us to send events from our component &ndash; although we could quite easily have emitted our own events using `props.node.dispatchEvent`.
+
+```javascript
+import { create, html, element, pipe, redux, methods, events } from 'switzerland';
+import { store } from './the-swiss-cheese-store';
+
+create('swiss-cheese', pipe(events, redux(store), html(props => {
+
+    const cheeses = props.redux.cheeses;
+
+    props.event('all', cheeses);
+
+    return (
+        <ul>
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+        </ul>
+    );
+
+})));
+```
+
+> Note: By default events don't cross the shadow boundary unless the event has the `composed: true` option set.
+
+By using the `events` middleware, we gain access to the `event` function in our `props`. Each time our component re-renders an event is dispatched passing all of the current cheeses in the payload &ndash; we then use the native `addEventListener` to listen for these events.
+
+```javascript
+const swissCheese = document.querySelector('swiss-cheese');
+swissCheese.addEventListener('swiss-cheese/all', e => console.log(e.detail.cheeses));
+```
+
+As you'll notice, the `events` middleware automatically prepends the current node name to the event &ndash; if this is undesirable behaviour then you should emit your own events using the `Event/CustomEvent` constructor &ndash; please see the [`events` middleware](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/events.js) for guidance.
+
+### Applying Styles
+
+Now that we have a functioning `swiss-cheese` component, the next logical step would be applying styles to the component. Switzerland supports attaching CSS and JS files to the component by using the `include` middleware.
+
+```javascript
+import { create, html, element, pipe, redux, include, path } from 'switzerland';
+import { store } from './the-swiss-cheese-store';
+
+create('swiss-cheese', pipe(redux(store), include(path('css/swiss-cheese.css')), html(props => {
 
     const cheeses = props.state.cheeses;
 
@@ -198,109 +318,6 @@ During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash;
 
 You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `path` function which determines the path of the current component which allows us to handily declare the path to the CSS document relatively. It's worth noting that `path` has a `toString` function which simply resolves to the current component's path.
 
-### Redux Migration
-
-While using `state` and `setState` work just fine, the functional approach these days to managing state is via [Redux](https://github.com/reactjs/redux) which can be enabled in Switzerland by using the tiny `redux` middleware.
-
-> Note: It's worth remembering that **all** middleware should be tiny.
-
-If you're unsure how Redux works then it's worth [glancing over the docs](http://redux.js.org/), as the intricacies of Redux won't be covered. Assuming we want to keep the same functionality as before, we can simply migrate piece-by-piece until we achieve that.
-
-```javascript
-import { create, html, element, pipe, redux, include, path } from 'switzerland';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-
-const initialState = {
-    cheeses: ['Swiss', 'Feta', 'Cheddar']
-};
-
-function cheese(state = initialState, action) {
-
-    switch (action.type) {
-        case 'ADD': return { ...state, cheeses: [action.cheese, ...state.cheeses] };
-        default:    return state;
-    }
-
-}
-
-const store = createStore(cheese, applyMiddleware(thunk));
-
-create('swiss-cheese', pipe(redux(store), include(path('css/swiss-cheese.css')), html(props => {
-
-    const cheeses = props.redux.cheeses;
-
-    return (
-        <ul>
-            {cheeses.map(cheese => {
-                return <li>{cheese}</li>
-            })}
-            <li>
-                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
-                    Add Mozarella
-                </a>
-            </li>
-        </ul>
-    );
-
-})));
-```
-
-For the most part the above example is largely Redux boilerplate &ndash; the actual integration with Switzerland occurs in the `redux` middleware which takes the store instance created by Redux's `createStore`. Whenever an event is dispatched &mdash; in our case adding Mozarella &mdash; the `swiss-cheese` component is re-rendered.
-
-It's worth noting that the `redux` middleware accepts an *optional* second argument which acts like React's `shouldComponentUpdate` to avoid reconciling the DOM on `props` that don't affect a component. It passes the updated state as the first argument, followed by the previous state as the second: `state, prevState`. It expects a boolean value to be yielded, where `false` is not to update the component.
-
-### Element Methods
-
-By migrating our `swiss-cheese` component to Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
-
-```javascript
-import { create, html, element, pipe, redux, include, methods, path } from 'switzerland';
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-
-const initialState = {
-    cheeses: ['Swiss', 'Feta', 'Cheddar']
-};
-
-function cheese(state = initialState, action) {
-
-    switch (action.type) {
-        case 'ADD': return { ...state, cheeses: [action.cheese, ...state.cheeses] };
-        default:    return state;
-    }
-
-}
-
-const store = createStore(cheese, applyMiddleware(thunk));
-
-// Middleware merges the last rendered `props` with the arguments passed in to `args`.
-const add = props => props.dispatch({ type: 'ADD', cheese: props.args });
-
-create('swiss-cheese', pipe(methods({ add }), redux(store), include(path('css/swiss-cheese.css')), html(props => {
-
-    const cheeses = props.redux.cheeses;
-
-    return (
-        <ul>
-            {cheeses.map(cheese => {
-                return <li>{cheese}</li>
-            })}
-        </ul>
-    );
-
-})));
-```
-
-> Note: By using the `methods` middleware, the `props` which were used for the current render pass are forwarded to the defined methods.
-
-In the preceding example we are adding **one** method to the `swiss-cheese` component via the `methods` middleware &mdash; `add` &mdash; which will enhance our component with the ability to add cheeses from the outside. We have also removed the ability to add Mozarella from the component itself, and instead placed that ability on the `swiss-cheese` node, which we can invoke once have a reference to the node &ndash; nothing else changed.
-
-```javascript
-const swissCheese = document.querySelector('swiss-cheese');
-swissCheese.add('Mozarella');
-```
-
 ## Advanced Usage
 
 ![Screenshot](media/screenshot-advanced.png)
@@ -321,7 +338,7 @@ const storeProps = props => {
     return { ...props, redux: props.redux.getState() };
 };
 
-create('swiss-cheese', pipe(once(localStore), storeProps, include(path('css/swiss-cheese.css')), html(props => {
+create('swiss-cheese', pipe(once(localStore), storeProps, html(props => {
 
     const cheeses = props.redux.cheeses;
 
