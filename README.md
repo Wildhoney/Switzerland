@@ -31,13 +31,13 @@
   
 ## Advantages
 
-[x] Uses [native concepts](https://www.w3.org/TR/custom-elements/) which results in performance and bandwidth gains.
-[x] Components are created using functional `pipe` or `compose` meaning you already know Switzerland.
-[x] All behaviours are applied using lightweight middleware, allowing for the creation of custom middleware.
-[x] As [Switzerland is tiny](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js) there's no esoteric black magic happening.
-[x] Templates are created using [`virtual-dom`](https://github.com/Matt-Esch/virtual-dom) which you're already familiar with.
-[x] Components can be transported anywhere, including vanilla, React, Angular environments.
-[x] Shadow DOM allows for style encapsulation meaning no CSS Modules and/or BEM.
+- [x] Uses [native concepts](https://www.w3.org/TR/custom-elements/) which results in performance and bandwidth gains.
+- [x] Components are created using functional `pipe` or `compose` meaning you already know Switzerland.
+- [x] All behaviours are applied using lightweight middleware, allowing for the creation of custom middleware.
+- [x] As [Switzerland is tiny](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js) there's no esoteric black magic happening.
+- [x] Templates are created using [`virtual-dom`](https://github.com/Matt-Esch/virtual-dom) which you're already familiar with.
+- [x] Components can be transported anywhere, including vanilla, React, Angular environments.
+- [x] Shadow DOM allows for style encapsulation meaning no CSS Modules and/or BEM.
   
 ![Functional](https://cdn-images-1.medium.com/max/800/1*AM83LP9sGGjIul3c5hIsWg.png)
 
