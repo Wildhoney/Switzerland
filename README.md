@@ -34,7 +34,7 @@
 - [x] Uses [native concepts](https://www.w3.org/TR/custom-elements/) which results in performance and bandwidth gains.
 - [x] Components are created using functional `pipe` or `compose` meaning you already know Switzerland.
 - [x] All behaviours are applied using lightweight middleware, allowing for the creation of custom middleware.
-- [x] As [Switzerland is tiny](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js) there's no esoteric black magic happening.
+- [x] As [Switzerland is tiny](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js) there's no esoteric black magic happening behind the scenes.
 - [x] Templates are created using [`virtual-dom`](https://github.com/Matt-Esch/virtual-dom) which you're already familiar with.
 - [x] Components can be transported anywhere, including vanilla, React, Angular environments.
 - [x] Shadow DOM allows for style encapsulation meaning no CSS Modules and/or BEM.
@@ -82,7 +82,7 @@ document.body.appendChild(swissCheese);
 
 ### Via Attributes
 
-Needless to say that our `swiss-cheese` component is fairly uninteresting as it never updates. Switzerland allows you to add behaviours to your components by applying middleware via `pipe` or `compose`. Middleware allows you to incrementally compose an object of `props` to pass into your component.
+Needless to say that our static `swiss-cheese` component is fairly uninteresting as it never updates. Switzerland allows you to add behaviours to your components by applying middleware via `pipe` or `compose`. Middleware allows you to incrementally compose an object of `props` to pass into your component.
 
 Let's allow our users to add cheeses to our `swiss-cheese` component by updating the element's attributes &mdash; for this we can either build our own, or use the pre-existing `attrs` middleware.
 
