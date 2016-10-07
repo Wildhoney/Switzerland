@@ -23,6 +23,7 @@
   3. [Redux Migration](#redux-migration)
   4. [Element Methods](#element-methods)
   5. [Sending Events](#sending-events)
+  5. [Prop Validation](#prop-validation)
   6. [Applying Styles](#applying-styles)
 1. [Advanced Usage](#advanced-usage)
   1. [Local Redux](#local-redux)
@@ -209,15 +210,21 @@ By migrating our `swiss-cheese` component to Redux we immediately lost the abili
 import { create, html, element, pipe, redux methods } from 'switzerland';
 import { store } from './the-swiss-cheese-store';
 
-const add = props => props.dispatch({ type: 'ADD', cheese: props.args });
-
 create('swiss-cheese', pipe(methods({ add }), redux(store), html(props => {
 
     return (
         <ul>
+        
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
+            
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+            
         </ul>
     );
 
@@ -247,9 +254,17 @@ create('swiss-cheese', pipe(events, redux(store), html(props => {
 
     return (
         <ul>
+        
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
+            
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+            
         </ul>
     );
 
@@ -266,6 +281,49 @@ swissCheese.addEventListener('swiss-cheese/all', e => console.log(e.detail.chees
 ```
 
 As you'll notice, the `events` middleware automatically prepends the current node name to the event &ndash; if this is undesirable behaviour then you should emit your own events using the `Event/CustomEvent` constructor &ndash; please see the [`events` middleware](https://github.com/Wildhoney/Switzerland/blob/master/src/middleware/events.js) for guidance.
+
+### Prop Validation
+
+Validating props allows you to ensure your components are used correctly &ndash; if you have used React before, then prop validation [you should already be familiar](https://facebook.github.io/react/docs/reusable-components.html). In Switzerland we can perform prop validation using the `validate` middleware, and using the [`prop-types` documentation](https://github.com/aackerman/PropTypes) for reference.
+
+In the previous examples we have been referencing `props.redux.cheese` by **assuming** it exists &ndash; however using `validate` we can **assert** that the expected prop exists, otherwise a warning is thrown.
+
+```javascript
+import { create, html, element, pipe, redux, methods, validate } from 'switzerland';
+import PropTypes from 'prop-types';
+import { store } from './the-swiss-cheese-store';
+
+const propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    redux: PropTypes.shape({
+        cheeses: PropTypes.array.isRequired
+    }).isRequired
+};
+
+create('swiss-cheese', pipe(validate(propTypes), redux(store), html(props => {
+
+    return (
+        <ul>
+        
+            {props.redux.cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+            
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+            
+        </ul>
+    );
+
+})));
+```
+
+> Note: Prop validation **only** works when `NODE_ENV=development` to improve production performance.
+
+As we're using `pipe` to construct our component it matters where we place the `validate` middleware, since we need to ensure the `redux` middleware has added the store props before asserting that they exist. We have asserted that **both** `redux.cheeses` and `dispatch` exist in the component's props, which offers us a certain amount of trust that our component will behave as expected.
 
 ### Applying Styles
 
