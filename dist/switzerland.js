@@ -262,6 +262,15 @@ module.exports =
 	};
 
 	/**
+	 * @method clearFor
+	 * @param {HTMLElement} node
+	 * @return {void}
+	 */
+	const clearFor = function (node) {
+	  return node.shadowRoot.innerHTML = '';
+	};
+
+	/**
 	 * @method create
 	 * @param {String} name
 	 * @param {Function} render
@@ -298,7 +307,9 @@ module.exports =
 	    [implementation.hooks[0]]() {
 
 	      const node = this;
-	      const boundary = implementation.shadowBoundary(node);
+	      node.shadowRoot && clearFor(node);
+
+	      const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
 	      const props = render({ node, render: node.render.bind(node) });
 	      const tree = (0, _html.htmlFor)(props);
@@ -318,6 +329,9 @@ module.exports =
 	     * @return {void}
 	     */
 	    [implementation.hooks[1]]() {
+
+	      const node = this;
+	      clearFor(node);
 
 	      // Once the node has been removed then we perform one last pass, however the render function
 	      // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
@@ -354,16 +368,17 @@ module.exports =
 	      // Clear any previously defined refs for the current component.
 	      'ref' in props && (0, _refs.purgeFor)(node);
 
-	      if (node.isConnected) {
+	      // if (node.isConnected) {
 
-	        const patches = (0, _virtualDom.diff)(currentTree, tree);
-	        const root = (0, _virtualDom.patch)(currentRoot, patches);
+	      const patches = (0, _virtualDom.diff)(currentTree, tree);
+	      const root = (0, _virtualDom.patch)(currentRoot, patches);
 
-	        // Invoke any ref callbacks defined in the component's `render` method.
-	        'ref' in props && (0, _refs.invokeFor)(node);
+	      // Invoke any ref callbacks defined in the component's `render` method.
+	      'ref' in props && (0, _refs.invokeFor)(node);
 
-	        this[registryKey] = { node, tree, root, props };
-	      }
+	      this[registryKey] = { node, tree, root, props };
+
+	      // }
 	    }
 
 	  });
