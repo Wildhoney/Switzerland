@@ -50,6 +50,13 @@ const implementations = {
 };
 
 /**
+ * @method clearFor
+ * @param {HTMLElement} node
+ * @return {void}
+ */
+const clearFor = node => node.shadowRoot.innerHTML = '';
+
+/**
  * @method create
  * @param {String} name
  * @param {Function} render
@@ -86,7 +93,9 @@ export const create = (name, render) => {
         [implementation.hooks[0]]() {
 
             const node = this;
-            const boundary = implementation.shadowBoundary(node);
+            node.shadowRoot && clearFor(node);
+
+            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
             const props = render({ node, render: node.render.bind(node) });
             const tree = htmlFor(props);
@@ -107,6 +116,9 @@ export const create = (name, render) => {
          * @return {void}
          */
         [implementation.hooks[1]]() {
+
+            const node = this;
+            clearFor(node);
 
             // Once the node has been removed then we perform one last pass, however the render function
             // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
@@ -142,7 +154,7 @@ export const create = (name, render) => {
             // Clear any previously defined refs for the current component.
             'ref' in props && purgeFor(node);
 
-            if (node.isConnected) {
+            // if (node.isConnected) {
 
                 const patches = diff(currentTree, tree);
                 const root = patch(currentRoot, patches);
@@ -152,7 +164,7 @@ export const create = (name, render) => {
 
                 this[registryKey] = { node, tree, root, props };
 
-            }
+            // }
 
         }
 
