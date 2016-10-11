@@ -262,12 +262,12 @@ module.exports =
 	};
 
 	/**
-	 * @method clearFor
+	 * @method clearHTMLFor
 	 * @param {HTMLElement} node
 	 * @return {void}
 	 */
-	const clearFor = function (node) {
-	  return node.shadowRoot.innerHTML = '';
+	const clearHTMLFor = function (node) {
+	  node.shadowRoot.innerHTML = '';
 	};
 
 	/**
@@ -307,7 +307,7 @@ module.exports =
 	    [implementation.hooks[0]]() {
 
 	      const node = this;
-	      node.shadowRoot && clearFor(node);
+	      node.shadowRoot && clearHTMLFor(node);
 
 	      const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
@@ -330,8 +330,7 @@ module.exports =
 	     */
 	    [implementation.hooks[1]]() {
 
-	      const node = this;
-	      clearFor(node);
+	      clearHTMLFor(this);
 
 	      // Once the node has been removed then we perform one last pass, however the render function
 	      // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
@@ -368,17 +367,16 @@ module.exports =
 	      // Clear any previously defined refs for the current component.
 	      'ref' in props && (0, _refs.purgeFor)(node);
 
-	      // if (node.isConnected) {
+	      if (node.isConnected) {
 
-	      const patches = (0, _virtualDom.diff)(currentTree, tree);
-	      const root = (0, _virtualDom.patch)(currentRoot, patches);
+	        const patches = (0, _virtualDom.diff)(currentTree, tree);
+	        const root = (0, _virtualDom.patch)(currentRoot, patches);
 
-	      // Invoke any ref callbacks defined in the component's `render` method.
-	      'ref' in props && (0, _refs.invokeFor)(node);
+	        // Invoke any ref callbacks defined in the component's `render` method.
+	        'ref' in props && (0, _refs.invokeFor)(node);
 
-	      this[registryKey] = { node, tree, root, props };
-
-	      // }
+	        this[registryKey] = { node, tree, root, props };
+	      }
 	    }
 
 	  });
@@ -760,6 +758,8 @@ module.exports =
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _ramda = __webpack_require__(6);
 
 	var _axios = __webpack_require__(9);
@@ -776,13 +776,11 @@ module.exports =
 
 	var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _once = __webpack_require__(3);
 
-	/**
-	 * @constant includes
-	 * @type {WeakMap}
-	 */
-	const includes = new WeakMap();
+	var _once2 = _interopRequireDefault(_once);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * @constant includeMap
@@ -821,11 +819,11 @@ module.exports =
 	});
 
 	/**
-	 * @method attach
-	 * @param files {Array|String}
+	 * @method fetchIncludes
+	 * @param {Array} files
 	 * @return {Promise}
 	 */
-	const attach = function (files) {
+	const fetchIncludes = function (files) {
 
 	    // Group all of the files by their extension.
 	    const groupedFiles = (0, _ramda.groupBy)(function (file) {
@@ -864,50 +862,46 @@ module.exports =
 	};
 
 	/**
-	 * @param {Array|String} attachFiles
+	 * @method attachFiles
+	 * @param props {Object}
+	 * @return {void}
+	 */
+	const attachFiles = (0, _once2.default)(function (props) {
+	    const node = props.node;
+	    const files = props.files;
+
+	    const boundary = node.shadowRoot;
+
+	    if (files.length) {
+
+	        node.classList.add('resolving');
+	        node.classList.remove('resolved');
+
+	        fetchIncludes(files).then(function (nodes) {
+
+	            // Remove any `null` values which means the content of the file was empty, and then append
+	            // them to the component's shadow boundary.
+	            nodes.filter(_ramda.identity).forEach(function (node) {
+	                return boundary.appendChild(node);
+	            });
+
+	            node.classList.add('resolved');
+	            node.classList.remove('resolving');
+	        });
+	    }
+	});
+
+	/**
+	 * @param {Array|String} files
 	 * @return {Function}
 	 */
 
-	exports.default = function (...attachFiles) {
-
-	    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
+	exports.default = function (...files) {
 
 	    return function (props) {
-	        const node = props.node;
 
-
-	        if (node.isConnected) {
-
-	            const boundary = node.shadowRoot;
-
-	            const hasCurrent = includes.has(node);
-	            !hasCurrent && includes.set(node, []);
-	            const current = includes.get(node);
-
-	            // We don't want to load the same files again, so we'll see what was previously loaded.
-	            const addedFiles = (0, _ramda.difference)(files, current);
-
-	            // Memorise the current set of files.
-	            includes.set(node, files);
-
-	            if (addedFiles.length) {
-
-	                node.classList.add('resolving');
-	                node.classList.remove('resolved');
-
-	                attach(addedFiles).then(function (nodes) {
-
-	                    // Remove any `null` values which means the content of the file was empty, and then append
-	                    // them to the component's shadow boundary.
-	                    nodes.filter(_ramda.identity).forEach(function (node) {
-	                        return boundary.appendChild(node);
-	                    });
-
-	                    node.classList.add('resolved');
-	                    node.classList.remove('resolving');
-	                });
-	            }
-	        }
+	        // Attach the documents using the `once` middleware.
+	        attachFiles(_extends({}, props, { files: Array.isArray(files) ? files : [files] }));
 
 	        return props;
 	    };
