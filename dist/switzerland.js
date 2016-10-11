@@ -210,10 +210,11 @@ module.exports =
 	/**
 	 * @method message
 	 * @param {String} text
-	 * @return {String}
+	 * @param {Function} fn
+	 * @return {void}
 	 */
-	const message = function (text) {
-	  return 'Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.';
+	const message = function (text, fn) {
+	  return (0, _env.isDevelopment)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
 	};
 
 	/**
@@ -222,7 +223,7 @@ module.exports =
 	 * @return {void}
 	 */
 	const error = exports.error = function (text) {
-	  return (0, _env.isDevelopment)() && console.error(message(text));
+	  return message(text, console.error);
 	};
 
 	/**
@@ -231,7 +232,7 @@ module.exports =
 	 * @return {void}
 	 */
 	const warning = exports.warning = function (text) {
-	  return (0, _env.isDevelopment)() && console.warn(message(text));
+	  return message(text, console.warning);
 	};
 
 	/**
