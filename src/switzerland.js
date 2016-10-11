@@ -12,23 +12,24 @@ export const registryKey = Symbol('switzerland/registry');
 /**
  * @method message
  * @param {String} text
- * @return {String}
+ * @param {Function} fn
+ * @return {void}
  */
-const message = text => `Switzerland \uD83C\uDDE8\uD83C\uDDED ${text}.`;
+const message = (text, fn) => isDevelopment() && fn(`Switzerland \uD83C\uDDE8\uD83C\uDDED ${text}.`);
 
 /**
  * @method error
  * @param {String} text
  * @return {void}
  */
-export const error = text => isDevelopment() && console.error(message(text));
+export const error = text => message(text, console.error);
 
 /**
  * @method warning
  * @param {String} text
  * @return {void}
  */
-export const warning = text => isDevelopment() && console.warn(message(text));
+export const warning = text => message(text, console.warning);
 
 /**
  * @constant implementations
