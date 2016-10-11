@@ -50,11 +50,13 @@ const implementations = {
 };
 
 /**
- * @method clearFor
+ * @method clearHTMLFor
  * @param {HTMLElement} node
  * @return {void}
  */
-const clearFor = node => node.shadowRoot.innerHTML = '';
+const clearHTMLFor = node => {
+    node.shadowRoot.innerHTML = '';
+};
 
 /**
  * @method create
@@ -93,7 +95,7 @@ export const create = (name, render) => {
         [implementation.hooks[0]]() {
 
             const node = this;
-            node.shadowRoot && clearFor(node);
+            node.shadowRoot && clearHTMLFor(node);
 
             const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
@@ -117,7 +119,7 @@ export const create = (name, render) => {
          */
         [implementation.hooks[1]]() {
 
-            clearFor(this);
+            clearHTMLFor(this);
 
             // Once the node has been removed then we perform one last pass, however the render function
             // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.

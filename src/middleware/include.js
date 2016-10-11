@@ -1,14 +1,9 @@
-import { difference, identity, memoize, groupBy } from 'ramda';
+import { identity, memoize, groupBy } from 'ramda';
 import { get as fetch } from 'axios';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
-
-/**
- * @constant includes
- * @type {WeakMap}
- */
-const includes = new WeakMap();
+import once from './once';
 
 /**
  * @constant includeMap
@@ -49,11 +44,11 @@ const fetchInclude = memoize(file => {
 });
 
 /**
- * @method attach
- * @param files {Array|String}
+ * @method fetchIncludes
+ * @param {Array} files
  * @return {Promise}
  */
-const attach = files => {
+const fetchIncludes = files => {
 
     // Group all of the files by their extension.
     const groupedFiles = groupBy(file => file.extension)(files.map(path => ({ path, extension: path.split('.').pop() })));
@@ -83,50 +78,45 @@ const attach = files => {
 };
 
 /**
- * @param {Array|String} attachFiles
+ * @method attachFiles
+ * @param props {Object}
+ * @return {void}
+ */
+const attachFiles = once(props => {
+
+    const { node, files } = props;
+    const boundary = node.shadowRoot;
+
+    if (files.length) {
+
+        node.classList.add('resolving');
+        node.classList.remove('resolved');
+
+        fetchIncludes(files).then(nodes => {
+
+            // Remove any `null` values which means the content of the file was empty, and then append
+            // them to the component's shadow boundary.
+            nodes.filter(identity).forEach(node => boundary.appendChild(node));
+
+            node.classList.add('resolved');
+            node.classList.remove('resolving');
+
+        });
+
+    }
+
+});
+
+/**
+ * @param {Array|String} files
  * @return {Function}
  */
-export default (...attachFiles) => {
-
-    const files = Array.isArray(attachFiles) ? attachFiles : [attachFiles];
+export default (...files) => {
 
     return props => {
 
-        const { node } = props;
-
-        if (node.isConnected) {
-
-            const boundary = node.shadowRoot;
-
-            const hasCurrent = includes.has(node);
-            !hasCurrent && includes.set(node, []);
-            const current = includes.get(node);
-
-            // We don't want to load the same files again, so we'll see what was previously loaded.
-            const addedFiles = difference(files, current);
-
-            // Memorise the current set of files.
-            includes.set(node, files);
-
-            if (addedFiles.length) {
-
-                node.classList.add('resolving');
-                node.classList.remove('resolved');
-
-                attach(addedFiles).then(nodes => {
-
-                    // Remove any `null` values which means the content of the file was empty, and then append
-                    // them to the component's shadow boundary.
-                    nodes.filter(identity).forEach(node => boundary.appendChild(node));
-
-                    node.classList.add('resolved');
-                    node.classList.remove('resolving');
-
-                });
-
-            }
-
-        }
+        // Attach the documents using the `once` middleware.
+        attachFiles({ ...props, files: Array.isArray(files) ? files : [files] });
 
         return props;
 
