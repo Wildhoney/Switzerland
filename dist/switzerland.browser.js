@@ -232,7 +232,7 @@ var switzerland =
 	 * @return {void}
 	 */
 	const warning = exports.warning = function (text) {
-	  return message(text, console.warning);
+	  return message(text, console.warn);
 	};
 
 	/**
