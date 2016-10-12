@@ -13,6 +13,20 @@ const cacheList = [
     /\.png$/
 ];
 
+/**
+ * @constant timeout
+ * @param {Number} milliseconds
+ * @return {Promise}
+ */
+const timeout = milliseconds => {
+
+    return new Promise((resolve, reject) => {
+        const statusText = 'Request timed out.';
+        setTimeout(() => reject(new Response({ status: 408, statusText })), milliseconds);
+    });
+
+};
+
 (function main(caches, worker) {
 
     // worker.addEventListener('activate', () => {
@@ -50,7 +64,7 @@ const cacheList = [
 
         event.respondWith(caches.open(CACHE_NAME).then(cache => {
 
-            return fetch(request).then(networkResponse => {
+            return Promise.race([fetch(request), timeout(1000)]).then(networkResponse => {
 
                 if (cacheList.some(r => r.test(request.url))) {
                     cache.put(request, networkResponse.clone());
