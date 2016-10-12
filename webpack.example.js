@@ -2,7 +2,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        './example/js/components/iss-position/build': ['./example/js/components/iss-position/default.js'],
+        './example/js/components/iss-position/build': ['./example/js/components/iss-position/js/default.js'],
         './example/js/vendor': ['./src/switzerland']
     },
     output: {

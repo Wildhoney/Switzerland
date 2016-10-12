@@ -29,7 +29,7 @@ export const error = text => message(text, console.error);
  * @param {String} text
  * @return {void}
  */
-export const warning = text => message(text, console.warning);
+export const warning = text => message(text, console.warn);
 
 /**
  * @constant implementations

@@ -9,6 +9,11 @@ import { camelizeKeys } from 'humps';
 const app = express();
 const server = http.createServer(app);
 
+app.get('/*',(req, res, next) => {
+    res.set('Service-Worker-Allowed', '/');
+    next();
+});
+
 app.use(express.static(__dirname + '/example'));
 app.use(cors());
 
