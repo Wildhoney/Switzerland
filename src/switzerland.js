@@ -191,7 +191,7 @@ export { time, timeEnd } from './debug/timer';
 
 // Helpers.
 export { path } from './helpers/path';
+export { pipe, compose } from './helpers/composition';
 
 // Third-party.
-export { pipe, compose } from 'ramda';
 export { h as element } from 'virtual-dom';
