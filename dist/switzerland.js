@@ -243,8 +243,8 @@ module.exports =
 
 	    v0: {
 	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: function (tag, blueprint) {
-	            return document.registerElement(tag, blueprint);
+	        customElement: function (tag, component) {
+	            return document.registerElement(tag, component);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.createShadowRoot();
@@ -252,8 +252,8 @@ module.exports =
 	    },
 	    v1: {
 	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: function (tag, blueprint) {
-	            return window.customElements.define(tag, blueprint);
+	        customElement: function (tag, component) {
+	            return window.customElements.define(tag, component);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.attachShadow({ mode: 'open' });
@@ -285,10 +285,11 @@ module.exports =
 	     * @constant implementation
 	     * @type {Object}
 	     */
-	    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+	    // const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+	    const implementation = implementations.v1;
 
 	    /**
-	     * @constant blueprint
+	     * @constant component
 	     * @type {Object}
 	     */
 	    implementation.customElement(tag, class extends window.HTMLElement {
@@ -350,7 +351,7 @@ module.exports =
 
 	            const instance = this[registryKey];
 
-	            if (!instance) {
+	            if (!instance || !instance.node) {
 
 	                // Rejected as developer has attempted to re-render during the start-up phase.
 	                // As an alternative we could queue the re-render using `setTimeout` for the next

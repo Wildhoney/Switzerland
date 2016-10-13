@@ -243,8 +243,8 @@
 
 	    v0: {
 	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: function (tag, blueprint) {
-	            return document.registerElement(tag, blueprint);
+	        customElement: function (tag, component) {
+	            return document.registerElement(tag, component);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.createShadowRoot();
@@ -252,8 +252,8 @@
 	    },
 	    v1: {
 	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: function (tag, blueprint) {
-	            return window.customElements.define(tag, blueprint);
+	        customElement: function (tag, component) {
+	            return window.customElements.define(tag, component);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.attachShadow({ mode: 'open' });
@@ -285,10 +285,11 @@
 	     * @constant implementation
 	     * @type {Object}
 	     */
-	    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+	    // const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+	    const implementation = implementations.v1;
 
 	    /**
-	     * @constant blueprint
+	     * @constant component
 	     * @type {Object}
 	     */
 	    implementation.customElement(tag, class extends window.HTMLElement {
@@ -350,7 +351,7 @@
 
 	            const instance = this[registryKey];
 
-	            if (!instance) {
+	            if (!instance || !instance.node) {
 
 	                // Rejected as developer has attempted to re-render during the start-up phase.
 	                // As an alternative we could queue the re-render using `setTimeout` for the next
@@ -19127,13 +19128,11 @@
 
 	(function main(caches, worker) {
 
-	    console.log('Hi!');
-
 	    worker.addEventListener('install', function (event) {
 
 	        return event.waitUntil(caches.open(CACHE_NAME).then(function (cache) {
 
-	            return cache.addAll(['/', '/position', '/favicon.ico', '/default.css', '/js/vendor.js', (0, _switzerland.path)('build.js'), (0, _switzerland.path)('css/default.css'), (0, _switzerland.path)('css/astronauts.css'), (0, _switzerland.path)('images/earth.jpg'), (0, _switzerland.path)('images/loading.svg')]);
+	            return cache.addAll(['/', '/favicon.ico', '/default.css', '/js/vendor.js', (0, _switzerland.path)('build.js'), (0, _switzerland.path)('css/default.css'), (0, _switzerland.path)('css/astronauts.css'), (0, _switzerland.path)('images/earth.jpg'), (0, _switzerland.path)('images/loading.svg')]);
 	        }));
 	    });
 
@@ -19145,7 +19144,7 @@
 	            return false;
 	        }
 
-	        event.respondWith(caches.open(CACHE_NAME).then(function (cache) {
+	        return event.respondWith(caches.open(CACHE_NAME).then(function (cache) {
 
 	            return fetch(request).then(function (networkResponse) {
 

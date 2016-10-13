@@ -52,6 +52,11 @@ img.flag {
     width: 20%;
 }
 
+img.ocean {
+    width: 20vmin;
+    margin-top: 5vmin;
+}
+
 label {
     font: normal 100 2vmin/3vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
 }

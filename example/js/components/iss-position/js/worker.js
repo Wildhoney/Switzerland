@@ -17,15 +17,12 @@ const cacheList = [
 
 (function main(caches, worker) {
 
-    console.log('Hi!');
-
     worker.addEventListener('install', event => {
 
         return event.waitUntil(caches.open(CACHE_NAME).then(cache => {
 
             return cache.addAll([
                 '/',
-                '/position',
                 '/favicon.ico',
                 '/default.css',
                 '/js/vendor.js',
@@ -48,7 +45,7 @@ const cacheList = [
             return false;
         }
 
-        event.respondWith(caches.open(CACHE_NAME).then(cache => {
+        return event.respondWith(caches.open(CACHE_NAME).then(cache => {
 
             return fetch(request).then(networkResponse => {
 

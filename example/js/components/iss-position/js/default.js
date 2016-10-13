@@ -1,4 +1,4 @@
-import { create, element, html, include, once, redux, path, pipe } from '../../../../../src/switzerland';
+import { create, element, html, attrs, include, once, redux, path, pipe } from '../../../../../src/switzerland';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
 import moment from 'moment';
@@ -6,25 +6,21 @@ import { store, event } from './store';
 
 /**
  * @method update
+ * @param {Number} timeout
  * @return {Function}
  */
-const update = () => {
+const update = timeout => {
 
     return dispatch => {
 
         dispatch({ type: event.LOADING });
 
-        get('/position', { timeout: 5000 }).then(response => {
+        get('/position', { timeout }).then(response => {
 
             const model = camelizeKeys(response.data);
             dispatch({ type: event.UPDATE, model });
 
-        }).catch(() => {
-
-            console.log('Error!');
-            dispatch({ type: event.TIMEOUT });
-
-        });
+        }).catch(() => dispatch({ type: event.TIMEOUT }));
 
     };
 
@@ -34,7 +30,10 @@ const update = () => {
  * @method fetch
  * @return {void}
  */
-const fetch = once(props => props.dispatch(update()));
+const fetch = once(props => {
+    const timeout = Number(props.attrs.timeout);
+    props.dispatch(update(timeout));
+});
 
 /**
  * @constant worker
@@ -59,7 +58,7 @@ const worker = once(props => {
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(worker, redux(store), fetch, include(path('css/default.css')), html(props => {
+create('iss-position', pipe(worker, attrs, redux(store), fetch, include(path('css/default.css')), html(props => {
 
     const { redux, dispatch } = props;
     const image = path(`images/flags/${redux.flag}`);
@@ -73,6 +72,7 @@ create('iss-position', pipe(worker, redux(store), fetch, include(path('css/defau
                     <label>ISS is currently flying over</label>
                     <h1>{redux.country ? redux.country : 'An Ocean Somewhere'}</h1>
 
+                    {redux.country ? '' : <img className="ocean" src={path('images/jellyfish.svg')} />}
                     {redux.flag ? <img className="flag" src={image} /> : ''}
 
                     <iss-astronauts />
