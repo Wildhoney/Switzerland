@@ -285,8 +285,7 @@
 	     * @constant implementation
 	     * @type {Object}
 	     */
-	    // const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
-	    const implementation = implementations.v1;
+	    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
 
 	    /**
 	     * @constant component

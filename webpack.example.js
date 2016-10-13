@@ -16,7 +16,7 @@ module.exports = {
                 loaders: ['envify-loader', 'babel-loader', 'virtual-dom?jsx=element']
             }
         ]
-    }
+    },
     // plugins: [
     //     new webpack.optimize.CommonsChunkPlugin('./example/js/vendor.js')
     // ]
