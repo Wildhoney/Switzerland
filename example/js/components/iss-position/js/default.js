@@ -33,8 +33,16 @@ const fetch = once(props => props.dispatch(update()));
  * @constant worker
  * @return {void}
  */
-const worker = once(() => {
-    window.navigator.serviceWorker.register(path('worker.js'), { scope: '/' });
+const worker = once((props) => {
+
+    return new Promise(resolve => {
+
+        window.navigator.serviceWorker.register(path('worker.js'), { scope: '/' }).then(worker => {
+            resolve({ ...props, worker });
+        });
+
+    });
+
 });
 
 /**
