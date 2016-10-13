@@ -1,13 +1,11 @@
-import { pipe as ramdaPipe } from 'ramda';
+import PromisePipe from 'promised-pipe';
 
 /**
  * @method pipe
  * @param {Array} fns
- * @return {Object}
+ * @return {Function}
  */
-export const pipe = (...fns) => {
-    return ramdaPipe(...fns);
-};
+export const pipe = PromisePipe;
 
 /**
  * @constant compose
