@@ -9,8 +9,7 @@ module.exports = {
         libraryTarget: 'commonjs2'
     },
     externals: {
-        axios: true,
-        ramda: true
+        axios: true
     },
     module: {
         loaders: [
