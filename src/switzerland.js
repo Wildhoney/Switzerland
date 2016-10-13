@@ -100,17 +100,20 @@ export const create = (name, render) => {
 
             const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-            const props = render({ node, render: node.render.bind(node) });
-            const tree = htmlFor(props);
-            const root = createElement(tree);
+            render({ node, render: node.render.bind(node) }).then(props => {
 
-            // See: https://github.com/Matt-Esch/virtual-dom/pull/413
-            boundary.appendChild(root);
+                const tree = htmlFor(props);
+                const root = createElement(tree);
 
-            // Invoke any ref callbacks defined in the component's `render` method.
-            'ref' in props && invokeFor(node);
+                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
+                boundary.appendChild(root);
 
-            this[registryKey] = { node, tree, root, props };
+                // Invoke any ref callbacks defined in the component's `render` method.
+                'ref' in props && invokeFor(node);
+
+                this[registryKey] = { node, tree, root, props };
+
+            });
 
         }
 
@@ -150,23 +153,26 @@ export const create = (name, render) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            const props = render({ node, render: node.render.bind(node) });
-            const tree = htmlFor(props);
+            render({ node, render: node.render.bind(node) }).then(props => {
 
-            // Clear any previously defined refs for the current component.
-            'ref' in props && purgeFor(node);
+                const tree = htmlFor(props);
 
-            if (node.isConnected) {
+                // Clear any previously defined refs for the current component.
+                'ref' in props && purgeFor(node);
 
-                const patches = diff(currentTree, tree);
-                const root = patch(currentRoot, patches);
+                if (node.isConnected) {
 
-                // Invoke any ref callbacks defined in the component's `render` method.
-                'ref' in props && invokeFor(node);
+                    const patches = diff(currentTree, tree);
+                    const root = patch(currentRoot, patches);
 
-                this[registryKey] = { node, tree, root, props };
+                    // Invoke any ref callbacks defined in the component's `render` method.
+                    'ref' in props && invokeFor(node);
 
-            }
+                    this[registryKey] = { node, tree, root, props };
+
+                }
+
+            }).catch(x => console.error(x));
 
         }
 
