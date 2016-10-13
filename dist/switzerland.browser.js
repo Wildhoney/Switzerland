@@ -55,146 +55,146 @@ var switzerland =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 	exports.element = exports.compose = exports.pipe = exports.path = exports.timeEnd = exports.time = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
 
 	var _html = __webpack_require__(2);
 
 	Object.defineProperty(exports, 'html', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_html).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_html).default;
+	    }
 	});
 
 	var _once = __webpack_require__(3);
 
 	Object.defineProperty(exports, 'once', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_once).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_once).default;
+	    }
 	});
 
 	var _attributes = __webpack_require__(4);
 
 	Object.defineProperty(exports, 'attrs', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_attributes).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_attributes).default;
+	    }
 	});
 
 	var _state = __webpack_require__(7);
 
 	Object.defineProperty(exports, 'state', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_state).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_state).default;
+	    }
 	});
 
 	var _include = __webpack_require__(8);
 
 	Object.defineProperty(exports, 'include', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_include).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_include).default;
+	    }
 	});
 
 	var _redux = __webpack_require__(36);
 
 	Object.defineProperty(exports, 'redux', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_redux).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_redux).default;
+	    }
 	});
 
 	var _refs = __webpack_require__(37);
 
 	Object.defineProperty(exports, 'refs', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_refs).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_refs).default;
+	    }
 	});
 
 	var _methods = __webpack_require__(38);
 
 	Object.defineProperty(exports, 'methods', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_methods).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_methods).default;
+	    }
 	});
 
 	var _events = __webpack_require__(39);
 
 	Object.defineProperty(exports, 'events', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_events).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_events).default;
+	    }
 	});
 
 	var _validate = __webpack_require__(40);
 
 	Object.defineProperty(exports, 'validate', {
-	  enumerable: true,
-	  get: function () {
-	    return _interopRequireDefault(_validate).default;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_validate).default;
+	    }
 	});
 
 	var _timer = __webpack_require__(43);
 
 	Object.defineProperty(exports, 'time', {
-	  enumerable: true,
-	  get: function () {
-	    return _timer.time;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _timer.time;
+	    }
 	});
 	Object.defineProperty(exports, 'timeEnd', {
-	  enumerable: true,
-	  get: function () {
-	    return _timer.timeEnd;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _timer.timeEnd;
+	    }
 	});
 
 	var _path = __webpack_require__(53);
 
 	Object.defineProperty(exports, 'path', {
-	  enumerable: true,
-	  get: function () {
-	    return _path.path;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _path.path;
+	    }
 	});
 
-	var _ramda = __webpack_require__(6);
+	var _composition = __webpack_require__(54);
 
 	Object.defineProperty(exports, 'pipe', {
-	  enumerable: true,
-	  get: function () {
-	    return _ramda.pipe;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _composition.pipe;
+	    }
 	});
 	Object.defineProperty(exports, 'compose', {
-	  enumerable: true,
-	  get: function () {
-	    return _ramda.compose;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _composition.compose;
+	    }
 	});
 
-	var _virtualDom = __webpack_require__(54);
+	var _virtualDom = __webpack_require__(59);
 
 	Object.defineProperty(exports, 'element', {
-	  enumerable: true,
-	  get: function () {
-	    return _virtualDom.h;
-	  }
+	    enumerable: true,
+	    get: function () {
+	        return _virtualDom.h;
+	    }
 	});
 
 	var _env = __webpack_require__(42);
@@ -214,7 +214,7 @@ var switzerland =
 	 * @return {void}
 	 */
 	const message = function (text, fn) {
-	  return (0, _env.isDevelopment)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
+	    return (0, _env.isDevelopment)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
 	};
 
 	/**
@@ -223,7 +223,7 @@ var switzerland =
 	 * @return {void}
 	 */
 	const error = exports.error = function (text) {
-	  return message(text, console.error);
+	    return message(text, console.error);
 	};
 
 	/**
@@ -232,7 +232,7 @@ var switzerland =
 	 * @return {void}
 	 */
 	const warning = exports.warning = function (text) {
-	  return message(text, console.warn);
+	    return message(text, console.warn);
 	};
 
 	/**
@@ -241,24 +241,24 @@ var switzerland =
 	 */
 	const implementations = {
 
-	  v0: {
-	    hooks: ['attachedCallback', 'detachedCallback'],
-	    customElement: function (name, blueprint) {
-	      return document.registerElement(name, blueprint);
+	    v0: {
+	        hooks: ['attachedCallback', 'detachedCallback'],
+	        customElement: function (name, blueprint) {
+	            return document.registerElement(name, blueprint);
+	        },
+	        shadowBoundary: function (node) {
+	            return node.createShadowRoot();
+	        }
 	    },
-	    shadowBoundary: function (node) {
-	      return node.createShadowRoot();
+	    v1: {
+	        hooks: ['connectedCallback', 'disconnectedCallback'],
+	        customElement: function (name, blueprint) {
+	            return window.customElements.define(name, blueprint);
+	        },
+	        shadowBoundary: function (node) {
+	            return node.attachShadow({ mode: 'open' });
+	        }
 	    }
-	  },
-	  v1: {
-	    hooks: ['connectedCallback', 'disconnectedCallback'],
-	    customElement: function (name, blueprint) {
-	      return window.customElements.define(name, blueprint);
-	    },
-	    shadowBoundary: function (node) {
-	      return node.attachShadow({ mode: 'open' });
-	    }
-	  }
 
 	};
 
@@ -268,7 +268,7 @@ var switzerland =
 	 * @return {void}
 	 */
 	const clearHTMLFor = function (node) {
-	  node.shadowRoot.innerHTML = '';
+	    node.shadowRoot.innerHTML = '';
 	};
 
 	/**
@@ -279,108 +279,116 @@ var switzerland =
 	 */
 	const create = exports.create = function (name, render) {
 
-	  /**
-	   * Determines whether we use the v0 or v1 implementation of Custom Elements.
-	   *
-	   * @constant implementation
-	   * @type {Object}
-	   */
-	  const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
-
-	  /**
-	   * @constant blueprint
-	   * @type {Object}
-	   */
-	  implementation.customElement(name, class extends window.HTMLElement {
+	    /**
+	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
+	     *
+	     * @constant implementation
+	     * @type {Object}
+	     */
+	    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
 
 	    /**
-	     * @constructor
+	     * @constant blueprint
+	     * @type {Object}
 	     */
-	    constructor() {
-	      super();
-	      this[registryKey] = {};
-	    }
+	    implementation.customElement(name, class extends window.HTMLElement {
 
-	    /**
-	     * @method connectedCallback
-	     * @return {void}
-	     */
-	    [implementation.hooks[0]]() {
+	        /**
+	         * @constructor
+	         */
+	        constructor() {
+	            super();
+	            this[registryKey] = {};
+	        }
 
-	      const node = this;
-	      node.shadowRoot && clearHTMLFor(node);
+	        /**
+	         * @method connectedCallback
+	         * @return {void}
+	         */
+	        [implementation.hooks[0]]() {
+	            var _this = this;
 
-	      const boundary = node.shadowRoot || implementation.shadowBoundary(node);
+	            const node = this;
+	            node.shadowRoot && clearHTMLFor(node);
 
-	      const props = render({ node, render: node.render.bind(node) });
-	      const tree = (0, _html.htmlFor)(props);
-	      const root = (0, _virtualDom.create)(tree);
+	            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-	      // See: https://github.com/Matt-Esch/virtual-dom/pull/413
-	      boundary.appendChild(root);
+	            render({ node, render: node.render.bind(node) }).then(function (props) {
 
-	      // Invoke any ref callbacks defined in the component's `render` method.
-	      'ref' in props && (0, _refs.invokeFor)(node);
+	                const tree = (0, _html.htmlFor)(props);
+	                const root = (0, _virtualDom.create)(tree);
 
-	      this[registryKey] = { node, tree, root, props };
-	    }
+	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
+	                boundary.appendChild(root);
 
-	    /**
-	     * @method disconnectedCallback
-	     * @return {void}
-	     */
-	    [implementation.hooks[1]]() {
+	                // Invoke any ref callbacks defined in the component's `render` method.
+	                'ref' in props && (0, _refs.invokeFor)(node);
 
-	      clearHTMLFor(this);
+	                _this[registryKey] = { node, tree, root, props };
+	            });
+	        }
 
-	      // Once the node has been removed then we perform one last pass, however the render function
-	      // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
-	      this.render();
-	    }
+	        /**
+	         * @method disconnectedCallback
+	         * @return {void}
+	         */
+	        [implementation.hooks[1]]() {
 
-	    /**
-	     * @method render
-	     * @return {void}
-	     */
-	    render() {
+	            clearHTMLFor(this);
 
-	      const instance = this[registryKey];
+	            // Once the node has been removed then we perform one last pass, however the render function
+	            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
+	            this.render();
+	        }
 
-	      if (!instance) {
+	        /**
+	         * @method render
+	         * @return {void}
+	         */
+	        render() {
+	            var _this2 = this;
 
-	        // Rejected as developer has attempted to re-render during the start-up phase.
-	        // As an alternative we could queue the re-render using `setTimeout` for the next
-	        // tick, but ideally the developer should setup sensible defaults and thus avoid a
-	        // re-render during the start-up phase.
-	        // Queue: setTimeout(this.render.bind(this));
-	        warning('Casually ignoring an attempted re-render during the start-up phase of a component');
-	        return;
-	      }
+	            const instance = this[registryKey];
 
-	      const currentTree = instance.tree;
-	      const currentRoot = instance.root;
-	      const node = instance.node;
+	            if (!instance) {
+
+	                // Rejected as developer has attempted to re-render during the start-up phase.
+	                // As an alternative we could queue the re-render using `setTimeout` for the next
+	                // tick, but ideally the developer should setup sensible defaults and thus avoid a
+	                // re-render during the start-up phase.
+	                // Queue: setTimeout(this.render.bind(this));
+	                warning('Casually ignoring an attempted re-render during the start-up phase of a component');
+	                return;
+	            }
+
+	            const currentTree = instance.tree;
+	            const currentRoot = instance.root;
+	            const node = instance.node;
 
 
-	      const props = render({ node, render: node.render.bind(node) });
-	      const tree = (0, _html.htmlFor)(props);
+	            render({ node, render: node.render.bind(node) }).then(function (props) {
 
-	      // Clear any previously defined refs for the current component.
-	      'ref' in props && (0, _refs.purgeFor)(node);
+	                const tree = (0, _html.htmlFor)(props);
 
-	      if (node.isConnected) {
+	                // Clear any previously defined refs for the current component.
+	                'ref' in props && (0, _refs.purgeFor)(node);
 
-	        const patches = (0, _virtualDom.diff)(currentTree, tree);
-	        const root = (0, _virtualDom.patch)(currentRoot, patches);
+	                if (node.isConnected) {
 
-	        // Invoke any ref callbacks defined in the component's `render` method.
-	        'ref' in props && (0, _refs.invokeFor)(node);
+	                    const patches = (0, _virtualDom.diff)(currentTree, tree);
+	                    const root = (0, _virtualDom.patch)(currentRoot, patches);
 
-	        this[registryKey] = { node, tree, root, props };
-	      }
-	    }
+	                    // Invoke any ref callbacks defined in the component's `render` method.
+	                    'ref' in props && (0, _refs.invokeFor)(node);
 
-	  });
+	                    _this2[registryKey] = { node, tree, root, props };
+	                }
+	            }).catch(function (x) {
+	                return console.error(x);
+	            });
+	        }
+
+	    });
 	};
 
 	// Middleware.
@@ -462,9 +470,19 @@ var switzerland =
 
 	        // Determine whether the function has been called already.
 	        const hasFunction = once.get(key).has(callback);
-	        !hasFunction && once.get(key).set(callback, callback(props));
 
-	        return _extends({}, props, once.get(key).get(callback));
+	        if (hasFunction) {
+
+	            // If the `once` function has already been invoked, we'll use it by
+	            // overriding new props with the cached props.
+	            return _extends({}, once.get(key).get(callback), props);
+	        }
+
+	        return Promise.resolve(callback(props)).then(function (onceProps) {
+
+	            !hasFunction && once.get(key).set(callback, onceProps);
+	            return _extends({}, onceProps, props);
+	        });
 	    };
 	};
 
@@ -702,7 +720,7 @@ var switzerland =
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';//  Ramda v0.22.1
+	'use strict';//  Ramda v0.21.0
 	//  https://github.com/ramda/ramda
 	//  (c) 2013-2016 Scott Sauyet, Michael Hurley, and David Chambers
 	//  Ramda may be freely distributed under the MIT license.
@@ -754,7 +772,7 @@ var switzerland =
 	     *      _isArray([]); //=> true
 	     *      _isArray(null); //=> false
 	     *      _isArray({}); //=> false
-	     */var _isArray=Array.isArray||function _isArray(val){return val!=null&&val.length>=0&&Object.prototype.toString.call(val)==='[object Array]';};var _isFunction=function _isFunction(x){return Object.prototype.toString.call(x)==='[object Function]';};/**
+	     */var _isArray=Array.isArray||function _isArray(val){return val!=null&&val.length>=0&&Object.prototype.toString.call(val)==='[object Array]';};var _isFunction=function _isNumber(x){return Object.prototype.toString.call(x)==='[object Function]';};/**
 	     * Determine if the passed argument is an integer.
 	     *
 	     * @private
@@ -834,7 +852,7 @@ var switzerland =
 	     * @param {Function} xf transducer to initialize if object is transformer
 	     * @param {Function} fn default ramda implementation
 	     * @return {Function} A function that dispatches on object in list position
-	     */var _dispatchable=function _dispatchable(methodname,xf,fn){return function(){var length=arguments.length;if(length===0){return fn();}var obj=arguments[length-1];if(!_isArray(obj)){var args=_slice(arguments,0,length-1);if(typeof obj[methodname]==='function'){return obj[methodname].apply(obj,args);}if(_isTransformer(obj)){var transducer=xf.apply(null,args);return transducer(obj);}}return fn.apply(this,arguments);};};var _dropLastWhile=function dropLastWhile(pred,list){var idx=list.length-1;while(idx>=0&&pred(list[idx])){idx-=1;}return _slice(list,0,idx+1);};var _xall=function(){function XAll(f,xf){this.xf=xf;this.f=f;this.all=true;}XAll.prototype['@@transducer/init']=_xfBase.init;XAll.prototype['@@transducer/result']=function(result){if(this.all){result=this.xf['@@transducer/step'](result,true);}return this.xf['@@transducer/result'](result);};XAll.prototype['@@transducer/step']=function(result,input){if(!this.f(input)){this.all=false;result=_reduced(this.xf['@@transducer/step'](result,false));}return result;};return _curry2(function _xall(f,xf){return new XAll(f,xf);});}();var _xany=function(){function XAny(f,xf){this.xf=xf;this.f=f;this.any=false;}XAny.prototype['@@transducer/init']=_xfBase.init;XAny.prototype['@@transducer/result']=function(result){if(!this.any){result=this.xf['@@transducer/step'](result,false);}return this.xf['@@transducer/result'](result);};XAny.prototype['@@transducer/step']=function(result,input){if(this.f(input)){this.any=true;result=_reduced(this.xf['@@transducer/step'](result,true));}return result;};return _curry2(function _xany(f,xf){return new XAny(f,xf);});}();var _xaperture=function(){function XAperture(n,xf){this.xf=xf;this.pos=0;this.full=false;this.acc=new Array(n);}XAperture.prototype['@@transducer/init']=_xfBase.init;XAperture.prototype['@@transducer/result']=function(result){this.acc=null;return this.xf['@@transducer/result'](result);};XAperture.prototype['@@transducer/step']=function(result,input){this.store(input);return this.full?this.xf['@@transducer/step'](result,this.getCopy()):result;};XAperture.prototype.store=function(input){this.acc[this.pos]=input;this.pos+=1;if(this.pos===this.acc.length){this.pos=0;this.full=true;}};XAperture.prototype.getCopy=function(){return _concat(_slice(this.acc,this.pos),_slice(this.acc,0,this.pos));};return _curry2(function _xaperture(n,xf){return new XAperture(n,xf);});}();var _xdrop=function(){function XDrop(n,xf){this.xf=xf;this.n=n;}XDrop.prototype['@@transducer/init']=_xfBase.init;XDrop.prototype['@@transducer/result']=_xfBase.result;XDrop.prototype['@@transducer/step']=function(result,input){if(this.n>0){this.n-=1;return result;}return this.xf['@@transducer/step'](result,input);};return _curry2(function _xdrop(n,xf){return new XDrop(n,xf);});}();var _xdropLast=function(){function XDropLast(n,xf){this.xf=xf;this.pos=0;this.full=false;this.acc=new Array(n);}XDropLast.prototype['@@transducer/init']=_xfBase.init;XDropLast.prototype['@@transducer/result']=function(result){this.acc=null;return this.xf['@@transducer/result'](result);};XDropLast.prototype['@@transducer/step']=function(result,input){if(this.full){result=this.xf['@@transducer/step'](result,this.acc[this.pos]);}this.store(input);return result;};XDropLast.prototype.store=function(input){this.acc[this.pos]=input;this.pos+=1;if(this.pos===this.acc.length){this.pos=0;this.full=true;}};return _curry2(function _xdropLast(n,xf){return new XDropLast(n,xf);});}();var _xdropRepeatsWith=function(){function XDropRepeatsWith(pred,xf){this.xf=xf;this.pred=pred;this.lastValue=undefined;this.seenFirstValue=false;}XDropRepeatsWith.prototype['@@transducer/init']=function(){return this.xf['@@transducer/init']();};XDropRepeatsWith.prototype['@@transducer/result']=function(result){return this.xf['@@transducer/result'](result);};XDropRepeatsWith.prototype['@@transducer/step']=function(result,input){var sameAsLast=false;if(!this.seenFirstValue){this.seenFirstValue=true;}else if(this.pred(this.lastValue,input)){sameAsLast=true;}this.lastValue=input;return sameAsLast?result:this.xf['@@transducer/step'](result,input);};return _curry2(function _xdropRepeatsWith(pred,xf){return new XDropRepeatsWith(pred,xf);});}();var _xdropWhile=function(){function XDropWhile(f,xf){this.xf=xf;this.f=f;}XDropWhile.prototype['@@transducer/init']=_xfBase.init;XDropWhile.prototype['@@transducer/result']=_xfBase.result;XDropWhile.prototype['@@transducer/step']=function(result,input){if(this.f){if(this.f(input)){return result;}this.f=null;}return this.xf['@@transducer/step'](result,input);};return _curry2(function _xdropWhile(f,xf){return new XDropWhile(f,xf);});}();var _xfilter=function(){function XFilter(f,xf){this.xf=xf;this.f=f;}XFilter.prototype['@@transducer/init']=_xfBase.init;XFilter.prototype['@@transducer/result']=_xfBase.result;XFilter.prototype['@@transducer/step']=function(result,input){return this.f(input)?this.xf['@@transducer/step'](result,input):result;};return _curry2(function _xfilter(f,xf){return new XFilter(f,xf);});}();var _xfind=function(){function XFind(f,xf){this.xf=xf;this.f=f;this.found=false;}XFind.prototype['@@transducer/init']=_xfBase.init;XFind.prototype['@@transducer/result']=function(result){if(!this.found){result=this.xf['@@transducer/step'](result,void 0);}return this.xf['@@transducer/result'](result);};XFind.prototype['@@transducer/step']=function(result,input){if(this.f(input)){this.found=true;result=_reduced(this.xf['@@transducer/step'](result,input));}return result;};return _curry2(function _xfind(f,xf){return new XFind(f,xf);});}();var _xfindIndex=function(){function XFindIndex(f,xf){this.xf=xf;this.f=f;this.idx=-1;this.found=false;}XFindIndex.prototype['@@transducer/init']=_xfBase.init;XFindIndex.prototype['@@transducer/result']=function(result){if(!this.found){result=this.xf['@@transducer/step'](result,-1);}return this.xf['@@transducer/result'](result);};XFindIndex.prototype['@@transducer/step']=function(result,input){this.idx+=1;if(this.f(input)){this.found=true;result=_reduced(this.xf['@@transducer/step'](result,this.idx));}return result;};return _curry2(function _xfindIndex(f,xf){return new XFindIndex(f,xf);});}();var _xfindLast=function(){function XFindLast(f,xf){this.xf=xf;this.f=f;}XFindLast.prototype['@@transducer/init']=_xfBase.init;XFindLast.prototype['@@transducer/result']=function(result){return this.xf['@@transducer/result'](this.xf['@@transducer/step'](result,this.last));};XFindLast.prototype['@@transducer/step']=function(result,input){if(this.f(input)){this.last=input;}return result;};return _curry2(function _xfindLast(f,xf){return new XFindLast(f,xf);});}();var _xfindLastIndex=function(){function XFindLastIndex(f,xf){this.xf=xf;this.f=f;this.idx=-1;this.lastIdx=-1;}XFindLastIndex.prototype['@@transducer/init']=_xfBase.init;XFindLastIndex.prototype['@@transducer/result']=function(result){return this.xf['@@transducer/result'](this.xf['@@transducer/step'](result,this.lastIdx));};XFindLastIndex.prototype['@@transducer/step']=function(result,input){this.idx+=1;if(this.f(input)){this.lastIdx=this.idx;}return result;};return _curry2(function _xfindLastIndex(f,xf){return new XFindLastIndex(f,xf);});}();var _xmap=function(){function XMap(f,xf){this.xf=xf;this.f=f;}XMap.prototype['@@transducer/init']=_xfBase.init;XMap.prototype['@@transducer/result']=_xfBase.result;XMap.prototype['@@transducer/step']=function(result,input){return this.xf['@@transducer/step'](result,this.f(input));};return _curry2(function _xmap(f,xf){return new XMap(f,xf);});}();var _xreduceBy=function(){function XReduceBy(valueFn,valueAcc,keyFn,xf){this.valueFn=valueFn;this.valueAcc=valueAcc;this.keyFn=keyFn;this.xf=xf;this.inputs={};}XReduceBy.prototype['@@transducer/init']=_xfBase.init;XReduceBy.prototype['@@transducer/result']=function(result){var key;for(key in this.inputs){if(_has(key,this.inputs)){result=this.xf['@@transducer/step'](result,this.inputs[key]);if(result['@@transducer/reduced']){result=result['@@transducer/value'];break;}}}this.inputs=null;return this.xf['@@transducer/result'](result);};XReduceBy.prototype['@@transducer/step']=function(result,input){var key=this.keyFn(input);this.inputs[key]=this.inputs[key]||[key,this.valueAcc];this.inputs[key][1]=this.valueFn(this.inputs[key][1],input);return result;};return _curryN(4,[],function _xreduceBy(valueFn,valueAcc,keyFn,xf){return new XReduceBy(valueFn,valueAcc,keyFn,xf);});}();var _xtake=function(){function XTake(n,xf){this.xf=xf;this.n=n;this.i=0;}XTake.prototype['@@transducer/init']=_xfBase.init;XTake.prototype['@@transducer/result']=_xfBase.result;XTake.prototype['@@transducer/step']=function(result,input){this.i+=1;var ret=this.n===0?result:this.xf['@@transducer/step'](result,input);return this.i>=this.n?_reduced(ret):ret;};return _curry2(function _xtake(n,xf){return new XTake(n,xf);});}();var _xtakeWhile=function(){function XTakeWhile(f,xf){this.xf=xf;this.f=f;}XTakeWhile.prototype['@@transducer/init']=_xfBase.init;XTakeWhile.prototype['@@transducer/result']=_xfBase.result;XTakeWhile.prototype['@@transducer/step']=function(result,input){return this.f(input)?this.xf['@@transducer/step'](result,input):_reduced(result);};return _curry2(function _xtakeWhile(f,xf){return new XTakeWhile(f,xf);});}();/**
+	     */var _dispatchable=function _dispatchable(methodname,xf,fn){return function(){var length=arguments.length;if(length===0){return fn();}var obj=arguments[length-1];if(!_isArray(obj)){var args=_slice(arguments,0,length-1);if(typeof obj[methodname]==='function'){return obj[methodname].apply(obj,args);}if(_isTransformer(obj)){var transducer=xf.apply(null,args);return transducer(obj);}}return fn.apply(this,arguments);};};var _dropLastWhile=function dropLastWhile(pred,list){var idx=list.length-1;while(idx>=0&&pred(list[idx])){idx-=1;}return _slice(list,0,idx+1);};var _xall=function(){function XAll(f,xf){this.xf=xf;this.f=f;this.all=true;}XAll.prototype['@@transducer/init']=_xfBase.init;XAll.prototype['@@transducer/result']=function(result){if(this.all){result=this.xf['@@transducer/step'](result,true);}return this.xf['@@transducer/result'](result);};XAll.prototype['@@transducer/step']=function(result,input){if(!this.f(input)){this.all=false;result=_reduced(this.xf['@@transducer/step'](result,false));}return result;};return _curry2(function _xall(f,xf){return new XAll(f,xf);});}();var _xany=function(){function XAny(f,xf){this.xf=xf;this.f=f;this.any=false;}XAny.prototype['@@transducer/init']=_xfBase.init;XAny.prototype['@@transducer/result']=function(result){if(!this.any){result=this.xf['@@transducer/step'](result,false);}return this.xf['@@transducer/result'](result);};XAny.prototype['@@transducer/step']=function(result,input){if(this.f(input)){this.any=true;result=_reduced(this.xf['@@transducer/step'](result,true));}return result;};return _curry2(function _xany(f,xf){return new XAny(f,xf);});}();var _xaperture=function(){function XAperture(n,xf){this.xf=xf;this.pos=0;this.full=false;this.acc=new Array(n);}XAperture.prototype['@@transducer/init']=_xfBase.init;XAperture.prototype['@@transducer/result']=function(result){this.acc=null;return this.xf['@@transducer/result'](result);};XAperture.prototype['@@transducer/step']=function(result,input){this.store(input);return this.full?this.xf['@@transducer/step'](result,this.getCopy()):result;};XAperture.prototype.store=function(input){this.acc[this.pos]=input;this.pos+=1;if(this.pos===this.acc.length){this.pos=0;this.full=true;}};XAperture.prototype.getCopy=function(){return _concat(_slice(this.acc,this.pos),_slice(this.acc,0,this.pos));};return _curry2(function _xaperture(n,xf){return new XAperture(n,xf);});}();var _xdrop=function(){function XDrop(n,xf){this.xf=xf;this.n=n;}XDrop.prototype['@@transducer/init']=_xfBase.init;XDrop.prototype['@@transducer/result']=_xfBase.result;XDrop.prototype['@@transducer/step']=function(result,input){if(this.n>0){this.n-=1;return result;}return this.xf['@@transducer/step'](result,input);};return _curry2(function _xdrop(n,xf){return new XDrop(n,xf);});}();var _xdropLast=function(){function XDropLast(n,xf){this.xf=xf;this.pos=0;this.full=false;this.acc=new Array(n);}XDropLast.prototype['@@transducer/init']=_xfBase.init;XDropLast.prototype['@@transducer/result']=function(result){this.acc=null;return this.xf['@@transducer/result'](result);};XDropLast.prototype['@@transducer/step']=function(result,input){if(this.full){result=this.xf['@@transducer/step'](result,this.acc[this.pos]);}this.store(input);return result;};XDropLast.prototype.store=function(input){this.acc[this.pos]=input;this.pos+=1;if(this.pos===this.acc.length){this.pos=0;this.full=true;}};return _curry2(function _xdropLast(n,xf){return new XDropLast(n,xf);});}();var _xdropRepeatsWith=function(){function XDropRepeatsWith(pred,xf){this.xf=xf;this.pred=pred;this.lastValue=undefined;this.seenFirstValue=false;}XDropRepeatsWith.prototype['@@transducer/init']=function(){return this.xf['@@transducer/init']();};XDropRepeatsWith.prototype['@@transducer/result']=function(result){return this.xf['@@transducer/result'](result);};XDropRepeatsWith.prototype['@@transducer/step']=function(result,input){var sameAsLast=false;if(!this.seenFirstValue){this.seenFirstValue=true;}else if(this.pred(this.lastValue,input)){sameAsLast=true;}this.lastValue=input;return sameAsLast?result:this.xf['@@transducer/step'](result,input);};return _curry2(function _xdropRepeatsWith(pred,xf){return new XDropRepeatsWith(pred,xf);});}();var _xdropWhile=function(){function XDropWhile(f,xf){this.xf=xf;this.f=f;}XDropWhile.prototype['@@transducer/init']=_xfBase.init;XDropWhile.prototype['@@transducer/result']=_xfBase.result;XDropWhile.prototype['@@transducer/step']=function(result,input){if(this.f){if(this.f(input)){return result;}this.f=null;}return this.xf['@@transducer/step'](result,input);};return _curry2(function _xdropWhile(f,xf){return new XDropWhile(f,xf);});}();var _xfilter=function(){function XFilter(f,xf){this.xf=xf;this.f=f;}XFilter.prototype['@@transducer/init']=_xfBase.init;XFilter.prototype['@@transducer/result']=_xfBase.result;XFilter.prototype['@@transducer/step']=function(result,input){return this.f(input)?this.xf['@@transducer/step'](result,input):result;};return _curry2(function _xfilter(f,xf){return new XFilter(f,xf);});}();var _xfind=function(){function XFind(f,xf){this.xf=xf;this.f=f;this.found=false;}XFind.prototype['@@transducer/init']=_xfBase.init;XFind.prototype['@@transducer/result']=function(result){if(!this.found){result=this.xf['@@transducer/step'](result,void 0);}return this.xf['@@transducer/result'](result);};XFind.prototype['@@transducer/step']=function(result,input){if(this.f(input)){this.found=true;result=_reduced(this.xf['@@transducer/step'](result,input));}return result;};return _curry2(function _xfind(f,xf){return new XFind(f,xf);});}();var _xfindIndex=function(){function XFindIndex(f,xf){this.xf=xf;this.f=f;this.idx=-1;this.found=false;}XFindIndex.prototype['@@transducer/init']=_xfBase.init;XFindIndex.prototype['@@transducer/result']=function(result){if(!this.found){result=this.xf['@@transducer/step'](result,-1);}return this.xf['@@transducer/result'](result);};XFindIndex.prototype['@@transducer/step']=function(result,input){this.idx+=1;if(this.f(input)){this.found=true;result=_reduced(this.xf['@@transducer/step'](result,this.idx));}return result;};return _curry2(function _xfindIndex(f,xf){return new XFindIndex(f,xf);});}();var _xfindLast=function(){function XFindLast(f,xf){this.xf=xf;this.f=f;}XFindLast.prototype['@@transducer/init']=_xfBase.init;XFindLast.prototype['@@transducer/result']=function(result){return this.xf['@@transducer/result'](this.xf['@@transducer/step'](result,this.last));};XFindLast.prototype['@@transducer/step']=function(result,input){if(this.f(input)){this.last=input;}return result;};return _curry2(function _xfindLast(f,xf){return new XFindLast(f,xf);});}();var _xfindLastIndex=function(){function XFindLastIndex(f,xf){this.xf=xf;this.f=f;this.idx=-1;this.lastIdx=-1;}XFindLastIndex.prototype['@@transducer/init']=_xfBase.init;XFindLastIndex.prototype['@@transducer/result']=function(result){return this.xf['@@transducer/result'](this.xf['@@transducer/step'](result,this.lastIdx));};XFindLastIndex.prototype['@@transducer/step']=function(result,input){this.idx+=1;if(this.f(input)){this.lastIdx=this.idx;}return result;};return _curry2(function _xfindLastIndex(f,xf){return new XFindLastIndex(f,xf);});}();var _xmap=function(){function XMap(f,xf){this.xf=xf;this.f=f;}XMap.prototype['@@transducer/init']=_xfBase.init;XMap.prototype['@@transducer/result']=_xfBase.result;XMap.prototype['@@transducer/step']=function(result,input){return this.xf['@@transducer/step'](result,this.f(input));};return _curry2(function _xmap(f,xf){return new XMap(f,xf);});}();var _xtake=function(){function XTake(n,xf){this.xf=xf;this.n=n;}XTake.prototype['@@transducer/init']=_xfBase.init;XTake.prototype['@@transducer/result']=_xfBase.result;XTake.prototype['@@transducer/step']=function(result,input){if(this.n===0){return _reduced(result);}else{this.n-=1;return this.xf['@@transducer/step'](result,input);}};return _curry2(function _xtake(n,xf){return new XTake(n,xf);});}();var _xtakeWhile=function(){function XTakeWhile(f,xf){this.xf=xf;this.f=f;}XTakeWhile.prototype['@@transducer/init']=_xfBase.init;XTakeWhile.prototype['@@transducer/result']=_xfBase.result;XTakeWhile.prototype['@@transducer/step']=function(result,input){return this.f(input)?this.xf['@@transducer/step'](result,input):_reduced(result);};return _curry2(function _xtakeWhile(f,xf){return new XTakeWhile(f,xf);});}();/**
 	     * Adds two values.
 	     *
 	     * @func
@@ -1068,11 +1086,6 @@ var switzerland =
 	     * @param {Object} thisObj The context to bind `fn` to
 	     * @return {Function} A function that will execute in the context of `thisObj`.
 	     * @see R.partial
-	     * @example
-	     *
-	     *      var log = R.bind(console.log, console);
-	     *      R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({a: 1}); //=> {a: 3}
-	     *      // logs {a: 2}
 	     */var bind=_curry2(function bind(fn,thisObj){return _arity(fn.length,function(){return fn.apply(thisObj,arguments);});});/**
 	     * Restricts a number to be within a range.
 	     *
@@ -1199,7 +1212,7 @@ var switzerland =
 	     * @param {Array} list1 The first list.
 	     * @param {Array} list2 The second list.
 	     * @return {Array} The elements in `list1` that are not in `list2`.
-	     * @see R.difference, R.symmetricDifference, R.symmetricDifferenceWith
+	     * @see R.difference
 	     * @example
 	     *
 	     *      var cmp = (x, y) => x.a === y.a;
@@ -1260,10 +1273,10 @@ var switzerland =
 	     *      var reciprocal = R.divide(1);
 	     *      reciprocal(4);   //=> 0.25
 	     */var divide=_curry2(function divide(a,b){return a/b;});/**
-	     * Returns a new list excluding the leading elements of a given list which
-	     * satisfy the supplied predicate function. It passes each value to the supplied
-	     * predicate function, skipping elements while the predicate function returns
-	     * `true`. The predicate function is applied to one argument: *(value)*.
+	     * Returns a new list containing the last `n` elements of a given list, passing
+	     * each value to the supplied predicate function, skipping elements while the
+	     * predicate function returns `true`. The predicate function is passed one
+	     * argument: *(value)*.
 	     *
 	     * Dispatches to the `dropWhile` method of the second argument, if present.
 	     *
@@ -1453,12 +1466,11 @@ var switzerland =
 	     *
 	     *      var printXPlusFive = x => console.log(x + 5);
 	     *      R.forEach(printXPlusFive, [1, 2, 3]); //=> [1, 2, 3]
-	     *      // logs 6
-	     *      // logs 7
-	     *      // logs 8
+	     *      //-> 6
+	     *      //-> 7
+	     *      //-> 8
 	     */var forEach=_curry2(_checkForMethod('forEach',function forEach(fn,list){var len=list.length;var idx=0;while(idx<len){fn(list[idx]);idx+=1;}return list;}));/**
-	     * Creates a new object from a list key-value pairs. If a key appears in
-	     * multiple pairs, the rightmost pair is included in the object.
+	     * Creates a new object out of a list key-value pairs.
 	     *
 	     * @func
 	     * @memberOf R
@@ -1470,8 +1482,8 @@ var switzerland =
 	     * @see R.toPairs, R.pair
 	     * @example
 	     *
-	     *      R.fromPairs([['a', 1], ['b', 2], ['c', 3]]); //=> {a: 1, b: 2, c: 3}
-	     */var fromPairs=_curry1(function fromPairs(pairs){var result={};var idx=0;while(idx<pairs.length){result[pairs[idx][0]]=pairs[idx][1];idx+=1;}return result;});/**
+	     *      R.fromPairs([['a', 1], ['b', 2],  ['c', 3]]); //=> {a: 1, b: 2, c: 3}
+	     */var fromPairs=_curry1(function fromPairs(pairs){var idx=0;var len=pairs.length;var out={};while(idx<len){if(_isArray(pairs[idx])&&pairs[idx].length){out[pairs[idx][0]]=pairs[idx][1];}idx+=1;}return out;});/**
 	     * Takes a list and returns a list of lists where each sublist's elements are
 	     * all "equal" according to the provided equality function.
 	     *
@@ -1479,23 +1491,23 @@ var switzerland =
 	     * @memberOf R
 	     * @since v0.21.0
 	     * @category List
-	     * @sig ((a, a) → Boolean) → [a] → [[a]]
+	     * @sig (a, a -> Boolean) -> [a] -> [[a]]
 	     * @param {Function} fn Function for determining whether two given (adjacent)
 	     *        elements should be in the same group
 	     * @param {Array} list The array to group. Also accepts a string, which will be
 	     *        treated as a list of characters.
 	     * @return {List} A list that contains sublists of equal elements,
-	     *         whose concatenations are equal to the original list.
+	     *         whose concatenations is equal to the original list.
 	     * @example
 	     *
-	     * R.groupWith(R.equals, [0, 1, 1, 2, 3, 5, 8, 13, 21])
-	     * //=> [[0], [1, 1], [2], [3], [5], [8], [13], [21]]
+	     *    groupWith(R.equals, [0, 1, 1, 2, 3, 5, 8, 13, 21])
+	     *    // [[0], [1, 1], [2, 3, 5, 8, 13, 21]]
 	     *
-	     * R.groupWith((a, b) => a % 2 === b % 2, [0, 1, 1, 2, 3, 5, 8, 13, 21])
-	     * //=> [[0], [1, 1], [2], [3, 5], [8], [13, 21]]
+	     *    groupWith((a, b) => a % 2 === b % 2, [0, 1, 1, 2, 3, 5, 8, 13, 21])
+	     *    // [[0], [1, 1], [2], [3, 5], [8], [13, 21]]
 	     *
-	     * R.groupWith(R.eqBy(isVowel), 'aestiou')
-	     * //=> ['ae', 'st', 'iou']
+	     *    R.groupWith(R.eqBy(isVowel), 'aestiou')
+	     *    // ['ae', 'st', 'iou']
 	     */var groupWith=_curry2(function(fn,list){var res=[];var idx=0;var len=list.length;while(idx<len){var nextidx=idx+1;while(nextidx<len&&fn(list[idx],list[nextidx])){nextidx+=1;}res.push(list.slice(idx,nextidx));idx=nextidx;}return res;});/**
 	     * Returns `true` if the first argument is greater than the second; `false`
 	     * otherwise.
@@ -1759,7 +1771,7 @@ var switzerland =
 	     *      R.isArrayLike({}); //=> false
 	     *      R.isArrayLike({length: 10}); //=> false
 	     *      R.isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true
-	     */var isArrayLike=_curry1(function isArrayLike(x){if(_isArray(x)){return true;}if(!x){return false;}if(typeof x!=='object'){return false;}if(_isString(x)){return false;}if(x.nodeType===1){return!!x.length;}if(x.length===0){return true;}if(x.length>0){return x.hasOwnProperty(0)&&x.hasOwnProperty(x.length-1);}return false;});/**
+	     */var isArrayLike=_curry1(function isArrayLike(x){if(_isArray(x)){return true;}if(!x){return false;}if(typeof x!=='object'){return false;}if(x instanceof String){return false;}if(x.nodeType===1){return!!x.length;}if(x.length===0){return true;}if(x.length>0){return x.hasOwnProperty(0)&&x.hasOwnProperty(x.length-1);}return false;});/**
 	     * Checks if the input value is `null` or `undefined`.
 	     *
 	     * @func
@@ -1828,7 +1840,7 @@ var switzerland =
 	     *
 	     *      R.length([]); //=> 0
 	     *      R.length([1, 2, 3]); //=> 3
-	     */var length=_curry1(function length(list){return list!=null&&_isNumber(list.length)?list.length:NaN;});/**
+	     */var length=_curry1(function length(list){return list!=null&&is(Number,list.length)?list.length:NaN;});/**
 	     * Returns `true` if the first argument is less than the second; `false`
 	     * otherwise.
 	     *
@@ -2112,7 +2124,7 @@ var switzerland =
 	     *      R.reduce(R.minBy(square), Infinity, [3, -5, 4, 1, -2]); //=> 1
 	     *      R.reduce(R.minBy(square), Infinity, []); //=> Infinity
 	     */var minBy=_curry3(function minBy(f,a,b){return f(b)<f(a)?b:a;});/**
-	     * Divides the first parameter by the second and returns the remainder. Note
+	     * Divides the second parameter by the first and returns the remainder. Note
 	     * that this function preserves the JavaScript-style behavior for modulo. For
 	     * mathematical modulo see `mathMod`.
 	     *
@@ -2229,8 +2241,8 @@ var switzerland =
 	     *
 	     *      R.not(true); //=> false
 	     *      R.not(false); //=> true
-	     *      R.not(0); //=> true
-	     *      R.not(1); //=> false
+	     *      R.not(0); => true
+	     *      R.not(1); => false
 	     */var not=_curry1(function not(a){return!a;});/**
 	     * Returns the nth element of the given list or string. If n is negative the
 	     * element at index length + n is returned.
@@ -2267,7 +2279,7 @@ var switzerland =
 	     *
 	     *      R.nthArg(1)('a', 'b', 'c'); //=> 'b'
 	     *      R.nthArg(-1)('a', 'b', 'c'); //=> 'c'
-	     */var nthArg=_curry1(function nthArg(n){var arity=n<0?1:n+1;return curryN(arity,function(){return nth(n,arguments);});});/**
+	     */var nthArg=_curry1(function nthArg(n){return function(){return nth(n,arguments);};});/**
 	     * Creates an object containing a single key:value pair.
 	     *
 	     * @func
@@ -2397,7 +2409,6 @@ var switzerland =
 	     * @param {Array} path The path to use.
 	     * @param {Object} obj The object to retrieve the nested property from.
 	     * @return {*} The data at `path`.
-	     * @see R.prop
 	     * @example
 	     *
 	     *      R.path(['a', 'b'], {a: {b: 2}}); //=> 2
@@ -2517,31 +2528,11 @@ var switzerland =
 	     * @param {String} p The property name
 	     * @param {Object} obj The object to query
 	     * @return {*} The value at `obj.p`.
-	     * @see R.path
 	     * @example
 	     *
 	     *      R.prop('x', {x: 100}); //=> 100
 	     *      R.prop('x', {}); //=> undefined
 	     */var prop=_curry2(function prop(p,obj){return obj[p];});/**
-	     * Returns `true` if the specified object property is of the given type;
-	     * `false` otherwise.
-	     *
-	     * @func
-	     * @memberOf R
-	     * @since v0.16.0
-	     * @category Type
-	     * @sig Type -> String -> Object -> Boolean
-	     * @param {Function} type
-	     * @param {String} name
-	     * @param {*} obj
-	     * @return {Boolean}
-	     * @see R.is, R.propSatisfies
-	     * @example
-	     *
-	     *      R.propIs(Number, 'x', {x: 1, y: 2});  //=> true
-	     *      R.propIs(Number, 'x', {x: 'foo'});    //=> false
-	     *      R.propIs(Number, 'x', {});            //=> false
-	     */var propIs=_curry3(function propIs(type,name,obj){return is(type,obj[name]);});/**
 	     * If the given, non-null object has an own property with the specified name,
 	     * returns the value of that property. Otherwise returns the provided default
 	     * value.
@@ -3041,7 +3032,7 @@ var switzerland =
 	     *
 	     *      var sayX = x => console.log('x is ' + x);
 	     *      R.tap(sayX, 100); //=> 100
-	     *      // logs 'x is 100'
+	     *      //-> 'x is 100'
 	     */var tap=_curry2(function tap(fn,x){fn(x);return x;});/**
 	     * Calls an input function `n` times, returning an array containing the results
 	     * of those function calls.
@@ -3150,8 +3141,8 @@ var switzerland =
 	     * @return {Function} A new function that will catch exceptions and send then to the catcher.
 	     * @example
 	     *
-	     *      R.tryCatch(R.prop('x'), R.F)({x: true}); //=> true
-	     *      R.tryCatch(R.prop('x'), R.F)(null);      //=> false
+	     *      R.tryCatch(R.prop('x'), R.F, {x: true}); //=> true
+	     *      R.tryCatch(R.prop('x'), R.F, null);      //=> false
 	     */var tryCatch=_curry2(function _tryCatch(tryer,catcher){return _arity(tryer.length,function(){try{return tryer.apply(this,arguments);}catch(e){return catcher.apply(this,_concat([e],arguments));}});});/**
 	     * Gives a single-word string description of the (native) type of a value,
 	     * returning such answers as 'Object', 'Number', 'Array', or 'Null'. Does not
@@ -3477,11 +3468,11 @@ var switzerland =
 	     * @example
 	     *
 	     *      // pred :: Object -> Boolean
-	     *      var pred = where({
-	     *        a: equals('foo'),
-	     *        b: complement(equals('bar')),
-	     *        x: gt(__, 10),
-	     *        y: lt(__, 20)
+	     *      var pred = R.where({
+	     *        a: R.equals('foo'),
+	     *        b: R.complement(R.equals('bar')),
+	     *        x: R.gt(_, 10),
+	     *        y: R.lt(_, 20)
 	     *      });
 	     *
 	     *      pred({a: 'foo', b: 'xxx', x: 11, y: 19}); //=> true
@@ -3502,7 +3493,6 @@ var switzerland =
 	     * @param {Function} fn The function to wrap.
 	     * @param {Function} wrapper The wrapper function.
 	     * @return {Function} The wrapped function.
-	     * @deprecated since v0.22.0
 	     * @example
 	     *
 	     *      var greet = name => 'Hello ' + name;
@@ -3632,7 +3622,7 @@ var switzerland =
 	     * function based on the flag passed in.
 	     *
 	     * @private
-	     */var _makeFlat=function _makeFlat(recursive){return function flatt(list){var value,jlen,j;var result=[];var idx=0;var ilen=list.length;while(idx<ilen){if(isArrayLike(list[idx])){value=recursive?flatt(list[idx]):list[idx];j=0;jlen=value.length;while(j<jlen){result[result.length]=value[j];j+=1;}}else{result[result.length]=list[idx];}idx+=1;}return result;};};var _reduce=function(){function _arrayReduce(xf,acc,list){var idx=0;var len=list.length;while(idx<len){acc=xf['@@transducer/step'](acc,list[idx]);if(acc&&acc['@@transducer/reduced']){acc=acc['@@transducer/value'];break;}idx+=1;}return xf['@@transducer/result'](acc);}function _iterableReduce(xf,acc,iter){var step=iter.next();while(!step.done){acc=xf['@@transducer/step'](acc,step.value);if(acc&&acc['@@transducer/reduced']){acc=acc['@@transducer/value'];break;}step=iter.next();}return xf['@@transducer/result'](acc);}function _methodReduce(xf,acc,obj){return xf['@@transducer/result'](obj.reduce(bind(xf['@@transducer/step'],xf),acc));}var symIterator=typeof Symbol!=='undefined'?Symbol.iterator:'@@iterator';return function _reduce(fn,acc,list){if(typeof fn==='function'){fn=_xwrap(fn);}if(isArrayLike(list)){return _arrayReduce(fn,acc,list);}if(typeof list.reduce==='function'){return _methodReduce(fn,acc,list);}if(list[symIterator]!=null){return _iterableReduce(fn,acc,list[symIterator]());}if(typeof list.next==='function'){return _iterableReduce(fn,acc,list);}throw new TypeError('reduce: list must be array or iterable');};}();var _stepCat=function(){var _stepCatArray={'@@transducer/init':Array,'@@transducer/step':function(xs,x){xs.push(x);return xs;},'@@transducer/result':_identity};var _stepCatString={'@@transducer/init':String,'@@transducer/step':function(a,b){return a+b;},'@@transducer/result':_identity};var _stepCatObject={'@@transducer/init':Object,'@@transducer/step':function(result,input){return _assign(result,isArrayLike(input)?objOf(input[0],input[1]):input);},'@@transducer/result':_identity};return function _stepCat(obj){if(_isTransformer(obj)){return obj;}if(isArrayLike(obj)){return _stepCatArray;}if(typeof obj==='string'){return _stepCatString;}if(typeof obj==='object'){return _stepCatObject;}throw new Error('Cannot create transformer for '+obj);};}();var _xdropLastWhile=function(){function XDropLastWhile(fn,xf){this.f=fn;this.retained=[];this.xf=xf;}XDropLastWhile.prototype['@@transducer/init']=_xfBase.init;XDropLastWhile.prototype['@@transducer/result']=function(result){this.retained=null;return this.xf['@@transducer/result'](result);};XDropLastWhile.prototype['@@transducer/step']=function(result,input){return this.f(input)?this.retain(result,input):this.flush(result,input);};XDropLastWhile.prototype.flush=function(result,input){result=_reduce(this.xf['@@transducer/step'],result,this.retained);this.retained=[];return this.xf['@@transducer/step'](result,input);};XDropLastWhile.prototype.retain=function(result,input){this.retained.push(input);return result;};return _curry2(function _xdropLastWhile(fn,xf){return new XDropLastWhile(fn,xf);});}();/**
+	     */var _makeFlat=function _makeFlat(recursive){return function flatt(list){var value,jlen,j;var result=[];var idx=0;var ilen=list.length;while(idx<ilen){if(isArrayLike(list[idx])){value=recursive?flatt(list[idx]):list[idx];j=0;jlen=value.length;while(j<jlen){result[result.length]=value[j];j+=1;}}else{result[result.length]=list[idx];}idx+=1;}return result;};};var _reduce=function(){function _arrayReduce(xf,acc,list){var idx=0;var len=list.length;while(idx<len){acc=xf['@@transducer/step'](acc,list[idx]);if(acc&&acc['@@transducer/reduced']){acc=acc['@@transducer/value'];break;}idx+=1;}return xf['@@transducer/result'](acc);}function _iterableReduce(xf,acc,iter){var step=iter.next();while(!step.done){acc=xf['@@transducer/step'](acc,step.value);if(acc&&acc['@@transducer/reduced']){acc=acc['@@transducer/value'];break;}step=iter.next();}return xf['@@transducer/result'](acc);}function _methodReduce(xf,acc,obj){return xf['@@transducer/result'](obj.reduce(bind(xf['@@transducer/step'],xf),acc));}var symIterator=typeof Symbol!=='undefined'?Symbol.iterator:'@@iterator';return function _reduce(fn,acc,list){if(typeof fn==='function'){fn=_xwrap(fn);}if(isArrayLike(list)){return _arrayReduce(fn,acc,list);}if(typeof list.reduce==='function'){return _methodReduce(fn,acc,list);}if(list[symIterator]!=null){return _iterableReduce(fn,acc,list[symIterator]());}if(typeof list.next==='function'){return _iterableReduce(fn,acc,list);}throw new TypeError('reduce: list must be array or iterable');};}();var _stepCat=function(){var _stepCatArray={'@@transducer/init':Array,'@@transducer/step':function(xs,x){xs.push(x);return xs;},'@@transducer/result':_identity};var _stepCatString={'@@transducer/init':String,'@@transducer/step':function(a,b){return a+b;},'@@transducer/result':_identity};var _stepCatObject={'@@transducer/init':Object,'@@transducer/step':function(result,input){return _assign(result,isArrayLike(input)?objOf(input[0],input[1]):input);},'@@transducer/result':_identity};return function _stepCat(obj){if(_isTransformer(obj)){return obj;}if(isArrayLike(obj)){return _stepCatArray;}if(typeof obj==='string'){return _stepCatString;}if(typeof obj==='object'){return _stepCatObject;}throw new Error('Cannot create transformer for '+obj);};}();var _xdropLastWhile=function(){function XDropLastWhile(fn,xf){this.f=fn;this.retained=[];this.xf=xf;}XDropLastWhile.prototype['@@transducer/init']=_xfBase.init;XDropLastWhile.prototype['@@transducer/result']=function(result){this.retained=null;return this.xf['@@transducer/result'](result);};XDropLastWhile.prototype['@@transducer/step']=function(result,input){return this.f(input)?this.retain(result,input):this.flush(result,input);};XDropLastWhile.prototype.flush=function(result,input){result=_reduce(this.xf['@@transducer/step'],result,this.retained);this.retained=[];return this.xf['@@transducer/step'](result,input);};XDropLastWhile.prototype.retain=function(result,input){this.retained.push(input);return result;};return _curry2(function _xdropLastWhile(fn,xf){return new XDropLastWhile(fn,xf);});}();var _xgroupBy=function(){function XGroupBy(f,xf){this.xf=xf;this.f=f;this.inputs={};}XGroupBy.prototype['@@transducer/init']=_xfBase.init;XGroupBy.prototype['@@transducer/result']=function(result){var key;for(key in this.inputs){if(_has(key,this.inputs)){result=this.xf['@@transducer/step'](result,this.inputs[key]);if(result['@@transducer/reduced']){result=result['@@transducer/value'];break;}}}this.inputs=null;return this.xf['@@transducer/result'](result);};XGroupBy.prototype['@@transducer/step']=function(result,input){var key=this.f(input);this.inputs[key]=this.inputs[key]||[key,[]];this.inputs[key][1]=append(input,this.inputs[key][1]);return result;};return _curry2(function _xgroupBy(f,xf){return new XGroupBy(f,xf);});}();/**
 	     * Creates a new list iteration function from an existing one by adding two new
 	     * parameters to its callback function: the current index, and the entire list.
 	     *
@@ -3783,11 +3773,10 @@ var switzerland =
 	     *      R.dropLast(4, ['foo', 'bar', 'baz']); //=> []
 	     *      R.dropLast(3, 'ramda');               //=> 'ra'
 	     */var dropLast=_curry2(_dispatchable('dropLast',_xdropLast,_dropLast));/**
-	     * Returns a new list excluding all the tailing elements of a given list which
-	     * satisfy the supplied predicate function. It passes each value from the right
-	     * to the supplied predicate function, skipping elements while the predicate
-	     * function returns `true`. The predicate function is applied to one argument:
-	     * *(value)*.
+	     * Returns a new list containing all but last the`n` elements of a given list,
+	     * passing each value from the right to the supplied predicate function,
+	     * skipping elements while the predicate function returns `true`. The predicate
+	     * function is passed one argument: (value)*.
 	     *
 	     * @func
 	     * @memberOf R
@@ -4307,7 +4296,26 @@ var switzerland =
 	     *      var kids = [abby, fred, rusty, alois];
 	     *      var hasBrownHair = R.propEq('hair', 'brown');
 	     *      R.filter(hasBrownHair, kids); //=> [fred, rusty]
-	     */var propEq=_curry3(function propEq(name,val,obj){return equals(val,obj[name]);});/**
+	     */var propEq=_curry3(function propEq(name,val,obj){return propSatisfies(equals(val),name,obj);});/**
+	     * Returns `true` if the specified object property is of the given type;
+	     * `false` otherwise.
+	     *
+	     * @func
+	     * @memberOf R
+	     * @since v0.16.0
+	     * @category Type
+	     * @sig Type -> String -> Object -> Boolean
+	     * @param {Function} type
+	     * @param {String} name
+	     * @param {*} obj
+	     * @return {Boolean}
+	     * @see R.is, R.propSatisfies
+	     * @example
+	     *
+	     *      R.propIs(Number, 'x', {x: 1, y: 2});  //=> true
+	     *      R.propIs(Number, 'x', {x: 'foo'});    //=> false
+	     *      R.propIs(Number, 'x', {});            //=> false
+	     */var propIs=_curry3(function propIs(type,name,obj){return propSatisfies(is(type),name,obj);});/**
 	     * Returns a single item by iterating through the list, successively calling
 	     * the iterator function and passing it an accumulator value and the current
 	     * value from the array, and then passing the result to the next call.
@@ -4336,17 +4344,15 @@ var switzerland =
 	     * @example
 	     *
 	     *      var numbers = [1, 2, 3];
-	     *      var plus = (a, b) => a + b;
+	     *      var add = (a, b) => a + b;
 	     *
-	     *      R.reduce(plus, 10, numbers); //=> 16
+	     *      R.reduce(add, 10, numbers); //=> 16
 	     */var reduce=_curry3(_reduce);/**
 	     * Groups the elements of the list according to the result of calling
 	     * the String-returning function `keyFn` on each element and reduces the elements
 	     * of each group to a single value via the reducer function `valueFn`.
 	     *
 	     * This function is basically a more general `groupBy` function.
-	     *
-	     * Acts as a transducer if a transformer is given in list position.
 	     *
 	     * @func
 	     * @memberOf R
@@ -4382,35 +4388,7 @@ var switzerland =
 	     *      //   // ...,
 	     *      //   'F': ['Bart']
 	     *      // }
-	     */var reduceBy=_curryN(4,[],_dispatchable('reduceBy',_xreduceBy,function reduceBy(valueFn,valueAcc,keyFn,list){return _reduce(function(acc,elt){var key=keyFn(elt);acc[key]=valueFn(_has(key,acc)?acc[key]:valueAcc,elt);return acc;},{},list);}));/**
-	     * Like `reduce`, `reduceWhile` returns a single item by iterating through
-	     * the list, successively calling the iterator function. `reduceWhile` also
-	     * takes a predicate that is evaluated before each step. If the predicate returns
-	     * `false`, it "short-circuits" the iteration and returns the current value
-	     * of the accumulator.
-	     *
-	     * @func
-	     * @memberOf R
-	     * @since v0.22.0
-	     * @category List
-	     * @sig ((a, b) -> Boolean) -> ((a, b) -> a) -> a -> [b] -> a
-	     * @param {Function} pred The predicate. It is passed the accumulator and the
-	     *        current element.
-	     * @param {Function} fn The iterator function. Receives two values, the
-	     *        accumulator and the current element.
-	     * @param {*} a The accumulator value.
-	     * @param {Array} list The list to iterate over.
-	     * @return {*} The final, accumulated value.
-	     * @see R.reduce, R.reduced
-	     * @example
-	     *
-	     *      var isOdd = (acc, x) => x % 2 === 1;
-	     *      var xs = [1, 3, 5, 60, 777, 800];
-	     *      R.reduceWhile(isOdd, R.add, 0, xs); //=> 9
-	     *
-	     *      var ys = [2, 4, 6]
-	     *      R.reduceWhile(isOdd, R.add, 111, ys); //=> 111
-	     */var reduceWhile=_curryN(4,[],function _reduceWhile(pred,fn,a,list){return _reduce(function(acc,x){return pred(acc,x)?fn(acc,x):_reduced(acc);},a,list);});/**
+	     */var reduceBy=_curryN(4,[],function reduceBy(valueFn,valueAcc,keyFn,list){return _reduce(function(acc,elt){var key=keyFn(elt);acc[key]=valueFn(_has(key,acc)?acc[key]:valueAcc,elt);return acc;},{},list);});/**
 	     * The complement of `filter`.
 	     *
 	     * Acts as a transducer if a transformer is given in list position.
@@ -4613,6 +4591,23 @@ var switzerland =
 	     *      isQueenOfSpades({rank: 'Q', suit: '♣︎'}); //=> false
 	     *      isQueenOfSpades({rank: 'Q', suit: '♠︎'}); //=> true
 	     */var allPass=_curry1(function allPass(preds){return curryN(reduce(max,0,pluck('length',preds)),function(){var idx=0;var len=preds.length;while(idx<len){if(!preds[idx].apply(this,arguments)){return false;}idx+=1;}return true;});});/**
+	     * Returns `true` if all elements are unique, in `R.equals` terms, otherwise
+	     * `false`.
+	     *
+	     * @func
+	     * @memberOf R
+	     * @since v0.18.0
+	     * @category List
+	     * @sig [a] -> Boolean
+	     * @param {Array} list The array to consider.
+	     * @return {Boolean} `true` if all elements are unique, else `false`.
+	     * @deprecated since v0.20.0
+	     * @example
+	     *
+	     *      R.allUniq(['1', 1]); //=> true
+	     *      R.allUniq([1, 1]);   //=> false
+	     *      R.allUniq([[42], [42]]); //=> false
+	     */var allUniq=_curry1(function allUniq(list){var len=list.length;var idx=0;while(idx<len){if(_indexOf(list,list[idx],idx+1)>=0){return false;}idx+=1;}return true;});/**
 	     * Takes a list of predicates and returns a predicate that returns true for a
 	     * given list of arguments if at least one of the provided predicates is
 	     * satisfied by those arguments.
@@ -4639,14 +4634,13 @@ var switzerland =
 	     * ap applies a list of functions to a list of values.
 	     *
 	     * Dispatches to the `ap` method of the second argument, if present. Also
-	     * treats curried functions as applicatives.
+	     * treats functions as applicatives.
 	     *
 	     * @func
 	     * @memberOf R
 	     * @since v0.3.0
 	     * @category Function
-	     * @sig [a -> b] -> [a] -> [b]
-	     * @sig Apply f => f (a -> b) -> f a -> f b
+	     * @sig [f] -> [a] -> [f a]
 	     * @param {Array} fns An array of functions
 	     * @param {Array} vs An array of values
 	     * @return {Array} An array of results of applying each of `fns` to all of `vs` in turn.
@@ -4654,7 +4648,7 @@ var switzerland =
 	     *
 	     *      R.ap([R.multiply(2), R.add(3)], [1,2,3]); //=> [2, 4, 6, 4, 5, 6]
 	     */// else
-	var ap=_curry2(function ap(applicative,fn){return typeof applicative.ap==='function'?applicative.ap(fn):typeof applicative==='function'?function(x){return applicative(x)(fn(x));}:// else
+	var ap=_curry2(function ap(applicative,fn){return typeof applicative.ap==='function'?applicative.ap(fn):typeof applicative==='function'?curryN(Math.max(applicative.length,fn.length),function(){return applicative.apply(this,arguments)(fn.apply(this,arguments));}):// else
 	_reduce(function(acc,f){return _concat(acc,map(f,fn));},[],applicative);});/**
 	     * Given a spec object recursively mapping properties to functions, creates a
 	     * function producing an object of the same structure, by mapping each property
@@ -4670,7 +4664,7 @@ var switzerland =
 	     * @return {Function} A function that returns an object of the same structure
 	     * as `spec', with each property set to the value returned by calling its
 	     * associated function with the supplied arguments.
-	     * @see R.converge, R.juxt
+	     * @see R.juxt
 	     * @example
 	     *
 	     *      var getMetrics = R.applySpec({
@@ -4709,14 +4703,13 @@ var switzerland =
 	     * `chain` maps a function over a list and concatenates the results. `chain`
 	     * is also known as `flatMap` in some libraries
 	     *
-	     * Dispatches to the `chain` method of the second argument, if present,
-	     * according to the [FantasyLand Chain spec](https://github.com/fantasyland/fantasy-land#chain).
+	     * Dispatches to the `chain` method of the second argument, if present.
 	     *
 	     * @func
 	     * @memberOf R
 	     * @since v0.3.0
 	     * @category List
-	     * @sig Chain m => (a -> m b) -> m a -> m b
+	     * @sig (a -> [b]) -> [a] -> [b]
 	     * @param {Function} fn
 	     * @param {Array} list
 	     * @return {Array}
@@ -4808,8 +4801,6 @@ var switzerland =
 	     * key generated by the supplied function. Returns an object mapping the keys
 	     * produced by `fn` to the number of occurrences in the list. Note that all
 	     * keys are coerced to strings because of how JavaScript objects work.
-	     *
-	     * Acts as a transducer if a transformer is given in list position.
 	     *
 	     * @func
 	     * @memberOf R
@@ -4922,13 +4913,11 @@ var switzerland =
 	     *      //   // ...,
 	     *      //   'F': [{name: 'Eddy', score: 58}]
 	     *      // }
-	     */var groupBy=_curry2(_checkForMethod('groupBy',reduceBy(function(acc,item){if(acc==null){acc=[];}acc.push(item);return acc;},null)));/**
+	     */var groupBy=_curry2(_dispatchable('groupBy',_xgroupBy,reduceBy(function(acc,item){if(acc==null){acc=[];}acc.push(item);return acc;},null)));/**
 	     * Given a function that generates a key, turns a list of objects into an
 	     * object indexing the objects by the given key. Note that if multiple
 	     * objects generate the same value for the indexing key only the last value
 	     * will be included in the generated object.
-	     *
-	     * Acts as a transducer if a transformer is given in list position.
 	     *
 	     * @func
 	     * @memberOf R
@@ -4974,8 +4963,8 @@ var switzerland =
 	     * @see R.applySpec
 	     * @example
 	     *
-	     *      var getRange = R.juxt([Math.min, Math.max]);
-	     *      getRange(3, 4, 9, -3); //=> [-3, 9]
+	     *      var range = R.juxt([Math.min, Math.max]);
+	     *      range(3, 4, 9, -3); //=> [-3, 9]
 	     */var juxt=_curry1(function juxt(fns){return converge(_arrayOf,fns);});/**
 	     * Returns a lens for the given getter and setter functions. The getter "gets"
 	     * the value of the focus; the setter "sets" the value of the focus. The setter
@@ -5362,7 +5351,7 @@ var switzerland =
 	     * @param {Array} list1 The first list.
 	     * @param {Array} list2 The second list.
 	     * @return {Array} The elements in `list1` that are not in `list2`.
-	     * @see R.differenceWith, R.symmetricDifference, R.symmetricDifferenceWith
+	     * @see R.differenceWith
 	     * @example
 	     *
 	     *      R.difference([1,2,3,4], [7,6,5,4,3]); //=> [1,2]
@@ -5508,59 +5497,47 @@ var switzerland =
 	     *
 	     *      R.without([1, 2], [1, 2, 1, 3, 4]); //=> [3, 4]
 	     */var without=_curry2(function(xs,list){return reject(flip(_contains)(xs),list);});// A simple Set type that honours R.equals semantics
-	/* globals Set */// until we figure out why jsdoc chokes on this
-	// @param item The item to add to the Set
-	// @returns {boolean} true if the item did not exist prior, otherwise false
-	//
-	//
-	// @param item The item to check for existence in the Set
-	// @returns {boolean} true if the item exists in the Set, otherwise false
-	//
-	//
-	// Combines the logic for checking whether an item is a member of the set and
-	// for adding a new item to the set.
-	//
-	// @param item       The item to check or add to the Set instance.
-	// @param shouldAdd  If true, the item will be added to the set if it doesn't
-	//                   already exist.
-	// @param set        The set instance to check or add to.
-	// @return {boolean} true if the item already existed, otherwise false.
-	//
-	// distinguish between +0 and -0
-	// these types can all utilise the native Set
+	/* globals Set *//**
+	       * Combines the logic for checking whether an item is a member of the set and
+	       * for adding a new item to the set.
+	       *
+	       * @param item       The item to check or add to the Set instance.
+	       * @param shouldAdd  If true, the item will be added to the set if it doesn't
+	       *                   already exist.
+	       * @param set        The set instance to check or add to.
+	       * @return {boolean} When shouldAdd is true, this will return true when a new
+	       *                   item was added otherwise false. When shouldAdd is false,
+	       *                   this will return true if the item already exists, otherwise
+	       *                   false.
+	       */// distinguish between +0 and -0
+	// these types can all utilise Set
 	// set._items['boolean'] holds a two element array
 	// representing [ falseExists, trueExists ]
 	// compare functions for reference equality
 	/* falls through */// reduce the search size of heterogeneous sets by creating buckets
 	// for each type.
 	// scan through all previously applied items
-	var _Set=function(){function _Set(){/* globals Set */this._nativeSet=typeof Set==='function'?new Set():null;this._items={};}// until we figure out why jsdoc chokes on this
-	// @param item The item to add to the Set
-	// @returns {boolean} true if the item did not exist prior, otherwise false
-	//
-	_Set.prototype.add=function(item){return!hasOrAdd(item,true,this);};//
-	// @param item The item to check for existence in the Set
-	// @returns {boolean} true if the item exists in the Set, otherwise false
-	//
-	_Set.prototype.has=function(item){return hasOrAdd(item,false,this);};//
-	// Combines the logic for checking whether an item is a member of the set and
-	// for adding a new item to the set.
-	//
-	// @param item       The item to check or add to the Set instance.
-	// @param shouldAdd  If true, the item will be added to the set if it doesn't
-	//                   already exist.
-	// @param set        The set instance to check or add to.
-	// @return {boolean} true if the item already existed, otherwise false.
-	//
-	function hasOrAdd(item,shouldAdd,set){var type=typeof item;var prevSize,newSize;switch(type){case'string':case'number':// distinguish between +0 and -0
-	if(item===0&&1/item===-Infinity){if(set._items['-0']){return true;}else{if(shouldAdd){set._items['-0']=true;}return false;}}// these types can all utilise the native Set
-	if(set._nativeSet!==null){if(shouldAdd){prevSize=set._nativeSet.size;set._nativeSet.add(item);newSize=set._nativeSet.size;return newSize===prevSize;}else{return set._nativeSet.has(item);}}else{if(!(type in set._items)){if(shouldAdd){set._items[type]={};set._items[type][item]=true;}return false;}else if(item in set._items[type]){return true;}else{if(shouldAdd){set._items[type][item]=true;}return false;}}case'boolean':// set._items['boolean'] holds a two element array
+	var _Set=function(){function _Set(){/* globals Set */this._nativeSet=typeof Set==='function'?new Set():null;this._items={};}_Set.prototype.add=function(item){return hasOrAdd(item,true,this);};_Set.prototype.has=function(item){return hasOrAdd(item,false,this);};/**
+	       * Combines the logic for checking whether an item is a member of the set and
+	       * for adding a new item to the set.
+	       *
+	       * @param item       The item to check or add to the Set instance.
+	       * @param shouldAdd  If true, the item will be added to the set if it doesn't
+	       *                   already exist.
+	       * @param set        The set instance to check or add to.
+	       * @return {boolean} When shouldAdd is true, this will return true when a new
+	       *                   item was added otherwise false. When shouldAdd is false,
+	       *                   this will return true if the item already exists, otherwise
+	       *                   false.
+	       */function hasOrAdd(item,shouldAdd,set){var type=typeof item;var prevSize,newSize;switch(type){case'string':case'number':// distinguish between +0 and -0
+	if(item===0&&!set._items['-0']&&1/item===-Infinity){if(shouldAdd){set._items['-0']=true;}return shouldAdd;}// these types can all utilise Set
+	if(set._nativeSet!==null){if(shouldAdd){prevSize=set._nativeSet.size;set._nativeSet.add(item);newSize=set._nativeSet.size;return newSize>prevSize;}else{return set._nativeSet.has(item);}}else{if(!(type in set._items)){if(shouldAdd){set._items[type]={};set._items[type][item]=true;}return shouldAdd;}else if(item in set._items[type]){return!shouldAdd;}else{if(shouldAdd){set._items[type][item]=true;}return shouldAdd;}}case'boolean':// set._items['boolean'] holds a two element array
 	// representing [ falseExists, trueExists ]
-	if(type in set._items){var bIdx=item?1:0;if(set._items[type][bIdx]){return true;}else{if(shouldAdd){set._items[type][bIdx]=true;}return false;}}else{if(shouldAdd){set._items[type]=item?[false,true]:[true,false];}return false;}case'function':// compare functions for reference equality
-	if(set._nativeSet!==null){if(shouldAdd){prevSize=set._nativeSet.size;set._nativeSet.add(item);newSize=set._nativeSet.size;return newSize>prevSize;}else{return set._nativeSet.has(item);}}else{if(!(type in set._items)){if(shouldAdd){set._items[type]=[item];}return false;}if(!_contains(item,set._items[type])){if(shouldAdd){set._items[type].push(item);}return false;}return true;}case'undefined':if(set._items[type]){return true;}else{if(shouldAdd){set._items[type]=true;}return false;}case'object':if(item===null){if(!set._items['null']){if(shouldAdd){set._items['null']=true;}return false;}return true;}/* falls through */default:// reduce the search size of heterogeneous sets by creating buckets
+	if(type in set._items){var bIdx=item?1:0;if(set._items[type][bIdx]){return!shouldAdd;}else{if(shouldAdd){set._items[type][bIdx]=true;}return shouldAdd;}}else{if(shouldAdd){set._items[type]=item?[false,true]:[true,false];}return shouldAdd;}case'function':// compare functions for reference equality
+	if(set._nativeSet!==null){if(shouldAdd){prevSize=set._nativeSet.size;set._nativeSet.add(item);newSize=set._nativeSet.size;return newSize>prevSize;}else{return set._nativeSet.has(item);}}else{if(!(type in set._items)){if(shouldAdd){set._items[type]=[item];}return shouldAdd;}if(!_contains(item,set._items[type])){if(shouldAdd){set._items[type].push(item);}return shouldAdd;}}return!shouldAdd;case'undefined':if(set._items[type]){return!shouldAdd;}else{if(shouldAdd){set._items[type]=true;}return shouldAdd;}case'object':if(item===null){if(!set._items['null']){if(shouldAdd){set._items['null']=true;}return shouldAdd;}return!shouldAdd;}/* falls through */default:// reduce the search size of heterogeneous sets by creating buckets
 	// for each type.
-	type=Object.prototype.toString.call(item);if(!(type in set._items)){if(shouldAdd){set._items[type]=[item];}return false;}// scan through all previously applied items
-	if(!_contains(item,set._items[type])){if(shouldAdd){set._items[type].push(item);}return false;}return true;}}return _Set;}();/**
+	type=Object.prototype.toString.call(item);if(!(type in set._items)){if(shouldAdd){set._items[type]=[item];}return shouldAdd;}// scan through all previously applied items
+	if(!_contains(item,set._items[type])){if(shouldAdd){set._items[type].push(item);}return shouldAdd;}return!shouldAdd;}}return _Set;}();/**
 	     * A function wrapping calls to the two functions in an `&&` operation,
 	     * returning the result of the first function if it is false-y and the result
 	     * of the second function otherwise. Note that this is short-circuited,
@@ -5612,30 +5589,6 @@ var switzerland =
 	     *      isOdd(21); //=> true
 	     *      isOdd(42); //=> false
 	     */var complement=lift(not);/**
-	     * Returns the result of concatenating the given lists or strings.
-	     *
-	     * Note: `R.concat` expects both arguments to be of the same type,
-	     * unlike the native `Array.prototype.concat` method. It will throw
-	     * an error if you `concat` an Array with a non-Array value.
-	     *
-	     * Dispatches to the `concat` method of the first argument, if present.
-	     *
-	     * @func
-	     * @memberOf R
-	     * @since v0.1.0
-	     * @category List
-	     * @sig [a] -> [a] -> [a]
-	     * @sig String -> String -> String
-	     * @param {Array|String} a
-	     * @param {Array|String} b
-	     * @return {Array|String}
-	     *
-	     * @example
-	     *
-	     *      R.concat([], []); //=> []
-	     *      R.concat([4, 5, 6], [1, 2, 3]); //=> [4, 5, 6, 1, 2, 3]
-	     *      R.concat('ABC', 'DEF'); // 'ABCDEF'
-	     */var concat=_curry2(function concat(a,b){if(a==null||!_isFunction(a.concat)){throw new TypeError(toString(a)+' does not have a method named "concat"');}if(_isArray(a)&&!_isArray(b)){throw new TypeError(toString(b)+' is not an array');}return a.concat(b);});/**
 	     * A function wrapping calls to the two functions in an `||` operation,
 	     * returning the result of the first function if it is truth-y and the result
 	     * of the second function otherwise. Note that this is short-circuited,
@@ -5683,7 +5636,7 @@ var switzerland =
 	     *      sliceFrom(6, 'abcdefghijklm'); //=> 'ghijklm'
 	     *      var sliceFrom6 = R.invoker(2, 'slice')(6);
 	     *      sliceFrom6(8, 'abcdefghijklm'); //=> 'gh'
-	     */var invoker=_curry2(function invoker(arity,method){return curryN(arity+1,function(){var target=arguments[arity];if(target!=null&&_isFunction(target[method])){return target[method].apply(target,_slice(arguments,0,arity));}throw new TypeError(toString(target)+' does not have a method named "'+method+'"');});});/**
+	     */var invoker=_curry2(function invoker(arity,method){return curryN(arity+1,function(){var target=arguments[arity];if(target!=null&&is(Function,target[method])){return target[method].apply(target,_slice(arguments,0,arity));}throw new TypeError(toString(target)+' does not have a method named "'+method+'"');});});/**
 	     * Returns a string made by inserting the `separator` between each element and
 	     * concatenating all the elements into a single string.
 	     *
@@ -5746,44 +5699,6 @@ var switzerland =
 	     *
 	     *      R.split('.', 'a.b.c.xyz.d'); //=> ['a', 'b', 'c', 'xyz', 'd']
 	     */var split=invoker(1,'split');/**
-	     * Finds the set (i.e. no duplicates) of all elements contained in the first or
-	     * second list, but not both.
-	     *
-	     * @func
-	     * @memberOf R
-	     * @since v0.19.0
-	     * @category Relation
-	     * @sig [*] -> [*] -> [*]
-	     * @param {Array} list1 The first list.
-	     * @param {Array} list2 The second list.
-	     * @return {Array} The elements in `list1` or `list2`, but not both.
-	     * @see R.symmetricDifferenceWith, R.difference, R.differenceWith
-	     * @example
-	     *
-	     *      R.symmetricDifference([1,2,3,4], [7,6,5,4,3]); //=> [1,2,7,6,5]
-	     *      R.symmetricDifference([7,6,5,4,3], [1,2,3,4]); //=> [7,6,5,1,2]
-	     */var symmetricDifference=_curry2(function symmetricDifference(list1,list2){return concat(difference(list1,list2),difference(list2,list1));});/**
-	     * Finds the set (i.e. no duplicates) of all elements contained in the first or
-	     * second list, but not both. Duplication is determined according to the value
-	     * returned by applying the supplied predicate to two list elements.
-	     *
-	     * @func
-	     * @memberOf R
-	     * @since v0.19.0
-	     * @category Relation
-	     * @sig (a -> a -> Boolean) -> [a] -> [a] -> [a]
-	     * @param {Function} pred A predicate used to test whether two items are equal.
-	     * @param {Array} list1 The first list.
-	     * @param {Array} list2 The second list.
-	     * @return {Array} The elements in `list1` or `list2`, but not both.
-	     * @see R.symmetricDifference, R.difference, R.differenceWith
-	     * @example
-	     *
-	     *      var eqA = R.eqBy(R.prop('a'));
-	     *      var l1 = [{a: 1}, {a: 2}, {a: 3}, {a: 4}];
-	     *      var l2 = [{a: 3}, {a: 4}, {a: 5}, {a: 6}];
-	     *      R.symmetricDifferenceWith(eqA, l1, l2); //=> [{a: 1}, {a: 2}, {a: 5}, {a: 6}]
-	     */var symmetricDifferenceWith=_curry3(function symmetricDifferenceWith(pred,list1,list2){return concat(differenceWith(pred,list1,list2),differenceWith(pred,list2,list1));});/**
 	     * Determines whether a given string matches a given regular expression.
 	     *
 	     * @func
@@ -5845,6 +5760,64 @@ var switzerland =
 	     *
 	     *      R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]); //=> [-1, -5, 2, 10]
 	     */var uniqBy=_curry2(function uniqBy(fn,list){var set=new _Set();var result=[];var idx=0;var appliedItem,item;while(idx<list.length){item=list[idx];appliedItem=fn(item);if(set.add(appliedItem)){result.push(item);}idx+=1;}return result;});/**
+	     * Returns the result of concatenating the given lists or strings.
+	     *
+	     * Dispatches to the `concat` method of the first argument, if present.
+	     *
+	     * @func
+	     * @memberOf R
+	     * @since v0.1.0
+	     * @category List
+	     * @sig [a] -> [a] -> [a]
+	     * @sig String -> String -> String
+	     * @param {Array|String} a
+	     * @param {Array|String} b
+	     * @return {Array|String}
+	     *
+	     * @example
+	     *
+	     *      R.concat([], []); //=> []
+	     *      R.concat([4, 5, 6], [1, 2, 3]); //=> [4, 5, 6, 1, 2, 3]
+	     *      R.concat('ABC', 'DEF'); // 'ABCDEF'
+	     */var concat=flip(invoker(1,'concat'));/**
+	     * Finds the set (i.e. no duplicates) of all elements contained in the first or
+	     * second list, but not both.
+	     *
+	     * @func
+	     * @memberOf R
+	     * @since v0.19.0
+	     * @category Relation
+	     * @sig [*] -> [*] -> [*]
+	     * @param {Array} list1 The first list.
+	     * @param {Array} list2 The second list.
+	     * @return {Array} The elements in `list1` or `list2`, but not both.
+	     * @see R.symmetricDifferenceWith
+	     * @example
+	     *
+	     *      R.symmetricDifference([1,2,3,4], [7,6,5,4,3]); //=> [1,2,7,6,5]
+	     *      R.symmetricDifference([7,6,5,4,3], [1,2,3,4]); //=> [7,6,5,1,2]
+	     */var symmetricDifference=_curry2(function symmetricDifference(list1,list2){return concat(difference(list1,list2),difference(list2,list1));});/**
+	     * Finds the set (i.e. no duplicates) of all elements contained in the first or
+	     * second list, but not both. Duplication is determined according to the value
+	     * returned by applying the supplied predicate to two list elements.
+	     *
+	     * @func
+	     * @memberOf R
+	     * @since v0.19.0
+	     * @category Relation
+	     * @sig (a -> a -> Boolean) -> [a] -> [a] -> [a]
+	     * @param {Function} pred A predicate used to test whether two items are equal.
+	     * @param {Array} list1 The first list.
+	     * @param {Array} list2 The second list.
+	     * @return {Array} The elements in `list1` or `list2`, but not both.
+	     * @see R.symmetricDifference
+	     * @example
+	     *
+	     *      var eqA = R.eqBy(R.prop('a'));
+	     *      var l1 = [{a: 1}, {a: 2}, {a: 3}, {a: 4}];
+	     *      var l2 = [{a: 3}, {a: 4}, {a: 5}, {a: 6}];
+	     *      R.symmetricDifferenceWith(eqA, l1, l2); //=> [{a: 1}, {a: 2}, {a: 5}, {a: 6}]
+	     */var symmetricDifferenceWith=_curry3(function symmetricDifferenceWith(pred,list1,list2){return concat(differenceWith(pred,list1,list2),differenceWith(pred,list2,list1));});/**
 	     * Returns a new list containing only one copy of each element in the original
 	     * list. `R.equals` is used to determine equality.
 	     *
@@ -5892,7 +5865,7 @@ var switzerland =
 	     * @example
 	     *
 	     *      R.union([1, 2, 3], [2, 3, 4]); //=> [1, 2, 3, 4]
-	     */var union=_curry2(compose(uniq,_concat));var R={F:F,T:T,__:__,add:add,addIndex:addIndex,adjust:adjust,all:all,allPass:allPass,always:always,and:and,any:any,anyPass:anyPass,ap:ap,aperture:aperture,append:append,apply:apply,applySpec:applySpec,assoc:assoc,assocPath:assocPath,binary:binary,bind:bind,both:both,call:call,chain:chain,clamp:clamp,clone:clone,comparator:comparator,complement:complement,compose:compose,composeK:composeK,composeP:composeP,concat:concat,cond:cond,construct:construct,constructN:constructN,contains:contains,converge:converge,countBy:countBy,curry:curry,curryN:curryN,dec:dec,defaultTo:defaultTo,difference:difference,differenceWith:differenceWith,dissoc:dissoc,dissocPath:dissocPath,divide:divide,drop:drop,dropLast:dropLast,dropLastWhile:dropLastWhile,dropRepeats:dropRepeats,dropRepeatsWith:dropRepeatsWith,dropWhile:dropWhile,either:either,empty:empty,eqBy:eqBy,eqProps:eqProps,equals:equals,evolve:evolve,filter:filter,find:find,findIndex:findIndex,findLast:findLast,findLastIndex:findLastIndex,flatten:flatten,flip:flip,forEach:forEach,fromPairs:fromPairs,groupBy:groupBy,groupWith:groupWith,gt:gt,gte:gte,has:has,hasIn:hasIn,head:head,identical:identical,identity:identity,ifElse:ifElse,inc:inc,indexBy:indexBy,indexOf:indexOf,init:init,insert:insert,insertAll:insertAll,intersection:intersection,intersectionWith:intersectionWith,intersperse:intersperse,into:into,invert:invert,invertObj:invertObj,invoker:invoker,is:is,isArrayLike:isArrayLike,isEmpty:isEmpty,isNil:isNil,join:join,juxt:juxt,keys:keys,keysIn:keysIn,last:last,lastIndexOf:lastIndexOf,length:length,lens:lens,lensIndex:lensIndex,lensPath:lensPath,lensProp:lensProp,lift:lift,liftN:liftN,lt:lt,lte:lte,map:map,mapAccum:mapAccum,mapAccumRight:mapAccumRight,mapObjIndexed:mapObjIndexed,match:match,mathMod:mathMod,max:max,maxBy:maxBy,mean:mean,median:median,memoize:memoize,merge:merge,mergeAll:mergeAll,mergeWith:mergeWith,mergeWithKey:mergeWithKey,min:min,minBy:minBy,modulo:modulo,multiply:multiply,nAry:nAry,negate:negate,none:none,not:not,nth:nth,nthArg:nthArg,objOf:objOf,of:of,omit:omit,once:once,or:or,over:over,pair:pair,partial:partial,partialRight:partialRight,partition:partition,path:path,pathEq:pathEq,pathOr:pathOr,pathSatisfies:pathSatisfies,pick:pick,pickAll:pickAll,pickBy:pickBy,pipe:pipe,pipeK:pipeK,pipeP:pipeP,pluck:pluck,prepend:prepend,product:product,project:project,prop:prop,propEq:propEq,propIs:propIs,propOr:propOr,propSatisfies:propSatisfies,props:props,range:range,reduce:reduce,reduceBy:reduceBy,reduceRight:reduceRight,reduceWhile:reduceWhile,reduced:reduced,reject:reject,remove:remove,repeat:repeat,replace:replace,reverse:reverse,scan:scan,sequence:sequence,set:set,slice:slice,sort:sort,sortBy:sortBy,split:split,splitAt:splitAt,splitEvery:splitEvery,splitWhen:splitWhen,subtract:subtract,sum:sum,symmetricDifference:symmetricDifference,symmetricDifferenceWith:symmetricDifferenceWith,tail:tail,take:take,takeLast:takeLast,takeLastWhile:takeLastWhile,takeWhile:takeWhile,tap:tap,test:test,times:times,toLower:toLower,toPairs:toPairs,toPairsIn:toPairsIn,toString:toString,toUpper:toUpper,transduce:transduce,transpose:transpose,traverse:traverse,trim:trim,tryCatch:tryCatch,type:type,unapply:unapply,unary:unary,uncurryN:uncurryN,unfold:unfold,union:union,unionWith:unionWith,uniq:uniq,uniqBy:uniqBy,uniqWith:uniqWith,unless:unless,unnest:unnest,until:until,update:update,useWith:useWith,values:values,valuesIn:valuesIn,view:view,when:when,where:where,whereEq:whereEq,without:without,wrap:wrap,xprod:xprod,zip:zip,zipObj:zipObj,zipWith:zipWith};/* eslint-env amd *//* TEST_ENTRY_POINT */if(true){module.exports=R;}else if(typeof define==='function'&&define.amd){define(function(){return R;});}else{this.R=R;}}).call(undefined);
+	     */var union=_curry2(compose(uniq,_concat));var R={F:F,T:T,__:__,add:add,addIndex:addIndex,adjust:adjust,all:all,allPass:allPass,allUniq:allUniq,always:always,and:and,any:any,anyPass:anyPass,ap:ap,aperture:aperture,append:append,apply:apply,applySpec:applySpec,assoc:assoc,assocPath:assocPath,binary:binary,bind:bind,both:both,call:call,chain:chain,clamp:clamp,clone:clone,comparator:comparator,complement:complement,compose:compose,composeK:composeK,composeP:composeP,concat:concat,cond:cond,construct:construct,constructN:constructN,contains:contains,converge:converge,countBy:countBy,curry:curry,curryN:curryN,dec:dec,defaultTo:defaultTo,difference:difference,differenceWith:differenceWith,dissoc:dissoc,dissocPath:dissocPath,divide:divide,drop:drop,dropLast:dropLast,dropLastWhile:dropLastWhile,dropRepeats:dropRepeats,dropRepeatsWith:dropRepeatsWith,dropWhile:dropWhile,either:either,empty:empty,eqBy:eqBy,eqProps:eqProps,equals:equals,evolve:evolve,filter:filter,find:find,findIndex:findIndex,findLast:findLast,findLastIndex:findLastIndex,flatten:flatten,flip:flip,forEach:forEach,fromPairs:fromPairs,groupBy:groupBy,groupWith:groupWith,gt:gt,gte:gte,has:has,hasIn:hasIn,head:head,identical:identical,identity:identity,ifElse:ifElse,inc:inc,indexBy:indexBy,indexOf:indexOf,init:init,insert:insert,insertAll:insertAll,intersection:intersection,intersectionWith:intersectionWith,intersperse:intersperse,into:into,invert:invert,invertObj:invertObj,invoker:invoker,is:is,isArrayLike:isArrayLike,isEmpty:isEmpty,isNil:isNil,join:join,juxt:juxt,keys:keys,keysIn:keysIn,last:last,lastIndexOf:lastIndexOf,length:length,lens:lens,lensIndex:lensIndex,lensPath:lensPath,lensProp:lensProp,lift:lift,liftN:liftN,lt:lt,lte:lte,map:map,mapAccum:mapAccum,mapAccumRight:mapAccumRight,mapObjIndexed:mapObjIndexed,match:match,mathMod:mathMod,max:max,maxBy:maxBy,mean:mean,median:median,memoize:memoize,merge:merge,mergeAll:mergeAll,mergeWith:mergeWith,mergeWithKey:mergeWithKey,min:min,minBy:minBy,modulo:modulo,multiply:multiply,nAry:nAry,negate:negate,none:none,not:not,nth:nth,nthArg:nthArg,objOf:objOf,of:of,omit:omit,once:once,or:or,over:over,pair:pair,partial:partial,partialRight:partialRight,partition:partition,path:path,pathEq:pathEq,pathOr:pathOr,pathSatisfies:pathSatisfies,pick:pick,pickAll:pickAll,pickBy:pickBy,pipe:pipe,pipeK:pipeK,pipeP:pipeP,pluck:pluck,prepend:prepend,product:product,project:project,prop:prop,propEq:propEq,propIs:propIs,propOr:propOr,propSatisfies:propSatisfies,props:props,range:range,reduce:reduce,reduceBy:reduceBy,reduceRight:reduceRight,reduced:reduced,reject:reject,remove:remove,repeat:repeat,replace:replace,reverse:reverse,scan:scan,sequence:sequence,set:set,slice:slice,sort:sort,sortBy:sortBy,split:split,splitAt:splitAt,splitEvery:splitEvery,splitWhen:splitWhen,subtract:subtract,sum:sum,symmetricDifference:symmetricDifference,symmetricDifferenceWith:symmetricDifferenceWith,tail:tail,take:take,takeLast:takeLast,takeLastWhile:takeLastWhile,takeWhile:takeWhile,tap:tap,test:test,times:times,toLower:toLower,toPairs:toPairs,toPairsIn:toPairsIn,toString:toString,toUpper:toUpper,transduce:transduce,transpose:transpose,traverse:traverse,trim:trim,tryCatch:tryCatch,type:type,unapply:unapply,unary:unary,uncurryN:uncurryN,unfold:unfold,union:union,unionWith:unionWith,uniq:uniq,uniqBy:uniqBy,uniqWith:uniqWith,unless:unless,unnest:unnest,until:until,update:update,useWith:useWith,values:values,valuesIn:valuesIn,view:view,when:when,where:where,whereEq:whereEq,without:without,wrap:wrap,xprod:xprod,zip:zip,zipObj:zipObj,zipWith:zipWith};/* eslint-env amd *//* TEST_ENTRY_POINT */if(true){module.exports=R;}else if(typeof define==='function'&&define.amd){define(function(){return R;});}else{this.R=R;}}).call(undefined);
 
 /***/ },
 /* 7 */
@@ -8957,14 +8930,2344 @@ var switzerland =
 /* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.compose = exports.pipe = undefined;
+
+	var _promisedPipe = __webpack_require__(55);
+
+	var _promisedPipe2 = _interopRequireDefault(_promisedPipe);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @method pipe
+	 * @param {Array} fns
+	 * @return {Function}
+	 */
+	const pipe = exports.pipe = _promisedPipe2.default;
+
+	/**
+	 * @constant compose
+	 * @param {Array} fns
+	 * @return {Object}
+	 */
+	const compose = exports.compose = function (...fns) {
+	  return pipe(fns.reverse());
+	};
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	// Dependencies
+	var pipe = __webpack_require__(6).pipe;
+	var promised = __webpack_require__(56).promised;
+
+	// Public intefrace
+	module.exports = promisedPipe;
+
+	function promisedPipe() {
+	  var args = Array.prototype.slice.call(arguments);
+	  return pipe.apply(null, args.map(promised));
+	}
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process, setImmediate) {"use strict";
+
+	// vim:ts=4:sts=4:sw=4:
+	/*!
+	 *
+	 * Copyright 2009-2012 Kris Kowal under the terms of the MIT
+	 * license found at http://github.com/kriskowal/q/raw/master/LICENSE
+	 *
+	 * With parts by Tyler Close
+	 * Copyright 2007-2009 Tyler Close under the terms of the MIT X license found
+	 * at http://www.opensource.org/licenses/mit-license.html
+	 * Forked at ref_send.js version: 2009-05-11
+	 *
+	 * With parts by Mark Miller
+	 * Copyright (C) 2011 Google Inc.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 * http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 *
+	 */
+
+	(function (definition) {
+	    "use strict";
+
+	    // This file will function properly as a <script> tag, or a module
+	    // using CommonJS and NodeJS or RequireJS module formats.  In
+	    // Common/Node/RequireJS, the module exports the Q API and when
+	    // executed as a simple <script>, it creates a Q global instead.
+
+	    // Montage Require
+
+	    if (typeof bootstrap === "function") {
+	        bootstrap("promise", definition);
+
+	        // CommonJS
+	    } else if (true) {
+	        module.exports = definition();
+
+	        // RequireJS
+	    } else if (typeof define === "function" && define.amd) {
+	        define(definition);
+
+	        // SES (Secure EcmaScript)
+	    } else if (typeof ses !== "undefined") {
+	        if (!ses.ok()) {
+	            return;
+	        } else {
+	            ses.makeQ = definition;
+	        }
+
+	        // <script>
+	    } else if (typeof window !== "undefined" || typeof self !== "undefined") {
+	        // Prefer window over self for add-on scripts. Use self for
+	        // non-windowed contexts.
+	        var global = typeof window !== "undefined" ? window : self;
+
+	        // Get the `window` object, save the previous Q global
+	        // and initialize Q as a global.
+	        var previousQ = global.Q;
+	        global.Q = definition();
+
+	        // Add a noConflict function so Q can be removed from the
+	        // global namespace.
+	        global.Q.noConflict = function () {
+	            global.Q = previousQ;
+	            return this;
+	        };
+	    } else {
+	        throw new Error("This environment was not anticipated by Q. Please file a bug.");
+	    }
+	})(function () {
+	    "use strict";
+
+	    var hasStacks = false;
+	    try {
+	        throw new Error();
+	    } catch (e) {
+	        hasStacks = !!e.stack;
+	    }
+
+	    // All code after this point will be filtered from stack traces reported
+	    // by Q.
+	    var qStartingLine = captureLine();
+	    var qFileName;
+
+	    // shims
+
+	    // used for fallback in "allResolved"
+	    var noop = function () {};
+
+	    // Use the fastest possible means to execute a task in a future turn
+	    // of the event loop.
+	    var nextTick = function () {
+	        // linked list of tasks (single, with head node)
+	        var head = { task: void 0, next: null };
+	        var tail = head;
+	        var flushing = false;
+	        var requestTick = void 0;
+	        var isNodeJS = false;
+	        // queue for late tasks, used by unhandled rejection tracking
+	        var laterQueue = [];
+
+	        function flush() {
+	            /* jshint loopfunc: true */
+	            var task, domain;
+
+	            while (head.next) {
+	                head = head.next;
+	                task = head.task;
+	                head.task = void 0;
+	                domain = head.domain;
+
+	                if (domain) {
+	                    head.domain = void 0;
+	                    domain.enter();
+	                }
+	                runSingle(task, domain);
+	            }
+	            while (laterQueue.length) {
+	                task = laterQueue.pop();
+	                runSingle(task);
+	            }
+	            flushing = false;
+	        }
+	        // runs a single function in the async queue
+	        function runSingle(task, domain) {
+	            try {
+	                task();
+	            } catch (e) {
+	                if (isNodeJS) {
+	                    // In node, uncaught exceptions are considered fatal errors.
+	                    // Re-throw them synchronously to interrupt flushing!
+
+	                    // Ensure continuation if the uncaught exception is suppressed
+	                    // listening "uncaughtException" events (as domains does).
+	                    // Continue in next event to avoid tick recursion.
+	                    if (domain) {
+	                        domain.exit();
+	                    }
+	                    setTimeout(flush, 0);
+	                    if (domain) {
+	                        domain.enter();
+	                    }
+
+	                    throw e;
+	                } else {
+	                    // In browsers, uncaught exceptions are not fatal.
+	                    // Re-throw them asynchronously to avoid slow-downs.
+	                    setTimeout(function () {
+	                        throw e;
+	                    }, 0);
+	                }
+	            }
+
+	            if (domain) {
+	                domain.exit();
+	            }
+	        }
+
+	        nextTick = function (task) {
+	            tail = tail.next = {
+	                task: task,
+	                domain: isNodeJS && process.domain,
+	                next: null
+	            };
+
+	            if (!flushing) {
+	                flushing = true;
+	                requestTick();
+	            }
+	        };
+
+	        if (typeof process === "object" && process.toString() === "[object process]" && process.nextTick) {
+	            // Ensure Q is in a real Node environment, with a `process.nextTick`.
+	            // To see through fake Node environments:
+	            // * Mocha test runner - exposes a `process` global without a `nextTick`
+	            // * Browserify - exposes a `process.nexTick` function that uses
+	            //   `setTimeout`. In this case `setImmediate` is preferred because
+	            //    it is faster. Browserify's `process.toString()` yields
+	            //   "[object Object]", while in a real Node environment
+	            //   `process.nextTick()` yields "[object process]".
+	            isNodeJS = true;
+
+	            requestTick = function () {
+	                process.nextTick(flush);
+	            };
+	        } else if (typeof setImmediate === "function") {
+	            // In IE10, Node.js 0.9+, or https://github.com/NobleJS/setImmediate
+	            if (typeof window !== "undefined") {
+	                requestTick = setImmediate.bind(window, flush);
+	            } else {
+	                requestTick = function () {
+	                    setImmediate(flush);
+	                };
+	            }
+	        } else if (typeof MessageChannel !== "undefined") {
+	            // modern browsers
+	            // http://www.nonblocking.io/2011/06/windownexttick.html
+	            var channel = new MessageChannel();
+	            // At least Safari Version 6.0.5 (8536.30.1) intermittently cannot create
+	            // working message ports the first time a page loads.
+	            channel.port1.onmessage = function () {
+	                requestTick = requestPortTick;
+	                channel.port1.onmessage = flush;
+	                flush();
+	            };
+	            var requestPortTick = function () {
+	                // Opera requires us to provide a message payload, regardless of
+	                // whether we use it.
+	                channel.port2.postMessage(0);
+	            };
+	            requestTick = function () {
+	                setTimeout(flush, 0);
+	                requestPortTick();
+	            };
+	        } else {
+	            // old browsers
+	            requestTick = function () {
+	                setTimeout(flush, 0);
+	            };
+	        }
+	        // runs a task after all other tasks have been run
+	        // this is useful for unhandled rejection tracking that needs to happen
+	        // after all `then`d tasks have been run.
+	        nextTick.runAfter = function (task) {
+	            laterQueue.push(task);
+	            if (!flushing) {
+	                flushing = true;
+	                requestTick();
+	            }
+	        };
+	        return nextTick;
+	    }();
+
+	    // Attempt to make generics safe in the face of downstream
+	    // modifications.
+	    // There is no situation where this is necessary.
+	    // If you need a security guarantee, these primordials need to be
+	    // deeply frozen anyway, and if you don’t need a security guarantee,
+	    // this is just plain paranoid.
+	    // However, this **might** have the nice side-effect of reducing the size of
+	    // the minified code by reducing x.call() to merely x()
+	    // See Mark Miller’s explanation of what this does.
+	    // http://wiki.ecmascript.org/doku.php?id=conventions:safe_meta_programming
+	    var call = Function.call;
+	    function uncurryThis(f) {
+	        return function () {
+	            return call.apply(f, arguments);
+	        };
+	    }
+	    // This is equivalent, but slower:
+	    // uncurryThis = Function_bind.bind(Function_bind.call);
+	    // http://jsperf.com/uncurrythis
+
+	    var array_slice = uncurryThis(Array.prototype.slice);
+
+	    var array_reduce = uncurryThis(Array.prototype.reduce || function (callback, basis) {
+	        var index = 0,
+	            length = this.length;
+	        // concerning the initial value, if one is not provided
+	        if (arguments.length === 1) {
+	            // seek to the first value in the array, accounting
+	            // for the possibility that is is a sparse array
+	            do {
+	                if (index in this) {
+	                    basis = this[index++];
+	                    break;
+	                }
+	                if (++index >= length) {
+	                    throw new TypeError();
+	                }
+	            } while (1);
+	        }
+	        // reduce
+	        for (; index < length; index++) {
+	            // account for the possibility that the array is sparse
+	            if (index in this) {
+	                basis = callback(basis, this[index], index);
+	            }
+	        }
+	        return basis;
+	    });
+
+	    var array_indexOf = uncurryThis(Array.prototype.indexOf || function (value) {
+	        // not a very good shim, but good enough for our one use of it
+	        for (var i = 0; i < this.length; i++) {
+	            if (this[i] === value) {
+	                return i;
+	            }
+	        }
+	        return -1;
+	    });
+
+	    var array_map = uncurryThis(Array.prototype.map || function (callback, thisp) {
+	        var self = this;
+	        var collect = [];
+	        array_reduce(self, function (undefined, value, index) {
+	            collect.push(callback.call(thisp, value, index, self));
+	        }, void 0);
+	        return collect;
+	    });
+
+	    var object_create = Object.create || function (prototype) {
+	        function Type() {}
+	        Type.prototype = prototype;
+	        return new Type();
+	    };
+
+	    var object_hasOwnProperty = uncurryThis(Object.prototype.hasOwnProperty);
+
+	    var object_keys = Object.keys || function (object) {
+	        var keys = [];
+	        for (var key in object) {
+	            if (object_hasOwnProperty(object, key)) {
+	                keys.push(key);
+	            }
+	        }
+	        return keys;
+	    };
+
+	    var object_toString = uncurryThis(Object.prototype.toString);
+
+	    function isObject(value) {
+	        return value === Object(value);
+	    }
+
+	    // generator related shims
+
+	    // FIXME: Remove this function once ES6 generators are in SpiderMonkey.
+	    function isStopIteration(exception) {
+	        return object_toString(exception) === "[object StopIteration]" || exception instanceof QReturnValue;
+	    }
+
+	    // FIXME: Remove this helper and Q.return once ES6 generators are in
+	    // SpiderMonkey.
+	    var QReturnValue;
+	    if (typeof ReturnValue !== "undefined") {
+	        QReturnValue = ReturnValue;
+	    } else {
+	        QReturnValue = function (value) {
+	            this.value = value;
+	        };
+	    }
+
+	    // long stack traces
+
+	    var STACK_JUMP_SEPARATOR = "From previous event:";
+
+	    function makeStackTraceLong(error, promise) {
+	        // If possible, transform the error stack trace by removing Node and Q
+	        // cruft, then concatenating with the stack trace of `promise`. See #57.
+	        if (hasStacks && promise.stack && typeof error === "object" && error !== null && error.stack && error.stack.indexOf(STACK_JUMP_SEPARATOR) === -1) {
+	            var stacks = [];
+	            for (var p = promise; !!p; p = p.source) {
+	                if (p.stack) {
+	                    stacks.unshift(p.stack);
+	                }
+	            }
+	            stacks.unshift(error.stack);
+
+	            var concatedStacks = stacks.join("\n" + STACK_JUMP_SEPARATOR + "\n");
+	            error.stack = filterStackString(concatedStacks);
+	        }
+	    }
+
+	    function filterStackString(stackString) {
+	        var lines = stackString.split("\n");
+	        var desiredLines = [];
+	        for (var i = 0; i < lines.length; ++i) {
+	            var line = lines[i];
+
+	            if (!isInternalFrame(line) && !isNodeFrame(line) && line) {
+	                desiredLines.push(line);
+	            }
+	        }
+	        return desiredLines.join("\n");
+	    }
+
+	    function isNodeFrame(stackLine) {
+	        return stackLine.indexOf("(module.js:") !== -1 || stackLine.indexOf("(node.js:") !== -1;
+	    }
+
+	    function getFileNameAndLineNumber(stackLine) {
+	        // Named functions: "at functionName (filename:lineNumber:columnNumber)"
+	        // In IE10 function name can have spaces ("Anonymous function") O_o
+	        var attempt1 = /at .+ \((.+):(\d+):(?:\d+)\)$/.exec(stackLine);
+	        if (attempt1) {
+	            return [attempt1[1], Number(attempt1[2])];
+	        }
+
+	        // Anonymous functions: "at filename:lineNumber:columnNumber"
+	        var attempt2 = /at ([^ ]+):(\d+):(?:\d+)$/.exec(stackLine);
+	        if (attempt2) {
+	            return [attempt2[1], Number(attempt2[2])];
+	        }
+
+	        // Firefox style: "function@filename:lineNumber or @filename:lineNumber"
+	        var attempt3 = /.*@(.+):(\d+)$/.exec(stackLine);
+	        if (attempt3) {
+	            return [attempt3[1], Number(attempt3[2])];
+	        }
+	    }
+
+	    function isInternalFrame(stackLine) {
+	        var fileNameAndLineNumber = getFileNameAndLineNumber(stackLine);
+
+	        if (!fileNameAndLineNumber) {
+	            return false;
+	        }
+
+	        var fileName = fileNameAndLineNumber[0];
+	        var lineNumber = fileNameAndLineNumber[1];
+
+	        return fileName === qFileName && lineNumber >= qStartingLine && lineNumber <= qEndingLine;
+	    }
+
+	    // discover own file name and line number range for filtering stack
+	    // traces
+	    function captureLine() {
+	        if (!hasStacks) {
+	            return;
+	        }
+
+	        try {
+	            throw new Error();
+	        } catch (e) {
+	            var lines = e.stack.split("\n");
+	            var firstLine = lines[0].indexOf("@") > 0 ? lines[1] : lines[2];
+	            var fileNameAndLineNumber = getFileNameAndLineNumber(firstLine);
+	            if (!fileNameAndLineNumber) {
+	                return;
+	            }
+
+	            qFileName = fileNameAndLineNumber[0];
+	            return fileNameAndLineNumber[1];
+	        }
+	    }
+
+	    function deprecate(callback, name, alternative) {
+	        return function () {
+	            if (typeof console !== "undefined" && typeof console.warn === "function") {
+	                console.warn(name + " is deprecated, use " + alternative + " instead.", new Error("").stack);
+	            }
+	            return callback.apply(callback, arguments);
+	        };
+	    }
+
+	    // end of shims
+	    // beginning of real work
+
+	    /**
+	     * Constructs a promise for an immediate reference, passes promises through, or
+	     * coerces promises from different systems.
+	     * @param value immediate reference or promise
+	     */
+	    function Q(value) {
+	        // If the object is already a Promise, return it directly.  This enables
+	        // the resolve function to both be used to created references from objects,
+	        // but to tolerably coerce non-promises to promises.
+	        if (value instanceof Promise) {
+	            return value;
+	        }
+
+	        // assimilate thenables
+	        if (isPromiseAlike(value)) {
+	            return coerce(value);
+	        } else {
+	            return fulfill(value);
+	        }
+	    }
+	    Q.resolve = Q;
+
+	    /**
+	     * Performs a task in a future turn of the event loop.
+	     * @param {Function} task
+	     */
+	    Q.nextTick = nextTick;
+
+	    /**
+	     * Controls whether or not long stack traces will be on
+	     */
+	    Q.longStackSupport = false;
+
+	    // enable long stacks if Q_DEBUG is set
+	    if (typeof process === "object" && process && process.env && process.env.Q_DEBUG) {
+	        Q.longStackSupport = true;
+	    }
+
+	    /**
+	     * Constructs a {promise, resolve, reject} object.
+	     *
+	     * `resolve` is a callback to invoke with a more resolved value for the
+	     * promise. To fulfill the promise, invoke `resolve` with any value that is
+	     * not a thenable. To reject the promise, invoke `resolve` with a rejected
+	     * thenable, or invoke `reject` with the reason directly. To resolve the
+	     * promise to another thenable, thus putting it in the same state, invoke
+	     * `resolve` with that other thenable.
+	     */
+	    Q.defer = defer;
+	    function defer() {
+	        // if "messages" is an "Array", that indicates that the promise has not yet
+	        // been resolved.  If it is "undefined", it has been resolved.  Each
+	        // element of the messages array is itself an array of complete arguments to
+	        // forward to the resolved promise.  We coerce the resolution value to a
+	        // promise using the `resolve` function because it handles both fully
+	        // non-thenable values and other thenables gracefully.
+	        var messages = [],
+	            progressListeners = [],
+	            resolvedPromise;
+
+	        var deferred = object_create(defer.prototype);
+	        var promise = object_create(Promise.prototype);
+
+	        promise.promiseDispatch = function (resolve, op, operands) {
+	            var args = array_slice(arguments);
+	            if (messages) {
+	                messages.push(args);
+	                if (op === "when" && operands[1]) {
+	                    // progress operand
+	                    progressListeners.push(operands[1]);
+	                }
+	            } else {
+	                Q.nextTick(function () {
+	                    resolvedPromise.promiseDispatch.apply(resolvedPromise, args);
+	                });
+	            }
+	        };
+
+	        // XXX deprecated
+	        promise.valueOf = function () {
+	            if (messages) {
+	                return promise;
+	            }
+	            var nearerValue = nearer(resolvedPromise);
+	            if (isPromise(nearerValue)) {
+	                resolvedPromise = nearerValue; // shorten chain
+	            }
+	            return nearerValue;
+	        };
+
+	        promise.inspect = function () {
+	            if (!resolvedPromise) {
+	                return { state: "pending" };
+	            }
+	            return resolvedPromise.inspect();
+	        };
+
+	        if (Q.longStackSupport && hasStacks) {
+	            try {
+	                throw new Error();
+	            } catch (e) {
+	                // NOTE: don't try to use `Error.captureStackTrace` or transfer the
+	                // accessor around; that causes memory leaks as per GH-111. Just
+	                // reify the stack trace as a string ASAP.
+	                //
+	                // At the same time, cut off the first line; it's always just
+	                // "[object Promise]\n", as per the `toString`.
+	                promise.stack = e.stack.substring(e.stack.indexOf("\n") + 1);
+	            }
+	        }
+
+	        // NOTE: we do the checks for `resolvedPromise` in each method, instead of
+	        // consolidating them into `become`, since otherwise we'd create new
+	        // promises with the lines `become(whatever(value))`. See e.g. GH-252.
+
+	        function become(newPromise) {
+	            resolvedPromise = newPromise;
+	            promise.source = newPromise;
+
+	            array_reduce(messages, function (undefined, message) {
+	                Q.nextTick(function () {
+	                    newPromise.promiseDispatch.apply(newPromise, message);
+	                });
+	            }, void 0);
+
+	            messages = void 0;
+	            progressListeners = void 0;
+	        }
+
+	        deferred.promise = promise;
+	        deferred.resolve = function (value) {
+	            if (resolvedPromise) {
+	                return;
+	            }
+
+	            become(Q(value));
+	        };
+
+	        deferred.fulfill = function (value) {
+	            if (resolvedPromise) {
+	                return;
+	            }
+
+	            become(fulfill(value));
+	        };
+	        deferred.reject = function (reason) {
+	            if (resolvedPromise) {
+	                return;
+	            }
+
+	            become(reject(reason));
+	        };
+	        deferred.notify = function (progress) {
+	            if (resolvedPromise) {
+	                return;
+	            }
+
+	            array_reduce(progressListeners, function (undefined, progressListener) {
+	                Q.nextTick(function () {
+	                    progressListener(progress);
+	                });
+	            }, void 0);
+	        };
+
+	        return deferred;
+	    }
+
+	    /**
+	     * Creates a Node-style callback that will resolve or reject the deferred
+	     * promise.
+	     * @returns a nodeback
+	     */
+	    defer.prototype.makeNodeResolver = function () {
+	        var self = this;
+	        return function (error, value) {
+	            if (error) {
+	                self.reject(error);
+	            } else if (arguments.length > 2) {
+	                self.resolve(array_slice(arguments, 1));
+	            } else {
+	                self.resolve(value);
+	            }
+	        };
+	    };
+
+	    /**
+	     * @param resolver {Function} a function that returns nothing and accepts
+	     * the resolve, reject, and notify functions for a deferred.
+	     * @returns a promise that may be resolved with the given resolve and reject
+	     * functions, or rejected by a thrown exception in resolver
+	     */
+	    Q.Promise = promise; // ES6
+	    Q.promise = promise;
+	    function promise(resolver) {
+	        if (typeof resolver !== "function") {
+	            throw new TypeError("resolver must be a function.");
+	        }
+	        var deferred = defer();
+	        try {
+	            resolver(deferred.resolve, deferred.reject, deferred.notify);
+	        } catch (reason) {
+	            deferred.reject(reason);
+	        }
+	        return deferred.promise;
+	    }
+
+	    promise.race = race; // ES6
+	    promise.all = all; // ES6
+	    promise.reject = reject; // ES6
+	    promise.resolve = Q; // ES6
+
+	    // XXX experimental.  This method is a way to denote that a local value is
+	    // serializable and should be immediately dispatched to a remote upon request,
+	    // instead of passing a reference.
+	    Q.passByCopy = function (object) {
+	        //freeze(object);
+	        //passByCopies.set(object, true);
+	        return object;
+	    };
+
+	    Promise.prototype.passByCopy = function () {
+	        //freeze(object);
+	        //passByCopies.set(object, true);
+	        return this;
+	    };
+
+	    /**
+	     * If two promises eventually fulfill to the same value, promises that value,
+	     * but otherwise rejects.
+	     * @param x {Any*}
+	     * @param y {Any*}
+	     * @returns {Any*} a promise for x and y if they are the same, but a rejection
+	     * otherwise.
+	     *
+	     */
+	    Q.join = function (x, y) {
+	        return Q(x).join(y);
+	    };
+
+	    Promise.prototype.join = function (that) {
+	        return Q([this, that]).spread(function (x, y) {
+	            if (x === y) {
+	                // TODO: "===" should be Object.is or equiv
+	                return x;
+	            } else {
+	                throw new Error("Can't join: not the same: " + x + " " + y);
+	            }
+	        });
+	    };
+
+	    /**
+	     * Returns a promise for the first of an array of promises to become settled.
+	     * @param answers {Array[Any*]} promises to race
+	     * @returns {Any*} the first promise to be settled
+	     */
+	    Q.race = race;
+	    function race(answerPs) {
+	        return promise(function (resolve, reject) {
+	            // Switch to this once we can assume at least ES5
+	            // answerPs.forEach(function (answerP) {
+	            //     Q(answerP).then(resolve, reject);
+	            // });
+	            // Use this in the meantime
+	            for (var i = 0, len = answerPs.length; i < len; i++) {
+	                Q(answerPs[i]).then(resolve, reject);
+	            }
+	        });
+	    }
+
+	    Promise.prototype.race = function () {
+	        return this.then(Q.race);
+	    };
+
+	    /**
+	     * Constructs a Promise with a promise descriptor object and optional fallback
+	     * function.  The descriptor contains methods like when(rejected), get(name),
+	     * set(name, value), post(name, args), and delete(name), which all
+	     * return either a value, a promise for a value, or a rejection.  The fallback
+	     * accepts the operation name, a resolver, and any further arguments that would
+	     * have been forwarded to the appropriate method above had a method been
+	     * provided with the proper name.  The API makes no guarantees about the nature
+	     * of the returned object, apart from that it is usable whereever promises are
+	     * bought and sold.
+	     */
+	    Q.makePromise = Promise;
+	    function Promise(descriptor, fallback, inspect) {
+	        if (fallback === void 0) {
+	            fallback = function (op) {
+	                return reject(new Error("Promise does not support operation: " + op));
+	            };
+	        }
+	        if (inspect === void 0) {
+	            inspect = function () {
+	                return { state: "unknown" };
+	            };
+	        }
+
+	        var promise = object_create(Promise.prototype);
+
+	        promise.promiseDispatch = function (resolve, op, args) {
+	            var result;
+	            try {
+	                if (descriptor[op]) {
+	                    result = descriptor[op].apply(promise, args);
+	                } else {
+	                    result = fallback.call(promise, op, args);
+	                }
+	            } catch (exception) {
+	                result = reject(exception);
+	            }
+	            if (resolve) {
+	                resolve(result);
+	            }
+	        };
+
+	        promise.inspect = inspect;
+
+	        // XXX deprecated `valueOf` and `exception` support
+	        if (inspect) {
+	            var inspected = inspect();
+	            if (inspected.state === "rejected") {
+	                promise.exception = inspected.reason;
+	            }
+
+	            promise.valueOf = function () {
+	                var inspected = inspect();
+	                if (inspected.state === "pending" || inspected.state === "rejected") {
+	                    return promise;
+	                }
+	                return inspected.value;
+	            };
+	        }
+
+	        return promise;
+	    }
+
+	    Promise.prototype.toString = function () {
+	        return "[object Promise]";
+	    };
+
+	    Promise.prototype.then = function (fulfilled, rejected, progressed) {
+	        var self = this;
+	        var deferred = defer();
+	        var done = false; // ensure the untrusted promise makes at most a
+	        // single call to one of the callbacks
+
+	        function _fulfilled(value) {
+	            try {
+	                return typeof fulfilled === "function" ? fulfilled(value) : value;
+	            } catch (exception) {
+	                return reject(exception);
+	            }
+	        }
+
+	        function _rejected(exception) {
+	            if (typeof rejected === "function") {
+	                makeStackTraceLong(exception, self);
+	                try {
+	                    return rejected(exception);
+	                } catch (newException) {
+	                    return reject(newException);
+	                }
+	            }
+	            return reject(exception);
+	        }
+
+	        function _progressed(value) {
+	            return typeof progressed === "function" ? progressed(value) : value;
+	        }
+
+	        Q.nextTick(function () {
+	            self.promiseDispatch(function (value) {
+	                if (done) {
+	                    return;
+	                }
+	                done = true;
+
+	                deferred.resolve(_fulfilled(value));
+	            }, "when", [function (exception) {
+	                if (done) {
+	                    return;
+	                }
+	                done = true;
+
+	                deferred.resolve(_rejected(exception));
+	            }]);
+	        });
+
+	        // Progress propagator need to be attached in the current tick.
+	        self.promiseDispatch(void 0, "when", [void 0, function (value) {
+	            var newValue;
+	            var threw = false;
+	            try {
+	                newValue = _progressed(value);
+	            } catch (e) {
+	                threw = true;
+	                if (Q.onerror) {
+	                    Q.onerror(e);
+	                } else {
+	                    throw e;
+	                }
+	            }
+
+	            if (!threw) {
+	                deferred.notify(newValue);
+	            }
+	        }]);
+
+	        return deferred.promise;
+	    };
+
+	    Q.tap = function (promise, callback) {
+	        return Q(promise).tap(callback);
+	    };
+
+	    /**
+	     * Works almost like "finally", but not called for rejections.
+	     * Original resolution value is passed through callback unaffected.
+	     * Callback may return a promise that will be awaited for.
+	     * @param {Function} callback
+	     * @returns {Q.Promise}
+	     * @example
+	     * doSomething()
+	     *   .then(...)
+	     *   .tap(console.log)
+	     *   .then(...);
+	     */
+	    Promise.prototype.tap = function (callback) {
+	        callback = Q(callback);
+
+	        return this.then(function (value) {
+	            return callback.fcall(value).thenResolve(value);
+	        });
+	    };
+
+	    /**
+	     * Registers an observer on a promise.
+	     *
+	     * Guarantees:
+	     *
+	     * 1. that fulfilled and rejected will be called only once.
+	     * 2. that either the fulfilled callback or the rejected callback will be
+	     *    called, but not both.
+	     * 3. that fulfilled and rejected will not be called in this turn.
+	     *
+	     * @param value      promise or immediate reference to observe
+	     * @param fulfilled  function to be called with the fulfilled value
+	     * @param rejected   function to be called with the rejection exception
+	     * @param progressed function to be called on any progress notifications
+	     * @return promise for the return value from the invoked callback
+	     */
+	    Q.when = when;
+	    function when(value, fulfilled, rejected, progressed) {
+	        return Q(value).then(fulfilled, rejected, progressed);
+	    }
+
+	    Promise.prototype.thenResolve = function (value) {
+	        return this.then(function () {
+	            return value;
+	        });
+	    };
+
+	    Q.thenResolve = function (promise, value) {
+	        return Q(promise).thenResolve(value);
+	    };
+
+	    Promise.prototype.thenReject = function (reason) {
+	        return this.then(function () {
+	            throw reason;
+	        });
+	    };
+
+	    Q.thenReject = function (promise, reason) {
+	        return Q(promise).thenReject(reason);
+	    };
+
+	    /**
+	     * If an object is not a promise, it is as "near" as possible.
+	     * If a promise is rejected, it is as "near" as possible too.
+	     * If it’s a fulfilled promise, the fulfillment value is nearer.
+	     * If it’s a deferred promise and the deferred has been resolved, the
+	     * resolution is "nearer".
+	     * @param object
+	     * @returns most resolved (nearest) form of the object
+	     */
+
+	    // XXX should we re-do this?
+	    Q.nearer = nearer;
+	    function nearer(value) {
+	        if (isPromise(value)) {
+	            var inspected = value.inspect();
+	            if (inspected.state === "fulfilled") {
+	                return inspected.value;
+	            }
+	        }
+	        return value;
+	    }
+
+	    /**
+	     * @returns whether the given object is a promise.
+	     * Otherwise it is a fulfilled value.
+	     */
+	    Q.isPromise = isPromise;
+	    function isPromise(object) {
+	        return object instanceof Promise;
+	    }
+
+	    Q.isPromiseAlike = isPromiseAlike;
+	    function isPromiseAlike(object) {
+	        return isObject(object) && typeof object.then === "function";
+	    }
+
+	    /**
+	     * @returns whether the given object is a pending promise, meaning not
+	     * fulfilled or rejected.
+	     */
+	    Q.isPending = isPending;
+	    function isPending(object) {
+	        return isPromise(object) && object.inspect().state === "pending";
+	    }
+
+	    Promise.prototype.isPending = function () {
+	        return this.inspect().state === "pending";
+	    };
+
+	    /**
+	     * @returns whether the given object is a value or fulfilled
+	     * promise.
+	     */
+	    Q.isFulfilled = isFulfilled;
+	    function isFulfilled(object) {
+	        return !isPromise(object) || object.inspect().state === "fulfilled";
+	    }
+
+	    Promise.prototype.isFulfilled = function () {
+	        return this.inspect().state === "fulfilled";
+	    };
+
+	    /**
+	     * @returns whether the given object is a rejected promise.
+	     */
+	    Q.isRejected = isRejected;
+	    function isRejected(object) {
+	        return isPromise(object) && object.inspect().state === "rejected";
+	    }
+
+	    Promise.prototype.isRejected = function () {
+	        return this.inspect().state === "rejected";
+	    };
+
+	    //// BEGIN UNHANDLED REJECTION TRACKING
+
+	    // This promise library consumes exceptions thrown in handlers so they can be
+	    // handled by a subsequent promise.  The exceptions get added to this array when
+	    // they are created, and removed when they are handled.  Note that in ES6 or
+	    // shimmed environments, this would naturally be a `Set`.
+	    var unhandledReasons = [];
+	    var unhandledRejections = [];
+	    var reportedUnhandledRejections = [];
+	    var trackUnhandledRejections = true;
+
+	    function resetUnhandledRejections() {
+	        unhandledReasons.length = 0;
+	        unhandledRejections.length = 0;
+
+	        if (!trackUnhandledRejections) {
+	            trackUnhandledRejections = true;
+	        }
+	    }
+
+	    function trackRejection(promise, reason) {
+	        if (!trackUnhandledRejections) {
+	            return;
+	        }
+	        if (typeof process === "object" && typeof process.emit === "function") {
+	            Q.nextTick.runAfter(function () {
+	                if (array_indexOf(unhandledRejections, promise) !== -1) {
+	                    process.emit("unhandledRejection", reason, promise);
+	                    reportedUnhandledRejections.push(promise);
+	                }
+	            });
+	        }
+
+	        unhandledRejections.push(promise);
+	        if (reason && typeof reason.stack !== "undefined") {
+	            unhandledReasons.push(reason.stack);
+	        } else {
+	            unhandledReasons.push("(no stack) " + reason);
+	        }
+	    }
+
+	    function untrackRejection(promise) {
+	        if (!trackUnhandledRejections) {
+	            return;
+	        }
+
+	        var at = array_indexOf(unhandledRejections, promise);
+	        if (at !== -1) {
+	            if (typeof process === "object" && typeof process.emit === "function") {
+	                Q.nextTick.runAfter(function () {
+	                    var atReport = array_indexOf(reportedUnhandledRejections, promise);
+	                    if (atReport !== -1) {
+	                        process.emit("rejectionHandled", unhandledReasons[at], promise);
+	                        reportedUnhandledRejections.splice(atReport, 1);
+	                    }
+	                });
+	            }
+	            unhandledRejections.splice(at, 1);
+	            unhandledReasons.splice(at, 1);
+	        }
+	    }
+
+	    Q.resetUnhandledRejections = resetUnhandledRejections;
+
+	    Q.getUnhandledReasons = function () {
+	        // Make a copy so that consumers can't interfere with our internal state.
+	        return unhandledReasons.slice();
+	    };
+
+	    Q.stopUnhandledRejectionTracking = function () {
+	        resetUnhandledRejections();
+	        trackUnhandledRejections = false;
+	    };
+
+	    resetUnhandledRejections();
+
+	    //// END UNHANDLED REJECTION TRACKING
+
+	    /**
+	     * Constructs a rejected promise.
+	     * @param reason value describing the failure
+	     */
+	    Q.reject = reject;
+	    function reject(reason) {
+	        var rejection = Promise({
+	            "when": function (rejected) {
+	                // note that the error has been handled
+	                if (rejected) {
+	                    untrackRejection(this);
+	                }
+	                return rejected ? rejected(reason) : this;
+	            }
+	        }, function fallback() {
+	            return this;
+	        }, function inspect() {
+	            return { state: "rejected", reason: reason };
+	        });
+
+	        // Note that the reason has not been handled.
+	        trackRejection(rejection, reason);
+
+	        return rejection;
+	    }
+
+	    /**
+	     * Constructs a fulfilled promise for an immediate reference.
+	     * @param value immediate reference
+	     */
+	    Q.fulfill = fulfill;
+	    function fulfill(value) {
+	        return Promise({
+	            "when": function () {
+	                return value;
+	            },
+	            "get": function (name) {
+	                return value[name];
+	            },
+	            "set": function (name, rhs) {
+	                value[name] = rhs;
+	            },
+	            "delete": function (name) {
+	                delete value[name];
+	            },
+	            "post": function (name, args) {
+	                // Mark Miller proposes that post with no name should apply a
+	                // promised function.
+	                if (name === null || name === void 0) {
+	                    return value.apply(void 0, args);
+	                } else {
+	                    return value[name].apply(value, args);
+	                }
+	            },
+	            "apply": function (thisp, args) {
+	                return value.apply(thisp, args);
+	            },
+	            "keys": function () {
+	                return object_keys(value);
+	            }
+	        }, void 0, function inspect() {
+	            return { state: "fulfilled", value: value };
+	        });
+	    }
+
+	    /**
+	     * Converts thenables to Q promises.
+	     * @param promise thenable promise
+	     * @returns a Q promise
+	     */
+	    function coerce(promise) {
+	        var deferred = defer();
+	        Q.nextTick(function () {
+	            try {
+	                promise.then(deferred.resolve, deferred.reject, deferred.notify);
+	            } catch (exception) {
+	                deferred.reject(exception);
+	            }
+	        });
+	        return deferred.promise;
+	    }
+
+	    /**
+	     * Annotates an object such that it will never be
+	     * transferred away from this process over any promise
+	     * communication channel.
+	     * @param object
+	     * @returns promise a wrapping of that object that
+	     * additionally responds to the "isDef" message
+	     * without a rejection.
+	     */
+	    Q.master = master;
+	    function master(object) {
+	        return Promise({
+	            "isDef": function () {}
+	        }, function fallback(op, args) {
+	            return dispatch(object, op, args);
+	        }, function () {
+	            return Q(object).inspect();
+	        });
+	    }
+
+	    /**
+	     * Spreads the values of a promised array of arguments into the
+	     * fulfillment callback.
+	     * @param fulfilled callback that receives variadic arguments from the
+	     * promised array
+	     * @param rejected callback that receives the exception if the promise
+	     * is rejected.
+	     * @returns a promise for the return value or thrown exception of
+	     * either callback.
+	     */
+	    Q.spread = spread;
+	    function spread(value, fulfilled, rejected) {
+	        return Q(value).spread(fulfilled, rejected);
+	    }
+
+	    Promise.prototype.spread = function (fulfilled, rejected) {
+	        return this.all().then(function (array) {
+	            return fulfilled.apply(void 0, array);
+	        }, rejected);
+	    };
+
+	    /**
+	     * The async function is a decorator for generator functions, turning
+	     * them into asynchronous generators.  Although generators are only part
+	     * of the newest ECMAScript 6 drafts, this code does not cause syntax
+	     * errors in older engines.  This code should continue to work and will
+	     * in fact improve over time as the language improves.
+	     *
+	     * ES6 generators are currently part of V8 version 3.19 with the
+	     * --harmony-generators runtime flag enabled.  SpiderMonkey has had them
+	     * for longer, but under an older Python-inspired form.  This function
+	     * works on both kinds of generators.
+	     *
+	     * Decorates a generator function such that:
+	     *  - it may yield promises
+	     *  - execution will continue when that promise is fulfilled
+	     *  - the value of the yield expression will be the fulfilled value
+	     *  - it returns a promise for the return value (when the generator
+	     *    stops iterating)
+	     *  - the decorated function returns a promise for the return value
+	     *    of the generator or the first rejected promise among those
+	     *    yielded.
+	     *  - if an error is thrown in the generator, it propagates through
+	     *    every following yield until it is caught, or until it escapes
+	     *    the generator function altogether, and is translated into a
+	     *    rejection for the promise returned by the decorated generator.
+	     */
+	    Q.async = async;
+	    function async(makeGenerator) {
+	        return function () {
+	            // when verb is "send", arg is a value
+	            // when verb is "throw", arg is an exception
+	            function continuer(verb, arg) {
+	                var result;
+
+	                // Until V8 3.19 / Chromium 29 is released, SpiderMonkey is the only
+	                // engine that has a deployed base of browsers that support generators.
+	                // However, SM's generators use the Python-inspired semantics of
+	                // outdated ES6 drafts.  We would like to support ES6, but we'd also
+	                // like to make it possible to use generators in deployed browsers, so
+	                // we also support Python-style generators.  At some point we can remove
+	                // this block.
+
+	                if (typeof StopIteration === "undefined") {
+	                    // ES6 Generators
+	                    try {
+	                        result = generator[verb](arg);
+	                    } catch (exception) {
+	                        return reject(exception);
+	                    }
+	                    if (result.done) {
+	                        return Q(result.value);
+	                    } else {
+	                        return when(result.value, callback, errback);
+	                    }
+	                } else {
+	                    // SpiderMonkey Generators
+	                    // FIXME: Remove this case when SM does ES6 generators.
+	                    try {
+	                        result = generator[verb](arg);
+	                    } catch (exception) {
+	                        if (isStopIteration(exception)) {
+	                            return Q(exception.value);
+	                        } else {
+	                            return reject(exception);
+	                        }
+	                    }
+	                    return when(result, callback, errback);
+	                }
+	            }
+	            var generator = makeGenerator.apply(this, arguments);
+	            var callback = continuer.bind(continuer, "next");
+	            var errback = continuer.bind(continuer, "throw");
+	            return callback();
+	        };
+	    }
+
+	    /**
+	     * The spawn function is a small wrapper around async that immediately
+	     * calls the generator and also ends the promise chain, so that any
+	     * unhandled errors are thrown instead of forwarded to the error
+	     * handler. This is useful because it's extremely common to run
+	     * generators at the top-level to work with libraries.
+	     */
+	    Q.spawn = spawn;
+	    function spawn(makeGenerator) {
+	        Q.done(Q.async(makeGenerator)());
+	    }
+
+	    // FIXME: Remove this interface once ES6 generators are in SpiderMonkey.
+	    /**
+	     * Throws a ReturnValue exception to stop an asynchronous generator.
+	     *
+	     * This interface is a stop-gap measure to support generator return
+	     * values in older Firefox/SpiderMonkey.  In browsers that support ES6
+	     * generators like Chromium 29, just use "return" in your generator
+	     * functions.
+	     *
+	     * @param value the return value for the surrounding generator
+	     * @throws ReturnValue exception with the value.
+	     * @example
+	     * // ES6 style
+	     * Q.async(function* () {
+	     *      var foo = yield getFooPromise();
+	     *      var bar = yield getBarPromise();
+	     *      return foo + bar;
+	     * })
+	     * // Older SpiderMonkey style
+	     * Q.async(function () {
+	     *      var foo = yield getFooPromise();
+	     *      var bar = yield getBarPromise();
+	     *      Q.return(foo + bar);
+	     * })
+	     */
+	    Q["return"] = _return;
+	    function _return(value) {
+	        throw new QReturnValue(value);
+	    }
+
+	    /**
+	     * The promised function decorator ensures that any promise arguments
+	     * are settled and passed as values (`this` is also settled and passed
+	     * as a value).  It will also ensure that the result of a function is
+	     * always a promise.
+	     *
+	     * @example
+	     * var add = Q.promised(function (a, b) {
+	     *     return a + b;
+	     * });
+	     * add(Q(a), Q(B));
+	     *
+	     * @param {function} callback The function to decorate
+	     * @returns {function} a function that has been decorated.
+	     */
+	    Q.promised = promised;
+	    function promised(callback) {
+	        return function () {
+	            return spread([this, all(arguments)], function (self, args) {
+	                return callback.apply(self, args);
+	            });
+	        };
+	    }
+
+	    /**
+	     * sends a message to a value in a future turn
+	     * @param object* the recipient
+	     * @param op the name of the message operation, e.g., "when",
+	     * @param args further arguments to be forwarded to the operation
+	     * @returns result {Promise} a promise for the result of the operation
+	     */
+	    Q.dispatch = dispatch;
+	    function dispatch(object, op, args) {
+	        return Q(object).dispatch(op, args);
+	    }
+
+	    Promise.prototype.dispatch = function (op, args) {
+	        var self = this;
+	        var deferred = defer();
+	        Q.nextTick(function () {
+	            self.promiseDispatch(deferred.resolve, op, args);
+	        });
+	        return deferred.promise;
+	    };
+
+	    /**
+	     * Gets the value of a property in a future turn.
+	     * @param object    promise or immediate reference for target object
+	     * @param name      name of property to get
+	     * @return promise for the property value
+	     */
+	    Q.get = function (object, key) {
+	        return Q(object).dispatch("get", [key]);
+	    };
+
+	    Promise.prototype.get = function (key) {
+	        return this.dispatch("get", [key]);
+	    };
+
+	    /**
+	     * Sets the value of a property in a future turn.
+	     * @param object    promise or immediate reference for object object
+	     * @param name      name of property to set
+	     * @param value     new value of property
+	     * @return promise for the return value
+	     */
+	    Q.set = function (object, key, value) {
+	        return Q(object).dispatch("set", [key, value]);
+	    };
+
+	    Promise.prototype.set = function (key, value) {
+	        return this.dispatch("set", [key, value]);
+	    };
+
+	    /**
+	     * Deletes a property in a future turn.
+	     * @param object    promise or immediate reference for target object
+	     * @param name      name of property to delete
+	     * @return promise for the return value
+	     */
+	    Q.del = // XXX legacy
+	    Q["delete"] = function (object, key) {
+	        return Q(object).dispatch("delete", [key]);
+	    };
+
+	    Promise.prototype.del = // XXX legacy
+	    Promise.prototype["delete"] = function (key) {
+	        return this.dispatch("delete", [key]);
+	    };
+
+	    /**
+	     * Invokes a method in a future turn.
+	     * @param object    promise or immediate reference for target object
+	     * @param name      name of method to invoke
+	     * @param value     a value to post, typically an array of
+	     *                  invocation arguments for promises that
+	     *                  are ultimately backed with `resolve` values,
+	     *                  as opposed to those backed with URLs
+	     *                  wherein the posted value can be any
+	     *                  JSON serializable object.
+	     * @return promise for the return value
+	     */
+	    // bound locally because it is used by other methods
+	    Q.mapply = // XXX As proposed by "Redsandro"
+	    Q.post = function (object, name, args) {
+	        return Q(object).dispatch("post", [name, args]);
+	    };
+
+	    Promise.prototype.mapply = // XXX As proposed by "Redsandro"
+	    Promise.prototype.post = function (name, args) {
+	        return this.dispatch("post", [name, args]);
+	    };
+
+	    /**
+	     * Invokes a method in a future turn.
+	     * @param object    promise or immediate reference for target object
+	     * @param name      name of method to invoke
+	     * @param ...args   array of invocation arguments
+	     * @return promise for the return value
+	     */
+	    Q.send = // XXX Mark Miller's proposed parlance
+	    Q.mcall = // XXX As proposed by "Redsandro"
+	    Q.invoke = function (object, name /*...args*/) {
+	        return Q(object).dispatch("post", [name, array_slice(arguments, 2)]);
+	    };
+
+	    Promise.prototype.send = // XXX Mark Miller's proposed parlance
+	    Promise.prototype.mcall = // XXX As proposed by "Redsandro"
+	    Promise.prototype.invoke = function (name /*...args*/) {
+	        return this.dispatch("post", [name, array_slice(arguments, 1)]);
+	    };
+
+	    /**
+	     * Applies the promised function in a future turn.
+	     * @param object    promise or immediate reference for target function
+	     * @param args      array of application arguments
+	     */
+	    Q.fapply = function (object, args) {
+	        return Q(object).dispatch("apply", [void 0, args]);
+	    };
+
+	    Promise.prototype.fapply = function (args) {
+	        return this.dispatch("apply", [void 0, args]);
+	    };
+
+	    /**
+	     * Calls the promised function in a future turn.
+	     * @param object    promise or immediate reference for target function
+	     * @param ...args   array of application arguments
+	     */
+	    Q["try"] = Q.fcall = function (object /* ...args*/) {
+	        return Q(object).dispatch("apply", [void 0, array_slice(arguments, 1)]);
+	    };
+
+	    Promise.prototype.fcall = function () /*...args*/{
+	        return this.dispatch("apply", [void 0, array_slice(arguments)]);
+	    };
+
+	    /**
+	     * Binds the promised function, transforming return values into a fulfilled
+	     * promise and thrown errors into a rejected one.
+	     * @param object    promise or immediate reference for target function
+	     * @param ...args   array of application arguments
+	     */
+	    Q.fbind = function (object /*...args*/) {
+	        var promise = Q(object);
+	        var args = array_slice(arguments, 1);
+	        return function fbound() {
+	            return promise.dispatch("apply", [this, args.concat(array_slice(arguments))]);
+	        };
+	    };
+	    Promise.prototype.fbind = function () /*...args*/{
+	        var promise = this;
+	        var args = array_slice(arguments);
+	        return function fbound() {
+	            return promise.dispatch("apply", [this, args.concat(array_slice(arguments))]);
+	        };
+	    };
+
+	    /**
+	     * Requests the names of the owned properties of a promised
+	     * object in a future turn.
+	     * @param object    promise or immediate reference for target object
+	     * @return promise for the keys of the eventually settled object
+	     */
+	    Q.keys = function (object) {
+	        return Q(object).dispatch("keys", []);
+	    };
+
+	    Promise.prototype.keys = function () {
+	        return this.dispatch("keys", []);
+	    };
+
+	    /**
+	     * Turns an array of promises into a promise for an array.  If any of
+	     * the promises gets rejected, the whole array is rejected immediately.
+	     * @param {Array*} an array (or promise for an array) of values (or
+	     * promises for values)
+	     * @returns a promise for an array of the corresponding values
+	     */
+	    // By Mark Miller
+	    // http://wiki.ecmascript.org/doku.php?id=strawman:concurrency&rev=1308776521#allfulfilled
+	    Q.all = all;
+	    function all(promises) {
+	        return when(promises, function (promises) {
+	            var pendingCount = 0;
+	            var deferred = defer();
+	            array_reduce(promises, function (undefined, promise, index) {
+	                var snapshot;
+	                if (isPromise(promise) && (snapshot = promise.inspect()).state === "fulfilled") {
+	                    promises[index] = snapshot.value;
+	                } else {
+	                    ++pendingCount;
+	                    when(promise, function (value) {
+	                        promises[index] = value;
+	                        if (--pendingCount === 0) {
+	                            deferred.resolve(promises);
+	                        }
+	                    }, deferred.reject, function (progress) {
+	                        deferred.notify({ index: index, value: progress });
+	                    });
+	                }
+	            }, void 0);
+	            if (pendingCount === 0) {
+	                deferred.resolve(promises);
+	            }
+	            return deferred.promise;
+	        });
+	    }
+
+	    Promise.prototype.all = function () {
+	        return all(this);
+	    };
+
+	    /**
+	     * Returns the first resolved promise of an array. Prior rejected promises are
+	     * ignored.  Rejects only if all promises are rejected.
+	     * @param {Array*} an array containing values or promises for values
+	     * @returns a promise fulfilled with the value of the first resolved promise,
+	     * or a rejected promise if all promises are rejected.
+	     */
+	    Q.any = any;
+
+	    function any(promises) {
+	        if (promises.length === 0) {
+	            return Q.resolve();
+	        }
+
+	        var deferred = Q.defer();
+	        var pendingCount = 0;
+	        array_reduce(promises, function (prev, current, index) {
+	            var promise = promises[index];
+
+	            pendingCount++;
+
+	            when(promise, onFulfilled, onRejected, onProgress);
+	            function onFulfilled(result) {
+	                deferred.resolve(result);
+	            }
+	            function onRejected() {
+	                pendingCount--;
+	                if (pendingCount === 0) {
+	                    deferred.reject(new Error("Can't get fulfillment value from any promise, all " + "promises were rejected."));
+	                }
+	            }
+	            function onProgress(progress) {
+	                deferred.notify({
+	                    index: index,
+	                    value: progress
+	                });
+	            }
+	        }, undefined);
+
+	        return deferred.promise;
+	    }
+
+	    Promise.prototype.any = function () {
+	        return any(this);
+	    };
+
+	    /**
+	     * Waits for all promises to be settled, either fulfilled or
+	     * rejected.  This is distinct from `all` since that would stop
+	     * waiting at the first rejection.  The promise returned by
+	     * `allResolved` will never be rejected.
+	     * @param promises a promise for an array (or an array) of promises
+	     * (or values)
+	     * @return a promise for an array of promises
+	     */
+	    Q.allResolved = deprecate(allResolved, "allResolved", "allSettled");
+	    function allResolved(promises) {
+	        return when(promises, function (promises) {
+	            promises = array_map(promises, Q);
+	            return when(all(array_map(promises, function (promise) {
+	                return when(promise, noop, noop);
+	            })), function () {
+	                return promises;
+	            });
+	        });
+	    }
+
+	    Promise.prototype.allResolved = function () {
+	        return allResolved(this);
+	    };
+
+	    /**
+	     * @see Promise#allSettled
+	     */
+	    Q.allSettled = allSettled;
+	    function allSettled(promises) {
+	        return Q(promises).allSettled();
+	    }
+
+	    /**
+	     * Turns an array of promises into a promise for an array of their states (as
+	     * returned by `inspect`) when they have all settled.
+	     * @param {Array[Any*]} values an array (or promise for an array) of values (or
+	     * promises for values)
+	     * @returns {Array[State]} an array of states for the respective values.
+	     */
+	    Promise.prototype.allSettled = function () {
+	        return this.then(function (promises) {
+	            return all(array_map(promises, function (promise) {
+	                promise = Q(promise);
+	                function regardless() {
+	                    return promise.inspect();
+	                }
+	                return promise.then(regardless, regardless);
+	            }));
+	        });
+	    };
+
+	    /**
+	     * Captures the failure of a promise, giving an oportunity to recover
+	     * with a callback.  If the given promise is fulfilled, the returned
+	     * promise is fulfilled.
+	     * @param {Any*} promise for something
+	     * @param {Function} callback to fulfill the returned promise if the
+	     * given promise is rejected
+	     * @returns a promise for the return value of the callback
+	     */
+	    Q.fail = // XXX legacy
+	    Q["catch"] = function (object, rejected) {
+	        return Q(object).then(void 0, rejected);
+	    };
+
+	    Promise.prototype.fail = // XXX legacy
+	    Promise.prototype["catch"] = function (rejected) {
+	        return this.then(void 0, rejected);
+	    };
+
+	    /**
+	     * Attaches a listener that can respond to progress notifications from a
+	     * promise's originating deferred. This listener receives the exact arguments
+	     * passed to ``deferred.notify``.
+	     * @param {Any*} promise for something
+	     * @param {Function} callback to receive any progress notifications
+	     * @returns the given promise, unchanged
+	     */
+	    Q.progress = progress;
+	    function progress(object, progressed) {
+	        return Q(object).then(void 0, void 0, progressed);
+	    }
+
+	    Promise.prototype.progress = function (progressed) {
+	        return this.then(void 0, void 0, progressed);
+	    };
+
+	    /**
+	     * Provides an opportunity to observe the settling of a promise,
+	     * regardless of whether the promise is fulfilled or rejected.  Forwards
+	     * the resolution to the returned promise when the callback is done.
+	     * The callback can return a promise to defer completion.
+	     * @param {Any*} promise
+	     * @param {Function} callback to observe the resolution of the given
+	     * promise, takes no arguments.
+	     * @returns a promise for the resolution of the given promise when
+	     * ``fin`` is done.
+	     */
+	    Q.fin = // XXX legacy
+	    Q["finally"] = function (object, callback) {
+	        return Q(object)["finally"](callback);
+	    };
+
+	    Promise.prototype.fin = // XXX legacy
+	    Promise.prototype["finally"] = function (callback) {
+	        callback = Q(callback);
+	        return this.then(function (value) {
+	            return callback.fcall().then(function () {
+	                return value;
+	            });
+	        }, function (reason) {
+	            // TODO attempt to recycle the rejection with "this".
+	            return callback.fcall().then(function () {
+	                throw reason;
+	            });
+	        });
+	    };
+
+	    /**
+	     * Terminates a chain of promises, forcing rejections to be
+	     * thrown as exceptions.
+	     * @param {Any*} promise at the end of a chain of promises
+	     * @returns nothing
+	     */
+	    Q.done = function (object, fulfilled, rejected, progress) {
+	        return Q(object).done(fulfilled, rejected, progress);
+	    };
+
+	    Promise.prototype.done = function (fulfilled, rejected, progress) {
+	        var onUnhandledError = function (error) {
+	            // forward to a future turn so that ``when``
+	            // does not catch it and turn it into a rejection.
+	            Q.nextTick(function () {
+	                makeStackTraceLong(error, promise);
+	                if (Q.onerror) {
+	                    Q.onerror(error);
+	                } else {
+	                    throw error;
+	                }
+	            });
+	        };
+
+	        // Avoid unnecessary `nextTick`ing via an unnecessary `when`.
+	        var promise = fulfilled || rejected || progress ? this.then(fulfilled, rejected, progress) : this;
+
+	        if (typeof process === "object" && process && process.domain) {
+	            onUnhandledError = process.domain.bind(onUnhandledError);
+	        }
+
+	        promise.then(void 0, onUnhandledError);
+	    };
+
+	    /**
+	     * Causes a promise to be rejected if it does not get fulfilled before
+	     * some milliseconds time out.
+	     * @param {Any*} promise
+	     * @param {Number} milliseconds timeout
+	     * @param {Any*} custom error message or Error object (optional)
+	     * @returns a promise for the resolution of the given promise if it is
+	     * fulfilled before the timeout, otherwise rejected.
+	     */
+	    Q.timeout = function (object, ms, error) {
+	        return Q(object).timeout(ms, error);
+	    };
+
+	    Promise.prototype.timeout = function (ms, error) {
+	        var deferred = defer();
+	        var timeoutId = setTimeout(function () {
+	            if (!error || "string" === typeof error) {
+	                error = new Error(error || "Timed out after " + ms + " ms");
+	                error.code = "ETIMEDOUT";
+	            }
+	            deferred.reject(error);
+	        }, ms);
+
+	        this.then(function (value) {
+	            clearTimeout(timeoutId);
+	            deferred.resolve(value);
+	        }, function (exception) {
+	            clearTimeout(timeoutId);
+	            deferred.reject(exception);
+	        }, deferred.notify);
+
+	        return deferred.promise;
+	    };
+
+	    /**
+	     * Returns a promise for the given value (or promised value), some
+	     * milliseconds after it resolved. Passes rejections immediately.
+	     * @param {Any*} promise
+	     * @param {Number} milliseconds
+	     * @returns a promise for the resolution of the given promise after milliseconds
+	     * time has elapsed since the resolution of the given promise.
+	     * If the given promise rejects, that is passed immediately.
+	     */
+	    Q.delay = function (object, timeout) {
+	        if (timeout === void 0) {
+	            timeout = object;
+	            object = void 0;
+	        }
+	        return Q(object).delay(timeout);
+	    };
+
+	    Promise.prototype.delay = function (timeout) {
+	        return this.then(function (value) {
+	            var deferred = defer();
+	            setTimeout(function () {
+	                deferred.resolve(value);
+	            }, timeout);
+	            return deferred.promise;
+	        });
+	    };
+
+	    /**
+	     * Passes a continuation to a Node function, which is called with the given
+	     * arguments provided as an array, and returns a promise.
+	     *
+	     *      Q.nfapply(FS.readFile, [__filename])
+	     *      .then(function (content) {
+	     *      })
+	     *
+	     */
+	    Q.nfapply = function (callback, args) {
+	        return Q(callback).nfapply(args);
+	    };
+
+	    Promise.prototype.nfapply = function (args) {
+	        var deferred = defer();
+	        var nodeArgs = array_slice(args);
+	        nodeArgs.push(deferred.makeNodeResolver());
+	        this.fapply(nodeArgs).fail(deferred.reject);
+	        return deferred.promise;
+	    };
+
+	    /**
+	     * Passes a continuation to a Node function, which is called with the given
+	     * arguments provided individually, and returns a promise.
+	     * @example
+	     * Q.nfcall(FS.readFile, __filename)
+	     * .then(function (content) {
+	     * })
+	     *
+	     */
+	    Q.nfcall = function (callback /*...args*/) {
+	        var args = array_slice(arguments, 1);
+	        return Q(callback).nfapply(args);
+	    };
+
+	    Promise.prototype.nfcall = function () /*...args*/{
+	        var nodeArgs = array_slice(arguments);
+	        var deferred = defer();
+	        nodeArgs.push(deferred.makeNodeResolver());
+	        this.fapply(nodeArgs).fail(deferred.reject);
+	        return deferred.promise;
+	    };
+
+	    /**
+	     * Wraps a NodeJS continuation passing function and returns an equivalent
+	     * version that returns a promise.
+	     * @example
+	     * Q.nfbind(FS.readFile, __filename)("utf-8")
+	     * .then(console.log)
+	     * .done()
+	     */
+	    Q.nfbind = Q.denodeify = function (callback /*...args*/) {
+	        var baseArgs = array_slice(arguments, 1);
+	        return function () {
+	            var nodeArgs = baseArgs.concat(array_slice(arguments));
+	            var deferred = defer();
+	            nodeArgs.push(deferred.makeNodeResolver());
+	            Q(callback).fapply(nodeArgs).fail(deferred.reject);
+	            return deferred.promise;
+	        };
+	    };
+
+	    Promise.prototype.nfbind = Promise.prototype.denodeify = function () /*...args*/{
+	        var args = array_slice(arguments);
+	        args.unshift(this);
+	        return Q.denodeify.apply(void 0, args);
+	    };
+
+	    Q.nbind = function (callback, thisp /*...args*/) {
+	        var baseArgs = array_slice(arguments, 2);
+	        return function () {
+	            var nodeArgs = baseArgs.concat(array_slice(arguments));
+	            var deferred = defer();
+	            nodeArgs.push(deferred.makeNodeResolver());
+	            function bound() {
+	                return callback.apply(thisp, arguments);
+	            }
+	            Q(bound).fapply(nodeArgs).fail(deferred.reject);
+	            return deferred.promise;
+	        };
+	    };
+
+	    Promise.prototype.nbind = function () /*thisp, ...args*/{
+	        var args = array_slice(arguments, 0);
+	        args.unshift(this);
+	        return Q.nbind.apply(void 0, args);
+	    };
+
+	    /**
+	     * Calls a method of a Node-style object that accepts a Node-style
+	     * callback with a given array of arguments, plus a provided callback.
+	     * @param object an object that has the named method
+	     * @param {String} name name of the method of object
+	     * @param {Array} args arguments to pass to the method; the callback
+	     * will be provided by Q and appended to these arguments.
+	     * @returns a promise for the value or error
+	     */
+	    Q.nmapply = // XXX As proposed by "Redsandro"
+	    Q.npost = function (object, name, args) {
+	        return Q(object).npost(name, args);
+	    };
+
+	    Promise.prototype.nmapply = // XXX As proposed by "Redsandro"
+	    Promise.prototype.npost = function (name, args) {
+	        var nodeArgs = array_slice(args || []);
+	        var deferred = defer();
+	        nodeArgs.push(deferred.makeNodeResolver());
+	        this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+	        return deferred.promise;
+	    };
+
+	    /**
+	     * Calls a method of a Node-style object that accepts a Node-style
+	     * callback, forwarding the given variadic arguments, plus a provided
+	     * callback argument.
+	     * @param object an object that has the named method
+	     * @param {String} name name of the method of object
+	     * @param ...args arguments to pass to the method; the callback will
+	     * be provided by Q and appended to these arguments.
+	     * @returns a promise for the value or error
+	     */
+	    Q.nsend = // XXX Based on Mark Miller's proposed "send"
+	    Q.nmcall = // XXX Based on "Redsandro's" proposal
+	    Q.ninvoke = function (object, name /*...args*/) {
+	        var nodeArgs = array_slice(arguments, 2);
+	        var deferred = defer();
+	        nodeArgs.push(deferred.makeNodeResolver());
+	        Q(object).dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+	        return deferred.promise;
+	    };
+
+	    Promise.prototype.nsend = // XXX Based on Mark Miller's proposed "send"
+	    Promise.prototype.nmcall = // XXX Based on "Redsandro's" proposal
+	    Promise.prototype.ninvoke = function (name /*...args*/) {
+	        var nodeArgs = array_slice(arguments, 1);
+	        var deferred = defer();
+	        nodeArgs.push(deferred.makeNodeResolver());
+	        this.dispatch("post", [name, nodeArgs]).fail(deferred.reject);
+	        return deferred.promise;
+	    };
+
+	    /**
+	     * If a function would like to support both Node continuation-passing-style and
+	     * promise-returning-style, it can end its internal promise chain with
+	     * `nodeify(nodeback)`, forwarding the optional nodeback argument.  If the user
+	     * elects to use a nodeback, the result will be sent there.  If they do not
+	     * pass a nodeback, they will receive the result promise.
+	     * @param object a result (or a promise for a result)
+	     * @param {Function} nodeback a Node.js-style callback
+	     * @returns either the promise or nothing
+	     */
+	    Q.nodeify = nodeify;
+	    function nodeify(object, nodeback) {
+	        return Q(object).nodeify(nodeback);
+	    }
+
+	    Promise.prototype.nodeify = function (nodeback) {
+	        if (nodeback) {
+	            this.then(function (value) {
+	                Q.nextTick(function () {
+	                    nodeback(null, value);
+	                });
+	            }, function (error) {
+	                Q.nextTick(function () {
+	                    nodeback(error);
+	                });
+	            });
+	        } else {
+	            return this;
+	        }
+	    };
+
+	    Q.noConflict = function () {
+	        throw new Error("Q.noConflict only works when Q is used as a global");
+	    };
+
+	    // All code before this point will be filtered from stack traces.
+	    var qEndingLine = captureLine();
+
+	    return Q;
+	});
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18), __webpack_require__(57).setImmediate))
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {"use strict";
+
+	var nextTick = __webpack_require__(58).nextTick;
+	var apply = Function.prototype.apply;
+	var slice = Array.prototype.slice;
+	var immediateIds = {};
+	var nextImmediateId = 0;
+
+	// DOM APIs, for completeness
+
+	exports.setTimeout = function () {
+	  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+	};
+	exports.setInterval = function () {
+	  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+	};
+	exports.clearTimeout = exports.clearInterval = function (timeout) {
+	  timeout.close();
+	};
+
+	function Timeout(id, clearFn) {
+	  this._id = id;
+	  this._clearFn = clearFn;
+	}
+	Timeout.prototype.unref = Timeout.prototype.ref = function () {};
+	Timeout.prototype.close = function () {
+	  this._clearFn.call(window, this._id);
+	};
+
+	// Does not start the time, just sets up the members needed.
+	exports.enroll = function (item, msecs) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = msecs;
+	};
+
+	exports.unenroll = function (item) {
+	  clearTimeout(item._idleTimeoutId);
+	  item._idleTimeout = -1;
+	};
+
+	exports._unrefActive = exports.active = function (item) {
+	  clearTimeout(item._idleTimeoutId);
+
+	  var msecs = item._idleTimeout;
+	  if (msecs >= 0) {
+	    item._idleTimeoutId = setTimeout(function onTimeout() {
+	      if (item._onTimeout) item._onTimeout();
+	    }, msecs);
+	  }
+	};
+
+	// That's not how node.js implements it but the exposed api is the same.
+	exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function (fn) {
+	  var id = nextImmediateId++;
+	  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
+
+	  immediateIds[id] = true;
+
+	  nextTick(function onNextTick() {
+	    if (immediateIds[id]) {
+	      // fn.call() is faster so we optimize for the common use-case
+	      // @see http://jsperf.com/call-apply-segu
+	      if (args) {
+	        fn.apply(null, args);
+	      } else {
+	        fn.call(null);
+	      }
+	      // Prevent ids from leaking
+	      exports.clearImmediate(id);
+	    }
+	  });
+
+	  return id;
+	};
+
+	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function (id) {
+	  delete immediateIds[id];
+	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(57).setImmediate, __webpack_require__(57).clearImmediate))
+
+/***/ },
+/* 58 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	// shim for using process in browser
+	var process = module.exports = {};
+
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout() {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	})();
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch (e) {
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch (e) {
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e) {
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e) {
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+
+	    var len = queue.length;
+	    while (len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	process.cwd = function () {
+	    return '/';
+	};
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function () {
+	    return 0;
+	};
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 
-	var diff = __webpack_require__(55);
-	var patch = __webpack_require__(68);
-	var h = __webpack_require__(77);
-	var create = __webpack_require__(88);
-	var VNode = __webpack_require__(79);
-	var VText = __webpack_require__(80);
+	var diff = __webpack_require__(60);
+	var patch = __webpack_require__(73);
+	var h = __webpack_require__(82);
+	var create = __webpack_require__(93);
+	var VNode = __webpack_require__(84);
+	var VText = __webpack_require__(85);
 
 	module.exports = {
 	    diff: diff,
@@ -8976,31 +11279,31 @@ var switzerland =
 	};
 
 /***/ },
-/* 55 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var diff = __webpack_require__(56);
+	var diff = __webpack_require__(61);
 
 	module.exports = diff;
 
 /***/ },
-/* 56 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isArray = __webpack_require__(57);
+	var isArray = __webpack_require__(62);
 
-	var VPatch = __webpack_require__(58);
-	var isVNode = __webpack_require__(60);
-	var isVText = __webpack_require__(61);
-	var isWidget = __webpack_require__(62);
-	var isThunk = __webpack_require__(63);
-	var handleThunk = __webpack_require__(64);
+	var VPatch = __webpack_require__(63);
+	var isVNode = __webpack_require__(65);
+	var isVText = __webpack_require__(66);
+	var isWidget = __webpack_require__(67);
+	var isThunk = __webpack_require__(68);
+	var handleThunk = __webpack_require__(69);
 
-	var diffProps = __webpack_require__(65);
+	var diffProps = __webpack_require__(70);
 
 	module.exports = diff;
 
@@ -9396,7 +11699,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 57 */
+/* 62 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9411,12 +11714,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 58 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(59);
+	var version = __webpack_require__(64);
 
 	VirtualPatch.NONE = 0;
 	VirtualPatch.VTEXT = 1;
@@ -9440,7 +11743,7 @@ var switzerland =
 	VirtualPatch.prototype.type = "VirtualPatch";
 
 /***/ },
-/* 59 */
+/* 64 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9448,12 +11751,12 @@ var switzerland =
 	module.exports = "2";
 
 /***/ },
-/* 60 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(59);
+	var version = __webpack_require__(64);
 
 	module.exports = isVirtualNode;
 
@@ -9462,12 +11765,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 61 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(59);
+	var version = __webpack_require__(64);
 
 	module.exports = isVirtualText;
 
@@ -9476,7 +11779,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 62 */
+/* 67 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9488,7 +11791,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 63 */
+/* 68 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9500,15 +11803,15 @@ var switzerland =
 	}
 
 /***/ },
-/* 64 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isVNode = __webpack_require__(60);
-	var isVText = __webpack_require__(61);
-	var isWidget = __webpack_require__(62);
-	var isThunk = __webpack_require__(63);
+	var isVNode = __webpack_require__(65);
+	var isVText = __webpack_require__(66);
+	var isWidget = __webpack_require__(67);
+	var isThunk = __webpack_require__(68);
 
 	module.exports = handleThunk;
 
@@ -9545,13 +11848,13 @@ var switzerland =
 	}
 
 /***/ },
-/* 65 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(66);
-	var isHook = __webpack_require__(67);
+	var isObject = __webpack_require__(71);
+	var isHook = __webpack_require__(72);
 
 	module.exports = diffProps;
 
@@ -9610,7 +11913,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 66 */
+/* 71 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9620,7 +11923,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 67 */
+/* 72 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9632,27 +11935,27 @@ var switzerland =
 	}
 
 /***/ },
-/* 68 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var patch = __webpack_require__(69);
+	var patch = __webpack_require__(74);
 
 	module.exports = patch;
 
 /***/ },
-/* 69 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(70);
-	var isArray = __webpack_require__(57);
+	var document = __webpack_require__(75);
+	var isArray = __webpack_require__(62);
 
-	var render = __webpack_require__(72);
-	var domIndex = __webpack_require__(74);
-	var patchOp = __webpack_require__(75);
+	var render = __webpack_require__(77);
+	var domIndex = __webpack_require__(79);
+	var patchOp = __webpack_require__(80);
 	module.exports = patch;
 
 	function patch(rootNode, patches, renderOptions) {
@@ -9724,13 +12027,13 @@ var switzerland =
 	}
 
 /***/ },
-/* 70 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
 	var topLevel = typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : {};
-	var minDoc = __webpack_require__(71);
+	var minDoc = __webpack_require__(76);
 
 	if (typeof document !== 'undefined') {
 	    module.exports = document;
@@ -9746,25 +12049,25 @@ var switzerland =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 71 */
+/* 76 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 72 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(70);
+	var document = __webpack_require__(75);
 
-	var applyProperties = __webpack_require__(73);
+	var applyProperties = __webpack_require__(78);
 
-	var isVNode = __webpack_require__(60);
-	var isVText = __webpack_require__(61);
-	var isWidget = __webpack_require__(62);
-	var handleThunk = __webpack_require__(64);
+	var isVNode = __webpack_require__(65);
+	var isVText = __webpack_require__(66);
+	var isWidget = __webpack_require__(67);
+	var handleThunk = __webpack_require__(69);
 
 	module.exports = createElement;
 
@@ -9803,13 +12106,13 @@ var switzerland =
 	}
 
 /***/ },
-/* 73 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(66);
-	var isHook = __webpack_require__(67);
+	var isObject = __webpack_require__(71);
+	var isHook = __webpack_require__(72);
 
 	module.exports = applyProperties;
 
@@ -9904,7 +12207,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 74 */
+/* 79 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9995,17 +12298,17 @@ var switzerland =
 	}
 
 /***/ },
-/* 75 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var applyProperties = __webpack_require__(73);
+	var applyProperties = __webpack_require__(78);
 
-	var isWidget = __webpack_require__(62);
-	var VPatch = __webpack_require__(58);
+	var isWidget = __webpack_require__(67);
+	var VPatch = __webpack_require__(63);
 
-	var updateWidget = __webpack_require__(76);
+	var updateWidget = __webpack_require__(81);
 
 	module.exports = applyPatch;
 
@@ -10152,12 +12455,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 76 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isWidget = __webpack_require__(62);
+	var isWidget = __webpack_require__(67);
 
 	module.exports = updateWidget;
 
@@ -10174,34 +12477,34 @@ var switzerland =
 	}
 
 /***/ },
-/* 77 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var h = __webpack_require__(78);
+	var h = __webpack_require__(83);
 
 	module.exports = h;
 
 /***/ },
-/* 78 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isArray = __webpack_require__(57);
+	var isArray = __webpack_require__(62);
 
-	var VNode = __webpack_require__(79);
-	var VText = __webpack_require__(80);
-	var isVNode = __webpack_require__(60);
-	var isVText = __webpack_require__(61);
-	var isWidget = __webpack_require__(62);
-	var isHook = __webpack_require__(67);
-	var isVThunk = __webpack_require__(63);
+	var VNode = __webpack_require__(84);
+	var VText = __webpack_require__(85);
+	var isVNode = __webpack_require__(65);
+	var isVText = __webpack_require__(66);
+	var isWidget = __webpack_require__(67);
+	var isHook = __webpack_require__(72);
+	var isVThunk = __webpack_require__(68);
 
-	var parseTag = __webpack_require__(81);
-	var softSetHook = __webpack_require__(83);
-	var evHook = __webpack_require__(84);
+	var parseTag = __webpack_require__(86);
+	var softSetHook = __webpack_require__(88);
+	var evHook = __webpack_require__(89);
 
 	module.exports = h;
 
@@ -10313,16 +12616,16 @@ var switzerland =
 	}
 
 /***/ },
-/* 79 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(59);
-	var isVNode = __webpack_require__(60);
-	var isWidget = __webpack_require__(62);
-	var isThunk = __webpack_require__(63);
-	var isVHook = __webpack_require__(67);
+	var version = __webpack_require__(64);
+	var isVNode = __webpack_require__(65);
+	var isWidget = __webpack_require__(67);
+	var isThunk = __webpack_require__(68);
+	var isVHook = __webpack_require__(72);
 
 	module.exports = VirtualNode;
 
@@ -10392,12 +12695,12 @@ var switzerland =
 	VirtualNode.prototype.type = "VirtualNode";
 
 /***/ },
-/* 80 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(59);
+	var version = __webpack_require__(64);
 
 	module.exports = VirtualText;
 
@@ -10409,12 +12712,12 @@ var switzerland =
 	VirtualText.prototype.type = "VirtualText";
 
 /***/ },
-/* 81 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var split = __webpack_require__(82);
+	var split = __webpack_require__(87);
 
 	var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 	var notClassId = /^\.|#/;
@@ -10468,7 +12771,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 82 */
+/* 87 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -10587,7 +12890,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 83 */
+/* 88 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -10609,12 +12912,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 84 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var EvStore = __webpack_require__(85);
+	var EvStore = __webpack_require__(90);
 
 	module.exports = EvHook;
 
@@ -10641,12 +12944,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 85 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var OneVersionConstraint = __webpack_require__(86);
+	var OneVersionConstraint = __webpack_require__(91);
 
 	var MY_VERSION = '7';
 	OneVersionConstraint('ev-store', MY_VERSION);
@@ -10666,12 +12969,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 86 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Individual = __webpack_require__(87);
+	var Individual = __webpack_require__(92);
 
 	module.exports = OneVersion;
 
@@ -10689,7 +12992,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 87 */
+/* 92 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -10712,12 +13015,12 @@ var switzerland =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 88 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var createElement = __webpack_require__(72);
+	var createElement = __webpack_require__(77);
 
 	module.exports = createElement;
 
