@@ -19,7 +19,8 @@ const initialState = {
  */
 export const event = {
     UPDATE: Symbol('update'),
-    LOADING: Symbol('loading')
+    LOADING: Symbol('loading'),
+    TIMEOUT: Symbol('timeout')
 };
 
 /**
@@ -39,10 +40,13 @@ function reducer(state = initialState, action) {
     switch (action.type) {
 
         case event.UPDATE:
-            return { ...state, ...action.model, updated: Date.now(), loading: false };
+            return { ...state, ...action.model, updated: Date.now(), loading: false, error: false };
+
+        case event.TIMEOUT:
+            return { ...state, loading: false, error: true };
 
         case event.LOADING:
-            return { ...state, loading: true };
+            return { ...state, loading: true, error: false };
 
         default:
             return state;

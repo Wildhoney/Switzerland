@@ -14,9 +14,16 @@ const update = () => {
 
         dispatch({ type: event.LOADING });
 
-        get('/position').then(response => {
+        get('/position', { timeout: 5000 }).then(response => {
+
             const model = camelizeKeys(response.data);
             dispatch({ type: event.UPDATE, model });
+
+        }).catch(() => {
+
+            console.log('Error!');
+            dispatch({ type: event.TIMEOUT });
+
         });
 
     };
@@ -60,7 +67,7 @@ create('iss-position', pipe(worker, redux(store), fetch, include(path('css/defau
     return (
         <section>
 
-            {redux.latitude && redux.longitude && !redux.loading ? (
+            {!redux.loading && !redux.error ? (
 
                 <span>
                     <label>ISS is currently flying over</label>
@@ -76,7 +83,10 @@ create('iss-position', pipe(worker, redux(store), fetch, include(path('css/defau
 
                 </span>
 
-            ) : <img className="loading" src={path('images/loading.svg')} />}
+            ) : ''}
+
+            {redux.loading ? <img className="loading" src={path('images/loading.svg')} /> : ''}
+            {redux.error ? <label className="error">Please try again a little later.</label> : ''}
 
             <button
                 className={redux.loading ? 'loading' : ''}

@@ -9689,7 +9689,7 @@ var switzerland =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.path = undefined;
 
@@ -9707,15 +9707,15 @@ var switzerland =
 	 */
 	const scriptPath = function () {
 
-	    try {
-	        return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
-	    } catch (err) {}
+	  try {
+	    return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
+	  } catch (err) {}
 
-	    try {
-	        return (0, _pathParse2.default)(self.location.href).dir;
-	    } catch (err) {}
+	  try {
+	    return (0, _pathParse2.default)(self.location.href).dir;
+	  } catch (err) {}
 
-	    (0, _switzerland.error)('Unable to determine the path for the current component');
+	  (0, _switzerland.error)('Unable to determine the path for the current component');
 	}();
 
 	/**
@@ -9724,15 +9724,15 @@ var switzerland =
 	 * @return {String}
 	 */
 	const path = exports.path = function (file) {
-	    return scriptPath + '/' + file;
+	  return scriptPath + '/' + file;
 	};
 
-	// /**
-	//  * @method toString
-	//  * @return {String}
-	//  */
+	/**
+	 * @method toString
+	 * @return {String}
+	 */
 	path.toString = function () {
-	    return scriptPath;
+	  return scriptPath;
 	};
 
 /***/ },

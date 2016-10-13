@@ -243,8 +243,8 @@
 
 	    v0: {
 	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: function (name, blueprint) {
-	            return document.registerElement(name, blueprint);
+	        customElement: function (tag, blueprint) {
+	            return document.registerElement(tag, blueprint);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.createShadowRoot();
@@ -252,8 +252,8 @@
 	    },
 	    v1: {
 	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: function (name, blueprint) {
-	            return window.customElements.define(name, blueprint);
+	        customElement: function (tag, blueprint) {
+	            return window.customElements.define(tag, blueprint);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.attachShadow({ mode: 'open' });
@@ -273,11 +273,11 @@
 
 	/**
 	 * @method create
-	 * @param {String} name
-	 * @param {Function} render
+	 * @param {String} tag
+	 * @param {Function} component
 	 * @return {void}
 	 */
-	const create = exports.create = function (name, render) {
+	const create = exports.create = function (tag, component) {
 
 	    /**
 	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -291,7 +291,7 @@
 	     * @constant blueprint
 	     * @type {Object}
 	     */
-	    implementation.customElement(name, class extends window.HTMLElement {
+	    implementation.customElement(tag, class extends window.HTMLElement {
 
 	        /**
 	         * @constructor
@@ -313,7 +313,7 @@
 
 	            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-	            render({ node, render: node.render.bind(node) }).then(function (props) {
+	            component({ node, render: node.render.bind(node) }).then(function (props) {
 
 	                const tree = (0, _html.htmlFor)(props);
 	                const root = (0, _virtualDom.create)(tree);
@@ -366,7 +366,7 @@
 	            const node = instance.node;
 
 
-	            render({ node, render: node.render.bind(node) }).then(function (props) {
+	            component({ node, render: node.render.bind(node) }).then(function (props) {
 
 	                const tree = (0, _html.htmlFor)(props);
 
@@ -9687,7 +9687,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 	exports.path = undefined;
 
@@ -9705,15 +9705,15 @@
 	 */
 	const scriptPath = function () {
 
-	    try {
-	        return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
-	    } catch (err) {}
+	  try {
+	    return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
+	  } catch (err) {}
 
-	    try {
-	        return (0, _pathParse2.default)(self.location.href).dir;
-	    } catch (err) {}
+	  try {
+	    return (0, _pathParse2.default)(self.location.href).dir;
+	  } catch (err) {}
 
-	    (0, _switzerland.error)('Unable to determine the path for the current component');
+	  (0, _switzerland.error)('Unable to determine the path for the current component');
 	}();
 
 	/**
@@ -9722,15 +9722,15 @@
 	 * @return {String}
 	 */
 	const path = exports.path = function (file) {
-	    return scriptPath + '/' + file;
+	  return scriptPath + '/' + file;
 	};
 
-	// /**
-	//  * @method toString
-	//  * @return {String}
-	//  */
+	/**
+	 * @method toString
+	 * @return {String}
+	 */
 	path.toString = function () {
-	    return scriptPath;
+	  return scriptPath;
 	};
 
 /***/ },
@@ -19125,22 +19125,9 @@
 	 */
 	const cacheList = [/position$/, /\.png$/];
 
-	/**
-	 * @constant timeout
-	 * @param {Number} milliseconds
-	 * @return {Promise}
-	 */
-	const timeout = function (milliseconds) {
-
-	    return new Promise(function (resolve, reject) {
-	        const statusText = 'Request timed out.';
-	        setTimeout(function () {
-	            return reject(new Response({ status: 408, statusText }));
-	        }, milliseconds);
-	    });
-	};
-
 	(function main(caches, worker) {
+
+	    console.log('Hi!');
 
 	    worker.addEventListener('install', function (event) {
 
@@ -19160,7 +19147,7 @@
 
 	        event.respondWith(caches.open(CACHE_NAME).then(function (cache) {
 
-	            return Promise.race([fetch(request), timeout(1000)]).then(function (networkResponse) {
+	            return fetch(request).then(function (networkResponse) {
 
 	                if (cacheList.some(function (r) {
 	                    return r.test(request.url);

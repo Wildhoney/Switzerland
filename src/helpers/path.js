@@ -26,8 +26,8 @@ const scriptPath = (() => {
  */
 export const path = file => `${scriptPath}/${file}`;
 
-// /**
-//  * @method toString
-//  * @return {String}
-//  */
+/**
+ * @method toString
+ * @return {String}
+ */
 path.toString = () => scriptPath;

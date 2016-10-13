@@ -39,12 +39,12 @@ const implementations = {
 
     v0: {
         hooks: ['attachedCallback', 'detachedCallback'],
-        customElement: (name, blueprint) => document.registerElement(name, blueprint),
+        customElement: (tag, blueprint) => document.registerElement(tag, blueprint),
         shadowBoundary: node => node.createShadowRoot()
     },
     v1: {
         hooks: ['connectedCallback', 'disconnectedCallback'],
-        customElement: (name, blueprint) => window.customElements.define(name, blueprint),
+        customElement: (tag, blueprint) => window.customElements.define(tag, blueprint),
         shadowBoundary: node => node.attachShadow({ mode: 'open' })
     }
 
@@ -61,11 +61,11 @@ const clearHTMLFor = node => {
 
 /**
  * @method create
- * @param {String} name
- * @param {Function} render
+ * @param {String} tag
+ * @param {Function} component
  * @return {void}
  */
-export const create = (name, render) => {
+export const create = (tag, component) => {
 
     /**
      * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -79,7 +79,7 @@ export const create = (name, render) => {
      * @constant blueprint
      * @type {Object}
      */
-    implementation.customElement(name, class extends window.HTMLElement {
+    implementation.customElement(tag, class extends window.HTMLElement {
 
         /**
          * @constructor
@@ -100,7 +100,7 @@ export const create = (name, render) => {
 
             const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-            render({ node, render: node.render.bind(node) }).then(props => {
+            component({ node, render: node.render.bind(node) }).then(props => {
 
                 const tree = htmlFor(props);
                 const root = createElement(tree);
@@ -153,7 +153,7 @@ export const create = (name, render) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            render({ node, render: node.render.bind(node) }).then(props => {
+            component({ node, render: node.render.bind(node) }).then(props => {
 
                 const tree = htmlFor(props);
 

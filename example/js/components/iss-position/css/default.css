@@ -61,6 +61,13 @@ h1 {
     text-shadow: 1px 1px 0 rgba(0, 0, 0, .5);
 }
 
+label.error {
+    color: white;
+    font-style: italic;
+    font-size: 2.75vmin;
+    box-shadow: 0 2px 0 0 rgba(255, 255, 255, .25);
+}
+
 button {
     font: normal 800 2.5vmin/2.5vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
     position: absolute;
