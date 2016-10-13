@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "dependencies": {
-    "axios": "^0.14.0"
+    "axios": "^0.14.0",
+    "ramda": "^0.22.1"
   },
   "devDependencies": {
     "ava": "^0.16.0",

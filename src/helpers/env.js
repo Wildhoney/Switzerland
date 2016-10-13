@@ -1,4 +1,4 @@
-import { once } from 'ramda';
+import once from 'ramda/src/once';
 
 /**
  * @constant env

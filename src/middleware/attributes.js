@@ -1,5 +1,5 @@
 import { camelize } from 'humps';
-import { compose } from 'ramda';
+import compose from 'ramda/src/compose';
 
 /**
  * @constant observers

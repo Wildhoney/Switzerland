@@ -12,6 +12,4 @@ export const pipe = PromisePipe;
  * @param {Array} fns
  * @return {Object}
  */
-export const compose = (...fns) => {
-    return pipe(fns.reverse());
-};
+export const compose = (...fns) => pipe(fns.reverse());

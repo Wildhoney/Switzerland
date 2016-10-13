@@ -33,7 +33,7 @@ const fetch = once(props => props.dispatch(update()));
  * @constant worker
  * @return {void}
  */
-const worker = once((props) => {
+const worker = once(props => {
 
     return new Promise(resolve => {
 

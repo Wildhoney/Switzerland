@@ -9,7 +9,9 @@ module.exports = {
         libraryTarget: 'commonjs2'
     },
     externals: {
-        axios: true
+        axios: true,
+        ramda: true,
+        'promised-pipe': true
     },
     module: {
         loaders: [

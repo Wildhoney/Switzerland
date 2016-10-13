@@ -23,11 +23,11 @@ export default (callback, keyFrom = props => props.node) => {
         const hasFunction = once.get(key).has(callback);
         !hasFunction && once.get(key).set(callback, callback(props));
 
-        return Promise.resolve(once.get(key).get(callback)).then(onceProps => {
-
-            return { ...onceProps, ...props };
-
-        });
+        // Only promises will be yielded in the next tick, whereas functions that
+        // yield objects will return immediately.
+        const response = once.get(key).get(callback);
+        return 'then' in Object(response) ? response.then(onceProps => ({ ...onceProps, ...props })) :
+                                            { ...response, ...props };
 
     };
 
