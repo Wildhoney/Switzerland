@@ -172,7 +172,7 @@ export const create = (name, render) => {
 
                 }
 
-            }).catch(x => console.error(x));
+            }).catch(console.error);
 
         }
 
