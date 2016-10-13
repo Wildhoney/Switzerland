@@ -325,7 +325,7 @@ module.exports =
 	                'ref' in props && (0, _refs.invokeFor)(node);
 
 	                _this[registryKey] = { node, tree, root, props };
-	            });
+	            }).catch(error);
 	        }
 
 	        /**
@@ -383,9 +383,7 @@ module.exports =
 
 	                    _this2[registryKey] = { node, tree, root, props };
 	                }
-	            }).catch(function (x) {
-	                return console.error(x);
-	            });
+	            }).catch(error);
 	        }
 
 	    });
@@ -470,17 +468,10 @@ module.exports =
 
 	        // Determine whether the function has been called already.
 	        const hasFunction = once.get(key).has(callback);
+	        !hasFunction && once.get(key).set(callback, callback(props));
 
-	        if (hasFunction) {
+	        return Promise.resolve(once.get(key).get(callback)).then(function (onceProps) {
 
-	            // If the `once` function has already been invoked, we'll use it by
-	            // overriding new props with the cached props.
-	            return _extends({}, once.get(key).get(callback), props);
-	        }
-
-	        return Promise.resolve(callback(props)).then(function (onceProps) {
-
-	            !hasFunction && once.get(key).set(callback, onceProps);
 	            return _extends({}, onceProps, props);
 	        });
 	    };
