@@ -3,7 +3,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: {
         './example/js/components/iss-position/build': ['./example/js/components/iss-position/js/default.js'],
-        './example/js/vendor': ['./src/switzerland']
+        './example/js/components/iss-position/worker': ['./example/js/components/iss-position/js/worker.js']
     },
     output: {
         filename: '[name].js',
@@ -16,8 +16,8 @@ module.exports = {
                 loaders: ['envify-loader', 'babel-loader', 'virtual-dom?jsx=element']
             }
         ]
-    },
-    plugins: [
-        new webpack.optimize.CommonsChunkPlugin('./example/js/vendor.js')
-    ]
+    }
+    // plugins: [
+    //     new webpack.optimize.CommonsChunkPlugin('./example/js/vendor.js')
+    // ]
 };
