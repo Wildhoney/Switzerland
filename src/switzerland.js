@@ -113,7 +113,7 @@ export const create = (name, render) => {
 
                 this[registryKey] = { node, tree, root, props };
 
-            });
+            }).catch(error);
 
         }
 
@@ -172,7 +172,7 @@ export const create = (name, render) => {
 
                 }
 
-            }).catch(console.error);
+            }).catch(error);
 
         }
 
