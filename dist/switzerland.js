@@ -243,8 +243,8 @@ module.exports =
 
 	    v0: {
 	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: function (name, blueprint) {
-	            return document.registerElement(name, blueprint);
+	        customElement: function (tag, blueprint) {
+	            return document.registerElement(tag, blueprint);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.createShadowRoot();
@@ -252,8 +252,8 @@ module.exports =
 	    },
 	    v1: {
 	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: function (name, blueprint) {
-	            return window.customElements.define(name, blueprint);
+	        customElement: function (tag, blueprint) {
+	            return window.customElements.define(tag, blueprint);
 	        },
 	        shadowBoundary: function (node) {
 	            return node.attachShadow({ mode: 'open' });
@@ -273,11 +273,11 @@ module.exports =
 
 	/**
 	 * @method create
-	 * @param {String} name
-	 * @param {Function} render
+	 * @param {String} tag
+	 * @param {Function} component
 	 * @return {void}
 	 */
-	const create = exports.create = function (name, render) {
+	const create = exports.create = function (tag, component) {
 
 	    /**
 	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -291,7 +291,7 @@ module.exports =
 	     * @constant blueprint
 	     * @type {Object}
 	     */
-	    implementation.customElement(name, class extends window.HTMLElement {
+	    implementation.customElement(tag, class extends window.HTMLElement {
 
 	        /**
 	         * @constructor
@@ -313,7 +313,7 @@ module.exports =
 
 	            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-	            render({ node, render: node.render.bind(node) }).then(function (props) {
+	            component({ node, render: node.render.bind(node) }).then(function (props) {
 
 	                const tree = (0, _html.htmlFor)(props);
 	                const root = (0, _virtualDom.create)(tree);
@@ -366,7 +366,7 @@ module.exports =
 	            const node = instance.node;
 
 
-	            render({ node, render: node.render.bind(node) }).then(function (props) {
+	            component({ node, render: node.render.bind(node) }).then(function (props) {
 
 	                const tree = (0, _html.htmlFor)(props);
 
@@ -3252,7 +3252,7 @@ module.exports =
 	    return (0, _pathParse2.default)(self.location.href).dir;
 	  } catch (err) {}
 
-	  (0, _switzerland.error)('Unable to determine the path for the current component');
+	  typeof _switzerland.error === 'function' && (0, _switzerland.error)('Unable to determine the path for the current component');
 	}();
 
 	/**

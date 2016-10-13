@@ -9713,7 +9713,7 @@
 	    return (0, _pathParse2.default)(self.location.href).dir;
 	  } catch (err) {}
 
-	  (0, _switzerland.error)('Unable to determine the path for the current component');
+	  typeof _switzerland.error === 'function' && (0, _switzerland.error)('Unable to determine the path for the current component');
 	}();
 
 	/**

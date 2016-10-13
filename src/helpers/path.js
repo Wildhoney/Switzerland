@@ -15,7 +15,7 @@ const scriptPath = (() => {
         return parsePath(self.location.href).dir;
     } catch (err) {}
 
-    error('Unable to determine the path for the current component');
+    typeof error === 'function' && error('Unable to determine the path for the current component');
 
 })();
 
