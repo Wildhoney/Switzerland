@@ -69,7 +69,7 @@ create('swiss-cheese', html(() => {
 }));
 ```
 
-> Note: You need to import `element` if you're using the JSX syntax.
+> Note: You need to import `element` even for JSX, and JSX will be compiled to `virtual-dom`.
 
 Interestingly due to Switzerland's focus on interoperability you are now able to use `swiss-cheese` as a standard HTML component thanks to [Custom Elements](https://www.w3.org/TR/custom-elements/).
 
@@ -120,13 +120,11 @@ const cheeses = swissCheese.getAttribute('data-cheeses');
 swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
 ```
 
-It's fair to say that updating a component in this way is rather cumbersome for multiple attributes. Switzerland happily supports setState, Redux, mobx, etc... without introducing third-party components due to the easy nature of creating your own middle.
-
 ### Using State
 
-Since using attributes isn't the most friendly way to update components we can instead choose to use another state manager &ndash; such as the React-esque `setState`/`state` approach.
+As using attributes isn't the most elegant approach to updating components, we can instead choose to use another state manager &mndash; think [Redux](https://github.com/reactjs/redux), [mobx](https://github.com/mobxjs/mobx), or in the following case the React-esque `setState`/`state` approach.
 
-> Note: Try playing with the [JSFiddle we've created](https://jsfiddle.net/chs2fnod/)!
+> Note: Try *fiddling* with the [JSFiddle we've created](https://jsfiddle.net/chs2fnod/) for your convenience!
 
 ```javascript
 import { create, html, element, pipe, state } from 'switzerland';
@@ -158,18 +156,19 @@ create('swiss-cheese', pipe(state(initialState), html(props => {
 })));
 ```
 
-By applying the `state` middleware to the `swiss-cheese` component, we have two additional properties added to our `props` &ndash; `setState` and `state`. Each **instance of a component** will receive a fresh `state` and thus can be mutated independently regardless of how many `swiss-cheese` nodes there are present in the DOM.
+By applying the `state` middleware to the `swiss-cheese` component, we are handed two additional properties added for our `props` &ndash; namely `setState` and `state`. Each **instance of the component** will receive a fresh `state` and thus can be mutated independently regardless on the amount of `swiss-cheese` nodes in the DOM.
 
 ### Redux Migration
 
-While using `state` and `setState` work just fine, the functional approach these days to managing state is via [Redux](https://github.com/reactjs/redux) which can be enabled in Switzerland by using the tiny `redux` middleware.
+While using `state` and `setState` work just fine, the functional approach these days to managing state is via [Redux](https://github.com/reactjs/redux) &ndash; for this we can happily use the tiny `redux` middleware.
 
-> Note: It's worth remembering that **all** middleware should be tiny.
+> Note: If you're unsure about how Redux works then it's worth [glancing over the docs](http://redux.js.org/).
 
-If you're unsure how Redux works then it's worth [glancing over the docs](http://redux.js.org/), as the intricacies of Redux won't be covered. Assuming we want to keep the same functionality as before, we can simply migrate piece-by-piece until we achieve that.
+Assuming we want to keep the same functionality as before, we can simply migrate piece-by-piece until we achieve that.
 
 ```javascript
 import { create, html, element, pipe, redux } from 'switzerland';
+
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -211,15 +210,19 @@ create('swiss-cheese', pipe(redux(store), html(props => {
 
 For the most part the above example is largely Redux boilerplate &ndash; the actual integration with Switzerland occurs in the `redux` middleware which takes the store instance created by Redux's `createStore`. Whenever an event is dispatched &mdash; in our case adding Mozarella &mdash; the `swiss-cheese` component is re-rendered.
 
-It's worth noting that the `redux` middleware accepts an *optional* second argument which acts like React's `shouldComponentUpdate` to avoid reconciling the DOM on `props` that don't affect a component. It passes the updated state as the first argument, followed by the previous state as the second: `state, prevState`. It expects a boolean value to be yielded, where `false` is not to update the component.
+It's worth noting that the `redux` middleware accepts an *optional* second argument which functions like React's `shouldComponentUpdate` to avoid reconciling the DOM on `props` that don't affect a component. It passes the updated state as the first argument, followed by the previous state as the second: `state, prevState`. It expects a boolean value to be yielded, where `false` is not to update the component.
 
 ### Element Methods
 
-By migrating our `swiss-cheese` component to Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
+By switching over our `swiss-cheese` component to use Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
 
 ```javascript
 import { create, html, element, pipe, redux methods } from 'switzerland';
 import { store } from './the-swiss-cheese-store';
+
+const add = props => {
+    props.dispatch({ type: 'ADD', cheese: props.args });
+};
 
 create('swiss-cheese', pipe(methods({ add }), redux(store), html(props => {
 
@@ -244,7 +247,7 @@ create('swiss-cheese', pipe(methods({ add }), redux(store), html(props => {
 
 > Note: By using the `methods` middleware, the `props` which were used for the current render pass are forwarded to the defined methods.
 
-In the preceding example we are adding **one** method to the `swiss-cheese` component via the `methods` middleware &mdash; `add` &mdash; which will enhance our component with the ability to add cheeses once have a reference to the node.
+In the preceding example we added a single method to the `swiss-cheese` component via the `methods` middleware, giving us the ability to add cheeses once have a reference to the node.
 
 ```javascript
 const swissCheese = document.querySelector('swiss-cheese');
@@ -388,4 +391,4 @@ During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash;
 </swiss-cheese>
 ```
 
-You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `path` function which determines the path of the current component which allows us to handily declare the path to the CSS document relatively. It's worth noting that `path` has a `toString` function which simply resolves to the current component's path.
+You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `path` function to determine the path of the current component which allows us to handily declare the relative path to the CSS document. It's worth noting that `path` has a `toString` function which simply resolves to the current component's path.
