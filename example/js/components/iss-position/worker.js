@@ -8613,9 +8613,7 @@
 
 	            // Gather the props that caused the last render of the component, and then invoke
 	            // the prototype function.
-	            const lastProps = this[_switzerland.registryKey].props;
-
-	            fn(_extends({}, lastProps, { args }));
+	            fn(_extends({}, this[_switzerland.registryKey].props, { args }));
 	        };
 	    });
 	};

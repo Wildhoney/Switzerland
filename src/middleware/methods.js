@@ -29,8 +29,7 @@ const setPrototypeFor = (node, fns) => {
 
             // Gather the props that caused the last render of the component, and then invoke
             // the prototype function.
-            const { props: lastProps } = this[registryKey];
-            fn({ ...lastProps, args });
+            fn({ ...this[registryKey].props, args });
 
         };
 
