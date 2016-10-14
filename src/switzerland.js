@@ -191,6 +191,7 @@ export { default as refs } from './middleware/refs';
 export { default as methods } from './middleware/methods';
 export { default as events } from './middleware/events';
 export { default as validate } from './middleware/validate';
+export { default as cleanup } from './middleware/cleanup';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';

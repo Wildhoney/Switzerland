@@ -119,6 +119,8 @@ const cheeses = swissCheese.getAttribute('data-cheeses');
 swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
 ```
 
+You'll notice that we're passing a string via the `data-cheeses` attribute, rather than an actual array &ndash; we do this because native HTML does not understand JavaScript constructs. React supports passing in JavaScript constructs, but at the sake of creating React-only components and thus sacrificing interoperability. 
+
 ### Using State
 
 As using attributes isn't the most elegant approach to updating components, we can instead choose to use another state manager &mndash; think [Redux](https://github.com/reactjs/redux), [mobx](https://github.com/mobxjs/mobx), or in the following case the React-esque `setState`/`state` approach.
