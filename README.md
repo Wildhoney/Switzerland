@@ -21,13 +21,12 @@
 3. [Getting Started](#getting-started)
   1. [Via Attributes](#via-attributes)
   2. [Using State](#using-state)
-  3. [Redux Migration](#redux-migration)
-  4. [Element Methods](#element-methods)
-  5. [Sending Events](#sending-events)
-  5. [Prop Validation](#prop-validation)
-  6. [Applying Styles](#applying-styles)
-4. [Advanced Usage](#advanced-usage)
-  1. [Local Redux](#local-redux)
+  3. [Fetching Data](#fetching-data)
+  4. [Redux Migration](#redux-migration)
+  5. [Element Methods](#element-methods)
+  6. [Sending Events](#sending-events)
+  7. [Prop Validation](#prop-validation)
+  8. [Applying Styles](#applying-styles)
   
 ## Advantages
 
@@ -157,6 +156,56 @@ create('swiss-cheese', pipe(state(initialState), html(props => {
 ```
 
 By applying the `state` middleware to the `swiss-cheese` component, we are handed two additional properties added for our `props` &ndash; namely `setState` and `state`. Each **instance of the component** will receive a fresh `state` and thus can be mutated independently regardless on the amount of `swiss-cheese` nodes in the DOM.
+
+## Fetching Data
+
+In the above `setState` example it was assumed that we *knew* the list of cheeses beforehand &ndash; however this is unlikely to be case in the real world. Instead we would pull a list of cheeses from a Cheese API&trade;. In order to do this we'll use the `once` middleware to ensure fetching the cheeses occurs only once.
+
+```javascript
+import { create, html, element, pipe, state, once } from 'switzerland';
+
+const initialState = {
+    cheeses: []
+};
+
+const fetch = once(props => {
+
+    setTimeout(() => {
+        props.setState({ cheeses: ['Swiss', 'Feta', 'Cheddar'] });
+    }, 250);
+
+});
+
+create('swiss-cheese', pipe(state(initialState), once(fetch), html(props => {
+
+    const cheeses = props.state.cheeses;
+
+    return (
+        <ul>
+
+            {cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+
+            <li>
+                <a onclick={() => props.setState({ cheeses: [...cheeses, 'Mozarella'] })}>
+                    Add Mozarella
+                </a>
+            </li>
+
+        </ul>
+    );
+
+})));
+```
+
+> Note: We're using `setTimeout` to simulate a 250ms latency for an actual AJAX request.
+
+By wrapping our `fetch` function in the `once` middleware, we can be assured that `fetch` will be invoked only **one per instance** &ndash; thus if we had two `swiss-cheese` nodes in the DOM `fetch` would be invoked twice. It's important to understand the importance of `once` &ndash; without it we'd effectively be creating an infinite loop.
+
+Pay close attention to the fact that `fetch` appears **after** the `state` middleware &ndash; in our example it's immaterial, however when invoking `fetch` we need to ensure that the `state` middleware has given us the required `setState` function on the `props`.
+
+As well as `props` being passed in, you may also return props from the `once` middleware which will be merged into the current set of `props`.
 
 ### Redux Migration
 
@@ -349,17 +398,15 @@ import { store } from './the-swiss-cheese-store';
 
 create('swiss-cheese', pipe(redux(store), include(path('css/swiss-cheese.css')), html(props => {
 
-    const cheeses = props.state.cheeses;
-
     return (
         <ul>
         
-            {cheeses.map(cheese => {
+            {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
             
             <li>
-                <a onclick={() => props.setState({ cheeses: [...cheeses, 'Mozarella'] })}>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>

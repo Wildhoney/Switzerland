@@ -9,16 +9,16 @@ const registered = new Set();
 /**
  * @method setPrototypeFor
  * @param {HTMLElement} node
- * @param {Array} methods
+ * @param {Array} fns
  * @return {void}
  */
-const setPrototypeFor = (node, methods) => {
+const setPrototypeFor = (node, fns) => {
 
     registered.add(node.nodeName);
 
-    Object.keys(methods).forEach(name => {
+    Object.keys(fns).forEach(name => {
 
-        const fn = methods[name];
+        const fn = fns[name];
 
         Object.getPrototypeOf(node)[name] = function (...args) {
 
@@ -39,16 +39,16 @@ const setPrototypeFor = (node, methods) => {
 };
 
 /**
- * @param {Object} methods
+ * @param {Object} fns
  * @return {Function}
  */
-export default methods => {
+export default fns => {
 
     return props => {
 
         const { node } = props;
         const has = registered.has(node.nodeName);
-        !has && setPrototypeFor(node, methods);
+        !has && setPrototypeFor(node, fns);
 
         return props;
 

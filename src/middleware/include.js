@@ -3,7 +3,7 @@ import { get as fetch } from 'axios';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
-import once from './once';
+import once, { options } from './once';
 
 /**
  * @constant includeMap
@@ -105,7 +105,7 @@ const attachFiles = once(props => {
 
     }
 
-});
+}, options.RESET);
 
 /**
  * @param {Array|String} files

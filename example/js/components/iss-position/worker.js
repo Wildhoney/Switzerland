@@ -449,18 +449,25 @@
 	const once = new WeakMap();
 
 	/**
+	 * @constant options
+	 * @type {Object}
+	 */
+	const options = exports.options = {
+	  DEFAULT: 1,
+	  RESET: 2
+	};
+
+	/**
 	 * @param {Function} callback
-	 * @param {Function} [keyFrom]
+	 * @param {Number} flags
 	 * @return {Function}
 	 */
 
-	exports.default = function (callback, keyFrom = function (props) {
-	  return props.node;
-	}) {
+	exports.default = function (callback, flags = options.DEFAULT) {
 
 	  return function (props) {
 
-	    const key = keyFrom(props);
+	    const key = props.node;
 
 	    // Ensure the node has an entry in the map.
 	    const hasNode = once.has(key);
@@ -473,6 +480,11 @@
 	    // Only promises will be yielded in the next tick, whereas functions that
 	    // yield objects will return immediately.
 	    const response = once.get(key).get(callback);
+
+	    // Remove the callback if the node has been deleted, which will cause it to be invoked
+	    // again if the node is re-added.
+	    flags & options.RESET && !props.node.isConnected && once.get(key).delete(callback);
+
 	    return 'then' in Object(response) ? response.then(function (onceProps) {
 	      return _extends({}, onceProps, props);
 	    }) : _extends({}, response, props);
@@ -1608,7 +1620,7 @@
 	            node.classList.remove('resolving');
 	        });
 	    }
-	});
+	}, _once.options.RESET);
 
 	/**
 	 * @param {Array|String} files
@@ -8543,7 +8555,7 @@
 	        return new Hook();
 	    };
 
-	    // Delete the refs is the node has been removed from the DOM.
+	    // Delete the refs if the node has been removed from the DOM.
 	    has && !props.node.isConnected && refs.delete(props.node);
 
 	    return _extends({}, props, { ref });
@@ -8572,16 +8584,16 @@
 	/**
 	 * @method setPrototypeFor
 	 * @param {HTMLElement} node
-	 * @param {Array} methods
+	 * @param {Array} fns
 	 * @return {void}
 	 */
-	const setPrototypeFor = function (node, methods) {
+	const setPrototypeFor = function (node, fns) {
 
 	    registered.add(node.nodeName);
 
-	    Object.keys(methods).forEach(function (name) {
+	    Object.keys(fns).forEach(function (name) {
 
-	        const fn = methods[name];
+	        const fn = fns[name];
 
 	        Object.getPrototypeOf(node)[name] = function (...args) {
 
@@ -8600,17 +8612,17 @@
 	};
 
 	/**
-	 * @param {Object} methods
+	 * @param {Object} fns
 	 * @return {Function}
 	 */
 
-	exports.default = function (methods) {
+	exports.default = function (fns) {
 
 	    return function (props) {
 	        const node = props.node;
 
 	        const has = registered.has(node.nodeName);
-	        !has && setPrototypeFor(node, methods);
+	        !has && setPrototypeFor(node, fns);
 
 	        return props;
 	    };
