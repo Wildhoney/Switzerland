@@ -23,7 +23,7 @@ const setPrototypeFor = (node, fns) => {
         Object.getPrototypeOf(node)[name] = function (...args) {
 
             if (!(registryKey in this)) {
-                error('You have passed an invalid context when invoking the node method');
+                error(`You have passed an invalid context when invoking the "${name}" method`);
                 return;
             }
 
@@ -46,8 +46,8 @@ export default fns => {
     return props => {
 
         const { node } = props;
-        const has = registered.has(node.nodeName);
-        !has && setPrototypeFor(node, fns);
+        const hasNode = registered.has(node.nodeName);
+        !hasNode && setPrototypeFor(node, fns);
 
         return props;
 

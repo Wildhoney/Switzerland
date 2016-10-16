@@ -29,10 +29,8 @@ const fetchInclude = memoize(file => {
 
         // Update the URLs to make them relative to the CSS document.
         return urls.length ? urls.map(url => {
-
             const replacer = new RegExp(escapeRegExp(url), 'ig');
             return content.replace(replacer, `${cssPath}/${url}`);
-
         }).toString() : content;
 
     };

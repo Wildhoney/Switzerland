@@ -1,5 +1,3 @@
-import curry from 'ramda/src/curry';
-
 /**
  * @constant once
  * @type {WeakMap}
@@ -20,7 +18,7 @@ export const options = {
  * @param {Number} flags
  * @return {Function}
  */
-export default curry((callback, flags = options.DEFAULT) => {
+export default (callback, flags = options.DEFAULT) => {
 
     return props => {
 
@@ -47,4 +45,4 @@ export default curry((callback, flags = options.DEFAULT) => {
 
     };
 
-});
+};

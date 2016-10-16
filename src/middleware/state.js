@@ -5,10 +5,20 @@
 const states = new WeakMap();
 
 /**
+ * @constant options
+ * @type {Object}
+ */
+export const options = {
+    DEFAULT: 1,
+    DEFER: 2
+};
+
+/**
  * @param {Object} initialState
+ * @param {Number} flags
  * @return {Function}
  */
-export default initialState => {
+export default (initialState, flags = options.DEFAULT) => {
 
     return props => {
 
@@ -22,8 +32,16 @@ export default initialState => {
          * @return {void}
          */
         const setState = updatedState => {
-            states.set(props.node, { ...state, ...updatedState });
-            props.node.render();
+
+            // Determine whether or not to use the React default of `setState` being deferred
+            // until the next tick.
+            const fn = flags & options.DEFER ? setTimeout : stateFn => stateFn();
+
+            fn(() => {
+                states.set(props.node, { ...state, ...updatedState });
+                props.node.render();
+            });
+
         };
 
         return { ...props, state, setState };

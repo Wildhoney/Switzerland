@@ -1,5 +1,4 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
-import curry from 'ramda/src/curry';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { isDevelopment } from './helpers/env';
@@ -16,7 +15,7 @@ export const registryKey = Symbol('switzerland/registry');
  * @param {Function} fn
  * @return {void}
  */
-const message = curry((text, fn) => isDevelopment() && fn(`Switzerland \uD83C\uDDE8\uD83C\uDDED ${text}.`));
+const message = (text, fn) => isDevelopment() && fn(`Switzerland \uD83C\uDDE8\uD83C\uDDED ${text}.`);
 
 /**
  * @method error
@@ -66,7 +65,7 @@ const clearHTMLFor = node => {
  * @param {Function} component
  * @return {void}
  */
-export const create = curry((tag, component) => {
+export const create = (tag, component) => {
 
     /**
      * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -179,7 +178,7 @@ export const create = curry((tag, component) => {
 
     });
 
-});
+};
 
 // Middleware.
 export { default as html } from './middleware/html';

@@ -14,10 +14,10 @@ const timers = new WeakMap();
 export const time = props => {
 
     const node = props.node;
-    const has = timers.has(props.node);
-    const id = has ? timers.get(node) : `${node.nodeName.toLowerCase()} (${generate()})`;
-    !has && timers.set(node, id);
-    console.time(id);
+    const hasTimer = timers.has(props.node);
+    const id = hasTimer ? timers.get(node) : `${node.nodeName.toLowerCase()} (${generate()})`;
+    !hasTimer && timers.set(node, id);
+    window.console.time(id);
     return { ...props, timer: id };
 
 };
@@ -30,7 +30,7 @@ export const time = props => {
 export const timeEnd = props => {
 
     const id = timers.get(props.node);
-    console.timeEnd(id);
+    window.console.timeEnd(id);
     return { ...props, timer: id };
 
 };

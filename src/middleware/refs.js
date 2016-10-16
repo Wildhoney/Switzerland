@@ -16,11 +16,11 @@ const refs = new WeakMap();
  */
 export const invokeFor = node => {
 
-    const refsLocal = refs.get(node) || [];
+    const hooks = refs.get(node) || [];
 
     // Iterate over each defined refs and invoke it.
-    Array.from(refsLocal.keys()).forEach(key => {
-        refsLocal.get(key)(key);
+    Array.from(hooks.keys()).forEach(key => {
+        hooks.get(key)(key);
     });
 
 };
@@ -33,8 +33,8 @@ export const invokeFor = node => {
  * @return {void}
  */
 export const purgeFor = node => {
-    const refsLocal = refs.get(node);
-    refsLocal && refsLocal.clear(node);
+    const hooks = refs.get(node);
+    hooks && hooks.clear(node);
 };
 
 /**
@@ -43,21 +43,21 @@ export const purgeFor = node => {
  */
 export default props => {
 
-    const has = refs.has(props.node);
-    !has && refs.set(props.node, new Map());
-    const refsLocal = refs.get(props.node);
+    const hasRef = refs.has(props.node);
+    !hasRef && refs.set(props.node, new Map());
+    const hooks = refs.get(props.node);
 
     const ref = fn => {
 
         // See: https://github.com/Matt-Esch/virtual-dom/blob/master/docs/hooks.md
         const Hook = function () {};
-        Hook.prototype.hook = node => refsLocal.set(node, fn);
+        Hook.prototype.hook = node => hooks.set(node, fn);
         return new Hook();
 
     };
 
     // Delete the refs if the node has been removed from the DOM.
-    has && !props.node.isConnected && refs.delete(props.node);
+    hasRef && !props.node.isConnected && refs.delete(props.node);
 
     return { ...props, ref };
 
