@@ -205,7 +205,7 @@ create('swiss-cheese', pipe(state(initialState), once(fetch), html(props => {
 
 By wrapping our `fetch` function in the `once` middleware, we can be assured that `fetch` will be invoked only **one per instance** &ndash; thus if we had two `swiss-cheese` nodes in the DOM `fetch` would be invoked twice. It's important to understand the importance of `once` &ndash; without it we'd effectively be creating an infinite loop.
 
-Pay close attention to the fact that `fetch` appears **after** the `state` middleware &ndash; in our example it's immaterial, however when invoking `fetch` we need to ensure that the `state` middleware has given us the required `setState` function on the `props`.
+Pay close attention to the fact that `fetch` appears **after** the `state` middleware &ndash; in our example it's immaterial, however when invoking `fetch` we need to a guarantee that the `state` middleware has given us the required `setState` function in the `props`.
 
 As well as `props` being passed in, you may also return props from the `once` middleware which will be merged into the current set of `props`.
 
