@@ -57,7 +57,7 @@ var switzerland =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.path = exports.timeEnd = exports.time = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
+	exports.element = exports.compose = exports.pipe = exports.path = exports.timeEnd = exports.time = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -77,7 +77,7 @@ var switzerland =
 	    }
 	});
 
-	var _attributes = __webpack_require__(4);
+	var _attributes = __webpack_require__(11);
 
 	Object.defineProperty(exports, 'attrs', {
 	    enumerable: true,
@@ -86,7 +86,7 @@ var switzerland =
 	    }
 	});
 
-	var _state = __webpack_require__(26);
+	var _state = __webpack_require__(29);
 
 	Object.defineProperty(exports, 'state', {
 	    enumerable: true,
@@ -95,7 +95,7 @@ var switzerland =
 	    }
 	});
 
-	var _include = __webpack_require__(27);
+	var _include = __webpack_require__(30);
 
 	Object.defineProperty(exports, 'include', {
 	    enumerable: true,
@@ -104,7 +104,7 @@ var switzerland =
 	    }
 	});
 
-	var _redux = __webpack_require__(56);
+	var _redux = __webpack_require__(59);
 
 	Object.defineProperty(exports, 'redux', {
 	    enumerable: true,
@@ -113,7 +113,7 @@ var switzerland =
 	    }
 	});
 
-	var _refs = __webpack_require__(57);
+	var _refs = __webpack_require__(60);
 
 	Object.defineProperty(exports, 'refs', {
 	    enumerable: true,
@@ -122,7 +122,7 @@ var switzerland =
 	    }
 	});
 
-	var _methods = __webpack_require__(58);
+	var _methods = __webpack_require__(61);
 
 	Object.defineProperty(exports, 'methods', {
 	    enumerable: true,
@@ -131,7 +131,7 @@ var switzerland =
 	    }
 	});
 
-	var _events = __webpack_require__(59);
+	var _events = __webpack_require__(62);
 
 	Object.defineProperty(exports, 'events', {
 	    enumerable: true,
@@ -140,7 +140,7 @@ var switzerland =
 	    }
 	});
 
-	var _validate = __webpack_require__(60);
+	var _validate = __webpack_require__(63);
 
 	Object.defineProperty(exports, 'validate', {
 	    enumerable: true,
@@ -149,7 +149,16 @@ var switzerland =
 	    }
 	});
 
-	var _timer = __webpack_require__(64);
+	var _cleanup = __webpack_require__(67);
+
+	Object.defineProperty(exports, 'cleanup', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_cleanup).default;
+	    }
+	});
+
+	var _timer = __webpack_require__(68);
 
 	Object.defineProperty(exports, 'time', {
 	    enumerable: true,
@@ -164,7 +173,7 @@ var switzerland =
 	    }
 	});
 
-	var _path = __webpack_require__(74);
+	var _path = __webpack_require__(78);
 
 	Object.defineProperty(exports, 'path', {
 	    enumerable: true,
@@ -173,7 +182,7 @@ var switzerland =
 	    }
 	});
 
-	var _composition = __webpack_require__(75);
+	var _composition = __webpack_require__(79);
 
 	Object.defineProperty(exports, 'pipe', {
 	    enumerable: true,
@@ -188,7 +197,7 @@ var switzerland =
 	    }
 	});
 
-	var _virtualDom = __webpack_require__(81);
+	var _virtualDom = __webpack_require__(85);
 
 	Object.defineProperty(exports, 'element', {
 	    enumerable: true,
@@ -197,7 +206,11 @@ var switzerland =
 	    }
 	});
 
-	var _env = __webpack_require__(62);
+	var _curry = __webpack_require__(4);
+
+	var _curry2 = _interopRequireDefault(_curry);
+
+	var _env = __webpack_require__(65);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -213,9 +226,9 @@ var switzerland =
 	 * @param {Function} fn
 	 * @return {void}
 	 */
-	const message = function (text, fn) {
+	const message = (0, _curry2.default)(function (text, fn) {
 	    return (0, _env.isDevelopment)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
-	};
+	});
 
 	/**
 	 * @method error
@@ -277,7 +290,7 @@ var switzerland =
 	 * @param {Function} component
 	 * @return {void}
 	 */
-	const create = exports.create = function (tag, component) {
+	const create = exports.create = (0, _curry2.default)(function (tag, component) {
 
 	    /**
 	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -387,7 +400,7 @@ var switzerland =
 	        }
 
 	    });
-	};
+	});
 
 	// Middleware.
 
@@ -432,15 +445,22 @@ var switzerland =
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.options = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _curry = __webpack_require__(4);
+
+	var _curry2 = _interopRequireDefault(_curry);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * @constant once
@@ -449,18 +469,24 @@ var switzerland =
 	const once = new WeakMap();
 
 	/**
+	 * @constant options
+	 * @type {Object}
+	 */
+	const options = exports.options = {
+	  DEFAULT: 1,
+	  RESET: 2
+	};
+
+	/**
 	 * @param {Function} callback
-	 * @param {Function} [keyFrom]
+	 * @param {Number} flags
 	 * @return {Function}
 	 */
-
-	exports.default = function (callback, keyFrom = function (props) {
-	  return props.node;
-	}) {
+	exports.default = (0, _curry2.default)(function (callback, flags = options.DEFAULT) {
 
 	  return function (props) {
 
-	    const key = keyFrom(props);
+	    const key = props.node;
 
 	    // Ensure the node has an entry in the map.
 	    const hasNode = once.has(key);
@@ -473,14 +499,306 @@ var switzerland =
 	    // Only promises will be yielded in the next tick, whereas functions that
 	    // yield objects will return immediately.
 	    const response = once.get(key).get(callback);
+
+	    // Remove the callback if the node has been deleted, which will cause it to be invoked
+	    // again if the node is re-added.
+	    flags & options.RESET && !props.node.isConnected && once.get(key).delete(callback);
+
 	    return 'then' in Object(response) ? response.then(function (onceProps) {
 	      return _extends({}, onceProps, props);
 	    }) : _extends({}, response, props);
 	  };
-	};
+	});
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _curry1 = __webpack_require__(5);
+	var curryN = __webpack_require__(7);
+
+	/**
+	 * Returns a curried equivalent of the provided function. The curried function
+	 * has two unusual capabilities. First, its arguments needn't be provided one
+	 * at a time. If `f` is a ternary function and `g` is `R.curry(f)`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1)(2)(3)`
+	 *   - `g(1)(2, 3)`
+	 *   - `g(1, 2)(3)`
+	 *   - `g(1, 2, 3)`
+	 *
+	 * Secondly, the special placeholder value `R.__` may be used to specify
+	 * "gaps", allowing partial application of any combination of arguments,
+	 * regardless of their positions. If `g` is as above and `_` is `R.__`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1, 2, 3)`
+	 *   - `g(_, 2, 3)(1)`
+	 *   - `g(_, _, 3)(1)(2)`
+	 *   - `g(_, _, 3)(1, 2)`
+	 *   - `g(_, 2)(1)(3)`
+	 *   - `g(_, 2)(1, 3)`
+	 *   - `g(_, 2)(_, 3)(1)`
+	 *
+	 * @func
+	 * @memberOf R
+	 * @since v0.1.0
+	 * @category Function
+	 * @sig (* -> a) -> (* -> a)
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} A new, curried function.
+	 * @see R.curryN
+	 * @example
+	 *
+	 *      var addFourNumbers = (a, b, c, d) => a + b + c + d;
+	 *
+	 *      var curriedAddFourNumbers = R.curry(addFourNumbers);
+	 *      var f = curriedAddFourNumbers(1, 2);
+	 *      var g = f(3);
+	 *      g(4); //=> 10
+	 */
+	module.exports = _curry1(function curry(fn) {
+	  return curryN(fn.length, fn);
+	});
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _isPlaceholder = __webpack_require__(6);
+
+	/**
+	 * Optimized internal one-arity curry function.
+	 *
+	 * @private
+	 * @category Function
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} The curried function.
+	 */
+	module.exports = function _curry1(fn) {
+	  return function f1(a) {
+	    if (arguments.length === 0 || _isPlaceholder(a)) {
+	      return f1;
+	    } else {
+	      return fn.apply(this, arguments);
+	    }
+	  };
+	};
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function _isPlaceholder(a) {
+	       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _arity = __webpack_require__(8);
+	var _curry1 = __webpack_require__(5);
+	var _curry2 = __webpack_require__(9);
+	var _curryN = __webpack_require__(10);
+
+	/**
+	 * Returns a curried equivalent of the provided function, with the specified
+	 * arity. The curried function has two unusual capabilities. First, its
+	 * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1)(2)(3)`
+	 *   - `g(1)(2, 3)`
+	 *   - `g(1, 2)(3)`
+	 *   - `g(1, 2, 3)`
+	 *
+	 * Secondly, the special placeholder value `R.__` may be used to specify
+	 * "gaps", allowing partial application of any combination of arguments,
+	 * regardless of their positions. If `g` is as above and `_` is `R.__`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1, 2, 3)`
+	 *   - `g(_, 2, 3)(1)`
+	 *   - `g(_, _, 3)(1)(2)`
+	 *   - `g(_, _, 3)(1, 2)`
+	 *   - `g(_, 2)(1)(3)`
+	 *   - `g(_, 2)(1, 3)`
+	 *   - `g(_, 2)(_, 3)(1)`
+	 *
+	 * @func
+	 * @memberOf R
+	 * @since v0.5.0
+	 * @category Function
+	 * @sig Number -> (* -> a) -> (* -> a)
+	 * @param {Number} length The arity for the returned function.
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} A new, curried function.
+	 * @see R.curry
+	 * @example
+	 *
+	 *      var sumArgs = (...args) => R.sum(args);
+	 *
+	 *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
+	 *      var f = curriedAddFourNumbers(1, 2);
+	 *      var g = f(3);
+	 *      g(4); //=> 10
+	 */
+	module.exports = _curry2(function curryN(length, fn) {
+	  if (length === 1) {
+	    return _curry1(fn);
+	  }
+	  return _arity(length, _curryN(length, [], fn));
+	});
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function _arity(n, fn) {
+	  /* eslint-disable no-unused-vars */
+	  switch (n) {
+	    case 0:
+	      return function () {
+	        return fn.apply(this, arguments);
+	      };
+	    case 1:
+	      return function (a0) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 2:
+	      return function (a0, a1) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 3:
+	      return function (a0, a1, a2) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 4:
+	      return function (a0, a1, a2, a3) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 5:
+	      return function (a0, a1, a2, a3, a4) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 6:
+	      return function (a0, a1, a2, a3, a4, a5) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 7:
+	      return function (a0, a1, a2, a3, a4, a5, a6) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 8:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 9:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 10:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+	        return fn.apply(this, arguments);
+	      };
+	    default:
+	      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+	  }
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _curry1 = __webpack_require__(5);
+	var _isPlaceholder = __webpack_require__(6);
+
+	/**
+	 * Optimized internal two-arity curry function.
+	 *
+	 * @private
+	 * @category Function
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} The curried function.
+	 */
+	module.exports = function _curry2(fn) {
+	  return function f2(a, b) {
+	    switch (arguments.length) {
+	      case 0:
+	        return f2;
+	      case 1:
+	        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+	          return fn(a, _b);
+	        });
+	      default:
+	        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+	          return fn(_a, b);
+	        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+	          return fn(a, _b);
+	        }) : fn(a, b);
+	    }
+	  };
+	};
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _arity = __webpack_require__(8);
+	var _isPlaceholder = __webpack_require__(6);
+
+	/**
+	 * Internal curryN function.
+	 *
+	 * @private
+	 * @category Function
+	 * @param {Number} length The arity of the curried function.
+	 * @param {Array} received An array of arguments received thus far.
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} The curried function.
+	 */
+	module.exports = function _curryN(length, received, fn) {
+	  return function () {
+	    var combined = [];
+	    var argsIdx = 0;
+	    var left = length;
+	    var combinedIdx = 0;
+	    while (combinedIdx < received.length || argsIdx < arguments.length) {
+	      var result;
+	      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+	        result = received[combinedIdx];
+	      } else {
+	        result = arguments[argsIdx];
+	        argsIdx += 1;
+	      }
+	      combined[combinedIdx] = result;
+	      if (!_isPlaceholder(result)) {
+	        left -= 1;
+	      }
+	      combinedIdx += 1;
+	    }
+	    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+	  };
+	};
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -491,9 +809,9 @@ var switzerland =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _humps = __webpack_require__(5);
+	var _humps = __webpack_require__(12);
 
-	var _compose = __webpack_require__(6);
+	var _compose = __webpack_require__(13);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -571,7 +889,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 5 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -714,13 +1032,13 @@ var switzerland =
 	})(undefined);
 
 /***/ },
-/* 6 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var pipe = __webpack_require__(7);
-	var reverse = __webpack_require__(25);
+	var pipe = __webpack_require__(14);
+	var reverse = __webpack_require__(28);
 
 	/**
 	 * Performs right-to-left function composition. The rightmost function may have
@@ -750,15 +1068,15 @@ var switzerland =
 	};
 
 /***/ },
-/* 7 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _arity = __webpack_require__(8);
-	var _pipe = __webpack_require__(9);
-	var reduce = __webpack_require__(10);
-	var tail = __webpack_require__(21);
+	var _pipe = __webpack_require__(15);
+	var reduce = __webpack_require__(16);
+	var tail = __webpack_require__(24);
 
 	/**
 	 * Performs left-to-right function composition. The leftmost function may have
@@ -790,65 +1108,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function _arity(n, fn) {
-	  /* eslint-disable no-unused-vars */
-	  switch (n) {
-	    case 0:
-	      return function () {
-	        return fn.apply(this, arguments);
-	      };
-	    case 1:
-	      return function (a0) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 2:
-	      return function (a0, a1) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 3:
-	      return function (a0, a1, a2) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 4:
-	      return function (a0, a1, a2, a3) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 5:
-	      return function (a0, a1, a2, a3, a4) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 6:
-	      return function (a0, a1, a2, a3, a4, a5) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 7:
-	      return function (a0, a1, a2, a3, a4, a5, a6) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 8:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 9:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 10:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
-	        return fn.apply(this, arguments);
-	      };
-	    default:
-	      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
-	  }
-	};
-
-/***/ },
-/* 9 */
+/* 15 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -860,13 +1120,13 @@ var switzerland =
 	};
 
 /***/ },
-/* 10 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry3 = __webpack_require__(11);
-	var _reduce = __webpack_require__(15);
+	var _curry3 = __webpack_require__(17);
+	var _reduce = __webpack_require__(18);
 
 	/**
 	 * Returns a single item by iterating through the list, successively calling
@@ -904,14 +1164,14 @@ var switzerland =
 	module.exports = _curry3(_reduce);
 
 /***/ },
-/* 11 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry1 = __webpack_require__(12);
-	var _curry2 = __webpack_require__(14);
-	var _isPlaceholder = __webpack_require__(13);
+	var _curry1 = __webpack_require__(5);
+	var _curry2 = __webpack_require__(9);
+	var _isPlaceholder = __webpack_require__(6);
 
 	/**
 	 * Optimized internal three-arity curry function.
@@ -957,86 +1217,14 @@ var switzerland =
 	};
 
 /***/ },
-/* 12 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _isPlaceholder = __webpack_require__(13);
-
-	/**
-	 * Optimized internal one-arity curry function.
-	 *
-	 * @private
-	 * @category Function
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} The curried function.
-	 */
-	module.exports = function _curry1(fn) {
-	  return function f1(a) {
-	    if (arguments.length === 0 || _isPlaceholder(a)) {
-	      return f1;
-	    } else {
-	      return fn.apply(this, arguments);
-	    }
-	  };
-	};
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function _isPlaceholder(a) {
-	       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
-	};
-
-/***/ },
-/* 14 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _curry1 = __webpack_require__(12);
-	var _isPlaceholder = __webpack_require__(13);
-
-	/**
-	 * Optimized internal two-arity curry function.
-	 *
-	 * @private
-	 * @category Function
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} The curried function.
-	 */
-	module.exports = function _curry2(fn) {
-	  return function f2(a, b) {
-	    switch (arguments.length) {
-	      case 0:
-	        return f2;
-	      case 1:
-	        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
-	          return fn(a, _b);
-	        });
-	      default:
-	        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
-	          return fn(_a, b);
-	        }) : _isPlaceholder(b) ? _curry1(function (_b) {
-	          return fn(a, _b);
-	        }) : fn(a, b);
-	    }
-	  };
-	};
-
-/***/ },
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _xwrap = __webpack_require__(16);
-	var bind = __webpack_require__(17);
-	var isArrayLike = __webpack_require__(18);
+	var _xwrap = __webpack_require__(19);
+	var bind = __webpack_require__(20);
+	var isArrayLike = __webpack_require__(21);
 
 	module.exports = function () {
 	  function _arrayReduce(xf, acc, list) {
@@ -1092,7 +1280,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 16 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1117,13 +1305,13 @@ var switzerland =
 	}();
 
 /***/ },
-/* 17 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _arity = __webpack_require__(8);
-	var _curry2 = __webpack_require__(14);
+	var _curry2 = __webpack_require__(9);
 
 	/**
 	 * Creates a function that is bound to a context.
@@ -1153,14 +1341,14 @@ var switzerland =
 	});
 
 /***/ },
-/* 18 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry1 = __webpack_require__(12);
-	var _isArray = __webpack_require__(19);
-	var _isString = __webpack_require__(20);
+	var _curry1 = __webpack_require__(5);
+	var _isArray = __webpack_require__(22);
+	var _isString = __webpack_require__(23);
 
 	/**
 	 * Tests whether or not an object is similar to an array.
@@ -1207,7 +1395,7 @@ var switzerland =
 	});
 
 /***/ },
-/* 19 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1229,7 +1417,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 20 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1239,13 +1427,13 @@ var switzerland =
 	};
 
 /***/ },
-/* 21 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _checkForMethod = __webpack_require__(22);
-	var slice = __webpack_require__(24);
+	var _checkForMethod = __webpack_require__(25);
+	var slice = __webpack_require__(27);
 
 	/**
 	 * Returns all but the first element of the given list or string (or object
@@ -1277,13 +1465,13 @@ var switzerland =
 	module.exports = _checkForMethod('tail', slice(1, Infinity));
 
 /***/ },
-/* 22 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _isArray = __webpack_require__(19);
-	var _slice = __webpack_require__(23);
+	var _isArray = __webpack_require__(22);
+	var _slice = __webpack_require__(26);
 
 	/**
 	 * Similar to hasMethod, this checks whether a function has a [methodname]
@@ -1307,7 +1495,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 23 */
+/* 26 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1348,13 +1536,13 @@ var switzerland =
 	};
 
 /***/ },
-/* 24 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _checkForMethod = __webpack_require__(22);
-	var _curry3 = __webpack_require__(11);
+	var _checkForMethod = __webpack_require__(25);
+	var _curry3 = __webpack_require__(17);
 
 	/**
 	 * Returns the elements of the given list or string (or object with a `slice`
@@ -1385,14 +1573,14 @@ var switzerland =
 	}));
 
 /***/ },
-/* 25 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry1 = __webpack_require__(12);
-	var _isString = __webpack_require__(20);
-	var _slice = __webpack_require__(23);
+	var _curry1 = __webpack_require__(5);
+	var _isString = __webpack_require__(23);
+	var _slice = __webpack_require__(26);
 
 	/**
 	 * Returns a new list or string with the elements or characters in reverse
@@ -1423,7 +1611,7 @@ var switzerland =
 	});
 
 /***/ },
-/* 26 */
+/* 29 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1468,7 +1656,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 27 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1479,19 +1667,19 @@ var switzerland =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _ramda = __webpack_require__(28);
+	var _ramda = __webpack_require__(31);
 
-	var _axios = __webpack_require__(29);
+	var _axios = __webpack_require__(32);
 
-	var _cssUrlParser = __webpack_require__(52);
+	var _cssUrlParser = __webpack_require__(55);
 
 	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
 
-	var _pathParse = __webpack_require__(54);
+	var _pathParse = __webpack_require__(57);
 
 	var _pathParse2 = _interopRequireDefault(_pathParse);
 
-	var _escapeStringRegexp = __webpack_require__(55);
+	var _escapeStringRegexp = __webpack_require__(58);
 
 	var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
 
@@ -1608,7 +1796,7 @@ var switzerland =
 	            node.classList.remove('resolving');
 	        });
 	    }
-	});
+	}, _once.options.RESET);
 
 	/**
 	 * @param {Array|String} files
@@ -1627,7 +1815,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 28 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';//  Ramda v0.22.1
@@ -6823,22 +7011,22 @@ var switzerland =
 	     */var union=_curry2(compose(uniq,_concat));var R={F:F,T:T,__:__,add:add,addIndex:addIndex,adjust:adjust,all:all,allPass:allPass,always:always,and:and,any:any,anyPass:anyPass,ap:ap,aperture:aperture,append:append,apply:apply,applySpec:applySpec,assoc:assoc,assocPath:assocPath,binary:binary,bind:bind,both:both,call:call,chain:chain,clamp:clamp,clone:clone,comparator:comparator,complement:complement,compose:compose,composeK:composeK,composeP:composeP,concat:concat,cond:cond,construct:construct,constructN:constructN,contains:contains,converge:converge,countBy:countBy,curry:curry,curryN:curryN,dec:dec,defaultTo:defaultTo,difference:difference,differenceWith:differenceWith,dissoc:dissoc,dissocPath:dissocPath,divide:divide,drop:drop,dropLast:dropLast,dropLastWhile:dropLastWhile,dropRepeats:dropRepeats,dropRepeatsWith:dropRepeatsWith,dropWhile:dropWhile,either:either,empty:empty,eqBy:eqBy,eqProps:eqProps,equals:equals,evolve:evolve,filter:filter,find:find,findIndex:findIndex,findLast:findLast,findLastIndex:findLastIndex,flatten:flatten,flip:flip,forEach:forEach,fromPairs:fromPairs,groupBy:groupBy,groupWith:groupWith,gt:gt,gte:gte,has:has,hasIn:hasIn,head:head,identical:identical,identity:identity,ifElse:ifElse,inc:inc,indexBy:indexBy,indexOf:indexOf,init:init,insert:insert,insertAll:insertAll,intersection:intersection,intersectionWith:intersectionWith,intersperse:intersperse,into:into,invert:invert,invertObj:invertObj,invoker:invoker,is:is,isArrayLike:isArrayLike,isEmpty:isEmpty,isNil:isNil,join:join,juxt:juxt,keys:keys,keysIn:keysIn,last:last,lastIndexOf:lastIndexOf,length:length,lens:lens,lensIndex:lensIndex,lensPath:lensPath,lensProp:lensProp,lift:lift,liftN:liftN,lt:lt,lte:lte,map:map,mapAccum:mapAccum,mapAccumRight:mapAccumRight,mapObjIndexed:mapObjIndexed,match:match,mathMod:mathMod,max:max,maxBy:maxBy,mean:mean,median:median,memoize:memoize,merge:merge,mergeAll:mergeAll,mergeWith:mergeWith,mergeWithKey:mergeWithKey,min:min,minBy:minBy,modulo:modulo,multiply:multiply,nAry:nAry,negate:negate,none:none,not:not,nth:nth,nthArg:nthArg,objOf:objOf,of:of,omit:omit,once:once,or:or,over:over,pair:pair,partial:partial,partialRight:partialRight,partition:partition,path:path,pathEq:pathEq,pathOr:pathOr,pathSatisfies:pathSatisfies,pick:pick,pickAll:pickAll,pickBy:pickBy,pipe:pipe,pipeK:pipeK,pipeP:pipeP,pluck:pluck,prepend:prepend,product:product,project:project,prop:prop,propEq:propEq,propIs:propIs,propOr:propOr,propSatisfies:propSatisfies,props:props,range:range,reduce:reduce,reduceBy:reduceBy,reduceRight:reduceRight,reduceWhile:reduceWhile,reduced:reduced,reject:reject,remove:remove,repeat:repeat,replace:replace,reverse:reverse,scan:scan,sequence:sequence,set:set,slice:slice,sort:sort,sortBy:sortBy,split:split,splitAt:splitAt,splitEvery:splitEvery,splitWhen:splitWhen,subtract:subtract,sum:sum,symmetricDifference:symmetricDifference,symmetricDifferenceWith:symmetricDifferenceWith,tail:tail,take:take,takeLast:takeLast,takeLastWhile:takeLastWhile,takeWhile:takeWhile,tap:tap,test:test,times:times,toLower:toLower,toPairs:toPairs,toPairsIn:toPairsIn,toString:toString,toUpper:toUpper,transduce:transduce,transpose:transpose,traverse:traverse,trim:trim,tryCatch:tryCatch,type:type,unapply:unapply,unary:unary,uncurryN:uncurryN,unfold:unfold,union:union,unionWith:unionWith,uniq:uniq,uniqBy:uniqBy,uniqWith:uniqWith,unless:unless,unnest:unnest,until:until,update:update,useWith:useWith,values:values,valuesIn:valuesIn,view:view,when:when,where:where,whereEq:whereEq,without:without,wrap:wrap,xprod:xprod,zip:zip,zipObj:zipObj,zipWith:zipWith};/* eslint-env amd *//* TEST_ENTRY_POINT */if(true){module.exports=R;}else if(typeof define==='function'&&define.amd){define(function(){return R;});}else{this.R=R;}}).call(undefined);
 
 /***/ },
-/* 29 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(30);
+	module.exports = __webpack_require__(33);
 
 /***/ },
-/* 30 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
-	var bind = __webpack_require__(32);
-	var Axios = __webpack_require__(33);
+	var utils = __webpack_require__(34);
+	var bind = __webpack_require__(35);
+	var Axios = __webpack_require__(36);
 
 	/**
 	 * Create an instance of Axios
@@ -6874,7 +7062,7 @@ var switzerland =
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(51);
+	axios.spread = __webpack_require__(54);
 
 	module.exports = axios;
 
@@ -6882,12 +7070,12 @@ var switzerland =
 	module.exports.default = axios;
 
 /***/ },
-/* 31 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var bind = __webpack_require__(32);
+	var bind = __webpack_require__(35);
 
 	/*global toString:true*/
 
@@ -7182,7 +7370,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 32 */
+/* 35 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7198,17 +7386,17 @@ var switzerland =
 	};
 
 /***/ },
-/* 33 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var defaults = __webpack_require__(34);
-	var utils = __webpack_require__(31);
-	var InterceptorManager = __webpack_require__(36);
-	var dispatchRequest = __webpack_require__(37);
-	var isAbsoluteURL = __webpack_require__(49);
-	var combineURLs = __webpack_require__(50);
+	var defaults = __webpack_require__(37);
+	var utils = __webpack_require__(34);
+	var InterceptorManager = __webpack_require__(39);
+	var dispatchRequest = __webpack_require__(40);
+	var isAbsoluteURL = __webpack_require__(52);
+	var combineURLs = __webpack_require__(53);
 
 	/**
 	 * Create a new instance of Axios
@@ -7288,13 +7476,13 @@ var switzerland =
 	module.exports = Axios;
 
 /***/ },
-/* 34 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
-	var normalizeHeaderName = __webpack_require__(35);
+	var utils = __webpack_require__(34);
+	var normalizeHeaderName = __webpack_require__(38);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -7360,12 +7548,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 35 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
+	var utils = __webpack_require__(34);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -7377,12 +7565,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 36 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
+	var utils = __webpack_require__(34);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -7434,13 +7622,13 @@ var switzerland =
 	module.exports = InterceptorManager;
 
 /***/ },
-/* 37 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(31);
-	var transformData = __webpack_require__(39);
+	var utils = __webpack_require__(34);
+	var transformData = __webpack_require__(42);
 
 	/**
 	 * Dispatch a request to the server using whichever adapter
@@ -7470,10 +7658,10 @@ var switzerland =
 	    adapter = config.adapter;
 	  } else if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(40);
+	    adapter = __webpack_require__(43);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(40);
+	    adapter = __webpack_require__(43);
 	  }
 
 	  return Promise.resolve(config)
@@ -7492,10 +7680,10 @@ var switzerland =
 	    return Promise.reject(error);
 	  });
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
 
 /***/ },
-/* 38 */
+/* 41 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7681,12 +7869,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 39 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
+	var utils = __webpack_require__(34);
 
 	/**
 	 * Transform the data for a request or a response
@@ -7706,18 +7894,18 @@ var switzerland =
 	};
 
 /***/ },
-/* 40 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(31);
-	var settle = __webpack_require__(41);
-	var buildURL = __webpack_require__(44);
-	var parseHeaders = __webpack_require__(45);
-	var isURLSameOrigin = __webpack_require__(46);
-	var createError = __webpack_require__(42);
-	var btoa = typeof window !== 'undefined' && window.btoa || __webpack_require__(47);
+	var utils = __webpack_require__(34);
+	var settle = __webpack_require__(44);
+	var buildURL = __webpack_require__(47);
+	var parseHeaders = __webpack_require__(48);
+	var isURLSameOrigin = __webpack_require__(49);
+	var createError = __webpack_require__(45);
+	var btoa = typeof window !== 'undefined' && window.btoa || __webpack_require__(50);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -7808,7 +7996,7 @@ var switzerland =
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(48);
+	      var cookies = __webpack_require__(51);
 
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ? cookies.read(config.xsrfCookieName) : undefined;
@@ -7865,15 +8053,15 @@ var switzerland =
 	    request.send(requestData);
 	  });
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
 
 /***/ },
-/* 41 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var createError = __webpack_require__(42);
+	var createError = __webpack_require__(45);
 
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -7893,12 +8081,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 42 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enhanceError = __webpack_require__(43);
+	var enhanceError = __webpack_require__(46);
 
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -7915,7 +8103,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 43 */
+/* 46 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7940,12 +8128,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 44 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
+	var utils = __webpack_require__(34);
 
 	function encode(val) {
 	  return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
@@ -8006,12 +8194,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 45 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
+	var utils = __webpack_require__(34);
 
 	/**
 	 * Parse headers into an object
@@ -8050,12 +8238,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 46 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
+	var utils = __webpack_require__(34);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -8118,7 +8306,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 47 */
+/* 50 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8158,12 +8346,12 @@ var switzerland =
 	module.exports = btoa;
 
 /***/ },
-/* 48 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(31);
+	var utils = __webpack_require__(34);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -8216,7 +8404,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 49 */
+/* 52 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8237,7 +8425,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 50 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8255,7 +8443,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 51 */
+/* 54 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8288,16 +8476,16 @@ var switzerland =
 	};
 
 /***/ },
-/* 52 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var parseCssUrls = __webpack_require__(53);
+	var parseCssUrls = __webpack_require__(56);
 	module.exports = parseCssUrls;
 
 /***/ },
-/* 53 */
+/* 56 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8331,7 +8519,7 @@ var switzerland =
 	module.exports = getUrls;
 
 /***/ },
-/* 54 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -8413,10 +8601,10 @@ var switzerland =
 
 	module.exports.posix = posix.parse;
 	module.exports.win32 = win32.parse;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
 
 /***/ },
-/* 55 */
+/* 58 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8432,16 +8620,22 @@ var switzerland =
 	};
 
 /***/ },
-/* 56 */
-/***/ function(module, exports) {
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _curry = __webpack_require__(4);
+
+	var _curry2 = _interopRequireDefault(_curry);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * @constant subscriptions
@@ -8454,8 +8648,7 @@ var switzerland =
 	 * @param {Function} [handler]
 	 * @return {Function}
 	 */
-
-	exports.default = function (store, handler = function () {
+	exports.default = (0, _curry2.default)(function (store, handler = function () {
 	  return true;
 	}) {
 
@@ -8471,10 +8664,10 @@ var switzerland =
 
 	    return _extends({}, props, { redux: state, dispatch: store.dispatch });
 	  };
-	};
+	});
 
 /***/ },
-/* 57 */
+/* 60 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8544,14 +8737,14 @@ var switzerland =
 	        return new Hook();
 	    };
 
-	    // Delete the refs is the node has been removed from the DOM.
+	    // Delete the refs if the node has been removed from the DOM.
 	    has && !props.node.isConnected && refs.delete(props.node);
 
 	    return _extends({}, props, { ref });
 	};
 
 /***/ },
-/* 58 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8573,16 +8766,16 @@ var switzerland =
 	/**
 	 * @method setPrototypeFor
 	 * @param {HTMLElement} node
-	 * @param {Array} methods
+	 * @param {Array} fns
 	 * @return {void}
 	 */
-	const setPrototypeFor = function (node, methods) {
+	const setPrototypeFor = function (node, fns) {
 
 	    registered.add(node.nodeName);
 
-	    Object.keys(methods).forEach(function (name) {
+	    Object.keys(fns).forEach(function (name) {
 
-	        const fn = methods[name];
+	        const fn = fns[name];
 
 	        Object.getPrototypeOf(node)[name] = function (...args) {
 
@@ -8593,32 +8786,30 @@ var switzerland =
 
 	            // Gather the props that caused the last render of the component, and then invoke
 	            // the prototype function.
-	            const lastProps = this[_switzerland.registryKey].props;
-
-	            fn(_extends({}, lastProps, { args }));
+	            fn(_extends({}, this[_switzerland.registryKey].props, { args }));
 	        };
 	    });
 	};
 
 	/**
-	 * @param {Object} methods
+	 * @param {Object} fns
 	 * @return {Function}
 	 */
 
-	exports.default = function (methods) {
+	exports.default = function (fns) {
 
 	    return function (props) {
 	        const node = props.node;
 
 	        const has = registered.has(node.nodeName);
-	        !has && setPrototypeFor(node, methods);
+	        !has && setPrototypeFor(node, fns);
 
 	        return props;
 	    };
 	};
 
 /***/ },
-/* 59 */
+/* 62 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -8656,7 +8847,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 60 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8665,9 +8856,9 @@ var switzerland =
 	    value: true
 	});
 
-	var _propTypes = __webpack_require__(61);
+	var _propTypes = __webpack_require__(64);
 
-	var _env = __webpack_require__(62);
+	var _env = __webpack_require__(65);
 
 	/**
 	 * @param {Object} schema
@@ -8682,7 +8873,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 61 */
+/* 64 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -9212,7 +9403,7 @@ var switzerland =
 	/******/]);
 
 /***/ },
-/* 62 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -9222,7 +9413,7 @@ var switzerland =
 	});
 	exports.isDevelopment = undefined;
 
-	var _once = __webpack_require__(63);
+	var _once = __webpack_require__(66);
 
 	var _once2 = _interopRequireDefault(_once);
 
@@ -9248,16 +9439,16 @@ var switzerland =
 	const isDevelopment = exports.isDevelopment = (0, _once2.default)(function () {
 	    return env === 'development';
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
 
 /***/ },
-/* 63 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _arity = __webpack_require__(8);
-	var _curry1 = __webpack_require__(12);
+	var _curry1 = __webpack_require__(5);
 
 	/**
 	 * Accepts a function `fn` and returns a function that guards invocation of
@@ -9292,7 +9483,36 @@ var switzerland =
 	});
 
 /***/ },
-/* 64 */
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _once = __webpack_require__(3);
+
+	var _once2 = _interopRequireDefault(_once);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (fn) {
+
+	    const cleanupFn = (0, _once2.default)(fn, _once.options.RESET);
+
+	    return function (props) {
+
+	        // Invoke the function if the node isn't connected to the DOM.
+	        return props.node.isConnected ? props : _extends({}, cleanupFn(props), props);
+	    };
+	};
+
+/***/ },
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9304,7 +9524,7 @@ var switzerland =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _shortid = __webpack_require__(65);
+	var _shortid = __webpack_require__(69);
 
 	/**
 	 * @constant timers
@@ -9340,23 +9560,23 @@ var switzerland =
 	};
 
 /***/ },
-/* 65 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(66);
+	module.exports = __webpack_require__(70);
 
 /***/ },
-/* 66 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(67);
-	var encode = __webpack_require__(69);
-	var decode = __webpack_require__(71);
-	var isValid = __webpack_require__(72);
+	var alphabet = __webpack_require__(71);
+	var encode = __webpack_require__(73);
+	var decode = __webpack_require__(75);
+	var isValid = __webpack_require__(76);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -9371,7 +9591,7 @@ var switzerland =
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(73) || 0;
+	var clusterWorkerId = __webpack_require__(77) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -9451,12 +9671,12 @@ var switzerland =
 	module.exports.isValid = isValid;
 
 /***/ },
-/* 67 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(68);
+	var randomFromSeed = __webpack_require__(72);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -9554,7 +9774,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 68 */
+/* 72 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9584,12 +9804,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 69 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(70);
+	var randomByte = __webpack_require__(74);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -9608,7 +9828,7 @@ var switzerland =
 	module.exports = encode;
 
 /***/ },
-/* 70 */
+/* 74 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9627,12 +9847,12 @@ var switzerland =
 	module.exports = randomByte;
 
 /***/ },
-/* 71 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(67);
+	var alphabet = __webpack_require__(71);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -9650,12 +9870,12 @@ var switzerland =
 	module.exports = decode;
 
 /***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(67);
+	var alphabet = __webpack_require__(71);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6) {
@@ -9675,7 +9895,7 @@ var switzerland =
 	module.exports = isShortId;
 
 /***/ },
-/* 73 */
+/* 77 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9683,7 +9903,7 @@ var switzerland =
 	module.exports = 0;
 
 /***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9693,7 +9913,7 @@ var switzerland =
 	});
 	exports.path = undefined;
 
-	var _pathParse = __webpack_require__(54);
+	var _pathParse = __webpack_require__(57);
 
 	var _pathParse2 = _interopRequireDefault(_pathParse);
 
@@ -9736,7 +9956,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9746,7 +9966,7 @@ var switzerland =
 	});
 	exports.compose = exports.pipe = undefined;
 
-	var _promisedPipe = __webpack_require__(76);
+	var _promisedPipe = __webpack_require__(80);
 
 	var _promisedPipe2 = _interopRequireDefault(_promisedPipe);
 
@@ -9769,14 +9989,14 @@ var switzerland =
 	};
 
 /***/ },
-/* 76 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// Dependencies
-	var pipe = __webpack_require__(77).pipe;
-	var promised = __webpack_require__(78).promised;
+	var pipe = __webpack_require__(81).pipe;
+	var promised = __webpack_require__(82).promised;
 
 	// Public intefrace
 	module.exports = promisedPipe;
@@ -9787,7 +10007,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 77 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';//  Ramda v0.21.0
@@ -14938,7 +15158,7 @@ var switzerland =
 	     */var union=_curry2(compose(uniq,_concat));var R={F:F,T:T,__:__,add:add,addIndex:addIndex,adjust:adjust,all:all,allPass:allPass,allUniq:allUniq,always:always,and:and,any:any,anyPass:anyPass,ap:ap,aperture:aperture,append:append,apply:apply,applySpec:applySpec,assoc:assoc,assocPath:assocPath,binary:binary,bind:bind,both:both,call:call,chain:chain,clamp:clamp,clone:clone,comparator:comparator,complement:complement,compose:compose,composeK:composeK,composeP:composeP,concat:concat,cond:cond,construct:construct,constructN:constructN,contains:contains,converge:converge,countBy:countBy,curry:curry,curryN:curryN,dec:dec,defaultTo:defaultTo,difference:difference,differenceWith:differenceWith,dissoc:dissoc,dissocPath:dissocPath,divide:divide,drop:drop,dropLast:dropLast,dropLastWhile:dropLastWhile,dropRepeats:dropRepeats,dropRepeatsWith:dropRepeatsWith,dropWhile:dropWhile,either:either,empty:empty,eqBy:eqBy,eqProps:eqProps,equals:equals,evolve:evolve,filter:filter,find:find,findIndex:findIndex,findLast:findLast,findLastIndex:findLastIndex,flatten:flatten,flip:flip,forEach:forEach,fromPairs:fromPairs,groupBy:groupBy,groupWith:groupWith,gt:gt,gte:gte,has:has,hasIn:hasIn,head:head,identical:identical,identity:identity,ifElse:ifElse,inc:inc,indexBy:indexBy,indexOf:indexOf,init:init,insert:insert,insertAll:insertAll,intersection:intersection,intersectionWith:intersectionWith,intersperse:intersperse,into:into,invert:invert,invertObj:invertObj,invoker:invoker,is:is,isArrayLike:isArrayLike,isEmpty:isEmpty,isNil:isNil,join:join,juxt:juxt,keys:keys,keysIn:keysIn,last:last,lastIndexOf:lastIndexOf,length:length,lens:lens,lensIndex:lensIndex,lensPath:lensPath,lensProp:lensProp,lift:lift,liftN:liftN,lt:lt,lte:lte,map:map,mapAccum:mapAccum,mapAccumRight:mapAccumRight,mapObjIndexed:mapObjIndexed,match:match,mathMod:mathMod,max:max,maxBy:maxBy,mean:mean,median:median,memoize:memoize,merge:merge,mergeAll:mergeAll,mergeWith:mergeWith,mergeWithKey:mergeWithKey,min:min,minBy:minBy,modulo:modulo,multiply:multiply,nAry:nAry,negate:negate,none:none,not:not,nth:nth,nthArg:nthArg,objOf:objOf,of:of,omit:omit,once:once,or:or,over:over,pair:pair,partial:partial,partialRight:partialRight,partition:partition,path:path,pathEq:pathEq,pathOr:pathOr,pathSatisfies:pathSatisfies,pick:pick,pickAll:pickAll,pickBy:pickBy,pipe:pipe,pipeK:pipeK,pipeP:pipeP,pluck:pluck,prepend:prepend,product:product,project:project,prop:prop,propEq:propEq,propIs:propIs,propOr:propOr,propSatisfies:propSatisfies,props:props,range:range,reduce:reduce,reduceBy:reduceBy,reduceRight:reduceRight,reduced:reduced,reject:reject,remove:remove,repeat:repeat,replace:replace,reverse:reverse,scan:scan,sequence:sequence,set:set,slice:slice,sort:sort,sortBy:sortBy,split:split,splitAt:splitAt,splitEvery:splitEvery,splitWhen:splitWhen,subtract:subtract,sum:sum,symmetricDifference:symmetricDifference,symmetricDifferenceWith:symmetricDifferenceWith,tail:tail,take:take,takeLast:takeLast,takeLastWhile:takeLastWhile,takeWhile:takeWhile,tap:tap,test:test,times:times,toLower:toLower,toPairs:toPairs,toPairsIn:toPairsIn,toString:toString,toUpper:toUpper,transduce:transduce,transpose:transpose,traverse:traverse,trim:trim,tryCatch:tryCatch,type:type,unapply:unapply,unary:unary,uncurryN:uncurryN,unfold:unfold,union:union,unionWith:unionWith,uniq:uniq,uniqBy:uniqBy,uniqWith:uniqWith,unless:unless,unnest:unnest,until:until,update:update,useWith:useWith,values:values,valuesIn:valuesIn,view:view,when:when,where:where,whereEq:whereEq,without:without,wrap:wrap,xprod:xprod,zip:zip,zipObj:zipObj,zipWith:zipWith};/* eslint-env amd *//* TEST_ENTRY_POINT */if(true){module.exports=R;}else if(typeof define==='function'&&define.amd){define(function(){return R;});}else{this.R=R;}}).call(undefined);
 
 /***/ },
-/* 78 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, setImmediate) {"use strict";
@@ -16944,15 +17164,15 @@ var switzerland =
 
 	    return Q;
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38), __webpack_require__(79).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41), __webpack_require__(83).setImmediate))
 
 /***/ },
-/* 79 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {"use strict";
 
-	var nextTick = __webpack_require__(80).nextTick;
+	var nextTick = __webpack_require__(84).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
@@ -17028,10 +17248,10 @@ var switzerland =
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function (id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(79).setImmediate, __webpack_require__(79).clearImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(83).setImmediate, __webpack_require__(83).clearImmediate))
 
 /***/ },
-/* 80 */
+/* 84 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17217,17 +17437,17 @@ var switzerland =
 	};
 
 /***/ },
-/* 81 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var diff = __webpack_require__(82);
-	var patch = __webpack_require__(95);
-	var h = __webpack_require__(104);
-	var create = __webpack_require__(115);
-	var VNode = __webpack_require__(106);
-	var VText = __webpack_require__(107);
+	var diff = __webpack_require__(86);
+	var patch = __webpack_require__(99);
+	var h = __webpack_require__(108);
+	var create = __webpack_require__(119);
+	var VNode = __webpack_require__(110);
+	var VText = __webpack_require__(111);
 
 	module.exports = {
 	    diff: diff,
@@ -17239,31 +17459,31 @@ var switzerland =
 	};
 
 /***/ },
-/* 82 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var diff = __webpack_require__(83);
+	var diff = __webpack_require__(87);
 
 	module.exports = diff;
 
 /***/ },
-/* 83 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isArray = __webpack_require__(84);
+	var isArray = __webpack_require__(88);
 
-	var VPatch = __webpack_require__(85);
-	var isVNode = __webpack_require__(87);
-	var isVText = __webpack_require__(88);
-	var isWidget = __webpack_require__(89);
-	var isThunk = __webpack_require__(90);
-	var handleThunk = __webpack_require__(91);
+	var VPatch = __webpack_require__(89);
+	var isVNode = __webpack_require__(91);
+	var isVText = __webpack_require__(92);
+	var isWidget = __webpack_require__(93);
+	var isThunk = __webpack_require__(94);
+	var handleThunk = __webpack_require__(95);
 
-	var diffProps = __webpack_require__(92);
+	var diffProps = __webpack_require__(96);
 
 	module.exports = diff;
 
@@ -17659,7 +17879,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 84 */
+/* 88 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17674,12 +17894,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 85 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(86);
+	var version = __webpack_require__(90);
 
 	VirtualPatch.NONE = 0;
 	VirtualPatch.VTEXT = 1;
@@ -17703,7 +17923,7 @@ var switzerland =
 	VirtualPatch.prototype.type = "VirtualPatch";
 
 /***/ },
-/* 86 */
+/* 90 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17711,12 +17931,12 @@ var switzerland =
 	module.exports = "2";
 
 /***/ },
-/* 87 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(86);
+	var version = __webpack_require__(90);
 
 	module.exports = isVirtualNode;
 
@@ -17725,12 +17945,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 88 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(86);
+	var version = __webpack_require__(90);
 
 	module.exports = isVirtualText;
 
@@ -17739,7 +17959,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 89 */
+/* 93 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17751,7 +17971,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 90 */
+/* 94 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17763,15 +17983,15 @@ var switzerland =
 	}
 
 /***/ },
-/* 91 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isVNode = __webpack_require__(87);
-	var isVText = __webpack_require__(88);
-	var isWidget = __webpack_require__(89);
-	var isThunk = __webpack_require__(90);
+	var isVNode = __webpack_require__(91);
+	var isVText = __webpack_require__(92);
+	var isWidget = __webpack_require__(93);
+	var isThunk = __webpack_require__(94);
 
 	module.exports = handleThunk;
 
@@ -17808,13 +18028,13 @@ var switzerland =
 	}
 
 /***/ },
-/* 92 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(93);
-	var isHook = __webpack_require__(94);
+	var isObject = __webpack_require__(97);
+	var isHook = __webpack_require__(98);
 
 	module.exports = diffProps;
 
@@ -17873,7 +18093,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 93 */
+/* 97 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17883,7 +18103,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 94 */
+/* 98 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17895,27 +18115,27 @@ var switzerland =
 	}
 
 /***/ },
-/* 95 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var patch = __webpack_require__(96);
+	var patch = __webpack_require__(100);
 
 	module.exports = patch;
 
 /***/ },
-/* 96 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(97);
-	var isArray = __webpack_require__(84);
+	var document = __webpack_require__(101);
+	var isArray = __webpack_require__(88);
 
-	var render = __webpack_require__(99);
-	var domIndex = __webpack_require__(101);
-	var patchOp = __webpack_require__(102);
+	var render = __webpack_require__(103);
+	var domIndex = __webpack_require__(105);
+	var patchOp = __webpack_require__(106);
 	module.exports = patch;
 
 	function patch(rootNode, patches, renderOptions) {
@@ -17987,13 +18207,13 @@ var switzerland =
 	}
 
 /***/ },
-/* 97 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
 	var topLevel = typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : {};
-	var minDoc = __webpack_require__(98);
+	var minDoc = __webpack_require__(102);
 
 	if (typeof document !== 'undefined') {
 	    module.exports = document;
@@ -18009,25 +18229,25 @@ var switzerland =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 98 */
+/* 102 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 99 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(97);
+	var document = __webpack_require__(101);
 
-	var applyProperties = __webpack_require__(100);
+	var applyProperties = __webpack_require__(104);
 
-	var isVNode = __webpack_require__(87);
-	var isVText = __webpack_require__(88);
-	var isWidget = __webpack_require__(89);
-	var handleThunk = __webpack_require__(91);
+	var isVNode = __webpack_require__(91);
+	var isVText = __webpack_require__(92);
+	var isWidget = __webpack_require__(93);
+	var handleThunk = __webpack_require__(95);
 
 	module.exports = createElement;
 
@@ -18066,13 +18286,13 @@ var switzerland =
 	}
 
 /***/ },
-/* 100 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(93);
-	var isHook = __webpack_require__(94);
+	var isObject = __webpack_require__(97);
+	var isHook = __webpack_require__(98);
 
 	module.exports = applyProperties;
 
@@ -18167,7 +18387,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 101 */
+/* 105 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -18258,17 +18478,17 @@ var switzerland =
 	}
 
 /***/ },
-/* 102 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var applyProperties = __webpack_require__(100);
+	var applyProperties = __webpack_require__(104);
 
-	var isWidget = __webpack_require__(89);
-	var VPatch = __webpack_require__(85);
+	var isWidget = __webpack_require__(93);
+	var VPatch = __webpack_require__(89);
 
-	var updateWidget = __webpack_require__(103);
+	var updateWidget = __webpack_require__(107);
 
 	module.exports = applyPatch;
 
@@ -18415,12 +18635,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 103 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isWidget = __webpack_require__(89);
+	var isWidget = __webpack_require__(93);
 
 	module.exports = updateWidget;
 
@@ -18437,34 +18657,34 @@ var switzerland =
 	}
 
 /***/ },
-/* 104 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var h = __webpack_require__(105);
+	var h = __webpack_require__(109);
 
 	module.exports = h;
 
 /***/ },
-/* 105 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isArray = __webpack_require__(84);
+	var isArray = __webpack_require__(88);
 
-	var VNode = __webpack_require__(106);
-	var VText = __webpack_require__(107);
-	var isVNode = __webpack_require__(87);
-	var isVText = __webpack_require__(88);
-	var isWidget = __webpack_require__(89);
-	var isHook = __webpack_require__(94);
-	var isVThunk = __webpack_require__(90);
+	var VNode = __webpack_require__(110);
+	var VText = __webpack_require__(111);
+	var isVNode = __webpack_require__(91);
+	var isVText = __webpack_require__(92);
+	var isWidget = __webpack_require__(93);
+	var isHook = __webpack_require__(98);
+	var isVThunk = __webpack_require__(94);
 
-	var parseTag = __webpack_require__(108);
-	var softSetHook = __webpack_require__(110);
-	var evHook = __webpack_require__(111);
+	var parseTag = __webpack_require__(112);
+	var softSetHook = __webpack_require__(114);
+	var evHook = __webpack_require__(115);
 
 	module.exports = h;
 
@@ -18576,16 +18796,16 @@ var switzerland =
 	}
 
 /***/ },
-/* 106 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(86);
-	var isVNode = __webpack_require__(87);
-	var isWidget = __webpack_require__(89);
-	var isThunk = __webpack_require__(90);
-	var isVHook = __webpack_require__(94);
+	var version = __webpack_require__(90);
+	var isVNode = __webpack_require__(91);
+	var isWidget = __webpack_require__(93);
+	var isThunk = __webpack_require__(94);
+	var isVHook = __webpack_require__(98);
 
 	module.exports = VirtualNode;
 
@@ -18655,12 +18875,12 @@ var switzerland =
 	VirtualNode.prototype.type = "VirtualNode";
 
 /***/ },
-/* 107 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(86);
+	var version = __webpack_require__(90);
 
 	module.exports = VirtualText;
 
@@ -18672,12 +18892,12 @@ var switzerland =
 	VirtualText.prototype.type = "VirtualText";
 
 /***/ },
-/* 108 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var split = __webpack_require__(109);
+	var split = __webpack_require__(113);
 
 	var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 	var notClassId = /^\.|#/;
@@ -18731,7 +18951,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 109 */
+/* 113 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -18850,7 +19070,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 110 */
+/* 114 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -18872,12 +19092,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 111 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var EvStore = __webpack_require__(112);
+	var EvStore = __webpack_require__(116);
 
 	module.exports = EvHook;
 
@@ -18904,12 +19124,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 112 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var OneVersionConstraint = __webpack_require__(113);
+	var OneVersionConstraint = __webpack_require__(117);
 
 	var MY_VERSION = '7';
 	OneVersionConstraint('ev-store', MY_VERSION);
@@ -18929,12 +19149,12 @@ var switzerland =
 	}
 
 /***/ },
-/* 113 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Individual = __webpack_require__(114);
+	var Individual = __webpack_require__(118);
 
 	module.exports = OneVersion;
 
@@ -18952,7 +19172,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 114 */
+/* 118 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -18975,12 +19195,12 @@ var switzerland =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 115 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var createElement = __webpack_require__(99);
+	var createElement = __webpack_require__(103);
 
 	module.exports = createElement;
 
