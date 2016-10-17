@@ -37,7 +37,7 @@ export default fn => {
         // Update the style's HTML content, and then append it to the root node, if it doesn't
         // already exist there.
         styleNode.innerHTML = `:host { ${parse(fn(props))} }`;
-        !styleNode.isConnected && setTimeout(() => props.node.shadowRoot.appendChild(styleNode));
+        !styleNode.isConnected && props.node.shadowRoot.appendChild(styleNode);
 
         return props;
 

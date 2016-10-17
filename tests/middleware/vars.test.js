@@ -20,18 +20,8 @@ test('Should be able to render CSS variables in style node;', t => {
 
     };
 
-    return new Promise(resolve => {
-
-        vars(handleVars)({ node, fontSize, themeColour });
-
-        setTimeout(() => {
-
-            const html = `<style type="text/css">:host { --font-size: ${fontSize}rem; --theme-colour: ${themeColour}; }</style>`;
-            t.is(boundary.innerHTML, html);
-            resolve();
-
-        });
-
-    });
+    vars(handleVars)({ node, fontSize, themeColour });
+    const html = `<style type="text/css">:host { --font-size: ${fontSize}rem; --theme-colour: ${themeColour}; }</style>`;
+    t.is(boundary.innerHTML, html);
 
 });
