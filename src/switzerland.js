@@ -39,12 +39,12 @@ const implementations = {
 
     v0: {
         hooks: ['attachedCallback', 'detachedCallback'],
-        customElement: (tag, component) => document.registerElement(tag, component),
+        customElement: (tag, extend, component) => document.registerElement(tag, component),
         shadowBoundary: node => node.createShadowRoot()
     },
     v1: {
         hooks: ['connectedCallback', 'disconnectedCallback'],
-        customElement: (tag, component) => window.customElements.define(tag, component),
+        customElement: (tag, extend, component) => window.customElements.define(tag, component),
         shadowBoundary: node => node.attachShadow({ mode: 'open' })
     }
 
@@ -61,11 +61,14 @@ const clearHTMLFor = node => {
 
 /**
  * @method create
- * @param {String} tag
+ * @param {String} name
  * @param {Function} component
  * @return {void}
  */
-export const create = (tag, component) => {
+export const create = (name, component) => {
+
+    const [ tag, extend ] = name.split('/');
+    const Prototype = extend ? Object.getPrototypeOf(extend) : window.HTMLElement;
 
     /**
      * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -79,7 +82,7 @@ export const create = (tag, component) => {
      * @constant component
      * @type {Object}
      */
-    implementation.customElement(tag, class extends window.HTMLElement {
+    implementation.customElement(tag, extend, class extends Prototype {
 
         /**
          * @constructor
