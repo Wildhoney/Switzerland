@@ -192,6 +192,7 @@ export { default as methods } from './middleware/methods';
 export { default as events } from './middleware/events';
 export { default as validate } from './middleware/validate';
 export { default as cleanup } from './middleware/cleanup';
+export { default as vars } from './middleware/vars';
 
 // Debug.
 export { time, timeEnd } from './debug/timer';

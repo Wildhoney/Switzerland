@@ -30,16 +30,16 @@ const update = timeout => {
  * @method fetch
  * @return {void}
  */
-const fetch = once(props => {
+const fetch = props => {
     const timeout = Number(props.attrs.timeout);
     props.dispatch(update(timeout));
-});
+};
 
 /**
  * @constant worker
- * @return {void}
+ * @return {Promise}
  */
-const worker = once(props => {
+const worker = props => {
 
     return new Promise(resolve => {
 
@@ -49,7 +49,7 @@ const worker = once(props => {
 
     });
 
-});
+};
 
 /**
  * @constant interval
@@ -58,7 +58,7 @@ const worker = once(props => {
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(worker, attrs, redux(store), fetch, include(path('css/default.css')), html(props => {
+create('iss-position', pipe(once(worker), attrs, redux(store), once(fetch), include(path('css/default.css')), html(props => {
 
     const { redux, dispatch } = props;
     const image = path(`images/flags/${redux.flag}`);
