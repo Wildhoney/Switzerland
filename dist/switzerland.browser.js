@@ -57,7 +57,7 @@ var switzerland =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.path = exports.timeEnd = exports.time = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
+	exports.element = exports.compose = exports.pipe = exports.path = exports.timeEnd = exports.time = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -77,7 +77,7 @@ var switzerland =
 	    }
 	});
 
-	var _attributes = __webpack_require__(11);
+	var _attributes = __webpack_require__(4);
 
 	Object.defineProperty(exports, 'attrs', {
 	    enumerable: true,
@@ -86,7 +86,7 @@ var switzerland =
 	    }
 	});
 
-	var _state = __webpack_require__(29);
+	var _state = __webpack_require__(26);
 
 	Object.defineProperty(exports, 'state', {
 	    enumerable: true,
@@ -95,7 +95,7 @@ var switzerland =
 	    }
 	});
 
-	var _include = __webpack_require__(30);
+	var _include = __webpack_require__(27);
 
 	Object.defineProperty(exports, 'include', {
 	    enumerable: true,
@@ -104,7 +104,7 @@ var switzerland =
 	    }
 	});
 
-	var _redux = __webpack_require__(59);
+	var _redux = __webpack_require__(56);
 
 	Object.defineProperty(exports, 'redux', {
 	    enumerable: true,
@@ -158,7 +158,16 @@ var switzerland =
 	    }
 	});
 
-	var _timer = __webpack_require__(68);
+	var _vars = __webpack_require__(68);
+
+	Object.defineProperty(exports, 'vars', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_vars).default;
+	    }
+	});
+
+	var _timer = __webpack_require__(69);
 
 	Object.defineProperty(exports, 'time', {
 	    enumerable: true,
@@ -173,7 +182,7 @@ var switzerland =
 	    }
 	});
 
-	var _path = __webpack_require__(78);
+	var _path = __webpack_require__(79);
 
 	Object.defineProperty(exports, 'path', {
 	    enumerable: true,
@@ -182,7 +191,7 @@ var switzerland =
 	    }
 	});
 
-	var _composition = __webpack_require__(79);
+	var _composition = __webpack_require__(80);
 
 	Object.defineProperty(exports, 'pipe', {
 	    enumerable: true,
@@ -206,10 +215,6 @@ var switzerland =
 	    }
 	});
 
-	var _curry = __webpack_require__(4);
-
-	var _curry2 = _interopRequireDefault(_curry);
-
 	var _env = __webpack_require__(65);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -226,9 +231,9 @@ var switzerland =
 	 * @param {Function} fn
 	 * @return {void}
 	 */
-	const message = (0, _curry2.default)(function (text, fn) {
+	const message = function (text, fn) {
 	    return (0, _env.isDevelopment)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
-	});
+	};
 
 	/**
 	 * @method error
@@ -290,7 +295,7 @@ var switzerland =
 	 * @param {Function} component
 	 * @return {void}
 	 */
-	const create = exports.create = (0, _curry2.default)(function (tag, component) {
+	const create = exports.create = function (tag, component) {
 
 	    /**
 	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -400,7 +405,7 @@ var switzerland =
 	        }
 
 	    });
-	});
+	};
 
 	// Middleware.
 
@@ -445,22 +450,15 @@ var switzerland =
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.options = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _curry = __webpack_require__(4);
-
-	var _curry2 = _interopRequireDefault(_curry);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * @constant once
@@ -482,7 +480,8 @@ var switzerland =
 	 * @param {Number} flags
 	 * @return {Function}
 	 */
-	exports.default = (0, _curry2.default)(function (callback, flags = options.DEFAULT) {
+
+	exports.default = function (callback, flags = options.DEFAULT) {
 
 	  return function (props) {
 
@@ -508,297 +507,10 @@ var switzerland =
 	      return _extends({}, onceProps, props);
 	    }) : _extends({}, response, props);
 	  };
-	});
+	};
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _curry1 = __webpack_require__(5);
-	var curryN = __webpack_require__(7);
-
-	/**
-	 * Returns a curried equivalent of the provided function. The curried function
-	 * has two unusual capabilities. First, its arguments needn't be provided one
-	 * at a time. If `f` is a ternary function and `g` is `R.curry(f)`, the
-	 * following are equivalent:
-	 *
-	 *   - `g(1)(2)(3)`
-	 *   - `g(1)(2, 3)`
-	 *   - `g(1, 2)(3)`
-	 *   - `g(1, 2, 3)`
-	 *
-	 * Secondly, the special placeholder value `R.__` may be used to specify
-	 * "gaps", allowing partial application of any combination of arguments,
-	 * regardless of their positions. If `g` is as above and `_` is `R.__`, the
-	 * following are equivalent:
-	 *
-	 *   - `g(1, 2, 3)`
-	 *   - `g(_, 2, 3)(1)`
-	 *   - `g(_, _, 3)(1)(2)`
-	 *   - `g(_, _, 3)(1, 2)`
-	 *   - `g(_, 2)(1)(3)`
-	 *   - `g(_, 2)(1, 3)`
-	 *   - `g(_, 2)(_, 3)(1)`
-	 *
-	 * @func
-	 * @memberOf R
-	 * @since v0.1.0
-	 * @category Function
-	 * @sig (* -> a) -> (* -> a)
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} A new, curried function.
-	 * @see R.curryN
-	 * @example
-	 *
-	 *      var addFourNumbers = (a, b, c, d) => a + b + c + d;
-	 *
-	 *      var curriedAddFourNumbers = R.curry(addFourNumbers);
-	 *      var f = curriedAddFourNumbers(1, 2);
-	 *      var g = f(3);
-	 *      g(4); //=> 10
-	 */
-	module.exports = _curry1(function curry(fn) {
-	  return curryN(fn.length, fn);
-	});
-
-/***/ },
-/* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _isPlaceholder = __webpack_require__(6);
-
-	/**
-	 * Optimized internal one-arity curry function.
-	 *
-	 * @private
-	 * @category Function
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} The curried function.
-	 */
-	module.exports = function _curry1(fn) {
-	  return function f1(a) {
-	    if (arguments.length === 0 || _isPlaceholder(a)) {
-	      return f1;
-	    } else {
-	      return fn.apply(this, arguments);
-	    }
-	  };
-	};
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function _isPlaceholder(a) {
-	       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
-	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _arity = __webpack_require__(8);
-	var _curry1 = __webpack_require__(5);
-	var _curry2 = __webpack_require__(9);
-	var _curryN = __webpack_require__(10);
-
-	/**
-	 * Returns a curried equivalent of the provided function, with the specified
-	 * arity. The curried function has two unusual capabilities. First, its
-	 * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
-	 * following are equivalent:
-	 *
-	 *   - `g(1)(2)(3)`
-	 *   - `g(1)(2, 3)`
-	 *   - `g(1, 2)(3)`
-	 *   - `g(1, 2, 3)`
-	 *
-	 * Secondly, the special placeholder value `R.__` may be used to specify
-	 * "gaps", allowing partial application of any combination of arguments,
-	 * regardless of their positions. If `g` is as above and `_` is `R.__`, the
-	 * following are equivalent:
-	 *
-	 *   - `g(1, 2, 3)`
-	 *   - `g(_, 2, 3)(1)`
-	 *   - `g(_, _, 3)(1)(2)`
-	 *   - `g(_, _, 3)(1, 2)`
-	 *   - `g(_, 2)(1)(3)`
-	 *   - `g(_, 2)(1, 3)`
-	 *   - `g(_, 2)(_, 3)(1)`
-	 *
-	 * @func
-	 * @memberOf R
-	 * @since v0.5.0
-	 * @category Function
-	 * @sig Number -> (* -> a) -> (* -> a)
-	 * @param {Number} length The arity for the returned function.
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} A new, curried function.
-	 * @see R.curry
-	 * @example
-	 *
-	 *      var sumArgs = (...args) => R.sum(args);
-	 *
-	 *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
-	 *      var f = curriedAddFourNumbers(1, 2);
-	 *      var g = f(3);
-	 *      g(4); //=> 10
-	 */
-	module.exports = _curry2(function curryN(length, fn) {
-	  if (length === 1) {
-	    return _curry1(fn);
-	  }
-	  return _arity(length, _curryN(length, [], fn));
-	});
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function _arity(n, fn) {
-	  /* eslint-disable no-unused-vars */
-	  switch (n) {
-	    case 0:
-	      return function () {
-	        return fn.apply(this, arguments);
-	      };
-	    case 1:
-	      return function (a0) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 2:
-	      return function (a0, a1) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 3:
-	      return function (a0, a1, a2) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 4:
-	      return function (a0, a1, a2, a3) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 5:
-	      return function (a0, a1, a2, a3, a4) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 6:
-	      return function (a0, a1, a2, a3, a4, a5) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 7:
-	      return function (a0, a1, a2, a3, a4, a5, a6) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 8:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 9:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 10:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
-	        return fn.apply(this, arguments);
-	      };
-	    default:
-	      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
-	  }
-	};
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _curry1 = __webpack_require__(5);
-	var _isPlaceholder = __webpack_require__(6);
-
-	/**
-	 * Optimized internal two-arity curry function.
-	 *
-	 * @private
-	 * @category Function
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} The curried function.
-	 */
-	module.exports = function _curry2(fn) {
-	  return function f2(a, b) {
-	    switch (arguments.length) {
-	      case 0:
-	        return f2;
-	      case 1:
-	        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
-	          return fn(a, _b);
-	        });
-	      default:
-	        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
-	          return fn(_a, b);
-	        }) : _isPlaceholder(b) ? _curry1(function (_b) {
-	          return fn(a, _b);
-	        }) : fn(a, b);
-	    }
-	  };
-	};
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _arity = __webpack_require__(8);
-	var _isPlaceholder = __webpack_require__(6);
-
-	/**
-	 * Internal curryN function.
-	 *
-	 * @private
-	 * @category Function
-	 * @param {Number} length The arity of the curried function.
-	 * @param {Array} received An array of arguments received thus far.
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} The curried function.
-	 */
-	module.exports = function _curryN(length, received, fn) {
-	  return function () {
-	    var combined = [];
-	    var argsIdx = 0;
-	    var left = length;
-	    var combinedIdx = 0;
-	    while (combinedIdx < received.length || argsIdx < arguments.length) {
-	      var result;
-	      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
-	        result = received[combinedIdx];
-	      } else {
-	        result = arguments[argsIdx];
-	        argsIdx += 1;
-	      }
-	      combined[combinedIdx] = result;
-	      if (!_isPlaceholder(result)) {
-	        left -= 1;
-	      }
-	      combinedIdx += 1;
-	    }
-	    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
-	  };
-	};
-
-/***/ },
-/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -809,9 +521,9 @@ var switzerland =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _humps = __webpack_require__(12);
+	var _humps = __webpack_require__(5);
 
-	var _compose = __webpack_require__(13);
+	var _compose = __webpack_require__(6);
 
 	var _compose2 = _interopRequireDefault(_compose);
 
@@ -889,7 +601,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 12 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;'use strict';
@@ -1032,13 +744,13 @@ var switzerland =
 	})(undefined);
 
 /***/ },
-/* 13 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var pipe = __webpack_require__(14);
-	var reverse = __webpack_require__(28);
+	var pipe = __webpack_require__(7);
+	var reverse = __webpack_require__(25);
 
 	/**
 	 * Performs right-to-left function composition. The rightmost function may have
@@ -1068,15 +780,15 @@ var switzerland =
 	};
 
 /***/ },
-/* 14 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _arity = __webpack_require__(8);
-	var _pipe = __webpack_require__(15);
-	var reduce = __webpack_require__(16);
-	var tail = __webpack_require__(24);
+	var _pipe = __webpack_require__(9);
+	var reduce = __webpack_require__(10);
+	var tail = __webpack_require__(21);
 
 	/**
 	 * Performs left-to-right function composition. The leftmost function may have
@@ -1108,7 +820,65 @@ var switzerland =
 	};
 
 /***/ },
-/* 15 */
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function _arity(n, fn) {
+	  /* eslint-disable no-unused-vars */
+	  switch (n) {
+	    case 0:
+	      return function () {
+	        return fn.apply(this, arguments);
+	      };
+	    case 1:
+	      return function (a0) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 2:
+	      return function (a0, a1) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 3:
+	      return function (a0, a1, a2) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 4:
+	      return function (a0, a1, a2, a3) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 5:
+	      return function (a0, a1, a2, a3, a4) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 6:
+	      return function (a0, a1, a2, a3, a4, a5) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 7:
+	      return function (a0, a1, a2, a3, a4, a5, a6) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 8:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 9:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 10:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+	        return fn.apply(this, arguments);
+	      };
+	    default:
+	      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+	  }
+	};
+
+/***/ },
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1120,13 +890,13 @@ var switzerland =
 	};
 
 /***/ },
-/* 16 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry3 = __webpack_require__(17);
-	var _reduce = __webpack_require__(18);
+	var _curry3 = __webpack_require__(11);
+	var _reduce = __webpack_require__(15);
 
 	/**
 	 * Returns a single item by iterating through the list, successively calling
@@ -1164,14 +934,14 @@ var switzerland =
 	module.exports = _curry3(_reduce);
 
 /***/ },
-/* 17 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry1 = __webpack_require__(5);
-	var _curry2 = __webpack_require__(9);
-	var _isPlaceholder = __webpack_require__(6);
+	var _curry1 = __webpack_require__(12);
+	var _curry2 = __webpack_require__(14);
+	var _isPlaceholder = __webpack_require__(13);
 
 	/**
 	 * Optimized internal three-arity curry function.
@@ -1217,14 +987,86 @@ var switzerland =
 	};
 
 /***/ },
-/* 18 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _xwrap = __webpack_require__(19);
-	var bind = __webpack_require__(20);
-	var isArrayLike = __webpack_require__(21);
+	var _isPlaceholder = __webpack_require__(13);
+
+	/**
+	 * Optimized internal one-arity curry function.
+	 *
+	 * @private
+	 * @category Function
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} The curried function.
+	 */
+	module.exports = function _curry1(fn) {
+	  return function f1(a) {
+	    if (arguments.length === 0 || _isPlaceholder(a)) {
+	      return f1;
+	    } else {
+	      return fn.apply(this, arguments);
+	    }
+	  };
+	};
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function _isPlaceholder(a) {
+	       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+	};
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _curry1 = __webpack_require__(12);
+	var _isPlaceholder = __webpack_require__(13);
+
+	/**
+	 * Optimized internal two-arity curry function.
+	 *
+	 * @private
+	 * @category Function
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} The curried function.
+	 */
+	module.exports = function _curry2(fn) {
+	  return function f2(a, b) {
+	    switch (arguments.length) {
+	      case 0:
+	        return f2;
+	      case 1:
+	        return _isPlaceholder(a) ? f2 : _curry1(function (_b) {
+	          return fn(a, _b);
+	        });
+	      default:
+	        return _isPlaceholder(a) && _isPlaceholder(b) ? f2 : _isPlaceholder(a) ? _curry1(function (_a) {
+	          return fn(_a, b);
+	        }) : _isPlaceholder(b) ? _curry1(function (_b) {
+	          return fn(a, _b);
+	        }) : fn(a, b);
+	    }
+	  };
+	};
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _xwrap = __webpack_require__(16);
+	var bind = __webpack_require__(17);
+	var isArrayLike = __webpack_require__(18);
 
 	module.exports = function () {
 	  function _arrayReduce(xf, acc, list) {
@@ -1280,7 +1122,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 19 */
+/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1305,13 +1147,13 @@ var switzerland =
 	}();
 
 /***/ },
-/* 20 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _arity = __webpack_require__(8);
-	var _curry2 = __webpack_require__(9);
+	var _curry2 = __webpack_require__(14);
 
 	/**
 	 * Creates a function that is bound to a context.
@@ -1341,14 +1183,14 @@ var switzerland =
 	});
 
 /***/ },
-/* 21 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry1 = __webpack_require__(5);
-	var _isArray = __webpack_require__(22);
-	var _isString = __webpack_require__(23);
+	var _curry1 = __webpack_require__(12);
+	var _isArray = __webpack_require__(19);
+	var _isString = __webpack_require__(20);
 
 	/**
 	 * Tests whether or not an object is similar to an array.
@@ -1395,7 +1237,7 @@ var switzerland =
 	});
 
 /***/ },
-/* 22 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1417,7 +1259,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 23 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -1427,13 +1269,13 @@ var switzerland =
 	};
 
 /***/ },
-/* 24 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _checkForMethod = __webpack_require__(25);
-	var slice = __webpack_require__(27);
+	var _checkForMethod = __webpack_require__(22);
+	var slice = __webpack_require__(24);
 
 	/**
 	 * Returns all but the first element of the given list or string (or object
@@ -1465,13 +1307,13 @@ var switzerland =
 	module.exports = _checkForMethod('tail', slice(1, Infinity));
 
 /***/ },
-/* 25 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _isArray = __webpack_require__(22);
-	var _slice = __webpack_require__(26);
+	var _isArray = __webpack_require__(19);
+	var _slice = __webpack_require__(23);
 
 	/**
 	 * Similar to hasMethod, this checks whether a function has a [methodname]
@@ -1495,7 +1337,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 26 */
+/* 23 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1536,13 +1378,13 @@ var switzerland =
 	};
 
 /***/ },
-/* 27 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _checkForMethod = __webpack_require__(25);
-	var _curry3 = __webpack_require__(17);
+	var _checkForMethod = __webpack_require__(22);
+	var _curry3 = __webpack_require__(11);
 
 	/**
 	 * Returns the elements of the given list or string (or object with a `slice`
@@ -1573,14 +1415,14 @@ var switzerland =
 	}));
 
 /***/ },
-/* 28 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _curry1 = __webpack_require__(5);
-	var _isString = __webpack_require__(23);
-	var _slice = __webpack_require__(26);
+	var _curry1 = __webpack_require__(12);
+	var _isString = __webpack_require__(20);
+	var _slice = __webpack_require__(23);
 
 	/**
 	 * Returns a new list or string with the elements or characters in reverse
@@ -1611,13 +1453,13 @@ var switzerland =
 	});
 
 /***/ },
-/* 29 */
+/* 26 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -1629,34 +1471,53 @@ var switzerland =
 	const states = new WeakMap();
 
 	/**
+	 * @constant options
+	 * @type {Object}
+	 */
+	const options = exports.options = {
+	    DEFAULT: 1,
+	    DEFER: 2
+	};
+
+	/**
 	 * @param {Object} initialState
+	 * @param {Number} flags
 	 * @return {Function}
 	 */
 
-	exports.default = function (initialState) {
+	exports.default = function (initialState, flags = options.DEFAULT) {
 
-	  return function (props) {
+	    return function (props) {
 
-	    const hasState = states.has(props.node);
-	    const state = hasState ? states.get(props.node) : initialState;
-	    !hasState && states.set(props.node, state);
+	        const hasState = states.has(props.node);
+	        const state = hasState ? states.get(props.node) : initialState;
+	        !hasState && states.set(props.node, state);
 
-	    /**
-	     * @method setState
-	     * @param {Object} updatedState
-	     * @return {void}
-	     */
-	    const setState = function (updatedState) {
-	      states.set(props.node, _extends({}, state, updatedState));
-	      props.node.render();
+	        /**
+	         * @method setState
+	         * @param {Object} updatedState
+	         * @return {void}
+	         */
+	        const setState = function (updatedState) {
+
+	            // Determine whether or not to use the React default of `setState` being deferred
+	            // until the next tick.
+	            const fn = flags & options.DEFER ? setTimeout : function (stateFn) {
+	                return stateFn();
+	            };
+
+	            fn(function () {
+	                states.set(props.node, _extends({}, state, updatedState));
+	                props.node.render();
+	            });
+	        };
+
+	        return _extends({}, props, { state, setState });
 	    };
-
-	    return _extends({}, props, { state, setState });
-	  };
 	};
 
 /***/ },
-/* 30 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1667,19 +1528,19 @@ var switzerland =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _ramda = __webpack_require__(31);
+	var _ramda = __webpack_require__(28);
 
-	var _axios = __webpack_require__(32);
+	var _axios = __webpack_require__(29);
 
-	var _cssUrlParser = __webpack_require__(55);
+	var _cssUrlParser = __webpack_require__(52);
 
 	var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
 
-	var _pathParse = __webpack_require__(57);
+	var _pathParse = __webpack_require__(54);
 
 	var _pathParse2 = _interopRequireDefault(_pathParse);
 
-	var _escapeStringRegexp = __webpack_require__(58);
+	var _escapeStringRegexp = __webpack_require__(55);
 
 	var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
 
@@ -1710,7 +1571,6 @@ var switzerland =
 
 	        // Update the URLs to make them relative to the CSS document.
 	        return urls.length ? urls.map(function (url) {
-
 	            const replacer = new RegExp((0, _escapeStringRegexp2.default)(url), 'ig');
 	            return content.replace(replacer, cssPath + '/' + url);
 	        }).toString() : content;
@@ -1815,7 +1675,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 31 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';//  Ramda v0.22.1
@@ -7011,22 +6871,22 @@ var switzerland =
 	     */var union=_curry2(compose(uniq,_concat));var R={F:F,T:T,__:__,add:add,addIndex:addIndex,adjust:adjust,all:all,allPass:allPass,always:always,and:and,any:any,anyPass:anyPass,ap:ap,aperture:aperture,append:append,apply:apply,applySpec:applySpec,assoc:assoc,assocPath:assocPath,binary:binary,bind:bind,both:both,call:call,chain:chain,clamp:clamp,clone:clone,comparator:comparator,complement:complement,compose:compose,composeK:composeK,composeP:composeP,concat:concat,cond:cond,construct:construct,constructN:constructN,contains:contains,converge:converge,countBy:countBy,curry:curry,curryN:curryN,dec:dec,defaultTo:defaultTo,difference:difference,differenceWith:differenceWith,dissoc:dissoc,dissocPath:dissocPath,divide:divide,drop:drop,dropLast:dropLast,dropLastWhile:dropLastWhile,dropRepeats:dropRepeats,dropRepeatsWith:dropRepeatsWith,dropWhile:dropWhile,either:either,empty:empty,eqBy:eqBy,eqProps:eqProps,equals:equals,evolve:evolve,filter:filter,find:find,findIndex:findIndex,findLast:findLast,findLastIndex:findLastIndex,flatten:flatten,flip:flip,forEach:forEach,fromPairs:fromPairs,groupBy:groupBy,groupWith:groupWith,gt:gt,gte:gte,has:has,hasIn:hasIn,head:head,identical:identical,identity:identity,ifElse:ifElse,inc:inc,indexBy:indexBy,indexOf:indexOf,init:init,insert:insert,insertAll:insertAll,intersection:intersection,intersectionWith:intersectionWith,intersperse:intersperse,into:into,invert:invert,invertObj:invertObj,invoker:invoker,is:is,isArrayLike:isArrayLike,isEmpty:isEmpty,isNil:isNil,join:join,juxt:juxt,keys:keys,keysIn:keysIn,last:last,lastIndexOf:lastIndexOf,length:length,lens:lens,lensIndex:lensIndex,lensPath:lensPath,lensProp:lensProp,lift:lift,liftN:liftN,lt:lt,lte:lte,map:map,mapAccum:mapAccum,mapAccumRight:mapAccumRight,mapObjIndexed:mapObjIndexed,match:match,mathMod:mathMod,max:max,maxBy:maxBy,mean:mean,median:median,memoize:memoize,merge:merge,mergeAll:mergeAll,mergeWith:mergeWith,mergeWithKey:mergeWithKey,min:min,minBy:minBy,modulo:modulo,multiply:multiply,nAry:nAry,negate:negate,none:none,not:not,nth:nth,nthArg:nthArg,objOf:objOf,of:of,omit:omit,once:once,or:or,over:over,pair:pair,partial:partial,partialRight:partialRight,partition:partition,path:path,pathEq:pathEq,pathOr:pathOr,pathSatisfies:pathSatisfies,pick:pick,pickAll:pickAll,pickBy:pickBy,pipe:pipe,pipeK:pipeK,pipeP:pipeP,pluck:pluck,prepend:prepend,product:product,project:project,prop:prop,propEq:propEq,propIs:propIs,propOr:propOr,propSatisfies:propSatisfies,props:props,range:range,reduce:reduce,reduceBy:reduceBy,reduceRight:reduceRight,reduceWhile:reduceWhile,reduced:reduced,reject:reject,remove:remove,repeat:repeat,replace:replace,reverse:reverse,scan:scan,sequence:sequence,set:set,slice:slice,sort:sort,sortBy:sortBy,split:split,splitAt:splitAt,splitEvery:splitEvery,splitWhen:splitWhen,subtract:subtract,sum:sum,symmetricDifference:symmetricDifference,symmetricDifferenceWith:symmetricDifferenceWith,tail:tail,take:take,takeLast:takeLast,takeLastWhile:takeLastWhile,takeWhile:takeWhile,tap:tap,test:test,times:times,toLower:toLower,toPairs:toPairs,toPairsIn:toPairsIn,toString:toString,toUpper:toUpper,transduce:transduce,transpose:transpose,traverse:traverse,trim:trim,tryCatch:tryCatch,type:type,unapply:unapply,unary:unary,uncurryN:uncurryN,unfold:unfold,union:union,unionWith:unionWith,uniq:uniq,uniqBy:uniqBy,uniqWith:uniqWith,unless:unless,unnest:unnest,until:until,update:update,useWith:useWith,values:values,valuesIn:valuesIn,view:view,when:when,where:where,whereEq:whereEq,without:without,wrap:wrap,xprod:xprod,zip:zip,zipObj:zipObj,zipWith:zipWith};/* eslint-env amd *//* TEST_ENTRY_POINT */if(true){module.exports=R;}else if(typeof define==='function'&&define.amd){define(function(){return R;});}else{this.R=R;}}).call(undefined);
 
 /***/ },
-/* 32 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = __webpack_require__(33);
+	module.exports = __webpack_require__(30);
 
 /***/ },
-/* 33 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
-	var bind = __webpack_require__(35);
-	var Axios = __webpack_require__(36);
+	var utils = __webpack_require__(31);
+	var bind = __webpack_require__(32);
+	var Axios = __webpack_require__(33);
 
 	/**
 	 * Create an instance of Axios
@@ -7062,7 +6922,7 @@ var switzerland =
 	axios.all = function all(promises) {
 	  return Promise.all(promises);
 	};
-	axios.spread = __webpack_require__(54);
+	axios.spread = __webpack_require__(51);
 
 	module.exports = axios;
 
@@ -7070,12 +6930,12 @@ var switzerland =
 	module.exports.default = axios;
 
 /***/ },
-/* 34 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var bind = __webpack_require__(35);
+	var bind = __webpack_require__(32);
 
 	/*global toString:true*/
 
@@ -7370,7 +7230,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 35 */
+/* 32 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7386,17 +7246,17 @@ var switzerland =
 	};
 
 /***/ },
-/* 36 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var defaults = __webpack_require__(37);
-	var utils = __webpack_require__(34);
-	var InterceptorManager = __webpack_require__(39);
-	var dispatchRequest = __webpack_require__(40);
-	var isAbsoluteURL = __webpack_require__(52);
-	var combineURLs = __webpack_require__(53);
+	var defaults = __webpack_require__(34);
+	var utils = __webpack_require__(31);
+	var InterceptorManager = __webpack_require__(36);
+	var dispatchRequest = __webpack_require__(37);
+	var isAbsoluteURL = __webpack_require__(49);
+	var combineURLs = __webpack_require__(50);
 
 	/**
 	 * Create a new instance of Axios
@@ -7476,13 +7336,13 @@ var switzerland =
 	module.exports = Axios;
 
 /***/ },
-/* 37 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
-	var normalizeHeaderName = __webpack_require__(38);
+	var utils = __webpack_require__(31);
+	var normalizeHeaderName = __webpack_require__(35);
 
 	var PROTECTION_PREFIX = /^\)\]\}',?\n/;
 	var DEFAULT_CONTENT_TYPE = {
@@ -7548,12 +7408,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 38 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
+	var utils = __webpack_require__(31);
 
 	module.exports = function normalizeHeaderName(headers, normalizedName) {
 	  utils.forEach(headers, function processHeader(value, name) {
@@ -7565,12 +7425,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 39 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
+	var utils = __webpack_require__(31);
 
 	function InterceptorManager() {
 	  this.handlers = [];
@@ -7622,13 +7482,13 @@ var switzerland =
 	module.exports = InterceptorManager;
 
 /***/ },
-/* 40 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(34);
-	var transformData = __webpack_require__(42);
+	var utils = __webpack_require__(31);
+	var transformData = __webpack_require__(39);
 
 	/**
 	 * Dispatch a request to the server using whichever adapter
@@ -7658,10 +7518,10 @@ var switzerland =
 	    adapter = config.adapter;
 	  } else if (typeof XMLHttpRequest !== 'undefined') {
 	    // For browsers use XHR adapter
-	    adapter = __webpack_require__(43);
+	    adapter = __webpack_require__(40);
 	  } else if (typeof process !== 'undefined') {
 	    // For node use HTTP adapter
-	    adapter = __webpack_require__(43);
+	    adapter = __webpack_require__(40);
 	  }
 
 	  return Promise.resolve(config)
@@ -7680,10 +7540,10 @@ var switzerland =
 	    return Promise.reject(error);
 	  });
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ },
-/* 41 */
+/* 38 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -7869,12 +7729,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 42 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
+	var utils = __webpack_require__(31);
 
 	/**
 	 * Transform the data for a request or a response
@@ -7894,18 +7754,18 @@ var switzerland =
 	};
 
 /***/ },
-/* 43 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
 
-	var utils = __webpack_require__(34);
-	var settle = __webpack_require__(44);
-	var buildURL = __webpack_require__(47);
-	var parseHeaders = __webpack_require__(48);
-	var isURLSameOrigin = __webpack_require__(49);
-	var createError = __webpack_require__(45);
-	var btoa = typeof window !== 'undefined' && window.btoa || __webpack_require__(50);
+	var utils = __webpack_require__(31);
+	var settle = __webpack_require__(41);
+	var buildURL = __webpack_require__(44);
+	var parseHeaders = __webpack_require__(45);
+	var isURLSameOrigin = __webpack_require__(46);
+	var createError = __webpack_require__(42);
+	var btoa = typeof window !== 'undefined' && window.btoa || __webpack_require__(47);
 
 	module.exports = function xhrAdapter(config) {
 	  return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -7996,7 +7856,7 @@ var switzerland =
 	    // This is only done if running in a standard browser environment.
 	    // Specifically not if we're in a web worker, or react-native.
 	    if (utils.isStandardBrowserEnv()) {
-	      var cookies = __webpack_require__(51);
+	      var cookies = __webpack_require__(48);
 
 	      // Add xsrf header
 	      var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ? cookies.read(config.xsrfCookieName) : undefined;
@@ -8053,15 +7913,15 @@ var switzerland =
 	    request.send(requestData);
 	  });
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ },
-/* 44 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var createError = __webpack_require__(45);
+	var createError = __webpack_require__(42);
 
 	/**
 	 * Resolve or reject a Promise based on response status.
@@ -8081,12 +7941,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 45 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var enhanceError = __webpack_require__(46);
+	var enhanceError = __webpack_require__(43);
 
 	/**
 	 * Create an Error with the specified message, config, error code, and response.
@@ -8103,7 +7963,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 46 */
+/* 43 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8128,12 +7988,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 47 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
+	var utils = __webpack_require__(31);
 
 	function encode(val) {
 	  return encodeURIComponent(val).replace(/%40/gi, '@').replace(/%3A/gi, ':').replace(/%24/g, '$').replace(/%2C/gi, ',').replace(/%20/g, '+').replace(/%5B/gi, '[').replace(/%5D/gi, ']');
@@ -8194,12 +8054,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 48 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
+	var utils = __webpack_require__(31);
 
 	/**
 	 * Parse headers into an object
@@ -8238,12 +8098,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 49 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
+	var utils = __webpack_require__(31);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -8306,7 +8166,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 50 */
+/* 47 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8346,12 +8206,12 @@ var switzerland =
 	module.exports = btoa;
 
 /***/ },
-/* 51 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var utils = __webpack_require__(34);
+	var utils = __webpack_require__(31);
 
 	module.exports = utils.isStandardBrowserEnv() ?
 
@@ -8404,7 +8264,7 @@ var switzerland =
 	}();
 
 /***/ },
-/* 52 */
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8425,7 +8285,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 53 */
+/* 50 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8443,7 +8303,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 54 */
+/* 51 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8476,16 +8336,16 @@ var switzerland =
 	};
 
 /***/ },
-/* 55 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var parseCssUrls = __webpack_require__(56);
+	var parseCssUrls = __webpack_require__(53);
 	module.exports = parseCssUrls;
 
 /***/ },
-/* 56 */
+/* 53 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8519,7 +8379,7 @@ var switzerland =
 	module.exports = getUrls;
 
 /***/ },
-/* 57 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -8601,10 +8461,10 @@ var switzerland =
 
 	module.exports.posix = posix.parse;
 	module.exports.win32 = win32.parse;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ },
-/* 58 */
+/* 55 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -8620,7 +8480,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 59 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -8631,7 +8491,7 @@ var switzerland =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _curry = __webpack_require__(4);
+	var _curry = __webpack_require__(57);
 
 	var _curry2 = _interopRequireDefault(_curry);
 
@@ -8654,17 +8514,174 @@ var switzerland =
 
 	  return function (props) {
 
-	    const has = subscriptions.has(props.node);
+	    const hasSubscription = subscriptions.has(props.node);
 	    const state = store.getState();
 
 	    // Subscribe to the store only if we haven't done so already.
-	    !has && subscriptions.set(props.node, store.subscribe(function () {
+	    !hasSubscription && subscriptions.set(props.node, store.subscribe(function () {
 	      return handler(store.getState(), state) && props.node.render();
 	    }));
 
 	    return _extends({}, props, { redux: state, dispatch: store.dispatch });
 	  };
 	});
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _curry1 = __webpack_require__(12);
+	var curryN = __webpack_require__(58);
+
+	/**
+	 * Returns a curried equivalent of the provided function. The curried function
+	 * has two unusual capabilities. First, its arguments needn't be provided one
+	 * at a time. If `f` is a ternary function and `g` is `R.curry(f)`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1)(2)(3)`
+	 *   - `g(1)(2, 3)`
+	 *   - `g(1, 2)(3)`
+	 *   - `g(1, 2, 3)`
+	 *
+	 * Secondly, the special placeholder value `R.__` may be used to specify
+	 * "gaps", allowing partial application of any combination of arguments,
+	 * regardless of their positions. If `g` is as above and `_` is `R.__`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1, 2, 3)`
+	 *   - `g(_, 2, 3)(1)`
+	 *   - `g(_, _, 3)(1)(2)`
+	 *   - `g(_, _, 3)(1, 2)`
+	 *   - `g(_, 2)(1)(3)`
+	 *   - `g(_, 2)(1, 3)`
+	 *   - `g(_, 2)(_, 3)(1)`
+	 *
+	 * @func
+	 * @memberOf R
+	 * @since v0.1.0
+	 * @category Function
+	 * @sig (* -> a) -> (* -> a)
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} A new, curried function.
+	 * @see R.curryN
+	 * @example
+	 *
+	 *      var addFourNumbers = (a, b, c, d) => a + b + c + d;
+	 *
+	 *      var curriedAddFourNumbers = R.curry(addFourNumbers);
+	 *      var f = curriedAddFourNumbers(1, 2);
+	 *      var g = f(3);
+	 *      g(4); //=> 10
+	 */
+	module.exports = _curry1(function curry(fn) {
+	  return curryN(fn.length, fn);
+	});
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _arity = __webpack_require__(8);
+	var _curry1 = __webpack_require__(12);
+	var _curry2 = __webpack_require__(14);
+	var _curryN = __webpack_require__(59);
+
+	/**
+	 * Returns a curried equivalent of the provided function, with the specified
+	 * arity. The curried function has two unusual capabilities. First, its
+	 * arguments needn't be provided one at a time. If `g` is `R.curryN(3, f)`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1)(2)(3)`
+	 *   - `g(1)(2, 3)`
+	 *   - `g(1, 2)(3)`
+	 *   - `g(1, 2, 3)`
+	 *
+	 * Secondly, the special placeholder value `R.__` may be used to specify
+	 * "gaps", allowing partial application of any combination of arguments,
+	 * regardless of their positions. If `g` is as above and `_` is `R.__`, the
+	 * following are equivalent:
+	 *
+	 *   - `g(1, 2, 3)`
+	 *   - `g(_, 2, 3)(1)`
+	 *   - `g(_, _, 3)(1)(2)`
+	 *   - `g(_, _, 3)(1, 2)`
+	 *   - `g(_, 2)(1)(3)`
+	 *   - `g(_, 2)(1, 3)`
+	 *   - `g(_, 2)(_, 3)(1)`
+	 *
+	 * @func
+	 * @memberOf R
+	 * @since v0.5.0
+	 * @category Function
+	 * @sig Number -> (* -> a) -> (* -> a)
+	 * @param {Number} length The arity for the returned function.
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} A new, curried function.
+	 * @see R.curry
+	 * @example
+	 *
+	 *      var sumArgs = (...args) => R.sum(args);
+	 *
+	 *      var curriedAddFourNumbers = R.curryN(4, sumArgs);
+	 *      var f = curriedAddFourNumbers(1, 2);
+	 *      var g = f(3);
+	 *      g(4); //=> 10
+	 */
+	module.exports = _curry2(function curryN(length, fn) {
+	  if (length === 1) {
+	    return _curry1(fn);
+	  }
+	  return _arity(length, _curryN(length, [], fn));
+	});
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _arity = __webpack_require__(8);
+	var _isPlaceholder = __webpack_require__(13);
+
+	/**
+	 * Internal curryN function.
+	 *
+	 * @private
+	 * @category Function
+	 * @param {Number} length The arity of the curried function.
+	 * @param {Array} received An array of arguments received thus far.
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} The curried function.
+	 */
+	module.exports = function _curryN(length, received, fn) {
+	  return function () {
+	    var combined = [];
+	    var argsIdx = 0;
+	    var left = length;
+	    var combinedIdx = 0;
+	    while (combinedIdx < received.length || argsIdx < arguments.length) {
+	      var result;
+	      if (combinedIdx < received.length && (!_isPlaceholder(received[combinedIdx]) || argsIdx >= arguments.length)) {
+	        result = received[combinedIdx];
+	      } else {
+	        result = arguments[argsIdx];
+	        argsIdx += 1;
+	      }
+	      combined[combinedIdx] = result;
+	      if (!_isPlaceholder(result)) {
+	        left -= 1;
+	      }
+	      combinedIdx += 1;
+	    }
+	    return left <= 0 ? fn.apply(this, combined) : _arity(left, _curryN(length, combined, fn));
+	  };
+	};
 
 /***/ },
 /* 60 */
@@ -8696,11 +8713,11 @@ var switzerland =
 	 */
 	const invokeFor = exports.invokeFor = function (node) {
 
-	    const refsLocal = refs.get(node) || [];
+	    const hooks = refs.get(node) || [];
 
 	    // Iterate over each defined refs and invoke it.
-	    Array.from(refsLocal.keys()).forEach(function (key) {
-	        refsLocal.get(key)(key);
+	    Array.from(hooks.keys()).forEach(function (key) {
+	        hooks.get(key)(key);
 	    });
 	};
 
@@ -8712,8 +8729,8 @@ var switzerland =
 	 * @return {void}
 	 */
 	const purgeFor = exports.purgeFor = function (node) {
-	    const refsLocal = refs.get(node);
-	    refsLocal && refsLocal.clear(node);
+	    const hooks = refs.get(node);
+	    hooks && hooks.clear(node);
 	};
 
 	/**
@@ -8723,22 +8740,22 @@ var switzerland =
 
 	exports.default = function (props) {
 
-	    const has = refs.has(props.node);
-	    !has && refs.set(props.node, new Map());
-	    const refsLocal = refs.get(props.node);
+	    const hasRef = refs.has(props.node);
+	    !hasRef && refs.set(props.node, new Map());
+	    const hooks = refs.get(props.node);
 
 	    const ref = function (fn) {
 
 	        // See: https://github.com/Matt-Esch/virtual-dom/blob/master/docs/hooks.md
 	        const Hook = function () {};
 	        Hook.prototype.hook = function (node) {
-	            return refsLocal.set(node, fn);
+	            return hooks.set(node, fn);
 	        };
 	        return new Hook();
 	    };
 
 	    // Delete the refs if the node has been removed from the DOM.
-	    has && !props.node.isConnected && refs.delete(props.node);
+	    hasRef && !props.node.isConnected && refs.delete(props.node);
 
 	    return _extends({}, props, { ref });
 	};
@@ -8780,7 +8797,7 @@ var switzerland =
 	        Object.getPrototypeOf(node)[name] = function (...args) {
 
 	            if (!(_switzerland.registryKey in this)) {
-	                (0, _switzerland.error)('You have passed an invalid context when invoking the node method');
+	                (0, _switzerland.error)('You have passed an invalid context when invoking the "' + name + '" method');
 	                return;
 	            }
 
@@ -8801,8 +8818,8 @@ var switzerland =
 	    return function (props) {
 	        const node = props.node;
 
-	        const has = registered.has(node.nodeName);
-	        !has && setPrototypeFor(node, fns);
+	        const hasNode = registered.has(node.nodeName);
+	        !hasNode && setPrototypeFor(node, fns);
 
 	        return props;
 	    };
@@ -9439,7 +9456,7 @@ var switzerland =
 	const isDevelopment = exports.isDevelopment = (0, _once2.default)(function () {
 	    return env === 'development';
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
 
 /***/ },
 /* 66 */
@@ -9448,7 +9465,7 @@ var switzerland =
 	'use strict';
 
 	var _arity = __webpack_require__(8);
-	var _curry1 = __webpack_require__(5);
+	var _curry1 = __webpack_require__(12);
 
 	/**
 	 * Accepts a function `fn` and returns a function that guards invocation of
@@ -9518,13 +9535,70 @@ var switzerland =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _humps = __webpack_require__(5);
+
+	/**
+	 * @constant nodes
+	 * @type {WeakMap}
+	 */
+	const nodes = new WeakMap();
+
+	/**
+	 * @method parse
+	 * @param {Object} props
+	 * @return {String}
+	 */
+	const parse = function (props) {
+
+	    return '' + Object.keys(props).map(function (key) {
+	        const name = (0, _humps.decamelize)(key, { separator: '-' });
+	        return '--' + name + ': ' + props[key] + '; ';
+	    }).join('').trim();
+	};
+
+	/**
+	 * @param {Function} fn
+	 * @return {Function}
+	 */
+
+	exports.default = function (fn) {
+
+	    return function (props) {
+
+	        const hasNode = nodes.has(props.node);
+	        !hasNode && nodes.set(props.node, document.createElement('style'));
+
+	        const styleNode = nodes.get(props.node);
+	        !hasNode && styleNode.setAttribute('type', 'text/css');
+
+	        // Update the style's HTML content, and then append it to the root node, if it doesn't
+	        // already exist there.
+	        styleNode.innerHTML = ':host { ' + parse(fn(props)) + ' }';
+	        !styleNode.isConnected && setTimeout(function () {
+	            return props.node.shadowRoot.appendChild(styleNode);
+	        });
+
+	        return props;
+	    };
+	};
+
+/***/ },
+/* 69 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.timeEnd = exports.time = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _shortid = __webpack_require__(69);
+	var _shortid = __webpack_require__(70);
 
 	/**
 	 * @constant timers
@@ -9540,10 +9614,10 @@ var switzerland =
 	const time = exports.time = function (props) {
 
 	  const node = props.node;
-	  const has = timers.has(props.node);
-	  const id = has ? timers.get(node) : node.nodeName.toLowerCase() + ' (' + (0, _shortid.generate)() + ')';
-	  !has && timers.set(node, id);
-	  console.time(id);
+	  const hasTimer = timers.has(props.node);
+	  const id = hasTimer ? timers.get(node) : node.nodeName.toLowerCase() + ' (' + (0, _shortid.generate)() + ')';
+	  !hasTimer && timers.set(node, id);
+	  window.console.time(id);
 	  return _extends({}, props, { timer: id });
 	};
 
@@ -9555,17 +9629,9 @@ var switzerland =
 	const timeEnd = exports.timeEnd = function (props) {
 
 	  const id = timers.get(props.node);
-	  console.timeEnd(id);
+	  window.console.timeEnd(id);
 	  return _extends({}, props, { timer: id });
 	};
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = __webpack_require__(70);
 
 /***/ },
 /* 70 */
@@ -9573,10 +9639,18 @@ var switzerland =
 
 	'use strict';
 
-	var alphabet = __webpack_require__(71);
-	var encode = __webpack_require__(73);
-	var decode = __webpack_require__(75);
-	var isValid = __webpack_require__(76);
+	module.exports = __webpack_require__(71);
+
+/***/ },
+/* 71 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var alphabet = __webpack_require__(72);
+	var encode = __webpack_require__(74);
+	var decode = __webpack_require__(76);
+	var isValid = __webpack_require__(77);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -9591,7 +9665,7 @@ var switzerland =
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(77) || 0;
+	var clusterWorkerId = __webpack_require__(78) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -9671,12 +9745,12 @@ var switzerland =
 	module.exports.isValid = isValid;
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(72);
+	var randomFromSeed = __webpack_require__(73);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -9774,7 +9848,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9804,12 +9878,12 @@ var switzerland =
 	};
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(74);
+	var randomByte = __webpack_require__(75);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -9828,7 +9902,7 @@ var switzerland =
 	module.exports = encode;
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9847,12 +9921,12 @@ var switzerland =
 	module.exports = randomByte;
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(71);
+	var alphabet = __webpack_require__(72);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -9870,12 +9944,12 @@ var switzerland =
 	module.exports = decode;
 
 /***/ },
-/* 76 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(71);
+	var alphabet = __webpack_require__(72);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6) {
@@ -9895,7 +9969,7 @@ var switzerland =
 	module.exports = isShortId;
 
 /***/ },
-/* 77 */
+/* 78 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -9903,7 +9977,7 @@ var switzerland =
 	module.exports = 0;
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9913,7 +9987,7 @@ var switzerland =
 	});
 	exports.path = undefined;
 
-	var _pathParse = __webpack_require__(57);
+	var _pathParse = __webpack_require__(54);
 
 	var _pathParse2 = _interopRequireDefault(_pathParse);
 
@@ -9956,7 +10030,7 @@ var switzerland =
 	};
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9966,7 +10040,7 @@ var switzerland =
 	});
 	exports.compose = exports.pipe = undefined;
 
-	var _promisedPipe = __webpack_require__(80);
+	var _promisedPipe = __webpack_require__(81);
 
 	var _promisedPipe2 = _interopRequireDefault(_promisedPipe);
 
@@ -9989,14 +10063,14 @@ var switzerland =
 	};
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	// Dependencies
-	var pipe = __webpack_require__(81).pipe;
-	var promised = __webpack_require__(82).promised;
+	var pipe = __webpack_require__(82).pipe;
+	var promised = __webpack_require__(83).promised;
 
 	// Public intefrace
 	module.exports = promisedPipe;
@@ -10007,7 +10081,7 @@ var switzerland =
 	}
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';//  Ramda v0.21.0
@@ -15158,7 +15232,7 @@ var switzerland =
 	     */var union=_curry2(compose(uniq,_concat));var R={F:F,T:T,__:__,add:add,addIndex:addIndex,adjust:adjust,all:all,allPass:allPass,allUniq:allUniq,always:always,and:and,any:any,anyPass:anyPass,ap:ap,aperture:aperture,append:append,apply:apply,applySpec:applySpec,assoc:assoc,assocPath:assocPath,binary:binary,bind:bind,both:both,call:call,chain:chain,clamp:clamp,clone:clone,comparator:comparator,complement:complement,compose:compose,composeK:composeK,composeP:composeP,concat:concat,cond:cond,construct:construct,constructN:constructN,contains:contains,converge:converge,countBy:countBy,curry:curry,curryN:curryN,dec:dec,defaultTo:defaultTo,difference:difference,differenceWith:differenceWith,dissoc:dissoc,dissocPath:dissocPath,divide:divide,drop:drop,dropLast:dropLast,dropLastWhile:dropLastWhile,dropRepeats:dropRepeats,dropRepeatsWith:dropRepeatsWith,dropWhile:dropWhile,either:either,empty:empty,eqBy:eqBy,eqProps:eqProps,equals:equals,evolve:evolve,filter:filter,find:find,findIndex:findIndex,findLast:findLast,findLastIndex:findLastIndex,flatten:flatten,flip:flip,forEach:forEach,fromPairs:fromPairs,groupBy:groupBy,groupWith:groupWith,gt:gt,gte:gte,has:has,hasIn:hasIn,head:head,identical:identical,identity:identity,ifElse:ifElse,inc:inc,indexBy:indexBy,indexOf:indexOf,init:init,insert:insert,insertAll:insertAll,intersection:intersection,intersectionWith:intersectionWith,intersperse:intersperse,into:into,invert:invert,invertObj:invertObj,invoker:invoker,is:is,isArrayLike:isArrayLike,isEmpty:isEmpty,isNil:isNil,join:join,juxt:juxt,keys:keys,keysIn:keysIn,last:last,lastIndexOf:lastIndexOf,length:length,lens:lens,lensIndex:lensIndex,lensPath:lensPath,lensProp:lensProp,lift:lift,liftN:liftN,lt:lt,lte:lte,map:map,mapAccum:mapAccum,mapAccumRight:mapAccumRight,mapObjIndexed:mapObjIndexed,match:match,mathMod:mathMod,max:max,maxBy:maxBy,mean:mean,median:median,memoize:memoize,merge:merge,mergeAll:mergeAll,mergeWith:mergeWith,mergeWithKey:mergeWithKey,min:min,minBy:minBy,modulo:modulo,multiply:multiply,nAry:nAry,negate:negate,none:none,not:not,nth:nth,nthArg:nthArg,objOf:objOf,of:of,omit:omit,once:once,or:or,over:over,pair:pair,partial:partial,partialRight:partialRight,partition:partition,path:path,pathEq:pathEq,pathOr:pathOr,pathSatisfies:pathSatisfies,pick:pick,pickAll:pickAll,pickBy:pickBy,pipe:pipe,pipeK:pipeK,pipeP:pipeP,pluck:pluck,prepend:prepend,product:product,project:project,prop:prop,propEq:propEq,propIs:propIs,propOr:propOr,propSatisfies:propSatisfies,props:props,range:range,reduce:reduce,reduceBy:reduceBy,reduceRight:reduceRight,reduced:reduced,reject:reject,remove:remove,repeat:repeat,replace:replace,reverse:reverse,scan:scan,sequence:sequence,set:set,slice:slice,sort:sort,sortBy:sortBy,split:split,splitAt:splitAt,splitEvery:splitEvery,splitWhen:splitWhen,subtract:subtract,sum:sum,symmetricDifference:symmetricDifference,symmetricDifferenceWith:symmetricDifferenceWith,tail:tail,take:take,takeLast:takeLast,takeLastWhile:takeLastWhile,takeWhile:takeWhile,tap:tap,test:test,times:times,toLower:toLower,toPairs:toPairs,toPairsIn:toPairsIn,toString:toString,toUpper:toUpper,transduce:transduce,transpose:transpose,traverse:traverse,trim:trim,tryCatch:tryCatch,type:type,unapply:unapply,unary:unary,uncurryN:uncurryN,unfold:unfold,union:union,unionWith:unionWith,uniq:uniq,uniqBy:uniqBy,uniqWith:uniqWith,unless:unless,unnest:unnest,until:until,update:update,useWith:useWith,values:values,valuesIn:valuesIn,view:view,when:when,where:where,whereEq:whereEq,without:without,wrap:wrap,xprod:xprod,zip:zip,zipObj:zipObj,zipWith:zipWith};/* eslint-env amd *//* TEST_ENTRY_POINT */if(true){module.exports=R;}else if(typeof define==='function'&&define.amd){define(function(){return R;});}else{this.R=R;}}).call(undefined);
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process, setImmediate) {"use strict";
@@ -17164,15 +17238,15 @@ var switzerland =
 
 	    return Q;
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(41), __webpack_require__(83).setImmediate))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38), __webpack_require__(84).setImmediate))
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {"use strict";
 
-	var nextTick = __webpack_require__(84).nextTick;
+	var nextTick = __webpack_require__(38).nextTick;
 	var apply = Function.prototype.apply;
 	var slice = Array.prototype.slice;
 	var immediateIds = {};
@@ -17248,193 +17322,7 @@ var switzerland =
 	exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function (id) {
 	  delete immediateIds[id];
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(83).setImmediate, __webpack_require__(83).clearImmediate))
-
-/***/ },
-/* 84 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	// shim for using process in browser
-	var process = module.exports = {};
-
-	// cached from whatever global is present so that test runners that stub it
-	// don't break things.  But we need to wrap it in a try catch in case it is
-	// wrapped in strict mode code which doesn't define any globals.  It's inside a
-	// function because try/catches deoptimize in certain engines.
-
-	var cachedSetTimeout;
-	var cachedClearTimeout;
-
-	function defaultSetTimout() {
-	    throw new Error('setTimeout has not been defined');
-	}
-	function defaultClearTimeout() {
-	    throw new Error('clearTimeout has not been defined');
-	}
-	(function () {
-	    try {
-	        if (typeof setTimeout === 'function') {
-	            cachedSetTimeout = setTimeout;
-	        } else {
-	            cachedSetTimeout = defaultSetTimout;
-	        }
-	    } catch (e) {
-	        cachedSetTimeout = defaultSetTimout;
-	    }
-	    try {
-	        if (typeof clearTimeout === 'function') {
-	            cachedClearTimeout = clearTimeout;
-	        } else {
-	            cachedClearTimeout = defaultClearTimeout;
-	        }
-	    } catch (e) {
-	        cachedClearTimeout = defaultClearTimeout;
-	    }
-	})();
-	function runTimeout(fun) {
-	    if (cachedSetTimeout === setTimeout) {
-	        //normal enviroments in sane situations
-	        return setTimeout(fun, 0);
-	    }
-	    // if setTimeout wasn't available but was latter defined
-	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-	        cachedSetTimeout = setTimeout;
-	        return setTimeout(fun, 0);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedSetTimeout(fun, 0);
-	    } catch (e) {
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-	            return cachedSetTimeout.call(null, fun, 0);
-	        } catch (e) {
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-	            return cachedSetTimeout.call(this, fun, 0);
-	        }
-	    }
-	}
-	function runClearTimeout(marker) {
-	    if (cachedClearTimeout === clearTimeout) {
-	        //normal enviroments in sane situations
-	        return clearTimeout(marker);
-	    }
-	    // if clearTimeout wasn't available but was latter defined
-	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-	        cachedClearTimeout = clearTimeout;
-	        return clearTimeout(marker);
-	    }
-	    try {
-	        // when when somebody has screwed with setTimeout but no I.E. maddness
-	        return cachedClearTimeout(marker);
-	    } catch (e) {
-	        try {
-	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-	            return cachedClearTimeout.call(null, marker);
-	        } catch (e) {
-	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-	            return cachedClearTimeout.call(this, marker);
-	        }
-	    }
-	}
-	var queue = [];
-	var draining = false;
-	var currentQueue;
-	var queueIndex = -1;
-
-	function cleanUpNextTick() {
-	    if (!draining || !currentQueue) {
-	        return;
-	    }
-	    draining = false;
-	    if (currentQueue.length) {
-	        queue = currentQueue.concat(queue);
-	    } else {
-	        queueIndex = -1;
-	    }
-	    if (queue.length) {
-	        drainQueue();
-	    }
-	}
-
-	function drainQueue() {
-	    if (draining) {
-	        return;
-	    }
-	    var timeout = runTimeout(cleanUpNextTick);
-	    draining = true;
-
-	    var len = queue.length;
-	    while (len) {
-	        currentQueue = queue;
-	        queue = [];
-	        while (++queueIndex < len) {
-	            if (currentQueue) {
-	                currentQueue[queueIndex].run();
-	            }
-	        }
-	        queueIndex = -1;
-	        len = queue.length;
-	    }
-	    currentQueue = null;
-	    draining = false;
-	    runClearTimeout(timeout);
-	}
-
-	process.nextTick = function (fun) {
-	    var args = new Array(arguments.length - 1);
-	    if (arguments.length > 1) {
-	        for (var i = 1; i < arguments.length; i++) {
-	            args[i - 1] = arguments[i];
-	        }
-	    }
-	    queue.push(new Item(fun, args));
-	    if (queue.length === 1 && !draining) {
-	        runTimeout(drainQueue);
-	    }
-	};
-
-	// v8 likes predictible objects
-	function Item(fun, array) {
-	    this.fun = fun;
-	    this.array = array;
-	}
-	Item.prototype.run = function () {
-	    this.fun.apply(null, this.array);
-	};
-	process.title = 'browser';
-	process.browser = true;
-	process.env = {};
-	process.argv = [];
-	process.version = ''; // empty string to avoid regexp issues
-	process.versions = {};
-
-	function noop() {}
-
-	process.on = noop;
-	process.addListener = noop;
-	process.once = noop;
-	process.off = noop;
-	process.removeListener = noop;
-	process.removeAllListeners = noop;
-	process.emit = noop;
-
-	process.binding = function (name) {
-	    throw new Error('process.binding is not supported');
-	};
-
-	process.cwd = function () {
-	    return '/';
-	};
-	process.chdir = function (dir) {
-	    throw new Error('process.chdir is not supported');
-	};
-	process.umask = function () {
-	    return 0;
-	};
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(84).setImmediate, __webpack_require__(84).clearImmediate))
 
 /***/ },
 /* 85 */
