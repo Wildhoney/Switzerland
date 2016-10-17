@@ -59,6 +59,8 @@ var switzerland =
 	});
 	exports.element = exports.compose = exports.pipe = exports.path = exports.timeEnd = exports.time = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
 
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 	var _html = __webpack_require__(2);
 
 	Object.defineProperty(exports, 'html', {
@@ -261,7 +263,7 @@ var switzerland =
 
 	    v0: {
 	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: function (tag, component) {
+	        customElement: function (tag, extend, component) {
 	            return document.registerElement(tag, component);
 	        },
 	        shadowBoundary: function (node) {
@@ -270,7 +272,7 @@ var switzerland =
 	    },
 	    v1: {
 	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: function (tag, component) {
+	        customElement: function (tag, extend, component) {
 	            return window.customElements.define(tag, component);
 	        },
 	        shadowBoundary: function (node) {
@@ -291,11 +293,19 @@ var switzerland =
 
 	/**
 	 * @method create
-	 * @param {String} tag
+	 * @param {String} name
 	 * @param {Function} component
 	 * @return {void}
 	 */
-	const create = exports.create = function (tag, component) {
+	const create = exports.create = function (name, component) {
+	    var _name$split = name.split('/');
+
+	    var _name$split2 = _slicedToArray(_name$split, 2);
+
+	    const tag = _name$split2[0];
+	    const extend = _name$split2[1];
+
+	    const Prototype = extend ? Object.getPrototypeOf(extend) : window.HTMLElement;
 
 	    /**
 	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
@@ -309,7 +319,7 @@ var switzerland =
 	     * @constant component
 	     * @type {Object}
 	     */
-	    implementation.customElement(tag, class extends window.HTMLElement {
+	    implementation.customElement(tag, extend, class extends Prototype {
 
 	        /**
 	         * @constructor

@@ -27,6 +27,7 @@
   6. [Sending Events](#sending-events)
   7. [Prop Validation](#prop-validation)
   8. [Applying Styles](#applying-styles)
+  9. [CSS Variables](#css-variables)
   
 ## Advantages
 
@@ -441,3 +442,58 @@ During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash;
 ```
 
 You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `path` function to determine the path of the current component which allows us to handily declare the relative path to the CSS document. It's worth noting that `path` has a `toString` function which simply resolves to the current component's path.
+
+## CSS Variables
+
+Using [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables) allows us to pass variables to our stylesheets &ndash; oftentimes we approach this by adding a `style` attribute to our elements, however using style variables we have a more elegant way that keeps the styles separate &ndash; in their respective CSS documents.
+ 
+In the our case we're going to have a different background colour depending on the amount of cheeses we have &ndash; for this we'll utilise the `vars` middleware.
+
+```javascript
+import { create, html, element, pipe, redux, vars, include, path } from 'switzerland';
+import { store } from './the-swiss-cheese-store';
+
+const css = props => {
+    
+    switch (props.redux.cheeses.length) {
+        case 0: return { background: 'red' };
+        case 1: return { background: 'orange' };
+        case 2: return { background: 'green' };
+        case 3: return { background: 'blue' };
+    }
+    
+};
+
+create('swiss-cheese', pipe(redux(store), vars(css), include(path('css/swiss-cheese.css')), html(props => {
+
+    return (
+        <ul>
+        
+            {props.redux.cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+            
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+            
+        </ul>
+    );
+
+})));
+```
+
+> Note: `backgroundColour` would come through as `--background-colour` in the CSS.
+
+Once we've returned a camelcased object of CSS Variables we can happily use those in our CSS document using the native `var` function.
+
+```css
+:host {
+    display: block;
+    background: var(--background) url('../images/cheese.png');
+    border-radius: 3px;
+    font-size: 8rem;
+}
+```
