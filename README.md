@@ -447,7 +447,7 @@ You may also have noticed that instead of declaring the absolute path to `swiss-
 
 Using [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables) allows us to pass variables to our stylesheets &ndash; oftentimes we approach this by adding a `style` attribute to our elements, however using style variables we have a more elegant way that keeps the styles separate &ndash; in their respective CSS documents.
  
-In the our case we're going to have a different background colour depending on the amount of cheeses we have &ndash; for this we'll utilise the `vars` middleware.
+In our case we're going to have a different background colour depending on the amount of cheeses we have &ndash; for this we'll utilise the `vars` middleware.
 
 ```javascript
 import { create, html, element, pipe, redux, vars, include, path } from 'switzerland';
