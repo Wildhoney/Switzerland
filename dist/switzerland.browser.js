@@ -337,7 +337,7 @@ var switzerland =
 	                const root = (0, _virtualDom.create)(tree);
 
 	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
-	                boundary.appendChild(root);
+	                boundary.insertBefore(root, boundary.firstChild);
 
 	                // Invoke any ref callbacks defined in the component's `render` method.
 	                'ref' in props && (0, _refs.invokeFor)(node);
@@ -9577,9 +9577,7 @@ var switzerland =
 	        // Update the style's HTML content, and then append it to the root node, if it doesn't
 	        // already exist there.
 	        styleNode.innerHTML = ':host { ' + parse(fn(props)) + ' }';
-	        !styleNode.isConnected && setTimeout(function () {
-	            return props.node.shadowRoot.appendChild(styleNode);
-	        });
+	        !styleNode.isConnected && props.node.shadowRoot.appendChild(styleNode);
 
 	        return props;
 	    };
