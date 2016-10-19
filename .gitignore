@@ -9,6 +9,5 @@ node_modules
 npm_debug.log
 
 # examples
-example/js/vendor.js
 example/js/components/iss-position/build.js
 example/js/components/iss-position/worker.js

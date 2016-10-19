@@ -4,7 +4,7 @@ import { path } from '../../../../../src/switzerland';
  * @constant CACHE_NAME
  * @type {String}
  */
-const CACHE_NAME = `iss-position`;
+const CACHE_NAME = 'iss-position';
 
 /**
  * @constant cacheList
@@ -39,10 +39,6 @@ const cacheList = [
     worker.addEventListener('fetch', event => {
 
         const { request } = event;
-
-        if (request.method !== 'GET') {
-            return false;
-        }
 
         return event.respondWith(caches.open(CACHE_NAME).then(cache => {
 
