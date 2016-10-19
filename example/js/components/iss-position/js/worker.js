@@ -29,7 +29,8 @@ const cacheList = [
                 path('css/default.css'),
                 path('css/astronauts.css'),
                 path('images/earth.jpg'),
-                path('images/loading.svg')
+                path('images/loading.svg'),
+                path('images/jellyfish.svg')
             ]);
 
         }));
