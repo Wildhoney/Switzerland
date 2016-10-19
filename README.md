@@ -28,7 +28,8 @@
   7. [Prop Validation](#prop-validation)
   8. [Applying Styles](#applying-styles)
   9. [CSS Variables](#css-variables)
-  
+  10. [Using Promises](#using-promises)
+
 ## Advantages
 
 - [x] Uses [native concepts](https://www.w3.org/TR/custom-elements/) which results in performance and bandwidth gains.
@@ -38,7 +39,7 @@
 - [x] Templates are created using [`virtual-dom`](https://github.com/Matt-Esch/virtual-dom) which you're already familiar with.
 - [x] Components can be transported anywhere, including vanilla, React, Angular environments.
 - [x] Shadow DOM allows for style encapsulation meaning no CSS Modules and/or BEM.
-  
+
 ![Functional](https://cdn-images-1.medium.com/max/800/1*AM83LP9sGGjIul3c5hIsWg.png)
 
 ## Browser Support
@@ -120,7 +121,7 @@ const cheeses = swissCheese.getAttribute('data-cheeses');
 swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
 ```
 
-You'll notice that we're passing a string via the `data-cheeses` attribute, rather than an actual array &ndash; we do this because native HTML does not understand JavaScript constructs. React supports passing in JavaScript constructs, but at the sake of creating React-only components and thus sacrificing interoperability. 
+You'll notice that we're passing a string via the `data-cheeses` attribute, rather than an actual array &ndash; we do this because native HTML does not understand JavaScript constructs. React supports passing in JavaScript constructs, but at the sake of creating React-only components and thus sacrificing interoperability.
 
 ### Using State
 
@@ -141,17 +142,17 @@ create('swiss-cheese', pipe(state(initialState), html(props => {
 
     return (
         <ul>
-        
+
             {cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
-            
+
             <li>
                 <a onclick={() => props.setState({ cheeses: [...cheeses, 'Mozarella'] })}>
                     Add Mozarella
                 </a>
             </li>
-            
+
         </ul>
     );
 
@@ -172,7 +173,7 @@ const initialState = {
 };
 
 const fetch = props => {
-    
+
     const latency = 250;
 
     setTimeout(() => props.setState({ cheeses: ['Swiss', 'Feta', 'Cheddar'] }), latency);
@@ -242,17 +243,17 @@ create('swiss-cheese', pipe(redux(store), html(props => {
 
     return (
         <ul>
-        
+
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
-            
+
             <li>
                 <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>
-            
+
         </ul>
     );
 
@@ -279,17 +280,17 @@ create('swiss-cheese', pipe(methods({ add }), redux(store), html(props => {
 
     return (
         <ul>
-        
+
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
-            
+
             <li>
                 <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>
-            
+
         </ul>
     );
 
@@ -319,17 +320,17 @@ create('swiss-cheese', pipe(events, redux(store), html(props => {
 
     return (
         <ul>
-        
+
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
-            
+
             <li>
                 <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>
-            
+
         </ul>
     );
 
@@ -369,17 +370,17 @@ create('swiss-cheese', pipe(redux(store), validate(propTypes), html(props => {
 
     return (
         <ul>
-        
+
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
-            
+
             <li>
                 <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>
-            
+
         </ul>
     );
 
@@ -402,17 +403,17 @@ create('swiss-cheese', pipe(redux(store), include(path('css/swiss-cheese.css')),
 
     return (
         <ul>
-        
+
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
-            
+
             <li>
                 <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>
-            
+
         </ul>
     );
 
@@ -428,7 +429,7 @@ Once the component is mounted in the DOM, the attached CSS document will be fetc
     display: block;
     background: yellow url('../images/cheese.png');
     border-radius: 3px;
-    font-size: 8rem;
+    font-size: 1rem;
 }
 ```
 
@@ -445,7 +446,7 @@ You may also have noticed that instead of declaring the absolute path to `swiss-
 ## CSS Variables
 
 Using [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables) allows us to pass variables to our stylesheets &ndash; oftentimes we approach this by adding a `style` attribute to our elements, however using style variables we have a more elegant way that keeps the styles separate &ndash; in their respective CSS documents.
- 
+
 In our case we're going to have a different background colour depending on the amount of cheeses we have &ndash; for this we'll utilise the `vars` middleware.
 
 ```javascript
@@ -453,31 +454,31 @@ import { create, html, element, pipe, redux, vars, include, path } from 'switzer
 import { store } from './the-swiss-cheese-store';
 
 const css = props => {
-    
+
     switch (props.redux.cheeses.length) {
         case 0: return { background: 'red' };
         case 1: return { background: 'orange' };
         case 2: return { background: 'green' };
         case 3: return { background: 'blue' };
     }
-    
+
 };
 
 create('swiss-cheese', pipe(redux(store), vars(css), include(path('css/swiss-cheese.css')), html(props => {
 
     return (
         <ul>
-        
+
             {props.redux.cheeses.map(cheese => {
                 return <li>{cheese}</li>
             })}
-            
+
             <li>
                 <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
                     Add Mozarella
                 </a>
             </li>
-            
+
         </ul>
     );
 
@@ -493,6 +494,60 @@ Once we've returned a camelcased object of CSS Variables we can happily use thos
     display: block;
     background: var(--background) url('../images/cheese.png');
     border-radius: 3px;
-    font-size: 8rem;
+    font-size: 1rem;
 }
 ```
+
+## Using Promises
+
+Up until now we have been immediately yielding `props` from our middleware, however in Switzerland middleware **also** supports yielding a [`Promise`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise), which will cause the piping/composing to pause until the promise has been resolved before continuining &ndash; inevitably this also causes a delay in the first rendering of the component's HTML.
+
+We're going to enhance our `swiss-cheese` component even further by using a custom font for our cheese list. For this we could simply use the `@font-face` rule in CSS which has its problems, or in our case we're going to wait for the font to be available before rendering the `swiss-cheese` component by using the `FontFace` constructor.
+
+Please note that in the following example we're using the `once` middleware to load the font **only once**, rather than in each re-rendering of the component.
+
+```javascript
+import { create, html, element, pipe, redux, once, include, path } from 'switzerland';
+import { store } from './the-swiss-cheese-store';
+
+const font = props => {
+
+    return new Promise(resolve => {
+
+        const fontFace = new FontFace('Cheese and Mouse', `url(${path('fonts/cheese-and-mouse.ttf')})`, {
+            style: 'normal',
+            weight: '400'
+        });
+
+        document.fonts.add(fontFace);
+        fontFace.load();
+        return fontFace.loaded.then(() => resolve(props));
+
+    });
+
+};
+
+create('swiss-cheese', pipe(redux(store), once(font), include(path('css/swiss-cheese.css')), html(props => {
+
+    return (
+        <ul>
+
+            {props.redux.cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+
+        </ul>
+    );
+
+})));
+```
+
+> Note: We haven't handled rejections for the `Promise` for the sake of brevity &ndash; but you should!
+
+In the above example we're using the famous [Cheese and Mouse font](http://www.dafont.com/cheese-and-mouse.font) but it's also worth noting that we've created our own `font` middleware that yields a promise. Once the `Promise` has been resolved, we can be guanrateed that once we reach the CSS, the font has been loaded. Any semblance of FOUC by using the previous method is caused by latency of loading the stylesheet &ndash; resolving this problem requires hiding the component until we have the [`resolved` class on the `swiss-cheese` node](#applying-styles).
