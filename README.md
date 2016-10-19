@@ -171,13 +171,13 @@ const initialState = {
     cheeses: []
 };
 
-const fetch = once(props => {
+const fetch = props => {
+    
+    const latency = 250;
 
-    setTimeout(() => {
-        props.setState({ cheeses: ['Swiss', 'Feta', 'Cheddar'] });
-    }, 250);
+    setTimeout(() => props.setState({ cheeses: ['Swiss', 'Feta', 'Cheddar'] }), latency);
 
-});
+};
 
 create('swiss-cheese', pipe(state(initialState), once(fetch), html(props => {
 
@@ -220,7 +220,6 @@ Assuming we want to keep the same functionality as before, we can simply migrate
 
 ```javascript
 import { create, html, element, pipe, redux } from 'switzerland';
-
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
