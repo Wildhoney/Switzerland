@@ -25,7 +25,6 @@ const cacheList = [
                 '/',
                 '/favicon.ico',
                 '/default.css',
-                '/js/vendor.js',
                 path('build.js'),
                 path('css/default.css'),
                 path('css/astronauts.css'),
