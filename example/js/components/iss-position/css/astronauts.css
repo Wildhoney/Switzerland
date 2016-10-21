@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+div.astronauts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 div.astronauts h3 {
     font: normal 400 2.5vmin/5vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
     text-shadow: 1px 1px 0 rgba(0, 0, 0, .5);
@@ -12,6 +18,7 @@ div.astronauts h3 {
 div.astronauts ul {
     font: normal 100 1.5vmin/3vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
     list-style-type: none;
+    max-width: 85%;
 }
 
 div.astronauts ul li {

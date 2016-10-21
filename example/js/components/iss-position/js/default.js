@@ -58,7 +58,49 @@ const worker = props => {
  */
 const interval = once(props => setInterval(props.render, 2000));
 
-create('iss-position', pipe(once(worker), attrs, redux(store), once(fetch), include(path('css/default.css')), html(props => {
+/**
+ * @method resize
+ * @param {Object} props
+ * @return {Object}
+ */
+const resize = props => {
+
+    /**
+     * @method addClass
+     * @param {String} className
+     * @return {void}
+     */
+    const addClass = className => {
+        props.node.classList.remove('small');
+        props.node.classList.remove('medium');
+        props.node.classList.remove('large');
+        props.node.classList.add(className);
+    };
+
+    if ('ResizeObserver' in window) {
+
+        const resizeable = new ResizeObserver(() => {
+
+            const { width } = getComputedStyle(props.node);
+            const size = parseInt(width);
+
+            switch (true) {
+                case (size < 400): addClass('small'); break;
+                case (size < 600): addClass('medium'); break;
+                default:           addClass('large'); break;
+            }
+
+        });
+
+        resizeable.observe(props.node);
+
+    }
+
+    return props;
+
+};
+
+create('iss-position', pipe(once(worker), once(resize), attrs, redux(store), once(fetch), include(path('css/default.css')), html(props => {
 
     const { redux, dispatch } = props;
     const image = path(`images/flags/${redux.flag}`);

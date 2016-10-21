@@ -52,6 +52,10 @@ img.flag {
     width: 20%;
 }
 
+:host-context(.small) img.flag {
+    width: 30%;
+}
+
 img.ocean {
     width: 20vmin;
     margin-top: 5vmin;
@@ -91,6 +95,16 @@ button {
     transition: opacity .25s;
 }
 
+:host-context(.small) button {
+    height: 22%;
+    width: 100%;
+    border-radius: 0 0 3px 3px;
+    margin: 0;
+    border: 0;
+    backdrop-filter: none;
+    background-color: rgba(0, 0, 0, .25);
+}
+
 button.loading {
     opacity: .25;
     pointer-events: none;
@@ -112,4 +126,17 @@ div.coordinates {
     right: 0;
     font: normal 100 1.2vmin/1.2vmin Lato, Arial, Tahoma, Helvetica, sans-serif;
     padding: 1vmax;
+}
+
+:host-context(.small) div.coordinates {
+    z-index: 1;
+    color: rgba(255, 255, 255, .7);
+}
+
+:host-context(.small) div.coordinates::before {
+    content: "("
+}
+
+:host-context(.small) div.coordinates::after {
+    content: ")"
 }
