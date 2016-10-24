@@ -7,8 +7,9 @@
     "build": "webpack --config webpack.cjs.js && webpack --config webpack.web.js && npm run dev",
     "dev": "webpack --config webpack.example.js",
     "watch": "webpack --watch --config webpack.example.js",
-    "test": "npm run lint && npm run spec && karma start karmafile.js --single-run",
+    "test": "npm run lint && npm run spec && npm run karma",
     "spec": "NODE_ENV=development ava",
+    "karma": "karma start karmafile.js --single-run",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules"
   },
@@ -52,6 +53,8 @@
     "jasmine": "^2.5.2",
     "jsdom": "^9.8.0",
     "karma": "^1.3.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-jasmine": "^1.0.2",
     "moment": "^2.15.2",
     "path-parse": "^1.0.5",
     "promised-pipe": "^1.0.1",
@@ -69,7 +72,8 @@
   "ava": {
     "files": [
       "tests/*.test.js",
-      "tests/**/*.test.js"
+      "tests/**/*.test.js",
+      "!tests/karma/*.test.js"
     ],
     "babel": "inherit",
     "require": [
