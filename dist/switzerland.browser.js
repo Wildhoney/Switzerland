@@ -189,7 +189,7 @@ var switzerland =
 	Object.defineProperty(exports, 'path', {
 	    enumerable: true,
 	    get: function () {
-	        return _path.path;
+	        return _interopRequireDefault(_path).default;
 	    }
 	});
 
@@ -219,6 +219,8 @@ var switzerland =
 
 	var _env = __webpack_require__(65);
 
+	var _env2 = _interopRequireDefault(_env);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
@@ -234,7 +236,7 @@ var switzerland =
 	 * @return {void}
 	 */
 	const message = function (text, fn) {
-	    return (0, _env.isDevelopment)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
+	    return (0, _env2.default)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
 	};
 
 	/**
@@ -629,7 +631,7 @@ var switzerland =
 	;(function (global) {
 
 	  var _processKeys = function (convert, obj, options) {
-	    if (!_isObject(obj) || _isDate(obj) || _isRegExp(obj) || _isBoolean(obj)) {
+	    if (!_isObject(obj) || _isDate(obj) || _isRegExp(obj) || _isBoolean(obj) || _isFunction(obj)) {
 	      return obj;
 	    }
 
@@ -689,6 +691,9 @@ var switzerland =
 
 	  var toString = Object.prototype.toString;
 
+	  var _isFunction = function (obj) {
+	    return typeof obj === 'function';
+	  };
 	  var _isObject = function (obj) {
 	    return obj === Object(obj);
 	  };
@@ -1649,7 +1654,7 @@ var switzerland =
 
 	    const boundary = node.shadowRoot;
 
-	    if (files.length) {
+	    if (files.length !== 0) {
 
 	        node.classList.add('resolving');
 	        node.classList.remove('resolved');
@@ -8887,6 +8892,10 @@ var switzerland =
 
 	var _env = __webpack_require__(65);
 
+	var _env2 = _interopRequireDefault(_env);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	/**
 	 * @param {Object} schema
 	 * @return {Function}
@@ -8894,7 +8903,7 @@ var switzerland =
 	exports.default = function (schema) {
 
 	    return function (props) {
-	        (0, _env.isDevelopment)() && (0, _propTypes.validate)(schema, props, props.node.nodeName.toLowerCase());
+	        (0, _env2.default)() && (0, _propTypes.validate)(schema, props, props.node.nodeName.toLowerCase());
 	        return props;
 	    };
 	};
@@ -9438,7 +9447,6 @@ var switzerland =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.isDevelopment = undefined;
 
 	var _once = __webpack_require__(66);
 
@@ -9463,7 +9471,7 @@ var switzerland =
 	 * @method isDevelopment
 	 * @return {Boolean}
 	 */
-	const isDevelopment = exports.isDevelopment = (0, _once2.default)(function () {
+	exports.default = (0, _once2.default)(function () {
 	    return env === 'development';
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(38)))
@@ -9991,9 +9999,8 @@ var switzerland =
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
-	exports.path = undefined;
 
 	var _pathParse = __webpack_require__(54);
 
@@ -10009,33 +10016,38 @@ var switzerland =
 	 */
 	const scriptPath = function () {
 
-	  try {
-	    return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
-	  } catch (err) {}
+	    try {
+	        return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
+	    } catch (err) {}
 
-	  try {
-	    return (0, _pathParse2.default)(self.location.href).dir;
-	  } catch (err) {}
+	    try {
+	        return (0, _pathParse2.default)(self.location.href).dir;
+	    } catch (err) {}
 
-	  typeof _switzerland.error === 'function' && (0, _switzerland.error)('Unable to determine the path for the current component');
+	    typeof _switzerland.error === 'function' && (0, _switzerland.error)('Unable to determine the path for the current component');
 	}();
 
-	/**
-	 * @method path
-	 * @param {String} file
-	 * @return {String}
-	 */
-	const path = exports.path = function (file) {
-	  return scriptPath + '/' + file;
-	};
+	exports.default = function () {
 
-	/**
-	 * @method toString
-	 * @return {String}
-	 */
-	path.toString = function () {
-	  return scriptPath;
-	};
+	    /**
+	     * @method path
+	     * @param {String} file
+	     * @return {String}
+	     */
+	    const path = function (file) {
+	        return scriptPath + '/' + file;
+	    };
+
+	    /**
+	     * @method toString
+	     * @return {String}
+	     */
+	    path.toString = function () {
+	        return scriptPath;
+	    };
+
+	    return path;
+	}();
 
 /***/ },
 /* 80 */
