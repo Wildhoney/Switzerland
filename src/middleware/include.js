@@ -85,7 +85,7 @@ const attachFiles = once(props => {
     const { node, files } = props;
     const boundary = node.shadowRoot;
 
-    if (files.length) {
+    if (files.length !== 0) {
 
         node.classList.add('resolving');
         node.classList.remove('resolved');

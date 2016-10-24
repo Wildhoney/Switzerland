@@ -18,4 +18,4 @@ const env = (() => {
  * @method isDevelopment
  * @return {Boolean}
  */
-export const isDevelopment = once(() => env === 'development');
+export default once(() => env === 'development');

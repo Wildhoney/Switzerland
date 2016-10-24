@@ -1,7 +1,7 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
-import { isDevelopment } from './helpers/env';
+import isDevelopment from './helpers/env';
 
 /**
  * @constant registryKey
@@ -201,7 +201,7 @@ export { default as vars } from './middleware/vars';
 export { time, timeEnd } from './debug/timer';
 
 // Helpers.
-export { path } from './helpers/path';
+export { default as path } from './helpers/path';
 export { pipe, compose } from './helpers/composition';
 
 // Third-party.

@@ -19,15 +19,21 @@ const scriptPath = (() => {
 
 })();
 
-/**
- * @method path
- * @param {String} file
- * @return {String}
- */
-export const path = file => `${scriptPath}/${file}`;
+export default (() => {
 
-/**
- * @method toString
- * @return {String}
- */
-path.toString = () => scriptPath;
+    /**
+     * @method path
+     * @param {String} file
+     * @return {String}
+     */
+    const path = file => `${scriptPath}/${file}`;
+
+    /**
+     * @method toString
+     * @return {String}
+     */
+    path.toString = () => scriptPath;
+
+    return path;
+
+})();
