@@ -5,6 +5,12 @@ import moment from 'moment';
 import { store, event } from './store';
 
 /**
+ * @constant IS_TESTING
+ * @type {Boolean}
+ */
+const IS_TESTING = typeof jasmine !== 'undefined';
+
+/**
  * @method update
  * @param {Number} timeout
  * @return {Function}
@@ -37,15 +43,15 @@ const fetch = props => {
 
 /**
  * @constant worker
- * @return {Promise}
+ * @return {Promise|Object}
  */
 const worker = props => {
 
-    return new Promise(resolve => {
+    return IS_TESTING ? props : new Promise(resolve => {
 
         window.navigator.serviceWorker.register(path('worker.js'), { scope: '/' }).then(worker => {
             resolve({ ...props, worker });
-        });
+        }).catch(() => resolve(props));
 
     });
 
