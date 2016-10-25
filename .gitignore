@@ -6,7 +6,8 @@
 
 # npm
 node_modules
-npm_debug.log
+npm-debug.log
+yarn.lock
 
 # examples
 example/js/components/iss-position/build.js

@@ -1,4 +1,5 @@
-import { create, element, html, attrs, include, once, redux, path, pipe } from '../../../../../src/switzerland';
+import { create, element, path, pipe } from '../../../../../src/switzerland';
+import { html, attrs, include, once, redux } from '../../../../../src/middleware';
 import { get } from 'axios';
 import { camelizeKeys } from 'humps';
 import moment from 'moment';
