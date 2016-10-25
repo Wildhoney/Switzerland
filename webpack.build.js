@@ -1,12 +1,18 @@
 module.exports = {
     entry: {
-        switzerland: ['./src/switzerland.js']
+        switzerland: ['./src/switzerland.js'],
+        middleware: ['./src/middleware.js']
     },
     output: {
         path: __dirname + '/dist',
-        filename: 'switzerland.browser.js',
+        filename: '[name].js',
         library: 'switzerland',
-        libraryTarget: 'var'
+        libraryTarget: 'commonjs2'
+    },
+    externals: {
+        axios: true,
+        ramda: true,
+        'promised-pipe': true
     },
     module: {
         loaders: [
