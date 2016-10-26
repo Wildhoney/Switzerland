@@ -16,7 +16,7 @@ const IS_TESTING = typeof jasmine !== 'undefined';
  * @param {Number} timeout
  * @return {Function}
  */
-const update = timeout => {
+const update = (timeout = 10000) => {
 
     return dispatch => {
 

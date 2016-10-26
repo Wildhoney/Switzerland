@@ -116,7 +116,7 @@ export const create = (name, component) => {
                 // Invoke any ref callbacks defined in the component's `render` method.
                 'ref' in props && invokeFor(node);
 
-                this[registryKey] = {node, tree, root, props};
+                this[registryKey] = { node, tree, root, props };
 
             });
 

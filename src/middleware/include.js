@@ -3,7 +3,7 @@ import { get as fetch } from 'axios';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
-import once, { options } from './once';
+import once, { options as onceOptions } from './once';
 
 /**
  * @constant includeMap
@@ -13,6 +13,15 @@ const includeMap = [
     { extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } },
     { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }
 ];
+
+/**
+ * @constant options
+ * @type {Object}
+ */
+export const options = {
+    DEFAULT: 1,
+    AWAIT: 2
+};
 
 /**
  * @method fetchInclude
@@ -78,45 +87,51 @@ const fetchIncludes = files => {
 /**
  * @method attachFiles
  * @param props {Object}
- * @return {void}
+ * @return {Promise}
  */
 const attachFiles = once(props => {
 
-    const { node, files } = props;
-    const boundary = node.shadowRoot;
+    return new Promise(resolve => {
 
-    if (files.length !== 0) {
+        const { node, files } = props;
+        const boundary = node.shadowRoot;
 
-        node.classList.add('resolving');
-        node.classList.remove('resolved');
+        if (files.length !== 0) {
 
-        fetchIncludes(files).then(nodes => {
+            node.classList.add('resolving');
+            node.classList.remove('resolved');
 
-            // Remove any `null` values which means the content of the file was empty, and then append
-            // them to the component's shadow boundary.
-            nodes.filter(identity).forEach(node => boundary.appendChild(node));
+            fetchIncludes(files).then(nodes => {
 
-            node.classList.add('resolved');
-            node.classList.remove('resolving');
+                // Remove any `null` values which means the content of the file was empty, and then append
+                // them to the component's shadow boundary.
+                nodes.filter(identity).forEach(node => boundary.appendChild(node));
 
-        });
+                node.classList.add('resolved');
+                node.classList.remove('resolving');
 
-    }
+                resolve();
 
-}, options.RESET);
+            });
+
+        }
+
+    });
+
+}, onceOptions.RESET);
 
 /**
- * @param {Array|String} files
+ * @param {String[]|String} files
+ * @param {Number} [flags = options.DEFAULT]
  * @return {Function}
  */
-export default (...files) => {
+export default (files, flags = options.DEFAULT) => {
 
     return props => {
 
         // Attach the documents using the `once` middleware.
-        attachFiles({ ...props, files: Array.isArray(files) ? files : [files] });
-
-        return props;
+        const attached = attachFiles({ ...props, files: Array.isArray(files) ? files : [files] });
+        return flags & options.AWAIT ? attached.then(() => props) : props;
 
     };
 

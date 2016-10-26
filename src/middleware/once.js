@@ -15,7 +15,7 @@ export const options = {
 
 /**
  * @param {Function} callback
- * @param {Number} flags
+ * @param {Number} [flags = options.DEFAULT]
  * @return {Function}
  */
 export default (callback, flags = options.DEFAULT) => {

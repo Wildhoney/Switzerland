@@ -15,7 +15,7 @@ export const options = {
 
 /**
  * @param {Object} initialState
- * @param {Number} flags
+ * @param {Number} [flags = options.DEFAULT]
  * @return {Function}
  */
 export default (initialState, flags = options.DEFAULT) => {
