@@ -205,7 +205,12 @@ module.exports =
 /* 25 */,
 /* 26 */,
 /* 27 */,
-/* 28 */,
+/* 28 */
+/***/ function(module, exports) {
+
+	module.exports = require("ramda");
+
+/***/ },
 /* 29 */,
 /* 30 */,
 /* 31 */,
@@ -616,6 +621,8 @@ module.exports =
 
 	var _env2 = _interopRequireDefault(_env);
 
+	var _ramda = __webpack_require__(28);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
@@ -741,6 +748,7 @@ module.exports =
 
 	                const tree = (0, _html.htmlFor)(props);
 	                const root = (0, _virtualDom.create)(tree);
+	                root.containerNode = node.nodeName;
 
 	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
 	                boundary.insertBefore(root, boundary.firstChild);
@@ -749,7 +757,7 @@ module.exports =
 	                'ref' in props && (0, _refs.invokeFor)(node);
 
 	                _this[registryKey] = { node, tree, root, props };
-	            }).catch(error);
+	            });
 	        }
 
 	        /**

@@ -57,6 +57,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.timeEnd = exports.time = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.options = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -183,6 +184,16 @@ module.exports =
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	/**
+	 * @constant options
+	 * @type {Object}
+	 */
+	const options = exports.options = {
+	  state: _state.options,
+	  include: _include.options,
+	  once: _once.options
+	};
+
 /***/ },
 /* 2 */
 /***/ function(module, exports) {
@@ -251,7 +262,7 @@ module.exports =
 
 	/**
 	 * @param {Function} callback
-	 * @param {Number} flags
+	 * @param {Number} [flags = options.DEFAULT]
 	 * @return {Function}
 	 */
 
@@ -1258,7 +1269,7 @@ module.exports =
 
 	/**
 	 * @param {Object} initialState
-	 * @param {Number} flags
+	 * @param {Number} [flags = options.DEFAULT]
 	 * @return {Function}
 	 */
 
@@ -1302,6 +1313,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.options = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -1332,6 +1344,15 @@ module.exports =
 	 * @type {Object}
 	 */
 	const includeMap = [{ extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } }, { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }];
+
+	/**
+	 * @constant options
+	 * @type {Object}
+	 */
+	const options = exports.options = {
+	    DEFAULT: 1,
+	    AWAIT: 2
+	};
 
 	/**
 	 * @method fetchInclude
@@ -1408,46 +1429,53 @@ module.exports =
 	/**
 	 * @method attachFiles
 	 * @param props {Object}
-	 * @return {void}
+	 * @return {Promise}
 	 */
 	const attachFiles = (0, _once2.default)(function (props) {
-	    const node = props.node,
-	          files = props.files;
 
-	    const boundary = node.shadowRoot;
+	    return new Promise(function (resolve) {
+	        const node = props.node,
+	              files = props.files;
 
-	    if (files.length !== 0) {
+	        const boundary = node.shadowRoot;
 
-	        node.classList.add('resolving');
-	        node.classList.remove('resolved');
+	        if (files.length !== 0) {
 
-	        fetchIncludes(files).then(function (nodes) {
+	            node.classList.add('resolving');
+	            node.classList.remove('resolved');
 
-	            // Remove any `null` values which means the content of the file was empty, and then append
-	            // them to the component's shadow boundary.
-	            nodes.filter(_ramda.identity).forEach(function (node) {
-	                return boundary.appendChild(node);
+	            fetchIncludes(files).then(function (nodes) {
+
+	                // Remove any `null` values which means the content of the file was empty, and then append
+	                // them to the component's shadow boundary.
+	                nodes.filter(_ramda.identity).forEach(function (node) {
+	                    return boundary.appendChild(node);
+	                });
+
+	                node.classList.add('resolved');
+	                node.classList.remove('resolving');
+
+	                resolve();
 	            });
-
-	            node.classList.add('resolved');
-	            node.classList.remove('resolving');
-	        });
-	    }
+	        }
+	    });
 	}, _once.options.RESET);
 
 	/**
-	 * @param {Array|String} files
+	 * @param {String[]|String} files
+	 * @param {Number} [flags = options.DEFAULT]
 	 * @return {Function}
 	 */
 
-	exports.default = function (...files) {
+	exports.default = function (files, flags = options.DEFAULT) {
 
 	    return function (props) {
 
 	        // Attach the documents using the `once` middleware.
-	        attachFiles(_extends({}, props, { files: Array.isArray(files) ? files : [files] }));
-
-	        return props;
+	        const attached = attachFiles(_extends({}, props, { files: Array.isArray(files) ? files : [files] }));
+	        return flags & options.AWAIT ? attached.then(function () {
+	            return props;
+	        }) : props;
 	    };
 	};
 
@@ -2193,6 +2221,8 @@ module.exports =
 
 	var _env2 = _interopRequireDefault(_env);
 
+	var _ramda = __webpack_require__(28);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
@@ -2318,6 +2348,7 @@ module.exports =
 
 	                const tree = (0, _html.htmlFor)(props);
 	                const root = (0, _virtualDom.create)(tree);
+	                root.containerNode = node.nodeName;
 
 	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
 	                boundary.insertBefore(root, boundary.firstChild);
@@ -2326,7 +2357,7 @@ module.exports =
 	                'ref' in props && (0, _refs.invokeFor)(node);
 
 	                _this[registryKey] = { node, tree, root, props };
-	            }).catch(error);
+	            });
 	        }
 
 	        /**
