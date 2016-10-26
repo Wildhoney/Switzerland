@@ -2,7 +2,6 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 import isDevelopment from './helpers/env';
-import { flatten, identity } from 'ramda';
 
 /**
  * @constant registryKey
