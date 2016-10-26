@@ -2,6 +2,7 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 import isDevelopment from './helpers/env';
+import { flatten, identity } from 'ramda';
 
 /**
  * @constant registryKey
@@ -107,6 +108,7 @@ export const create = (name, component) => {
 
                 const tree = htmlFor(props);
                 const root = createElement(tree);
+                root.containerNode = node.nodeName;
 
                 // See: https://github.com/Matt-Esch/virtual-dom/pull/413
                 boundary.insertBefore(root, boundary.firstChild);
@@ -114,9 +116,9 @@ export const create = (name, component) => {
                 // Invoke any ref callbacks defined in the component's `render` method.
                 'ref' in props && invokeFor(node);
 
-                this[registryKey] = { node, tree, root, props };
+                this[registryKey] = {node, tree, root, props};
 
-            }).catch(error);
+            });
 
         }
 
