@@ -5008,11 +5008,11 @@ module.exports =
 	const nodes = new WeakMap();
 
 	/**
-	 * @method parse
+	 * @method transform
 	 * @param {Object} props
 	 * @return {String}
 	 */
-	const parse = function (props) {
+	const transform = function (props) {
 
 	    return '' + Object.keys(props).map(function (key) {
 	        const name = (0, _humps.decamelize)(key, { separator: '-' });
@@ -5037,7 +5037,7 @@ module.exports =
 
 	        // Update the style's HTML content, and then append it to the root node, if it doesn't
 	        // already exist there.
-	        styleNode.innerHTML = ':host { ' + parse(fn(props)) + ' }';
+	        styleNode.innerHTML = ':host { ' + transform(fn(props)) + ' }';
 	        !styleNode.isConnected && props.node.shadowRoot.appendChild(styleNode);
 
 	        return props;
