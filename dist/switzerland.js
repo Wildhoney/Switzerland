@@ -205,12 +205,7 @@ module.exports =
 /* 25 */,
 /* 26 */,
 /* 27 */,
-/* 28 */
-/***/ function(module, exports) {
-
-	module.exports = require("ramda");
-
-/***/ },
+/* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
@@ -620,8 +615,6 @@ module.exports =
 	var _env = __webpack_require__(80);
 
 	var _env2 = _interopRequireDefault(_env);
-
-	var _ramda = __webpack_require__(28);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
