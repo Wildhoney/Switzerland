@@ -7,11 +7,11 @@ import { decamelize } from 'humps';
 const nodes = new WeakMap();
 
 /**
- * @method parse
+ * @method transform
  * @param {Object} props
  * @return {String}
  */
-const parse = props => {
+const transform = props => {
 
     return `${Object.keys(props).map(key => {
         const name = decamelize(key, { separator: '-' });
@@ -36,7 +36,7 @@ export default fn => {
 
         // Update the style's HTML content, and then append it to the root node, if it doesn't
         // already exist there.
-        styleNode.innerHTML = `:host { ${parse(fn(props))} }`;
+        styleNode.innerHTML = `:host { ${transform(fn(props))} }`;
         !styleNode.isConnected && props.node.shadowRoot.appendChild(styleNode);
 
         return props;

@@ -1,15 +1,22 @@
 import test from 'ava';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import include from '../../src/middleware/include';
+import include, { options } from '../../src/middleware/include';
 
-test('Should be able to include external documents', t => {
+test.beforeEach(t => {
 
     const node = document.createElement('div');
     node.isConnected = true;
     node.shadowRoot = document.createElement('fake-shadow-root');
 
-    const mockAdapter = new MockAdapter(axios);
+    t.context.node = node;
+    t.context.mockAdapter = new MockAdapter(axios);
+
+});
+
+test('Should be able to include external documents', t => {
+
+    const { node, mockAdapter } = t.context;
 
     return new Promise(resolve => {
 
@@ -23,7 +30,7 @@ test('Should be able to include external documents', t => {
         mockAdapter.onGet('/fourth.css').reply(404);
 
         const files = ['/first.css', '/second.css', '/components/css/third.css', '/fourth.css'];
-        const props = include(...files)({ node });
+        const props = include([...files])({ node });
 
         t.deepEqual(props, { node });
         t.true(node.classList.contains('resolving'));
@@ -36,11 +43,22 @@ test('Should be able to include external documents', t => {
             t.deepEqual(props, { node });
             t.true(node.classList.contains('resolved'));
             t.is(node.shadowRoot.querySelector('style').innerHTML, `${firstStylesheet} ${secondStylesheet} ${thirdStylesheet}`);
-
             resolve();
 
         });
 
     });
+
+});
+
+test('Should be able to yield a promise when using options.AWAIT', t => {
+
+    const { node, mockAdapter } = t.context;
+
+    const stylesheet = '* { border: 1px solid green; }';
+    mockAdapter.onGet('/first.css').reply(200, stylesheet);
+
+    t.falsy(include(['/first.css'])({ node }) instanceof Promise);
+    t.true(include(['/first.css'], options.AWAIT)({ node }) instanceof Promise);
 
 });
