@@ -12,6 +12,7 @@
     "karma": "karma start karmafile.js --single-run",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
+    "start": "babel example/server/default.js | node",
     "prepublish": "mv dist/middleware.js .",
     "postpublish": "mv middleware.js dist/"
   },
