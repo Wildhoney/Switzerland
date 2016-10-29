@@ -24,4 +24,5 @@ export { default as events } from './middleware/events';
 export { default as validate } from './middleware/validate';
 export { default as cleanup } from './middleware/cleanup';
 export { default as vars } from './middleware/vars';
+export { default as await } from './middleware/await';
 export { time, timeEnd } from './debug/timer';

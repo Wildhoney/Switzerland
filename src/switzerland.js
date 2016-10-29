@@ -1,6 +1,7 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
+import { hasResolvedTree, awaitEventName } from './middleware/await';
 import isDevelopment from './helpers/env';
 
 /**
@@ -100,14 +101,12 @@ export const create = (name, component) => {
 
             const node = this;
             node.shadowRoot && clearHTMLFor(node);
-
             const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
             component({ node, render: node.render.bind(node) }).then(props => {
 
                 const tree = htmlFor(props);
                 const root = createElement(tree);
-                root.containerNode = node.nodeName;
 
                 // See: https://github.com/Matt-Esch/virtual-dom/pull/413
                 boundary.insertBefore(root, boundary.firstChild);
@@ -116,6 +115,25 @@ export const create = (name, component) => {
                 'ref' in props && invokeFor(node);
 
                 this[registryKey] = { node, tree, root, props };
+
+                node.resolved = new Promise(resolve => {
+
+                    // Setup listener for children being resolved.
+                    hasResolvedTree(props).then(() => {
+
+                        // Emit the event that the node has been resolved.
+                        node.dispatchEvent(new window.CustomEvent(awaitEventName, {
+                            detail: node,
+                            bubbles: true,
+                            composed: true
+                        }));
+
+                        // Tree has been entirely resolved!
+                        resolve();
+
+                    });
+
+                });
 
             });
 
