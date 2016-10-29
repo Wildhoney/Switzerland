@@ -45,7 +45,7 @@ app.get('/position', (request, response) => {
 
         }).catch(() => response.send({ people, latitude, longitude }));
 
-    });
+    }).catch(response.send(''));
 
 });
 
