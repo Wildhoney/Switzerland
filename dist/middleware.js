@@ -57,7 +57,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.timeEnd = exports.time = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.options = undefined;
+	exports.timeEnd = exports.time = exports.await = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.options = undefined;
 
 	var _html = __webpack_require__(2);
 
@@ -131,7 +131,7 @@ module.exports =
 	  }
 	});
 
-	var _events = __webpack_require__(82);
+	var _events = __webpack_require__(83);
 
 	Object.defineProperty(exports, 'events', {
 	  enumerable: true,
@@ -140,7 +140,7 @@ module.exports =
 	  }
 	});
 
-	var _validate = __webpack_require__(83);
+	var _validate = __webpack_require__(84);
 
 	Object.defineProperty(exports, 'validate', {
 	  enumerable: true,
@@ -149,7 +149,7 @@ module.exports =
 	  }
 	});
 
-	var _cleanup = __webpack_require__(85);
+	var _cleanup = __webpack_require__(86);
 
 	Object.defineProperty(exports, 'cleanup', {
 	  enumerable: true,
@@ -158,7 +158,7 @@ module.exports =
 	  }
 	});
 
-	var _vars = __webpack_require__(86);
+	var _vars = __webpack_require__(87);
 
 	Object.defineProperty(exports, 'vars', {
 	  enumerable: true,
@@ -167,7 +167,16 @@ module.exports =
 	  }
 	});
 
-	var _timer = __webpack_require__(87);
+	var _await = __webpack_require__(80);
+
+	Object.defineProperty(exports, 'await', {
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_await).default;
+	  }
+	});
+
+	var _timer = __webpack_require__(88);
 
 	Object.defineProperty(exports, 'time', {
 	  enumerable: true,
@@ -2217,7 +2226,9 @@ module.exports =
 
 	var _refs = __webpack_require__(39);
 
-	var _env = __webpack_require__(80);
+	var _await = __webpack_require__(80);
+
+	var _env = __webpack_require__(81);
 
 	var _env2 = _interopRequireDefault(_env);
 
@@ -2339,14 +2350,12 @@ module.exports =
 
 	            const node = this;
 	            node.shadowRoot && clearHTMLFor(node);
-
 	            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
 	            component({ node, render: node.render.bind(node) }).then(function (props) {
 
 	                const tree = (0, _html.htmlFor)(props);
 	                const root = (0, _virtualDom.create)(tree);
-	                root.containerNode = node.nodeName;
 
 	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
 	                boundary.insertBefore(root, boundary.firstChild);
@@ -2355,6 +2364,23 @@ module.exports =
 	                'ref' in props && (0, _refs.invokeFor)(node);
 
 	                _this[registryKey] = { node, tree, root, props };
+
+	                node.resolved = new Promise(function (resolve) {
+
+	                    // Setup listener for children being resolved.
+	                    (0, _await.hasResolvedTree)(props).then(function () {
+
+	                        // Emit the event that the node has been resolved.
+	                        node.dispatchEvent(new window.CustomEvent(_await.awaitEventName, {
+	                            detail: node,
+	                            bubbles: true,
+	                            composed: true
+	                        }));
+
+	                        // Tree has been entirely resolved!
+	                        resolve();
+	                    });
+	                });
 	            });
 	        }
 
@@ -4285,6 +4311,103 @@ module.exports =
 
 /***/ },
 /* 80 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @constant awaitKey
+	 * @type {Symbol}
+	 */
+	const awaitKey = exports.awaitKey = Symbol('switzerland/await');
+
+	/**
+	 * @constant awaitEventName
+	 * @type {String}
+	 */
+	const awaitEventName = exports.awaitEventName = 'switzerland/node-resolved';
+
+	/**
+	 * @method hasResolvedTree
+	 * @param {Object} props
+	 * @return {Promise}
+	 */
+	const hasResolvedTree = exports.hasResolvedTree = function (props) {
+
+	    const waitFor = new Map();
+	    const node = props.node;
+
+	    const boundary = node.shadowRoot;
+
+	    return awaitKey in props ? new Promise(function (resolve) {
+
+	        node.addEventListener(awaitEventName, function resolved(event) {
+
+	            // Resolve the current node if we have it in the map.
+	            waitFor.has(event.detail) && waitFor.set(event.detail, true);
+
+	            // Determine whether all awaiting nodes have been resolved.
+	            Array.from(waitFor.values()).every(function (resolved) {
+	                return resolved === true;
+	            }) && function () {
+
+	                // Tree has been resolved.
+	                node.removeEventListener(awaitEventName, resolved);
+	                resolve();
+	            }();
+	        });
+
+	        // Place all of the nodes we're awaiting into the map.
+	        const nodes = boundary.querySelectorAll(props[awaitKey].join(','));
+	        Array.from(nodes).forEach(function (awaitNode) {
+	            return waitFor.set(awaitNode, false);
+	        });
+	    }) : Promise.resolve();
+	};
+
+	/**
+	 * @method resolved
+	 * @param {HTMLElement} node
+	 * @return {Promise}
+	 */
+	const resolved = exports.resolved = function (node) {
+
+	    return new Promise(function (resolve) {
+
+	        node.addEventListener(awaitEventName, function resolved(event) {
+
+	            if (event.detail === node) {
+	                node.removeEventListener(awaitEventName, resolved);
+	                node.resolved.then(function () {
+	                    return resolve(node);
+	                });
+	            }
+	        });
+	    });
+	};
+
+	/**
+	 * @param {String[]|String} nodes
+	 * @return {Function}
+	 */
+
+	exports.default = function (...nodes) {
+
+	    const nodeTags = Array.isArray(nodes) ? nodes : [nodes];
+
+	    return function (props) {
+	        return _extends({}, props, { [awaitKey]: nodeTags });
+	    };
+	};
+
+/***/ },
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -4293,7 +4416,7 @@ module.exports =
 	    value: true
 	});
 
-	var _once = __webpack_require__(81);
+	var _once = __webpack_require__(82);
 
 	var _once2 = _interopRequireDefault(_once);
 
@@ -4322,7 +4445,7 @@ module.exports =
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(33)))
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4363,7 +4486,7 @@ module.exports =
 	});
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4401,7 +4524,7 @@ module.exports =
 	};
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4410,9 +4533,9 @@ module.exports =
 	    value: true
 	});
 
-	var _propTypes = __webpack_require__(84);
+	var _propTypes = __webpack_require__(85);
 
-	var _env = __webpack_require__(80);
+	var _env = __webpack_require__(81);
 
 	var _env2 = _interopRequireDefault(_env);
 
@@ -4431,7 +4554,7 @@ module.exports =
 	};
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4961,7 +5084,7 @@ module.exports =
 	/******/]);
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4990,7 +5113,7 @@ module.exports =
 	};
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5045,7 +5168,7 @@ module.exports =
 	};
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5057,7 +5180,7 @@ module.exports =
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _shortid = __webpack_require__(88);
+	var _shortid = __webpack_require__(89);
 
 	/**
 	 * @constant timers
@@ -5093,23 +5216,23 @@ module.exports =
 	};
 
 /***/ },
-/* 88 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	module.exports = __webpack_require__(89);
-
-/***/ },
 /* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(90);
-	var encode = __webpack_require__(92);
-	var decode = __webpack_require__(94);
-	var isValid = __webpack_require__(95);
+	module.exports = __webpack_require__(90);
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var alphabet = __webpack_require__(91);
+	var encode = __webpack_require__(93);
+	var decode = __webpack_require__(95);
+	var isValid = __webpack_require__(96);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -5124,7 +5247,7 @@ module.exports =
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(96) || 0;
+	var clusterWorkerId = __webpack_require__(97) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -5204,12 +5327,12 @@ module.exports =
 	module.exports.isValid = isValid;
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(91);
+	var randomFromSeed = __webpack_require__(92);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -5307,7 +5430,7 @@ module.exports =
 	};
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5337,12 +5460,12 @@ module.exports =
 	};
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(93);
+	var randomByte = __webpack_require__(94);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -5361,7 +5484,7 @@ module.exports =
 	module.exports = encode;
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5380,12 +5503,12 @@ module.exports =
 	module.exports = randomByte;
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(90);
+	var alphabet = __webpack_require__(91);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -5403,12 +5526,12 @@ module.exports =
 	module.exports = decode;
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(90);
+	var alphabet = __webpack_require__(91);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6) {
@@ -5428,7 +5551,7 @@ module.exports =
 	module.exports = isShortId;
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports) {
 
 	'use strict';
