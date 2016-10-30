@@ -33,7 +33,7 @@ export const hasResolvedTree = props => {
 
                 // Tree has been resolved.
                 node.removeEventListener(awaitEventName, resolved);
-                resolve();
+                resolve(waitFor);
 
             })();
 
@@ -54,7 +54,7 @@ export const hasResolvedTree = props => {
  */
 export const resolved = node => {
 
-    return new Promise(resolve => {
+    return 'resolved' in node ? node.resolved : new Promise(resolve => {
 
         node.addEventListener(awaitEventName, function resolved(event) {
 

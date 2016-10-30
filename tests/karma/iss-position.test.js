@@ -1,5 +1,3 @@
-// import MockAdapter from 'axios-mock-adapter';
-
 describe('iss-position', () => {
 
     it('Should be able to render the iss-position node', done => {
