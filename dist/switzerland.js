@@ -2745,7 +2745,7 @@ module.exports =
 
 	                // Tree has been resolved.
 	                node.removeEventListener(awaitEventName, resolved);
-	                resolve();
+	                resolve(waitFor);
 	            }();
 	        });
 
@@ -2764,7 +2764,7 @@ module.exports =
 	 */
 	const resolved = exports.resolved = function (node) {
 
-	    return new Promise(function (resolve) {
+	    return 'resolved' in node ? node.resolved : new Promise(function (resolve) {
 
 	        node.addEventListener(awaitEventName, function resolved(event) {
 
