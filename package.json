@@ -28,6 +28,7 @@
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "dependencies": {
     "axios": "^0.14.0",
+    "director": "^1.2.8",
     "ramda": "^0.22.1"
   },
   "devDependencies": {

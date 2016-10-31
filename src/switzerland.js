@@ -11,6 +11,12 @@ import isDevelopment from './helpers/env';
 export const registryKey = Symbol('switzerland/registry');
 
 /**
+ * @constant childrenKey
+ * @type {Symbol}
+ */
+export const childrenKey = Symbol('switzerland/children');
+
+/**
  * @method message
  * @param {String} text
  * @param {Function} fn
@@ -91,6 +97,7 @@ export const create = (name, component) => {
         constructor() {
             super();
             this[registryKey] = {};
+            this[childrenKey] = null;
         }
 
         /**
@@ -102,8 +109,9 @@ export const create = (name, component) => {
             const node = this;
             node.shadowRoot && clearHTMLFor(node);
             const boundary = node.shadowRoot || implementation.shadowBoundary(node);
+            this[childrenKey] = node.innerHTML;
 
-            component({ node, render: node.render.bind(node) }).then(props => {
+            component({ node, render: node.render.bind(node), children: this[childrenKey] }).then(props => {
 
                 const tree = htmlFor(props);
                 const root = createElement(tree);
@@ -135,7 +143,7 @@ export const create = (name, component) => {
 
                 });
 
-            });
+            }).catch(error);
 
         }
 
@@ -175,7 +183,7 @@ export const create = (name, component) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            component({ node, render: node.render.bind(node) }).then(props => {
+            component({ node, render: node.render.bind(node), children: this[childrenKey] }).then(props => {
 
                 const tree = htmlFor(props);
 

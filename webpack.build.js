@@ -12,8 +12,9 @@ module.exports = {
     },
     externals: {
         axios: true,
-        ramda: true,
-        'promised-pipe': true
+        director: true,
+        'promised-pipe': true,
+        ramda: true
     },
     module: {
         loaders: [
