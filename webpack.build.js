@@ -1,7 +1,8 @@
 module.exports = {
     entry: {
         switzerland: ['./src/switzerland.js'],
-        middleware: ['./src/middleware.js']
+        middleware: ['./src/middleware.js'],
+        components: ['./src/components.js']
     },
     output: {
         path: __dirname + '/dist',
