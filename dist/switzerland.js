@@ -45,173 +45,342 @@ module.exports =
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(43);
+	module.exports = __webpack_require__(6);
 
 
 /***/ },
 /* 1 */,
 /* 2 */,
 /* 3 */,
-/* 4 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	/**
-	 * @constant htmlKey
-	 * @type {Symbol}
-	 */
-	const htmlKey = exports.htmlKey = Symbol('switzerland/html');
-
-	/**
-	 * @method htmlFor
-	 * @param {Object} model
-	 * @return {Object}
-	 */
-	const htmlFor = exports.htmlFor = function (model) {
-	  return model[htmlKey];
-	};
-
-	/**
-	 * @param {Function} html
-	 * @return {Function}
-	 */
-
-	exports.default = function (html) {
-
-	  return function (props) {
-	    return _extends({}, props, { [htmlKey]: html(props) });
-	  };
-	};
-
-/***/ },
+/* 4 */,
 /* 5 */,
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	module.exports = function _arity(n, fn) {
-	  /* eslint-disable no-unused-vars */
-	  switch (n) {
-	    case 0:
-	      return function () {
-	        return fn.apply(this, arguments);
-	      };
-	    case 1:
-	      return function (a0) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 2:
-	      return function (a0, a1) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 3:
-	      return function (a0, a1, a2) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 4:
-	      return function (a0, a1, a2, a3) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 5:
-	      return function (a0, a1, a2, a3, a4) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 6:
-	      return function (a0, a1, a2, a3, a4, a5) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 7:
-	      return function (a0, a1, a2, a3, a4, a5, a6) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 8:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 9:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
-	        return fn.apply(this, arguments);
-	      };
-	    case 10:
-	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
-	        return fn.apply(this, arguments);
-	      };
-	    default:
-	      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
-	  }
-	};
-
-/***/ },
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _isPlaceholder = __webpack_require__(15);
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.element = exports.compose = exports.pipe = exports.path = exports.create = exports.warning = exports.error = exports.registryKey = undefined;
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	var _path = __webpack_require__(7);
+
+	Object.defineProperty(exports, 'path', {
+	    enumerable: true,
+	    get: function () {
+	        return _interopRequireDefault(_path).default;
+	    }
+	});
+
+	var _composition = __webpack_require__(10);
+
+	Object.defineProperty(exports, 'pipe', {
+	    enumerable: true,
+	    get: function () {
+	        return _composition.pipe;
+	    }
+	});
+	Object.defineProperty(exports, 'compose', {
+	    enumerable: true,
+	    get: function () {
+	        return _composition.compose;
+	    }
+	});
+
+	var _virtualDom = __webpack_require__(12);
+
+	Object.defineProperty(exports, 'element', {
+	    enumerable: true,
+	    get: function () {
+	        return _virtualDom.h;
+	    }
+	});
+
+	var _html = __webpack_require__(47);
+
+	var _refs = __webpack_require__(48);
+
+	var _await = __webpack_require__(49);
+
+	var _env = __webpack_require__(50);
+
+	var _env2 = _interopRequireDefault(_env);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
-	 * Optimized internal one-arity curry function.
-	 *
-	 * @private
-	 * @category Function
-	 * @param {Function} fn The function to curry.
-	 * @return {Function} The curried function.
+	 * @constant registryKey
+	 * @type {Symbol}
 	 */
-	module.exports = function _curry1(fn) {
-	  return function f1(a) {
-	    if (arguments.length === 0 || _isPlaceholder(a)) {
-	      return f1;
-	    } else {
-	      return fn.apply(this, arguments);
+	const registryKey = exports.registryKey = Symbol('switzerland/registry');
+
+	/**
+	 * @method message
+	 * @param {String} text
+	 * @param {Function} fn
+	 * @return {void}
+	 */
+	const message = function (text, fn) {
+	    return (0, _env2.default)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
+	};
+
+	/**
+	 * @method error
+	 * @param {String} text
+	 * @return {void}
+	 */
+	const error = exports.error = function (text) {
+	    return message(text, console.error);
+	};
+
+	/**
+	 * @method warning
+	 * @param {String} text
+	 * @return {void}
+	 */
+	const warning = exports.warning = function (text) {
+	    return message(text, console.warn);
+	};
+
+	/**
+	 * @constant implementations
+	 * @type {Object}
+	 */
+	const implementations = {
+
+	    v0: {
+	        hooks: ['attachedCallback', 'detachedCallback'],
+	        customElement: function (tag, extend, component) {
+	            return document.registerElement(tag, component);
+	        },
+	        shadowBoundary: function (node) {
+	            return node.createShadowRoot();
+	        }
+	    },
+	    v1: {
+	        hooks: ['connectedCallback', 'disconnectedCallback'],
+	        customElement: function (tag, extend, component) {
+	            return window.customElements.define(tag, component);
+	        },
+	        shadowBoundary: function (node) {
+	            return node.attachShadow({ mode: 'open' });
+	        }
 	    }
-	  };
+
+	};
+
+	/**
+	 * @method clearHTMLFor
+	 * @param {HTMLElement} node
+	 * @return {void}
+	 */
+	const clearHTMLFor = function (node) {
+	    node.shadowRoot.innerHTML = '';
+	};
+
+	/**
+	 * @method create
+	 * @param {String} name
+	 * @param {Function} component
+	 * @return {void}
+	 */
+	const create = exports.create = function (name, component) {
+	    var _name$split = name.split('/'),
+	        _name$split2 = _slicedToArray(_name$split, 2);
+
+	    const tag = _name$split2[0],
+	          extend = _name$split2[1];
+
+	    const Prototype = extend ? Object.getPrototypeOf(extend) : window.HTMLElement;
+
+	    /**
+	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
+	     *
+	     * @constant implementation
+	     * @type {Object}
+	     */
+	    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+
+	    /**
+	     * @constant component
+	     * @type {Object}
+	     */
+	    implementation.customElement(tag, extend, class extends Prototype {
+
+	        /**
+	         * @constructor
+	         */
+	        constructor() {
+	            super();
+	            this[registryKey] = {};
+	        }
+
+	        /**
+	         * @method connectedCallback
+	         * @return {void}
+	         */
+	        [implementation.hooks[0]]() {
+	            var _this = this;
+
+	            const node = this;
+	            node.shadowRoot && clearHTMLFor(node);
+	            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
+
+	            component({ node, render: node.render.bind(node) }).then(function (props) {
+
+	                const tree = (0, _html.htmlFor)(props);
+	                const root = (0, _virtualDom.create)(tree);
+
+	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
+	                boundary.insertBefore(root, boundary.firstChild);
+
+	                // Invoke any ref callbacks defined in the component's `render` method.
+	                'ref' in props && (0, _refs.invokeFor)(node);
+
+	                _this[registryKey] = { node, tree, root, props };
+
+	                node.resolved = new Promise(function (resolve) {
+
+	                    // Setup listener for children being resolved.
+	                    (0, _await.hasResolvedTree)(props).then(function () {
+
+	                        // Emit the event that the node has been resolved.
+	                        node.dispatchEvent(new window.CustomEvent(_await.awaitEventName, {
+	                            detail: node,
+	                            bubbles: true,
+	                            composed: true
+	                        }));
+
+	                        // Tree has been entirely resolved!
+	                        resolve();
+	                    });
+	                });
+	            }).catch(error);
+	        }
+
+	        /**
+	         * @method disconnectedCallback
+	         * @return {void}
+	         */
+	        [implementation.hooks[1]]() {
+
+	            clearHTMLFor(this);
+
+	            // Once the node has been removed then we perform one last pass, however the render function
+	            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
+	            this.render();
+	        }
+
+	        /**
+	         * @method render
+	         * @return {void}
+	         */
+	        render() {
+	            var _this2 = this;
+
+	            const instance = this[registryKey];
+
+	            if (!instance || !instance.node) {
+
+	                // Rejected as developer has attempted to re-render during the start-up phase.
+	                // As an alternative we could queue the re-render using `setTimeout` for the next
+	                // tick, but ideally the developer should setup sensible defaults and thus avoid a
+	                // re-render during the start-up phase.
+	                // Queue: setTimeout(this.render.bind(this));
+	                warning('Casually ignoring an attempted re-render during the start-up phase of a component');
+	                return;
+	            }
+
+	            const currentTree = instance.tree,
+	                  currentRoot = instance.root,
+	                  node = instance.node;
+
+
+	            component({ node, render: node.render.bind(node) }).then(function (props) {
+
+	                const tree = (0, _html.htmlFor)(props);
+
+	                // Clear any previously defined refs for the current component.
+	                'ref' in props && (0, _refs.purgeFor)(node);
+
+	                if (node.isConnected) {
+
+	                    const patches = (0, _virtualDom.diff)(currentTree, tree);
+	                    const root = (0, _virtualDom.patch)(currentRoot, patches);
+
+	                    // Invoke any ref callbacks defined in the component's `render` method.
+	                    'ref' in props && (0, _refs.invokeFor)(node);
+
+	                    _this2[registryKey] = { node, tree, root, props };
+	                }
+	            }).catch(error);
+	        }
+
+	    });
 	};
 
 /***/ },
-/* 15 */
-/***/ function(module, exports) {
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	module.exports = function _isPlaceholder(a) {
-	       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
-	};
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _pathParse = __webpack_require__(8);
+
+	var _pathParse2 = _interopRequireDefault(_pathParse);
+
+	var _switzerland = __webpack_require__(6);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * @constant scriptPath
+	 * @return {String|void}
+	 */
+	const scriptPath = function () {
+
+	    try {
+	        return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
+	    } catch (err) {}
+
+	    try {
+	        return (0, _pathParse2.default)(self.location.href).dir;
+	    } catch (err) {}
+
+	    typeof _switzerland.error === 'function' && (0, _switzerland.error)('Unable to determine the path for the current component');
+	}();
+
+	exports.default = function () {
+
+	    /**
+	     * @method path
+	     * @param {String} file
+	     * @return {String}
+	     */
+	    const path = function (file) {
+	        return scriptPath + '/' + file;
+	    };
+
+	    /**
+	     * @method toString
+	     * @return {String}
+	     */
+	    path.toString = function () {
+	        return scriptPath;
+	    };
+
+	    return path;
+	}();
 
 /***/ },
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -293,10 +462,10 @@ module.exports =
 
 	module.exports.posix = posix.parse;
 	module.exports.win32 = win32.parse;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 35 */
+/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -482,424 +651,7 @@ module.exports =
 	};
 
 /***/ },
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	/**
-	 * @constant refs
-	 * @type {WeakMap}
-	 */
-	const refs = new WeakMap();
-
-	/**
-	 * Invoke each defined refs once the node(s) have been appended to the DOM. This is
-	 * in contract to Virtual DOM's default behaviour which invokes refs without them
-	 * being in the DOM. This of course causes issues for props that rely on a node's
-	 * presence in the DOM, such as a node's dimensions.
-	 *
-	 * @method invokeFor
-	 * @props {HTMLElement} node
-	 * @return {Array}
-	 */
-	const invokeFor = exports.invokeFor = function (node) {
-
-	    const hooks = refs.get(node) || [];
-
-	    // Iterate over each defined refs and invoke it.
-	    Array.from(hooks.keys()).forEach(function (key) {
-	        hooks.get(key)(key);
-	    });
-	};
-
-	/**
-	 * Responsible for purging all of a node's defined refs.
-	 *
-	 * @method purgeFor
-	 * @param {HTMLElement} node
-	 * @return {void}
-	 */
-	const purgeFor = exports.purgeFor = function (node) {
-	    const hooks = refs.get(node);
-	    hooks && hooks.clear(node);
-	};
-
-	/**
-	 * @param {Object} props
-	 * @return {Object}
-	 */
-
-	exports.default = function (props) {
-
-	    const hasRef = refs.has(props.node);
-	    !hasRef && refs.set(props.node, new Map());
-	    const hooks = refs.get(props.node);
-
-	    const ref = function (fn) {
-
-	        // See: https://github.com/Matt-Esch/virtual-dom/blob/master/docs/hooks.md
-	        const Hook = function () {};
-	        Hook.prototype.hook = function (node) {
-	            return hooks.set(node, fn);
-	        };
-	        return new Hook();
-	    };
-
-	    // Delete the refs if the node has been removed from the DOM.
-	    hasRef && !props.node.isConnected && refs.delete(props.node);
-
-	    return _extends({}, props, { ref });
-	};
-
-/***/ },
-/* 42 */,
-/* 43 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.element = exports.compose = exports.pipe = exports.path = exports.create = exports.warning = exports.error = exports.childrenKey = exports.registryKey = undefined;
-
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-	var _path = __webpack_require__(44);
-
-	Object.defineProperty(exports, 'path', {
-	    enumerable: true,
-	    get: function () {
-	        return _interopRequireDefault(_path).default;
-	    }
-	});
-
-	var _composition = __webpack_require__(45);
-
-	Object.defineProperty(exports, 'pipe', {
-	    enumerable: true,
-	    get: function () {
-	        return _composition.pipe;
-	    }
-	});
-	Object.defineProperty(exports, 'compose', {
-	    enumerable: true,
-	    get: function () {
-	        return _composition.compose;
-	    }
-	});
-
-	var _virtualDom = __webpack_require__(47);
-
-	Object.defineProperty(exports, 'element', {
-	    enumerable: true,
-	    get: function () {
-	        return _virtualDom.h;
-	    }
-	});
-
-	var _html = __webpack_require__(4);
-
-	var _refs = __webpack_require__(41);
-
-	var _await = __webpack_require__(82);
-
-	var _env = __webpack_require__(83);
-
-	var _env2 = _interopRequireDefault(_env);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * @constant registryKey
-	 * @type {Symbol}
-	 */
-	const registryKey = exports.registryKey = Symbol('switzerland/registry');
-
-	/**
-	 * @constant childrenKey
-	 * @type {Symbol}
-	 */
-	const childrenKey = exports.childrenKey = Symbol('switzerland/children');
-
-	/**
-	 * @method message
-	 * @param {String} text
-	 * @param {Function} fn
-	 * @return {void}
-	 */
-	const message = function (text, fn) {
-	    return (0, _env2.default)() && fn('Switzerland \uD83C\uDDE8\uD83C\uDDED ' + text + '.');
-	};
-
-	/**
-	 * @method error
-	 * @param {String} text
-	 * @return {void}
-	 */
-	const error = exports.error = function (text) {
-	    return message(text, console.error);
-	};
-
-	/**
-	 * @method warning
-	 * @param {String} text
-	 * @return {void}
-	 */
-	const warning = exports.warning = function (text) {
-	    return message(text, console.warn);
-	};
-
-	/**
-	 * @constant implementations
-	 * @type {Object}
-	 */
-	const implementations = {
-
-	    v0: {
-	        hooks: ['attachedCallback', 'detachedCallback'],
-	        customElement: function (tag, extend, component) {
-	            return document.registerElement(tag, component);
-	        },
-	        shadowBoundary: function (node) {
-	            return node.createShadowRoot();
-	        }
-	    },
-	    v1: {
-	        hooks: ['connectedCallback', 'disconnectedCallback'],
-	        customElement: function (tag, extend, component) {
-	            return window.customElements.define(tag, component);
-	        },
-	        shadowBoundary: function (node) {
-	            return node.attachShadow({ mode: 'open' });
-	        }
-	    }
-
-	};
-
-	/**
-	 * @method clearHTMLFor
-	 * @param {HTMLElement} node
-	 * @return {void}
-	 */
-	const clearHTMLFor = function (node) {
-	    node.shadowRoot.innerHTML = '';
-	};
-
-	/**
-	 * @method create
-	 * @param {String} name
-	 * @param {Function} component
-	 * @return {void}
-	 */
-	const create = exports.create = function (name, component) {
-	    var _name$split = name.split('/'),
-	        _name$split2 = _slicedToArray(_name$split, 2);
-
-	    const tag = _name$split2[0],
-	          extend = _name$split2[1];
-
-	    const Prototype = extend ? Object.getPrototypeOf(extend) : window.HTMLElement;
-
-	    /**
-	     * Determines whether we use the v0 or v1 implementation of Custom Elements.
-	     *
-	     * @constant implementation
-	     * @type {Object}
-	     */
-	    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
-
-	    /**
-	     * @constant component
-	     * @type {Object}
-	     */
-	    implementation.customElement(tag, extend, class extends Prototype {
-
-	        /**
-	         * @constructor
-	         */
-	        constructor() {
-	            super();
-	            this[registryKey] = {};
-	            this[childrenKey] = null;
-	        }
-
-	        /**
-	         * @method connectedCallback
-	         * @return {void}
-	         */
-	        [implementation.hooks[0]]() {
-	            var _this = this;
-
-	            const node = this;
-	            node.shadowRoot && clearHTMLFor(node);
-	            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
-	            this[childrenKey] = node.innerHTML;
-
-	            component({ node, render: node.render.bind(node), children: this[childrenKey] }).then(function (props) {
-
-	                const tree = (0, _html.htmlFor)(props);
-	                const root = (0, _virtualDom.create)(tree);
-
-	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
-	                boundary.insertBefore(root, boundary.firstChild);
-
-	                // Invoke any ref callbacks defined in the component's `render` method.
-	                'ref' in props && (0, _refs.invokeFor)(node);
-
-	                _this[registryKey] = { node, tree, root, props };
-
-	                node.resolved = new Promise(function (resolve) {
-
-	                    // Setup listener for children being resolved.
-	                    (0, _await.hasResolvedTree)(props).then(function () {
-
-	                        // Emit the event that the node has been resolved.
-	                        node.dispatchEvent(new window.CustomEvent(_await.awaitEventName, {
-	                            detail: node,
-	                            bubbles: true,
-	                            composed: true
-	                        }));
-
-	                        // Tree has been entirely resolved!
-	                        resolve();
-	                    });
-	                });
-	            }).catch(error);
-	        }
-
-	        /**
-	         * @method disconnectedCallback
-	         * @return {void}
-	         */
-	        [implementation.hooks[1]]() {
-
-	            clearHTMLFor(this);
-
-	            // Once the node has been removed then we perform one last pass, however the render function
-	            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
-	            this.render();
-	        }
-
-	        /**
-	         * @method render
-	         * @return {void}
-	         */
-	        render() {
-	            var _this2 = this;
-
-	            const instance = this[registryKey];
-
-	            if (!instance || !instance.node) {
-
-	                // Rejected as developer has attempted to re-render during the start-up phase.
-	                // As an alternative we could queue the re-render using `setTimeout` for the next
-	                // tick, but ideally the developer should setup sensible defaults and thus avoid a
-	                // re-render during the start-up phase.
-	                // Queue: setTimeout(this.render.bind(this));
-	                warning('Casually ignoring an attempted re-render during the start-up phase of a component');
-	                return;
-	            }
-
-	            const currentTree = instance.tree,
-	                  currentRoot = instance.root,
-	                  node = instance.node;
-
-
-	            component({ node, render: node.render.bind(node), children: this[childrenKey] }).then(function (props) {
-
-	                const tree = (0, _html.htmlFor)(props);
-
-	                // Clear any previously defined refs for the current component.
-	                'ref' in props && (0, _refs.purgeFor)(node);
-
-	                if (node.isConnected) {
-
-	                    const patches = (0, _virtualDom.diff)(currentTree, tree);
-	                    const root = (0, _virtualDom.patch)(currentRoot, patches);
-
-	                    // Invoke any ref callbacks defined in the component's `render` method.
-	                    'ref' in props && (0, _refs.invokeFor)(node);
-
-	                    _this2[registryKey] = { node, tree, root, props };
-	                }
-	            }).catch(error);
-	        }
-
-	    });
-	};
-
-/***/ },
-/* 44 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _pathParse = __webpack_require__(34);
-
-	var _pathParse2 = _interopRequireDefault(_pathParse);
-
-	var _switzerland = __webpack_require__(43);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	/**
-	 * @constant scriptPath
-	 * @return {String|void}
-	 */
-	const scriptPath = function () {
-
-	    try {
-	        return (0, _pathParse2.default)(document.currentScript.getAttribute('src')).dir;
-	    } catch (err) {}
-
-	    try {
-	        return (0, _pathParse2.default)(self.location.href).dir;
-	    } catch (err) {}
-
-	    typeof _switzerland.error === 'function' && (0, _switzerland.error)('Unable to determine the path for the current component');
-	}();
-
-	exports.default = function () {
-
-	    /**
-	     * @method path
-	     * @param {String} file
-	     * @return {String}
-	     */
-	    const path = function (file) {
-	        return scriptPath + '/' + file;
-	    };
-
-	    /**
-	     * @method toString
-	     * @return {String}
-	     */
-	    path.toString = function () {
-	        return scriptPath;
-	    };
-
-	    return path;
-	}();
-
-/***/ },
-/* 45 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -909,7 +661,7 @@ module.exports =
 	});
 	exports.compose = exports.pipe = undefined;
 
-	var _promisedPipe = __webpack_require__(46);
+	var _promisedPipe = __webpack_require__(11);
 
 	var _promisedPipe2 = _interopRequireDefault(_promisedPipe);
 
@@ -932,23 +684,23 @@ module.exports =
 	};
 
 /***/ },
-/* 46 */
+/* 11 */
 /***/ function(module, exports) {
 
 	module.exports = require("promised-pipe");
 
 /***/ },
-/* 47 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var diff = __webpack_require__(48);
-	var patch = __webpack_require__(61);
-	var h = __webpack_require__(70);
-	var create = __webpack_require__(81);
-	var VNode = __webpack_require__(72);
-	var VText = __webpack_require__(73);
+	var diff = __webpack_require__(13);
+	var patch = __webpack_require__(26);
+	var h = __webpack_require__(35);
+	var create = __webpack_require__(46);
+	var VNode = __webpack_require__(37);
+	var VText = __webpack_require__(38);
 
 	module.exports = {
 	    diff: diff,
@@ -960,31 +712,31 @@ module.exports =
 	};
 
 /***/ },
-/* 48 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var diff = __webpack_require__(49);
+	var diff = __webpack_require__(14);
 
 	module.exports = diff;
 
 /***/ },
-/* 49 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isArray = __webpack_require__(50);
+	var isArray = __webpack_require__(15);
 
-	var VPatch = __webpack_require__(51);
-	var isVNode = __webpack_require__(53);
-	var isVText = __webpack_require__(54);
-	var isWidget = __webpack_require__(55);
-	var isThunk = __webpack_require__(56);
-	var handleThunk = __webpack_require__(57);
+	var VPatch = __webpack_require__(16);
+	var isVNode = __webpack_require__(18);
+	var isVText = __webpack_require__(19);
+	var isWidget = __webpack_require__(20);
+	var isThunk = __webpack_require__(21);
+	var handleThunk = __webpack_require__(22);
 
-	var diffProps = __webpack_require__(58);
+	var diffProps = __webpack_require__(23);
 
 	module.exports = diff;
 
@@ -1380,7 +1132,7 @@ module.exports =
 	}
 
 /***/ },
-/* 50 */
+/* 15 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1395,12 +1147,12 @@ module.exports =
 	}
 
 /***/ },
-/* 51 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(52);
+	var version = __webpack_require__(17);
 
 	VirtualPatch.NONE = 0;
 	VirtualPatch.VTEXT = 1;
@@ -1424,7 +1176,7 @@ module.exports =
 	VirtualPatch.prototype.type = "VirtualPatch";
 
 /***/ },
-/* 52 */
+/* 17 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1432,12 +1184,12 @@ module.exports =
 	module.exports = "2";
 
 /***/ },
-/* 53 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(52);
+	var version = __webpack_require__(17);
 
 	module.exports = isVirtualNode;
 
@@ -1446,12 +1198,12 @@ module.exports =
 	}
 
 /***/ },
-/* 54 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(52);
+	var version = __webpack_require__(17);
 
 	module.exports = isVirtualText;
 
@@ -1460,7 +1212,7 @@ module.exports =
 	}
 
 /***/ },
-/* 55 */
+/* 20 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1472,7 +1224,7 @@ module.exports =
 	}
 
 /***/ },
-/* 56 */
+/* 21 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1484,15 +1236,15 @@ module.exports =
 	}
 
 /***/ },
-/* 57 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isVNode = __webpack_require__(53);
-	var isVText = __webpack_require__(54);
-	var isWidget = __webpack_require__(55);
-	var isThunk = __webpack_require__(56);
+	var isVNode = __webpack_require__(18);
+	var isVText = __webpack_require__(19);
+	var isWidget = __webpack_require__(20);
+	var isThunk = __webpack_require__(21);
 
 	module.exports = handleThunk;
 
@@ -1529,13 +1281,13 @@ module.exports =
 	}
 
 /***/ },
-/* 58 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(59);
-	var isHook = __webpack_require__(60);
+	var isObject = __webpack_require__(24);
+	var isHook = __webpack_require__(25);
 
 	module.exports = diffProps;
 
@@ -1594,7 +1346,7 @@ module.exports =
 	}
 
 /***/ },
-/* 59 */
+/* 24 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1604,7 +1356,7 @@ module.exports =
 	};
 
 /***/ },
-/* 60 */
+/* 25 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1616,27 +1368,27 @@ module.exports =
 	}
 
 /***/ },
-/* 61 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var patch = __webpack_require__(62);
+	var patch = __webpack_require__(27);
 
 	module.exports = patch;
 
 /***/ },
-/* 62 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(63);
-	var isArray = __webpack_require__(50);
+	var document = __webpack_require__(28);
+	var isArray = __webpack_require__(15);
 
-	var render = __webpack_require__(65);
-	var domIndex = __webpack_require__(67);
-	var patchOp = __webpack_require__(68);
+	var render = __webpack_require__(30);
+	var domIndex = __webpack_require__(32);
+	var patchOp = __webpack_require__(33);
 	module.exports = patch;
 
 	function patch(rootNode, patches, renderOptions) {
@@ -1708,13 +1460,13 @@ module.exports =
 	}
 
 /***/ },
-/* 63 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
 	var topLevel = typeof global !== 'undefined' ? global : typeof window !== 'undefined' ? window : {};
-	var minDoc = __webpack_require__(64);
+	var minDoc = __webpack_require__(29);
 
 	if (typeof document !== 'undefined') {
 	    module.exports = document;
@@ -1730,25 +1482,25 @@ module.exports =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 64 */
+/* 29 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 65 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var document = __webpack_require__(63);
+	var document = __webpack_require__(28);
 
-	var applyProperties = __webpack_require__(66);
+	var applyProperties = __webpack_require__(31);
 
-	var isVNode = __webpack_require__(53);
-	var isVText = __webpack_require__(54);
-	var isWidget = __webpack_require__(55);
-	var handleThunk = __webpack_require__(57);
+	var isVNode = __webpack_require__(18);
+	var isVText = __webpack_require__(19);
+	var isWidget = __webpack_require__(20);
+	var handleThunk = __webpack_require__(22);
 
 	module.exports = createElement;
 
@@ -1787,13 +1539,13 @@ module.exports =
 	}
 
 /***/ },
-/* 66 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isObject = __webpack_require__(59);
-	var isHook = __webpack_require__(60);
+	var isObject = __webpack_require__(24);
+	var isHook = __webpack_require__(25);
 
 	module.exports = applyProperties;
 
@@ -1888,7 +1640,7 @@ module.exports =
 	}
 
 /***/ },
-/* 67 */
+/* 32 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1979,17 +1731,17 @@ module.exports =
 	}
 
 /***/ },
-/* 68 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var applyProperties = __webpack_require__(66);
+	var applyProperties = __webpack_require__(31);
 
-	var isWidget = __webpack_require__(55);
-	var VPatch = __webpack_require__(51);
+	var isWidget = __webpack_require__(20);
+	var VPatch = __webpack_require__(16);
 
-	var updateWidget = __webpack_require__(69);
+	var updateWidget = __webpack_require__(34);
 
 	module.exports = applyPatch;
 
@@ -2136,12 +1888,12 @@ module.exports =
 	}
 
 /***/ },
-/* 69 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var isWidget = __webpack_require__(55);
+	var isWidget = __webpack_require__(20);
 
 	module.exports = updateWidget;
 
@@ -2158,34 +1910,34 @@ module.exports =
 	}
 
 /***/ },
-/* 70 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var h = __webpack_require__(71);
+	var h = __webpack_require__(36);
 
 	module.exports = h;
 
 /***/ },
-/* 71 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var isArray = __webpack_require__(50);
+	var isArray = __webpack_require__(15);
 
-	var VNode = __webpack_require__(72);
-	var VText = __webpack_require__(73);
-	var isVNode = __webpack_require__(53);
-	var isVText = __webpack_require__(54);
-	var isWidget = __webpack_require__(55);
-	var isHook = __webpack_require__(60);
-	var isVThunk = __webpack_require__(56);
+	var VNode = __webpack_require__(37);
+	var VText = __webpack_require__(38);
+	var isVNode = __webpack_require__(18);
+	var isVText = __webpack_require__(19);
+	var isWidget = __webpack_require__(20);
+	var isHook = __webpack_require__(25);
+	var isVThunk = __webpack_require__(21);
 
-	var parseTag = __webpack_require__(74);
-	var softSetHook = __webpack_require__(76);
-	var evHook = __webpack_require__(77);
+	var parseTag = __webpack_require__(39);
+	var softSetHook = __webpack_require__(41);
+	var evHook = __webpack_require__(42);
 
 	module.exports = h;
 
@@ -2297,16 +2049,16 @@ module.exports =
 	}
 
 /***/ },
-/* 72 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(52);
-	var isVNode = __webpack_require__(53);
-	var isWidget = __webpack_require__(55);
-	var isThunk = __webpack_require__(56);
-	var isVHook = __webpack_require__(60);
+	var version = __webpack_require__(17);
+	var isVNode = __webpack_require__(18);
+	var isWidget = __webpack_require__(20);
+	var isThunk = __webpack_require__(21);
+	var isVHook = __webpack_require__(25);
 
 	module.exports = VirtualNode;
 
@@ -2376,12 +2128,12 @@ module.exports =
 	VirtualNode.prototype.type = "VirtualNode";
 
 /***/ },
-/* 73 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var version = __webpack_require__(52);
+	var version = __webpack_require__(17);
 
 	module.exports = VirtualText;
 
@@ -2393,12 +2145,12 @@ module.exports =
 	VirtualText.prototype.type = "VirtualText";
 
 /***/ },
-/* 74 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var split = __webpack_require__(75);
+	var split = __webpack_require__(40);
 
 	var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 	var notClassId = /^\.|#/;
@@ -2452,7 +2204,7 @@ module.exports =
 	}
 
 /***/ },
-/* 75 */
+/* 40 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2571,7 +2323,7 @@ module.exports =
 	}();
 
 /***/ },
-/* 76 */
+/* 41 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2593,12 +2345,12 @@ module.exports =
 	};
 
 /***/ },
-/* 77 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var EvStore = __webpack_require__(78);
+	var EvStore = __webpack_require__(43);
 
 	module.exports = EvHook;
 
@@ -2625,12 +2377,12 @@ module.exports =
 	};
 
 /***/ },
-/* 78 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var OneVersionConstraint = __webpack_require__(79);
+	var OneVersionConstraint = __webpack_require__(44);
 
 	var MY_VERSION = '7';
 	OneVersionConstraint('ev-store', MY_VERSION);
@@ -2650,12 +2402,12 @@ module.exports =
 	}
 
 /***/ },
-/* 79 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Individual = __webpack_require__(80);
+	var Individual = __webpack_require__(45);
 
 	module.exports = OneVersion;
 
@@ -2673,7 +2425,7 @@ module.exports =
 	}
 
 /***/ },
-/* 80 */
+/* 45 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -2696,17 +2448,133 @@ module.exports =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 81 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
-	var createElement = __webpack_require__(65);
+	var createElement = __webpack_require__(30);
 
 	module.exports = createElement;
 
 /***/ },
-/* 82 */
+/* 47 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @constant htmlKey
+	 * @type {Symbol}
+	 */
+	const htmlKey = exports.htmlKey = Symbol('switzerland/html');
+
+	/**
+	 * @method htmlFor
+	 * @param {Object} model
+	 * @return {Object}
+	 */
+	const htmlFor = exports.htmlFor = function (model) {
+	  return model[htmlKey];
+	};
+
+	/**
+	 * @param {Function} html
+	 * @return {Function}
+	 */
+
+	exports.default = function (html) {
+
+	  return function (props) {
+	    return _extends({}, props, { [htmlKey]: html(props) });
+	  };
+	};
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	/**
+	 * @constant refs
+	 * @type {WeakMap}
+	 */
+	const refs = new WeakMap();
+
+	/**
+	 * Invoke each defined refs once the node(s) have been appended to the DOM. This is
+	 * in contract to Virtual DOM's default behaviour which invokes refs without them
+	 * being in the DOM. This of course causes issues for props that rely on a node's
+	 * presence in the DOM, such as a node's dimensions.
+	 *
+	 * @method invokeFor
+	 * @props {HTMLElement} node
+	 * @return {Array}
+	 */
+	const invokeFor = exports.invokeFor = function (node) {
+
+	    const hooks = refs.get(node) || [];
+
+	    // Iterate over each defined refs and invoke it.
+	    Array.from(hooks.keys()).forEach(function (key) {
+	        hooks.get(key)(key);
+	    });
+	};
+
+	/**
+	 * Responsible for purging all of a node's defined refs.
+	 *
+	 * @method purgeFor
+	 * @param {HTMLElement} node
+	 * @return {void}
+	 */
+	const purgeFor = exports.purgeFor = function (node) {
+	    const hooks = refs.get(node);
+	    hooks && hooks.clear(node);
+	};
+
+	/**
+	 * @param {Object} props
+	 * @return {Object}
+	 */
+
+	exports.default = function (props) {
+
+	    const hasRef = refs.has(props.node);
+	    !hasRef && refs.set(props.node, new Map());
+	    const hooks = refs.get(props.node);
+
+	    const ref = function (fn) {
+
+	        // See: https://github.com/Matt-Esch/virtual-dom/blob/master/docs/hooks.md
+	        const Hook = function () {};
+	        Hook.prototype.hook = function (node) {
+	            return hooks.set(node, fn);
+	        };
+	        return new Hook();
+	    };
+
+	    // Delete the refs if the node has been removed from the DOM.
+	    hasRef && !props.node.isConnected && refs.delete(props.node);
+
+	    return _extends({}, props, { ref });
+	};
+
+/***/ },
+/* 49 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2803,7 +2671,7 @@ module.exports =
 	};
 
 /***/ },
-/* 83 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -2812,7 +2680,7 @@ module.exports =
 	    value: true
 	});
 
-	var _once = __webpack_require__(84);
+	var _once = __webpack_require__(51);
 
 	var _once2 = _interopRequireDefault(_once);
 
@@ -2838,16 +2706,16 @@ module.exports =
 	exports.default = (0, _once2.default)(function () {
 	    return env === 'development';
 	});
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(35)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ },
-/* 84 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _arity = __webpack_require__(10);
-	var _curry1 = __webpack_require__(14);
+	var _arity = __webpack_require__(52);
+	var _curry1 = __webpack_require__(53);
 
 	/**
 	 * Accepts a function `fn` and returns a function that guards invocation of
@@ -2880,6 +2748,100 @@ module.exports =
 	    return result;
 	  });
 	});
+
+/***/ },
+/* 52 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function _arity(n, fn) {
+	  /* eslint-disable no-unused-vars */
+	  switch (n) {
+	    case 0:
+	      return function () {
+	        return fn.apply(this, arguments);
+	      };
+	    case 1:
+	      return function (a0) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 2:
+	      return function (a0, a1) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 3:
+	      return function (a0, a1, a2) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 4:
+	      return function (a0, a1, a2, a3) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 5:
+	      return function (a0, a1, a2, a3, a4) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 6:
+	      return function (a0, a1, a2, a3, a4, a5) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 7:
+	      return function (a0, a1, a2, a3, a4, a5, a6) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 8:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 9:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8) {
+	        return fn.apply(this, arguments);
+	      };
+	    case 10:
+	      return function (a0, a1, a2, a3, a4, a5, a6, a7, a8, a9) {
+	        return fn.apply(this, arguments);
+	      };
+	    default:
+	      throw new Error('First argument to _arity must be a non-negative integer no greater than ten');
+	  }
+	};
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _isPlaceholder = __webpack_require__(54);
+
+	/**
+	 * Optimized internal one-arity curry function.
+	 *
+	 * @private
+	 * @category Function
+	 * @param {Function} fn The function to curry.
+	 * @return {Function} The curried function.
+	 */
+	module.exports = function _curry1(fn) {
+	  return function f1(a) {
+	    if (arguments.length === 0 || _isPlaceholder(a)) {
+	      return f1;
+	    } else {
+	      return fn.apply(this, arguments);
+	    }
+	  };
+	};
+
+/***/ },
+/* 54 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = function _isPlaceholder(a) {
+	       return a != null && typeof a === 'object' && a['@@functional/placeholder'] === true;
+	};
 
 /***/ }
 /******/ ]);
