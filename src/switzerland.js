@@ -107,11 +107,12 @@ export const create = (name, component) => {
         [implementation.hooks[0]]() {
 
             const node = this;
+            const children = node[childrenKey] = node.innerHTML;
+
             node.shadowRoot && clearHTMLFor(node);
             const boundary = node.shadowRoot || implementation.shadowBoundary(node);
-            this[childrenKey] = node.innerHTML;
 
-            component({ node, render: node.render.bind(node), children: this[childrenKey] }).then(props => {
+            component({ node, render: node.render.bind(node), children }).then(props => {
 
                 const tree = htmlFor(props);
                 const root = createElement(tree);
@@ -168,6 +169,7 @@ export const create = (name, component) => {
         render() {
 
             const instance = this[registryKey];
+            const children = this[childrenKey];
 
             if (!instance || !instance.node) {
 
@@ -183,7 +185,7 @@ export const create = (name, component) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            component({ node, render: node.render.bind(node), children: this[childrenKey] }).then(props => {
+            component({ node, render: node.render.bind(node), children }).then(props => {
 
                 const tree = htmlFor(props);
 
