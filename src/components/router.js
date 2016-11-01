@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
  * @type {Object}
  */
 const defaultOptions = {
+    async: true,
     html5history: true
 };
 
