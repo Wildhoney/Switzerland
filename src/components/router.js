@@ -1,8 +1,8 @@
 import { Router } from 'director';
 import * as R from 'ramda';
+import PropTypes from 'prop-types';
 import { create, pipe, element } from '../switzerland';
 import { html, attrs, validate, once } from '../middleware';
-import PropTypes from 'prop-types';
 
 /**
  * @constant defaultOptions
@@ -64,7 +64,11 @@ export default R.once((routes, options = defaultOptions) => {
     });
 
     create('router-link', pipe(attrs, styles, validate(propTypes), html(props => {
-        return <a onclick={() => router.setRoute(props.attrs.to)}>{props.children}</a>;
+
+        return element('a', {
+            onclick: () => router.setRoute(props.attrs.to)
+        }, props.children);
+
     })));
 
     // create('router-view', html(() => {

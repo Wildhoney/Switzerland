@@ -14,6 +14,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 loaders: ['envify-loader', 'babel-loader', 'virtual-dom?jsx=element']
+            },
+            {
+                test: /\.json$/,
+                loaders: ['json-loader']
             }
         ]
     }
