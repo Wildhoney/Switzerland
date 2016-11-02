@@ -20,7 +20,7 @@ const includeMap = [
  */
 export const options = {
     DEFAULT: 1,
-    AWAIT: 2
+    ASYNC: 2
 };
 
 /**
@@ -131,7 +131,7 @@ export default (files, flags = options.DEFAULT) => {
 
         // Attach the documents using the `once` middleware.
         const attached = attachFiles({ ...props, files: Array.isArray(files) ? files : [files] });
-        return flags & options.AWAIT ? attached.then(() => props) : props;
+        return flags & options.ASYNC ?  props : attached.then(() => props);
 
     };
 
