@@ -34,6 +34,7 @@ export const hasResolvedTree = props => {
                 // Tree has been resolved.
                 node.removeEventListener(awaitEventName, resolved);
                 resolve(waitFor);
+                props.node.classList.add('loaded');
 
             })();
 
