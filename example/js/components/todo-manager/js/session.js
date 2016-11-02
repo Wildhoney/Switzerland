@@ -21,15 +21,11 @@ export const init = props => {
     getStorage().forEach(addSession);
 
     const model = lastSession();
-
-    if (model) {
-        changeSession(model);
-        return props;
-    }
+    const url = model ? `/retrieve/${model.id}` : '/create';
 
     return new Promise(resolve => {
 
-        get('/create').then(response => {
+        get(url).then(response => {
 
             const id = response.data.id;
             const qr = response.data.image;
@@ -37,7 +33,7 @@ export const init = props => {
 
             addSession(model);
             changeSession(model);
-            appendStorage(model);
+            !model && appendStorage(model);
 
             resolve({ ...props, qr });
 

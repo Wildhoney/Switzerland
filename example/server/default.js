@@ -19,12 +19,20 @@ app.get('/*',(req, res, next) => {
 app.use(express.static(__dirname + '/example'));
 app.use(cors());
 
+const qrFor = id => {
+    return qr.imageSync(`${domain}/#/${id}`, { type: 'svg' });
+};
+
 app.get('/create', (request, response) => {
-
     const id = generate();
-    const image = qr.imageSync(`${domain}/#/${id}`, { type: 'svg' });
+    const image = qrFor(id);
     response.send({ id, image });
+});
 
+app.get('/retrieve/:id', (request, response) => {
+    const id = request.params.id;
+    const image = qrFor(id);
+    response.send({ id, image });
 });
 
 server.listen(process.env.PORT || 5000);

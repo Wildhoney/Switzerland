@@ -84,7 +84,7 @@ create('todo-manage', pipe(redux(store), attrs, include(path('../css/todo-manage
 
                             return (
                                 <option value={model.id} selected={active === model.id}>
-                                    Updated: {moment(model.updated).format('llll')} {model.id}
+                                    Updated: {moment(model.updated).format('llll')}
                                 </option>
                             );
 
