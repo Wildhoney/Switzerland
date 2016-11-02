@@ -4680,7 +4680,7 @@ module.exports =
 	 */
 	const options = exports.options = {
 	    DEFAULT: 1,
-	    AWAIT: 2
+	    ASYNC: 2
 	};
 
 	/**
@@ -4802,9 +4802,9 @@ module.exports =
 
 	        // Attach the documents using the `once` middleware.
 	        const attached = attachFiles(_extends({}, props, { files: Array.isArray(files) ? files : [files] }));
-	        return flags & options.AWAIT ? attached.then(function () {
+	        return flags & options.ASYNC ? props : attached.then(function () {
 	            return props;
-	        }) : props;
+	        });
 	    };
 	};
 
