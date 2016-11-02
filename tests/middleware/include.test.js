@@ -14,6 +14,18 @@ test.beforeEach(t => {
 
 });
 
+test('Should be able to yield a promise by default;', t => {
+
+    const { node, mockAdapter } = t.context;
+
+    const stylesheet = '* { border: 1px solid green; }';
+    mockAdapter.onGet('/first.css').reply(200, stylesheet);
+
+    t.falsy(include(['/first.css'], options.ASYNC)({ node }) instanceof Promise);
+    t.true(include(['/first.css'])({ node }) instanceof Promise);
+
+});
+
 test('Should be able to include external documents', t => {
 
     const { node, mockAdapter } = t.context;
@@ -30,7 +42,7 @@ test('Should be able to include external documents', t => {
         mockAdapter.onGet('/fourth.css').reply(404);
 
         const files = ['/first.css', '/second.css', '/components/css/third.css', '/fourth.css'];
-        const props = include([...files])({ node });
+        const props = include([...files], options.ASYNC)({ node });
 
         t.deepEqual(props, { node });
         t.true(node.classList.contains('resolving'));
@@ -48,17 +60,5 @@ test('Should be able to include external documents', t => {
         });
 
     });
-
-});
-
-test('Should be able to yield a promise when using options.AWAIT', t => {
-
-    const { node, mockAdapter } = t.context;
-
-    const stylesheet = '* { border: 1px solid green; }';
-    mockAdapter.onGet('/first.css').reply(200, stylesheet);
-
-    t.falsy(include(['/first.css'])({ node }) instanceof Promise);
-    t.true(include(['/first.css'], options.AWAIT)({ node }) instanceof Promise);
 
 });
