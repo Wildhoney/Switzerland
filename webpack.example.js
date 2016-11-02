@@ -2,8 +2,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        './example/js/components/iss-position/build': ['./example/js/components/iss-position/js/default.js'],
-        './example/js/components/iss-position/worker': ['./example/js/components/iss-position/js/worker.js']
+        './example/js/components/todo-manager/js/build': ['./example/js/components/todo-manager/js/default.js']
     },
     output: {
         filename: '[name].js',
@@ -13,7 +12,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loaders: ['envify-loader', 'babel-loader', 'virtual-dom?jsx=element']
+                loaders: ['envify-loader', 'babel-loader']
             },
             {
                 test: /\.json$/,
