@@ -1,0 +1,55 @@
+:host {
+    display: block;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #B8B8BF;
+    font-size: 10px;
+    padding: 5px 0;
+    font-family: Arial, Tahoma, Helvetica, sans-serif;
+    display: block;
+    text-transform: uppercase;
+}
+
+todo-add {
+    height: 50px;
+    overflow: hidden;
+}
+
+todo-list {
+    height: calc(100% - 50px - 40px);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+todo-manage {
+    height: 40px;
+    overflow: hidden;
+}
+
+section.todo-manager {
+    display: flex;
+    width: 45vw;
+    max-height: 65vh;
+    background-color: white;
+}
+
+div.container {
+    width: 100%;
+    box-shadow: 0 0 25px rgba(0, 0, 0, .075);
+}
+
+@media (max-width: 768px) {
+
+    section.todo-manager {
+        height: 100vh;
+        max-height: 100vh;
+        width: 100vw;
+    }
+}

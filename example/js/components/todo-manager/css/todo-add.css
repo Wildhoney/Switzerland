@@ -1,0 +1,54 @@
+:host {
+    all: initial;
+    display: block;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+form {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+input[type="text"] {
+    border: 0;
+    outline: none;
+    flex: 1;
+    padding: 0 20px;
+    font-size: 12px;
+    text-overflow: ellipsis;
+}
+
+button {
+    padding: 0 20px;
+    width: 120px;
+    border: 0;
+    white-space: nowrap;
+    background-color: white;
+    border-left: 1px solid rgba(0, 0, 0, .1);
+    color: black;
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: color .25s, background-color .25s;
+}
+
+button:disabled {
+    color: rgba(0, 0, 0, .25);
+    cursor: not-allowed;
+}
+
+button:active {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, .05);
+}
+
+button:not(:disabled):hover {
+    background-color: rgba(0, 0, 0, .025);
+}
