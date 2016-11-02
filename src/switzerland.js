@@ -1,4 +1,5 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
+import { h } from 'virtual-dom';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { hasResolvedTree, awaitEventName } from './middleware/await';
@@ -103,7 +104,7 @@ export const create = (name, component) => {
             node.shadowRoot && clearHTMLFor(node);
             const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-            component({ node, render: node.render.bind(node) }).then(props => {
+            Promise.resolve(component({ node, render: node.render.bind(node) })).then(props => {
 
                 const tree = htmlFor(props);
                 const root = createElement(tree);
@@ -173,7 +174,7 @@ export const create = (name, component) => {
 
             const { tree: currentTree, root: currentRoot, node } = instance;
 
-            component({ node, render: node.render.bind(node) }).then(props => {
+            Promise.resolve(component({ node, render: node.render.bind(node) })).then(props => {
 
                 const tree = htmlFor(props);
 
@@ -202,4 +203,15 @@ export const create = (name, component) => {
 
 export { default as path } from './helpers/path';
 export { pipe, compose } from './helpers/composition';
-export { h as element } from 'virtual-dom';
+
+/**
+ * @constant element
+ * @param {HTMLElement} el
+ * @param {Object} props
+ * @param {Array} children
+ * @return {Object}
+ */
+export const element = (el, props, ...children) => {
+    return h(el, props, children);
+};
+
