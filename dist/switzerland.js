@@ -92,13 +92,6 @@ module.exports =
 
 	var _virtualDom = __webpack_require__(12);
 
-	Object.defineProperty(exports, 'element', {
-	    enumerable: true,
-	    get: function () {
-	        return _virtualDom.h;
-	    }
-	});
-
 	var _html = __webpack_require__(47);
 
 	var _refs = __webpack_require__(48);
@@ -229,12 +222,10 @@ module.exports =
 	            node.shadowRoot && clearHTMLFor(node);
 	            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-	            component({ node, render: node.render.bind(node) }).then(function (props) {
+	            Promise.resolve(component({ node, render: node.render.bind(node) })).then(function (props) {
 
 	                const tree = (0, _html.htmlFor)(props);
 	                const root = (0, _virtualDom.create)(tree);
-
-	                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
 	                boundary.insertBefore(root, boundary.firstChild);
 
 	                // Invoke any ref callbacks defined in the component's `render` method.
@@ -299,7 +290,7 @@ module.exports =
 	                  node = instance.node;
 
 
-	            component({ node, render: node.render.bind(node) }).then(function (props) {
+	            Promise.resolve(component({ node, render: node.render.bind(node) })).then(function (props) {
 
 	                const tree = (0, _html.htmlFor)(props);
 
@@ -320,6 +311,17 @@ module.exports =
 	        }
 
 	    });
+	};
+
+	/**
+	 * @constant element
+	 * @param {HTMLElement} el
+	 * @param {Object} props
+	 * @param {Array} children
+	 * @return {Object}
+	 */
+	const element = exports.element = function (el, props, ...children) {
+	    return (0, _virtualDom.h)(el, props, children);
 	};
 
 /***/ },
@@ -2624,6 +2626,7 @@ module.exports =
 	                // Tree has been resolved.
 	                node.removeEventListener(awaitEventName, resolved);
 	                resolve(waitFor);
+	                props.node.classList.add('loaded');
 	            }();
 	        });
 
