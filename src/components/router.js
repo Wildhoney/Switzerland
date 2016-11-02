@@ -2,7 +2,7 @@ import { Router } from 'director';
 import * as R from 'ramda';
 import PropTypes from 'prop-types';
 import { create, pipe, element } from '../switzerland';
-import { html, attrs, validate, once } from '../middleware';
+import { html, attrs, validate, once, transclude } from '../middleware';
 
 /**
  * @constant defaultOptions
@@ -63,7 +63,7 @@ export default R.once((routes, options = defaultOptions) => {
 
     });
 
-    create('router-link', pipe(attrs, styles, validate(propTypes), html(props => {
+    create('router-link', pipe(attrs, transclude, styles, validate(propTypes), html(props => {
 
         return element('a', {
             onclick: () => router.setRoute(props.attrs.to)

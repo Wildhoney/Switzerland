@@ -107,8 +107,6 @@ export const create = (name, component) => {
 
                 const tree = htmlFor(props);
                 const root = createElement(tree);
-
-                // See: https://github.com/Matt-Esch/virtual-dom/pull/413
                 boundary.insertBefore(root, boundary.firstChild);
 
                 // Invoke any ref callbacks defined in the component's `render` method.
