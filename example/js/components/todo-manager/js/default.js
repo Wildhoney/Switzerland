@@ -1,18 +1,18 @@
 import { always } from 'ramda';
 import moment from 'moment';
 import { create, element, pipe, path } from '../../../../../src/switzerland';
-import { html, state, redux, include, attrs, await as waitFor } from '../../../../../src/middleware';
-import { store, addTodo, removeTodo, toggleTodo } from './store';
+import { html, state, once, redux, include, attrs, await as waitFor } from '../../../../../src/middleware';
+import { store, addTodo, removeTodo, toggleTodo, setSession } from './store';
 import { init } from './session';
 
-create('todo-manager', pipe(init, waitFor('todo-add', 'todo-list'), include(path('../css/default.css')), html(props => {
+create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), include(path('../css/default.css')), html(props => {
 
     return (
         <section className="todo-manager">
             <div className="container">
                 <todo-add />
                 <todo-list />
-                <todo-manage dataset={{ qr: props.qr }} />
+                <todo-manage />
             </div>
         </section>
     );
@@ -67,10 +67,16 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
 
 })));
 
-create('todo-manage', pipe(redux(store), attrs, include(path('../css/todo-manage.css')), html(props => {
+create('todo-manage', pipe(once(init), redux(store), attrs, include(path('../css/todo-manage.css')), html(props => {
 
     const { sessions, active } = props.redux;
-    const src = `data:image/svg+xml;charset=utf-8,${props.attrs.qr}`;
+    const src = `data:image/svg+xml;charset=utf-8,${active.image}`;
+
+    const handleChange = event => {
+        const index = event.target.selectedIndex;
+        const model = sessions[index];
+        setSession(model);
+    };
 
     return (
         <footer>
@@ -78,7 +84,7 @@ create('todo-manage', pipe(redux(store), attrs, include(path('../css/todo-manage
             <form>
 
                 {sessions.length ? (
-                    <select>
+                    <select onchange={handleChange}>
 
                         {sessions.map(model => {
 

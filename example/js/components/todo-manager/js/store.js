@@ -4,22 +4,24 @@ import { generate } from 'shortid';
 
 const initialState = {
     todos: [],
-    active: null,
+    active: {},
     sessions: []
 };
 
 const ADD_TODO = Symbol('todo/add');
 const REMOVE_TODO = Symbol('todo/remove');
+const CLEAR_TODOS = Symbol('todo/clear');
 const TODO_TOGGLE = Symbol('todo/toggle');
 const SESSION_ADD = Symbol('session/add');
-const SESSION_CHANGE = Symbol('session/change');
+const SESSION_SET = Symbol('session/change');
 
 function todos(state = initialState, action) {
 
     switch (action.type) {
 
         case ADD_TODO:
-            const model = { id: generate(), value: action.item, done: false };
+            const { id = generate(), value = action.item, done = false } = action.item;
+            const model = { id, value, done };
             return { ...state, todos: [...state.todos, model] };
 
         case REMOVE_TODO:
@@ -33,11 +35,14 @@ function todos(state = initialState, action) {
                 ...state.todos.slice(index + 1)
             ]};
 
+        case CLEAR_TODOS:
+            return { ...state, todos: [] };
+
         case SESSION_ADD:
             return { ...state, sessions: [...state.sessions, action.item] };
 
-        case SESSION_CHANGE:
-            return { ...state, active: action.item.id };
+        case SESSION_SET:
+            return { ...state, active: action.item };
 
 
         default:
@@ -60,10 +65,14 @@ export const toggleTodo = item => {
     store.dispatch({ type: TODO_TOGGLE, item });
 };
 
+export const clearTodos = () => {
+    store.dispatch({ type: CLEAR_TODOS });
+};
+
 export const addSession = item => {
     store.dispatch({ type: SESSION_ADD, item });
 };
 
-export const changeSession = item => {
-    store.dispatch({ type: SESSION_CHANGE, item });
+export const setSession = item => {
+    store.dispatch({ type: SESSION_SET, item });
 };
