@@ -13,8 +13,8 @@
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
     "start": "babel example/server/default.js | node",
-    "prepublish": "mv dist/middleware.js .",
-    "postpublish": "mv middleware.js dist/"
+    "prepublish": "mv dist/middleware.js . && mv dist/components.js .",
+    "postpublish": "mv middleware.js dist/ && mv components.js dist/"
   },
   "repository": {
     "type": "git",
