@@ -716,22 +716,18 @@ module.exports =
 	                     * @constant resolved
 	                     * @type {Promise}
 	                     */
-	                    node.resolved = new Promise(function (resolve) {
+	                    node.resolved = _asyncToGenerator(function* () {
 
 	                        // Setup listener for children being resolved.
-	                        (0, _await.hasResolvedTree)(props).then(function () {
+	                        yield (0, _await.treeResolved)(props);
 
-	                            // Emit the event that the node has been resolved.
-	                            node.dispatchEvent(new window.CustomEvent(_await.awaitEventName, {
-	                                detail: node,
-	                                bubbles: true,
-	                                composed: true
-	                            }));
-
-	                            // Tree has been entirely resolved!
-	                            resolve();
-	                        });
-	                    });
+	                        // Emit the event that the node has been resolved.
+	                        node.dispatchEvent(new window.CustomEvent(_await.awaitEventName, {
+	                            detail: node,
+	                            bubbles: true,
+	                            composed: true
+	                        }));
+	                    })();
 
 	                    return { tree, root, node };
 	                } catch (err) {
@@ -763,7 +759,7 @@ module.exports =
 	            var _this2 = this;
 
 	            this[queueKey].process(function () {
-	                var _ref2 = _asyncToGenerator(function* (instance) {
+	                var _ref3 = _asyncToGenerator(function* (instance) {
 
 	                    // Gather the props from the previous rendering of the component.
 	                    const currentTree = instance.tree,
@@ -804,7 +800,7 @@ module.exports =
 	                });
 
 	                return function (_x) {
-	                    return _ref2.apply(this, arguments);
+	                    return _ref3.apply(this, arguments);
 	                };
 	            }());
 	        }
@@ -3649,11 +3645,11 @@ module.exports =
 	const awaitEventName = exports.awaitEventName = 'switzerland/node-resolved';
 
 	/**
-	 * @method hasResolvedTree
+	 * @method treeResolved
 	 * @param {Object} props
 	 * @return {Promise}
 	 */
-	const hasResolvedTree = exports.hasResolvedTree = function (props) {
+	const treeResolved = exports.treeResolved = function (props) {
 
 	    const waitFor = new Map();
 	    const node = props.node;
@@ -3731,7 +3727,7 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.timeEnd = exports.time = exports.transclude = exports.await = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.options = undefined;
+	exports.delay = exports.timeEnd = exports.time = exports.transclude = exports.await = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.options = undefined;
 
 	var _html = __webpack_require__(55);
 
@@ -3871,6 +3867,15 @@ module.exports =
 	  enumerable: true,
 	  get: function () {
 	    return _timer.timeEnd;
+	  }
+	});
+
+	var _delay = __webpack_require__(168);
+
+	Object.defineProperty(exports, 'delay', {
+	  enumerable: true,
+	  get: function () {
+	    return _interopRequireDefault(_delay).default;
 	  }
 	});
 
@@ -20081,6 +20086,32 @@ module.exports =
 	'use strict';
 
 	module.exports = 0;
+
+/***/ },
+/* 168 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	/**
+	 * @method timeEnd
+	 * @param {Number} by
+	 * @return {Object}
+	 */
+	exports.default = function (by) {
+
+	    return function (props) {
+	        return new Promise(function (resolve) {
+	            return setTimeout(function () {
+	                return resolve(props);
+	            }, by);
+	        });
+	    };
+	};
 
 /***/ }
 /******/ ]);
