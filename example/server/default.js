@@ -13,7 +13,7 @@ const app = express();
 const server = http.createServer(app);
 const isHeroku = 'HEROKU_APP_NAME' in process.env;
 const domain = isHeroku ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com/` : process.env.TODO_URL;
-const client = redis.createClient();
+const client = redis.createClient(process.env.REDIS_URL);
 const emitters = new Map();
 
 app.get('/*',(req, res, next) => {
