@@ -1,9 +1,10 @@
 import { always } from 'ramda';
 import moment from 'moment';
-import { post } from 'axios';
+import { generate } from 'shortid';
+import axios from 'axios';
 import { create, element, pipe, path } from '../../../../../src/switzerland';
 import { html, state, once, redux, include, attrs, await as waitFor } from '../../../../../src/middleware';
-import { store, addTodo, removeTodo, toggleTodo, setSession } from './store';
+import { store, addTodo, removeTodo, editTodo, setSession } from './store';
 import { init } from './session';
 
 create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), include(path('../css/default.css')), html(props => {
@@ -22,21 +23,16 @@ create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), include(path('../c
 
 create('todo-add', pipe(redux(store, always(false)), state({ value: '' }), include(path('../css/todo-add.css')), html(props => {
 
-    const handleSubmit = event => {
-
+    const handleAdd = event => {
         event.preventDefault();
-        const text = props.state.value;
-
-        post(`/session/${props.redux.active.id}/task`, { text }).then(model => {
-            addTodo(model.data);
-        });
-
+        const model = { id: generate(), value: props.state.value };
+        addTodo(model);
+        axios.post(`/session/${props.redux.active.id}/task`, model);
         props.setState({ value: '' });
-
     };
 
     return (
-        <form onsubmit={handleSubmit}>
+        <form onsubmit={handleAdd}>
 
             <input
                 type="text"
@@ -56,6 +52,11 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
 
     const byDate = (a, b) => a.added > b.added;
 
+    const handleRemove = model => {
+        removeTodo(model);
+        axios.delete(`/session/${props.redux.active.id}/task/${model.id}`);
+    };
+
     return (
         <ul>
 
@@ -64,10 +65,10 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
                 return (
                     <li
                         key={item.id}
-                        className={item.done ? 'done' : ''}
+                        className={`${item.done ? 'done' : ''} ${item.synced ? 'synced' : ''}`}
                         >
-                        <p onpointerup={() => toggleTodo(item)}>{item.value}</p>
-                        <button onpointerup={() => removeTodo(item)}>Delete</button>
+                        <p onpointerup={() => editTodo({ ...item, done: !item.done })}>{item.value}</p>
+                        <button onpointerup={() => handleRemove(item)}>Delete</button>
                     </li>
                 );
             }) : <li className="none"><p>You haven't added any todos yet.</p></li>}

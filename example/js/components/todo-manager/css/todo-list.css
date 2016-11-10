@@ -76,8 +76,12 @@ ul li.done p {
     color: green;
 }
 
-/*ul li:not(.none):not(.synced) {*/
-    /*background: url('../images/syncing.svg') no-repeat 10px center;*/
-    /*background-size: 20px;*/
-    /*padding-left: 20px;*/
-/*}*/
+ul li:not(.none):not(.synced) {
+    background: url('../images/syncing.svg') no-repeat 20px center;
+    background-size: 20px;
+    padding-left: 30px;
+}
+
+ul li:not(.none):not(.synced) p {
+    font-style: italic;
+}

@@ -66,22 +66,30 @@ app.get('/session/:sessionId', initialise);
 app.post('/session/:sessionId/task', (request, response) => {
 
     const { sessionId } = request.params;
-    const { text: value } = request.body;
-    const taskId = generate();
-    const model = { id: taskId, value, added: Date.now(), done: false };
+    const { id: taskId, value } = request.body;
+    const model = { id: taskId, value, added: Date.now(), done: false, synced: true };
 
     client.sadd(sessionId, JSON.stringify(model));
 
+    response.send({ success: true });
+    emitters.get(sessionId).send({ type: 'add', model });
+
+});
+app.delete('/session/:sessionId/task/:taskId', (request, response) => {
+
+    const { sessionId, taskId } = request.params;
+
     fetch(sessionId).then(models => {
-        response.send(JSON.stringify(models.find(model => model.id === taskId)));
-        emitters.get(sessionId).send({ type: 'add', model });
+
+        const model = models.find(model => model.id === taskId);
+
+        client.srem(sessionId, [JSON.stringify(model)]);
+
+        response.send({ success: true });
+        emitters.get(sessionId).send({ type: 'delete', model });
+
     });
 
 });
-// app.delete('/session/:sessionId/task/:taskId', (request, response) => {
-//
-//
-//
-// });
 
 server.listen(process.env.PORT || 5000);

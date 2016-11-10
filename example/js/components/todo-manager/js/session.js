@@ -1,6 +1,46 @@
 import axios from 'axios';
 import { dissoc, uniqBy } from 'ramda';
-import { addSession, setSession, addTodo, clearTodos, store } from './store';
+import { addSession, setSession, addTodo, editTodo, removeTodo, clearTodos, store } from './store';
+
+/**
+ * @method setupEventSource
+ * @param {Object} model
+ * @return {void}
+ */
+const setupEventSource = model => {
+
+    /**
+     * @method findTodo
+     * @param {Object} model
+     * @return {Object|null}
+     */
+    const findTodo = model => {
+        const id = model.id;
+        return store.getState().todos.find(model => model.id === id);
+    };
+
+    const eventSource = new EventSource(`/retrieve/${model.id}/stream`);
+    eventSource.addEventListener('message', event => {
+
+        const item = JSON.parse(event.data);
+        const model = item.model && findTodo(item.model);
+
+        switch (item.type) {
+
+            case 'add':
+                model ? editTodo({ ...model, synced: true }) : addTodo(item.model);
+                break;
+
+            case 'delete':
+                model && removeTodo(model);
+                break;
+
+
+        }
+
+    });
+
+};
 
 /**
  * @method load
@@ -26,22 +66,7 @@ export const load = (model = null) => {
             model.todos.forEach(addTodo);
 
             resolve(model);
-
-            const eventSource = new EventSource(`/retrieve/${model.id}/stream`);
-            eventSource.addEventListener('message', event => {
-
-                const item = JSON.parse(event.data);
-
-                switch (item.type) {
-
-                    case 'add':
-                        const exists = !!store.getState().todos.find(model => model.id === item.model.id);
-                        !exists && addTodo(item.model);
-                        break;
-
-                }
-
-            });
+            setupEventSource(model);
 
         });
 
