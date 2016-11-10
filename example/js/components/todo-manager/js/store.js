@@ -31,7 +31,7 @@ function todos(state = initialState, action) {
             const index = state.todos.findIndex(model => model.id === action.item.id);
             return { ...state, todos: [
                 ...state.todos.slice(0, index),
-                { value: action.item.value, done: !action.item.done },
+                { ...action.item, done: !action.item.done },
                 ...state.todos.slice(index + 1)
             ]};
 
