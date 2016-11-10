@@ -1,6 +1,6 @@
-import { get } from 'axios';
+import axios from 'axios';
 import { dissoc, uniqBy } from 'ramda';
-import { addSession, setSession, addTodo, clearTodos } from './store';
+import { addSession, setSession, addTodo, clearTodos, store } from './store';
 
 /**
  * @method load
@@ -9,26 +9,37 @@ import { addSession, setSession, addTodo, clearTodos } from './store';
  */
 export const load = (model = null) => {
 
-    const url = model ? `/retrieve/${model.id}` : '/create';
+    const url = model ? `/session/${model.id}` : '/session';
+    const method = model ? 'get' : 'post';
 
     return new Promise(resolve => {
 
-        get(url).then(response => {
+        axios[method](url).then(response => {
 
             const model = response.data;
 
-            saveSession(dissoc('image', model));
+            saveSession(dissoc('image', dissoc('todos', model)));
             fromStorage().forEach(addSession);
             setSession(model);
+
+            // Add the persisted todos if we received any.
+            model.todos.forEach(addTodo);
 
             resolve(model);
 
             const eventSource = new EventSource(`/retrieve/${model.id}/stream`);
             eventSource.addEventListener('message', event => {
 
-                const todos = JSON.parse(event.data);
-                clearTodos();
-                todos.forEach(addTodo);
+                const item = JSON.parse(event.data);
+
+                switch (item.type) {
+
+                    case 'add':
+                        const exists = !!store.getState().todos.find(model => model.id === item.model.id);
+                        !exists && addTodo(item.model);
+                        break;
+
+                }
 
             });
 

@@ -1,5 +1,6 @@
 import { always } from 'ramda';
 import moment from 'moment';
+import { post } from 'axios';
 import { create, element, pipe, path } from '../../../../../src/switzerland';
 import { html, state, once, redux, include, attrs, await as waitFor } from '../../../../../src/middleware';
 import { store, addTodo, removeTodo, toggleTodo, setSession } from './store';
@@ -22,9 +23,16 @@ create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), include(path('../c
 create('todo-add', pipe(redux(store, always(false)), state({ value: '' }), include(path('../css/todo-add.css')), html(props => {
 
     const handleSubmit = event => {
+
         event.preventDefault();
-        addTodo(props.state.value);
+        const text = props.state.value;
+
+        post(`/session/${props.redux.active.id}/task`, { text }).then(model => {
+            addTodo(model.data);
+        });
+
         props.setState({ value: '' });
+
     };
 
     return (
@@ -46,15 +54,17 @@ create('todo-add', pipe(redux(store, always(false)), state({ value: '' }), inclu
 
 create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), html(props => {
 
+    const byDate = (a, b) => a.added > b.added;
+
     return (
         <ul>
 
-            {props.redux.todos.length ? props.redux.todos.map(item => {
+            {props.redux.todos.sort(byDate).length ? props.redux.todos.map(item => {
 
                 return (
                     <li
                         key={item.id}
-                        className={item.done ? 'done': ''}
+                        className={item.done ? 'done' : ''}
                         >
                         <p onpointerup={() => toggleTodo(item)}>{item.value}</p>
                         <button onpointerup={() => removeTodo(item)}>Delete</button>

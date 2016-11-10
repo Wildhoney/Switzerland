@@ -75,3 +75,9 @@ ul li.done p {
     text-decoration: line-through;
     color: green;
 }
+
+/*ul li:not(.none):not(.synced) {*/
+    /*background: url('../images/syncing.svg') no-repeat 10px center;*/
+    /*background-size: 20px;*/
+    /*padding-left: 20px;*/
+/*}*/

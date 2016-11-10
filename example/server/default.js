@@ -2,7 +2,9 @@ import { basename } from 'path';
 import { existsSync } from 'fs';
 import http from 'http';
 import cors from 'cors';
+import bodyParser from 'body-parser';
 import express from 'express';
+import redis from 'redis';
 import SSE from 'express-sse';
 import { generate } from 'shortid';
 import qr from 'qr-image';
@@ -11,6 +13,8 @@ const app = express();
 const server = http.createServer(app);
 const isHeroku = 'HEROKU_APP_NAME' in process.env;
 const domain = isHeroku ? `https://${process.env.HEROKU_APP_NAME}.herokuapp.com/` : process.env.TODO_URL;
+const client = redis.createClient();
+const emitters = new Map();
 
 app.get('/*',(req, res, next) => {
     res.set('Service-Worker-Allowed', '/');
@@ -18,26 +22,66 @@ app.get('/*',(req, res, next) => {
 });
 
 app.use(express.static(__dirname + '/example'));
+app.use(bodyParser.json());
 app.use(cors());
 
-const initialise = (request, response) => {
+const fetch = id => {
 
-    const id = 'id' in request.params ? request.params.id : generate();
-    const image = qr.imageSync(`${domain}/#/${id}`, { type: 'svg' });
-    const todos = [
-        { id: 1, value: 'example #1', done: false },
-        { id: 2, value: 'example #2', done: true }
-    ];
+    return new Promise(resolve => {
 
-    const sse = new SSE([todos]);
-    app.get(`/retrieve/${id}/stream`, sse.init);
+        client.smembers(id, (err, data) => {
+            const models = data.map(model => JSON.parse(model));
+            resolve(models);
+        });
 
-    response.send({ id, date: Date.now(), image });
-    response.end();
+    });
 
 };
 
-app.get('/create', initialise);
-app.get('/retrieve/:id', initialise);
+const initialise = (request, response) => {
+
+    const sessionId = 'sessionId' in request.params ? request.params.sessionId : generate();
+    const image = qr.imageSync(`${domain}/#/${sessionId}`, { type: 'svg' });
+
+    fetch(sessionId).then(todos => {
+
+        if (!emitters.get(sessionId)) {
+
+            const sse = new SSE();
+            emitters.set(sessionId, sse);
+
+            app.get(`/retrieve/${sessionId}/stream`, sse.init);
+
+        }
+
+        response.send({ id: sessionId, date: Date.now(), image, todos });
+        response.end();
+
+    });
+
+};
+
+app.post('/session', initialise);
+app.get('/session/:sessionId', initialise);
+app.post('/session/:sessionId/task', (request, response) => {
+
+    const { sessionId } = request.params;
+    const { text: value } = request.body;
+    const taskId = generate();
+    const model = { id: taskId, value, added: Date.now(), done: false };
+
+    client.sadd(sessionId, JSON.stringify(model));
+
+    fetch(sessionId).then(models => {
+        response.send(JSON.stringify(models.find(model => model.id === taskId)));
+        emitters.get(sessionId).send({ type: 'add', model });
+    });
+
+});
+// app.delete('/session/:sessionId/task/:taskId', (request, response) => {
+//
+//
+//
+// });
 
 server.listen(process.env.PORT || 5000);
