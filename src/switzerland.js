@@ -1,56 +1,23 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
 import { h } from 'virtual-dom';
+import OrderlyQueue from 'orderly-queue';
+import implementation from './helpers/implementation';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { hasResolvedTree, awaitEventName } from './middleware/await';
-import isDevelopment from './helpers/env';
+import { error } from './helpers/messages';
 
 /**
- * @constant registryKey
+ * @constant queueKey
  * @type {Symbol}
  */
-export const registryKey = Symbol('switzerland/registry');
+const queueKey = Symbol('switzerland/queue');
 
 /**
- * @method message
- * @param {String} text
- * @param {Function} fn
- * @return {void}
+ * @constant lastPropsKey
+ * @type {Symbol}
  */
-const message = (text, fn) => isDevelopment() && fn(`Switzerland \uD83C\uDDE8\uD83C\uDDED ${text}.`);
-
-/**
- * @method error
- * @param {String} text
- * @return {void}
- */
-export const error = text => message(text, console.error);
-
-/**
- * @method warning
- * @param {String} text
- * @return {void}
- */
-export const warning = text => message(text, console.warn);
-
-/**
- * @constant implementations
- * @type {Object}
- */
-const implementations = {
-
-    v0: {
-        hooks: ['attachedCallback', 'detachedCallback'],
-        customElement: (tag, extend, component) => document.registerElement(tag, component),
-        shadowBoundary: node => node.createShadowRoot()
-    },
-    v1: {
-        hooks: ['connectedCallback', 'disconnectedCallback'],
-        customElement: (tag, extend, component) => window.customElements.define(tag, component),
-        shadowBoundary: node => node.attachShadow({ mode: 'open' })
-    }
-
-};
+export const lastPropsKey = Symbol('switzerland/last-props');
 
 /**
  * @method clearHTMLFor
@@ -67,32 +34,13 @@ const clearHTMLFor = node => {
  * @param {Function} component
  * @return {void}
  */
-export const create = (name, component) => {
-
-    const [ tag, extend ] = name.split('/');
-    const Prototype = extend ? Object.getPrototypeOf(extend) : window.HTMLElement;
-
-    /**
-     * Determines whether we use the v0 or v1 implementation of Custom Elements.
-     *
-     * @constant implementation
-     * @type {Object}
-     */
-    const implementation = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+export function create(name, component) {
 
     /**
      * @constant component
      * @type {Object}
      */
-    implementation.customElement(tag, extend, class extends Prototype {
-
-        /**
-         * @constructor
-         */
-        constructor() {
-            super();
-            this[registryKey] = {};
-        }
+    implementation.customElement(name, class extends window.HTMLElement {
 
         /**
          * @method connectedCallback
@@ -100,41 +48,64 @@ export const create = (name, component) => {
          */
         [implementation.hooks[0]]() {
 
-            const node = this;
-            node.shadowRoot && clearHTMLFor(node);
-            const boundary = node.shadowRoot || implementation.shadowBoundary(node);
+            const queue = this[queueKey] = new OrderlyQueue({ value: '' });
 
-            Promise.resolve(component({ node, render: node.render.bind(node) })).then(props => {
+            queue.process(async () => {
 
-                const tree = htmlFor(props);
-                const root = createElement(tree);
-                boundary.insertBefore(root, boundary.firstChild);
+                // Setup the shadow boundary for the current node.
+                const node = this;
+                node.shadowRoot && clearHTMLFor(node);
+                const boundary = node.shadowRoot || implementation.shadowBoundary(node);
 
-                // Invoke any ref callbacks defined in the component's `render` method.
-                'ref' in props && invokeFor(node);
+                try {
 
-                this[registryKey] = { node, tree, root, props };
+                    // Apply the middleware and wait for the props to be returned.
+                    const props = await component({ node, render: node.render.bind(node) });
 
-                node.resolved = new Promise(resolve => {
+                    // Memorise the last props as it's useful in the methods middleware.
+                    this[lastPropsKey] = props;
 
-                    // Setup listener for children being resolved.
-                    hasResolvedTree(props).then(() => {
+                    // Setup the Virtual DOM instance, and then append the component to the DOM.
+                    const tree = htmlFor(props);
+                    const root = createElement(tree);
+                    boundary.insertBefore(root, boundary.firstChild);
 
-                        // Emit the event that the node has been resolved.
-                        node.dispatchEvent(new window.CustomEvent(awaitEventName, {
-                            detail: node,
-                            bubbles: true,
-                            composed: true
-                        }));
+                    // Invoke any ref callbacks defined in the component's `render` method.
+                    'ref' in props && invokeFor(node);
 
-                        // Tree has been entirely resolved!
-                        resolve();
+                    /**
+                     * @constant resolved
+                     * @type {Promise}
+                     */
+                    node.resolved = new Promise(resolve => {
+
+                        // Setup listener for children being resolved.
+                        hasResolvedTree(props).then(() => {
+
+                            // Emit the event that the node has been resolved.
+                            node.dispatchEvent(new window.CustomEvent(awaitEventName, {
+                                detail: node,
+                                bubbles: true,
+                                composed: true
+                            }));
+
+                            // Tree has been entirely resolved!
+                            resolve();
+
+                        });
 
                     });
 
-                });
+                    return { tree, root, node };
 
-            }).catch(error);
+                } catch (err) {
+
+                    // Capture any errors that were thrown in processing the component.
+                    error(err);
+
+                }
+
+            });
 
         }
 
@@ -158,48 +129,52 @@ export const create = (name, component) => {
          */
         render() {
 
-            const instance = this[registryKey];
+            this[queueKey].process(async instance => {
 
-            if (!instance || !instance.node) {
+                // Gather the props from the previous rendering of the component.
+                const { tree: currentTree, root: currentRoot, node } = instance;
 
-                // Rejected as developer has attempted to re-render during the start-up phase.
-                // As an alternative we could queue the re-render using `setTimeout` for the next
-                // tick, but ideally the developer should setup sensible defaults and thus avoid a
-                // re-render during the start-up phase.
-                // Queue: setTimeout(this.render.bind(this));
-                warning('Casually ignoring an attempted re-render during the start-up phase of a component');
-                return;
+                try {
 
-            }
+                    // Apply the middleware and wait for the props to be returned.
+                    const props = await component({ node, render: node.render.bind(node) });
 
-            const { tree: currentTree, root: currentRoot, node } = instance;
+                    // Memorise the last props as it's useful in the methods middleware.
+                    this[lastPropsKey] = props;
 
-            Promise.resolve(component({ node, render: node.render.bind(node) })).then(props => {
+                    // Create the Virtual DOM tree based on the current props.
+                    const tree = htmlFor(props);
 
-                const tree = htmlFor(props);
+                    // Clear any previously defined refs for the current component.
+                    'ref' in props && purgeFor(node);
 
-                // Clear any previously defined refs for the current component.
-                'ref' in props && purgeFor(node);
+                    if (node.isConnected) {
 
-                if (node.isConnected) {
+                        // Diff and patch the current DOM state with the new one.
+                        const patches = diff(currentTree, tree);
+                        const root = patch(currentRoot, patches);
 
-                    const patches = diff(currentTree, tree);
-                    const root = patch(currentRoot, patches);
+                        // Invoke any ref callbacks defined in the component's `render` method.
+                        'ref' in props && invokeFor(node);
 
-                    // Invoke any ref callbacks defined in the component's `render` method.
-                    'ref' in props && invokeFor(node);
+                        return { node, tree, root };
 
-                    this[registryKey] = { node, tree, root, props };
+                    }
+
+                } catch (err) {
+
+                    // Capture any errors that were thrown in processing the component.
+                    error(err);
 
                 }
 
-            }).catch(error);
+            });
 
         }
 
     });
 
-};
+}
 
 export { default as path } from './helpers/path';
 export { pipe, compose } from './helpers/composition';
