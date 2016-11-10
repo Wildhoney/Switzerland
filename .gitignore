@@ -13,3 +13,6 @@ yarn.lock
 example/js/components/iss-position/build.js
 example/js/components/iss-position/worker.js
 example/js/components/todo-manager/js/build.js
+
+# redis
+dump.rdb
