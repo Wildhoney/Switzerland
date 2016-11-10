@@ -3,6 +3,7 @@
     display: block;
     overflow-x: hidden;
     overflow-y: auto;
+    font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
 }
 
 * {
@@ -13,7 +14,6 @@
 
 ul {
     list-style-type: none;
-    font-family: Arial, Tahoma, Helvetica, sans-serif;
 }
 
 ul li {

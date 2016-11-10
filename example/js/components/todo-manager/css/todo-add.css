@@ -1,6 +1,7 @@
 :host {
     all: initial;
     display: block;
+    font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
 }
 
 * {
