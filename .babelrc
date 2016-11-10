@@ -6,6 +6,7 @@
     "transform-object-rest-spread",
     "transform-es2015-arrow-functions",
     "transform-es2015-template-literals",
+    "transform-async-to-generator",
     ["transform-react-jsx", {
       "pragma": "element"
     }]
