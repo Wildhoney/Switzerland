@@ -1,6 +1,6 @@
 module.exports = {
     entry: {
-        switzerland: ['./src/switzerland.js'],
+        switzerland: ['babel-polyfill', './src/switzerland.js'],
         middleware: ['./src/middleware.js'],
         components: ['./src/components.js']
     },

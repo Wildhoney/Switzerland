@@ -2,7 +2,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: {
-        './example/js/components/todo-manager/js/build': ['./example/js/components/todo-manager/js/default.js']
+        './example/js/components/todo-manager/js/build': ['babel-polyfill', './example/js/components/todo-manager/js/default.js']
     },
     output: {
         filename: '[name].js',
