@@ -1,5 +1,5 @@
 import { validate } from 'prop-types';
-import isDevelopment from '../helpers/env';
+import isDevelopment from '../helpers/environment';
 
 /**
  * @param {Object} schema
