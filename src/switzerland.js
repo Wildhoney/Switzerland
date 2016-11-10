@@ -77,24 +77,19 @@ export function create(name, component) {
                      * @constant resolved
                      * @type {Promise}
                      */
-                    node.resolved = new Promise(resolve => {
+                    node.resolved = (async () => {
 
                         // Setup listener for children being resolved.
-                        hasResolvedTree(props).then(() => {
+                        await hasResolvedTree(props);
 
-                            // Emit the event that the node has been resolved.
-                            node.dispatchEvent(new window.CustomEvent(awaitEventName, {
-                                detail: node,
-                                bubbles: true,
-                                composed: true
-                            }));
+                        // Emit the event that the node has been resolved.
+                        node.dispatchEvent(new window.CustomEvent(awaitEventName, {
+                            detail: node,
+                            bubbles: true,
+                            composed: true
+                        }));
 
-                            // Tree has been entirely resolved!
-                            resolve();
-
-                        });
-
-                    });
+                    })();
 
                     return { tree, root, node };
 
