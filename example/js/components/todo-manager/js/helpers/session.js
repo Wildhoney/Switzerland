@@ -10,11 +10,11 @@ import { addSession, setSession, addTodo, editTodo, removeTodo, clearTodos, stor
 const setupEventSource = model => {
 
     /**
-     * @method findTodo
+     * @method find
      * @param {Object} model
      * @return {Object|null}
      */
-    const findTodo = model => {
+    const find = model => {
         const id = model.id;
         return store.getState().todos.find(model => model.id === id);
     };
@@ -23,7 +23,7 @@ const setupEventSource = model => {
     eventSource.addEventListener('message', event => {
 
         const item = JSON.parse(event.data);
-        const model = item.model && findTodo(item.model);
+        const model = item.model && find(item.model);
 
         switch (item.type) {
 
