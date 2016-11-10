@@ -1,4 +1,5 @@
-import { registryKey, error } from '../switzerland';
+import { lastPropsKey } from '../switzerland';
+import { error } from '../helpers/messages';
 
 /**
  * @constant registered
@@ -22,14 +23,14 @@ const setPrototypeFor = (node, fns) => {
 
         Object.getPrototypeOf(node)[name] = function (...args) {
 
-            if (!(registryKey in this)) {
+            if (!(lastPropsKey in this)) {
                 error(`You have passed an invalid context when invoking the "${name}" method`);
                 return;
             }
 
             // Gather the props that caused the last render of the component, and then invoke
             // the prototype function.
-            fn({ ...this[registryKey].props, args });
+            fn({ ...this[lastPropsKey], args });
 
         };
 
