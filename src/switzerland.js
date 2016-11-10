@@ -4,7 +4,7 @@ import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
-import { hasResolvedTree, awaitEventName } from './middleware/await';
+import { treeResolved, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
 
 /**
@@ -80,7 +80,7 @@ export function create(name, component) {
                     node.resolved = (async () => {
 
                         // Setup listener for children being resolved.
-                        await hasResolvedTree(props);
+                        await treeResolved(props);
 
                         // Emit the event that the node has been resolved.
                         node.dispatchEvent(new window.CustomEvent(awaitEventName, {
