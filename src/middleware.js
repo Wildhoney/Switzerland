@@ -27,3 +27,4 @@ export { default as vars } from './middleware/vars';
 export { default as await } from './middleware/await';
 export { default as transclude } from './middleware/transclude';
 export { time, timeEnd } from './debug/timer';
+export { default as delay } from './debug/delay';
