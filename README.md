@@ -552,3 +552,21 @@ create('swiss-cheese', pipe(redux(store), once(font), include(path('css/swiss-ch
 > Note: We haven't handled rejections for the `Promise` for the sake of brevity &ndash; but you should!
 
 In the above example we're using the famous [Cheese and Mouse font](http://www.dafont.com/cheese-and-mouse.font) but it's also worth noting that we've created our own `font` middleware that yields a promise. Once the `Promise` has been resolved, we can be guanrateed that once we reach the CSS, the font has been loaded. Any semblance of FOUC by using the previous method is caused by latency of loading the stylesheet &ndash; resolving this problem requires hiding the component until we have the [`resolved` class on the `swiss-cheese` node](#applying-styles).
+
+Curiously you could also opt to use [async functions](https://developers.google.com/web/fundamentals/getting-started/primers/async-functions) to handle your async logic instead of using explicitly using `Promise`.
+
+```javascript
+const font = async props => {
+
+    const fontFace = new FontFace('Cheese and Mouse', `url(${path('fonts/cheese-and-mouse.ttf')})`, {
+        style: 'normal',
+        weight: '400'
+    });
+
+    document.fonts.add(fontFace);
+    fontFace.load();
+    await fontFace.loaded;
+    return props;
+
+};
+```
