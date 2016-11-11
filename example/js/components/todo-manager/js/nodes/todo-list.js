@@ -14,6 +14,17 @@ const byDate = (a, b) => a.added > b.added;
 
 create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), html(props => {
 
+    const classNames = `${item.done ? 'done' : ''} ${item.synced ? 'synced' : ''}`;
+
+    /**
+     * @method handleEdit
+     * @param {Object} model
+     * @return {void}
+     */
+    const handleEdit = model => {
+        editTodo({ ...model, done: !model.done });
+    };
+
     /**
      * @method handleRemove
      * @param {Object} model
@@ -30,12 +41,14 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
             {props.redux.todos.sort(byDate).length ? props.redux.todos.map(item => {
 
                 return (
-                    <li
-                        key={item.id}
-                        className={`${item.done ? 'done' : ''} ${item.synced ? 'synced' : ''}`}
-                    >
-                        <p onpointerup={() => editTodo({ ...item, done: !item.done })}>{item.value}</p>
-                        <button onpointerup={() => handleRemove(item)}>Delete</button>
+                    <li key={item.id} className={classNames}>
+
+                        <p onpointerup={() => handleEdit(item)}>{item.value}</p>
+
+                        <button onpointerup={() => handleRemove(item)}>
+                            Delete
+                        </button>
+
                     </li>
                 );
             }) : <li className="none"><p>You haven't added any todos yet.</p></li>}

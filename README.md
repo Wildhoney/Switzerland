@@ -126,7 +126,7 @@ You'll notice that we're passing a string via the `data-cheeses` attribute, rath
 
 ### Using State
 
-As using attributes isn't the most elegant approach to updating components, we can instead choose to use another state manager &mndash; think [Redux](https://github.com/reactjs/redux), [mobx](https://github.com/mobxjs/mobx), or in the following case the React-esque `setState`/`state` approach.
+As using attributes isn't the most elegant approach to updating components, we can instead choose to use another state manager &mdash; think [Redux](https://github.com/reactjs/redux), [mobx](https://github.com/mobxjs/mobx), or in the following case the React-esque `setState`/`state` approach.
 
 > Note: Try *fiddling* with the [JSFiddle we've created](https://jsfiddle.net/chs2fnod/) for your convenience!
 
@@ -270,7 +270,7 @@ It's worth noting that the `redux` middleware accepts an *optional* second argum
 By switching over our `swiss-cheese` component to use Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
 
 ```javascript
-import { create, html, element, pipe, redux methods } from 'switzerland';
+import { create, html, element, pipe, redux, methods } from 'switzerland';
 import { store } from './the-swiss-cheese-store';
 
 const add = props => {
@@ -312,7 +312,7 @@ swissCheese.add('Mozarella');
 Previously we attached an `add` function to the `HTMLElement.prototype` for our `swiss-cheese` component. However, we may often wish to communicate **from inside our component** to the outside world &ndash; using the simple `events` middleware allows us to achieve just this. It's worth noting that we can easily emit our own events using `props.node.dispatchEvent`.
 
 ```javascript
-import { create, html, element, pipe, redux, methods, events } from 'switzerland';
+import { create, html, element, pipe, redux, events } from 'switzerland';
 import { store } from './the-swiss-cheese-store';
 
 create('swiss-cheese', pipe(events, redux(store), html(props => {
@@ -442,7 +442,7 @@ During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash;
 </swiss-cheese>
 ```
 
-You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `path` function to determine the path of the current component which allows us to handily declare the relative path to the CSS document. It's worth noting that `path` has a `toString` function which simply resolves to the current component's path.
+You may also have noticed that instead of declaring the absolute path to `swiss-cheese.css` which would include the component name and thus break encapsulation, we instead use the `path` function to determine the path of the current component which allows us to handily declare the relative path to the CSS document. It's worth noting that `path` has a `toString` method which simply resolves to the current component's path.
 
 ## CSS Variables
 
