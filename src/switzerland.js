@@ -48,7 +48,7 @@ export function create(name, component) {
          */
         [implementation.hooks[0]]() {
 
-            const queue = this[queueKey] = new OrderlyQueue({ value: '' });
+            const queue = this[queueKey] = new OrderlyQueue();
 
             queue.process(async () => {
 
@@ -184,4 +184,3 @@ export { pipe, compose } from './helpers/composition';
 export const element = (el, props, ...children) => {
     return h(el, props, children);
 };
-
