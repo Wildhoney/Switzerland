@@ -154,7 +154,7 @@ module.exports =
 	        [_implementation2.default.hooks[0]]() {
 	            var _this = this;
 
-	            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '' });
+	            const queue = this[queueKey] = new _orderlyQueue2.default();
 
 	            queue.process(_asyncToGenerator(function* () {
 
