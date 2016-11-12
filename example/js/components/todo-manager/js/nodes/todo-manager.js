@@ -7,9 +7,14 @@ create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), include(path('../c
     return (
         <section className="todo-manager">
             <div className="container">
+
                 <todo-add />
                 <todo-list />
-                <todo-manage />
+
+                <footer>
+                    <a href="https://github.com/Wildhoney/Switzerland">Switzerland</a>
+                </footer>
+
             </div>
         </section>
     );

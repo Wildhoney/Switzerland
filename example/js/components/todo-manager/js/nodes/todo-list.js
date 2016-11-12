@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { always } from 'ramda';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
 import { html, redux, include } from '../../../../../../src/middleware';
@@ -13,8 +12,6 @@ import { store, removeTodo, editTodo } from '../helpers/store';
 const byDate = (a, b) => a.added > b.added;
 
 create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), html(props => {
-
-    const classNames = `${item.done ? 'done' : ''} ${item.synced ? 'synced' : ''}`;
 
     /**
      * @method handleEdit
@@ -32,20 +29,19 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
      */
     const handleRemove = model => {
         removeTodo(model);
-        axios.delete(`/session/${props.redux.active.id}/task/${model.id}`);
     };
 
     return (
         <ul>
 
-            {props.redux.todos.sort(byDate).length ? props.redux.todos.map(item => {
+            {props.redux.todos.sort(byDate).length ? props.redux.todos.map(model => {
 
                 return (
-                    <li key={item.id} className={classNames}>
+                    <li key={model.id} className={model.done ? 'done' : ''}>
 
-                        <p onpointerup={() => handleEdit(item)}>{item.value}</p>
+                        <p onpointerup={() => handleEdit(model)}>{model.text}</p>
 
-                        <button onpointerup={() => handleRemove(item)}>
+                        <button onpointerup={() => handleRemove(model)}>
                             Delete
                         </button>
 

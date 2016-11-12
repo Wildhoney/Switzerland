@@ -48,7 +48,7 @@ export function create(name, component) {
          */
         [implementation.hooks[0]]() {
 
-            const queue = this[queueKey] = new OrderlyQueue();
+            const queue = this[queueKey] = new OrderlyQueue({ value: '' });
 
             queue.process(async () => {
 

@@ -1,5 +1,6 @@
 :host {
     display: block;
+    font-family: Arial, Tahoma, Helvetica, sans-serif;
 }
 
 * {
@@ -12,7 +13,6 @@ h1 {
     color: #B8B8BF;
     font-size: 10px;
     padding: 5px 0;
-    font-family: Arial, Tahoma, Helvetica, sans-serif;
     display: block;
     text-transform: uppercase;
 }
@@ -28,16 +28,36 @@ todo-list {
     overflow-y: auto;
 }
 
-todo-manage {
-    height: 40px;
-    overflow: hidden;
-}
-
 section.todo-manager {
     display: flex;
     width: 45vw;
     max-height: 65vh;
     background-color: white;
+}
+
+footer {
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 20px;
+    height: 40px;
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1);
+    align-items: center;
+}
+
+footer a {
+    color: rgba(0, 0, 0, .15);
+    font-size: 12px;
+    transition: all .25s;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: -.5px;
+}
+
+footer a:hover {
+    color: #F44336;
+    opacity: 1;
 }
 
 div.container {

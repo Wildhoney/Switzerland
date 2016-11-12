@@ -2,78 +2,78 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { generate } from 'shortid';
 
-const initialState = {
-    todos: [],
-    active: {},
-    sessions: []
-};
-
 const ADD_TODO = Symbol('todo/add');
 const REMOVE_TODO = Symbol('todo/remove');
-const CLEAR_TODOS = Symbol('todo/clear');
 const EDIT_TODO = Symbol('todo/toggle');
-const SESSION_ADD = Symbol('session/add');
-const SESSION_SET = Symbol('session/change');
 
+/**
+ * @constant initialState
+ * @type {Object}
+ */
+const initialState = {
+    todos: []
+};
+
+/**
+ * @method todos
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object}
+ */
 function todos(state = initialState, action) {
 
     switch (action.type) {
 
         case ADD_TODO:
-            const { id = generate(), value = action.item, added = Date.now(), synced = false, done = false } = action.item;
-            const model = { id, value, added, synced, done };
+            const model = { id: generate(), text: action.text, done: false };
             return { ...state, todos: [...state.todos, model] };
 
         case REMOVE_TODO:
-            return { ...state, todos: state.todos.filter(model => model.id !== action.item.id) };
+            return { ...state, todos: state.todos.filter(model => model.id !== action.model.id) };
 
         case EDIT_TODO:
-            const index = state.todos.findIndex(model => model.id === action.item.id);
+            const index = state.todos.findIndex(model => model.id === action.model.id);
             return { ...state, todos: [
                 ...state.todos.slice(0, index),
-                { ...action.item },
+                { ...action.model },
                 ...state.todos.slice(index + 1)
             ]};
 
-
-        case CLEAR_TODOS:
-            return { ...state, todos: [] };
-
-        case SESSION_ADD:
-            return { ...state, sessions: [...state.sessions, action.item] };
-
-        case SESSION_SET:
-            return { ...state, active: action.item };
-
-
-        default:
-            return state;
     }
+
+    return state;
 
 }
 
+/**
+ * @constant store
+ * @type {Store}
+ */
 export const store = createStore(todos, applyMiddleware(thunk));
 
-export const addTodo = item => {
-    store.dispatch({ type: ADD_TODO, item });
+/**
+ * @method addTodo
+ * @param {String} text
+ * @return {void}
+ */
+export const addTodo = text => {
+    store.dispatch({ type: ADD_TODO, text });
 };
 
-export const removeTodo = item => {
-    store.dispatch({ type: REMOVE_TODO, item });
+/**
+ * @method editTodo
+ * @param {Object} model
+ * @return {void}
+ */
+export const editTodo = model => {
+    store.dispatch({ type: EDIT_TODO, model });
 };
 
-export const editTodo = item => {
-    store.dispatch({ type: EDIT_TODO, item });
-};
-
-export const clearTodos = () => {
-    store.dispatch({ type: CLEAR_TODOS });
-};
-
-export const addSession = item => {
-    store.dispatch({ type: SESSION_ADD, item });
-};
-
-export const setSession = item => {
-    store.dispatch({ type: SESSION_SET, item });
+/**
+ * @method removeTodo
+ * @param {Object} model
+ * @return {void}
+ */
+export const removeTodo = model => {
+    store.dispatch({ type: REMOVE_TODO, model });
 };

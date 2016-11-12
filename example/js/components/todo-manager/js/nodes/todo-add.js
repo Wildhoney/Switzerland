@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { generate } from 'shortid';
 import { always } from 'ramda';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
@@ -13,9 +12,7 @@ create('todo-add', pipe(redux(store, always(false)), state({ value: '' }), inclu
      * @return {void}
      */
     const handleAdd = text => {
-        const model = { id: generate(), value: text };
-        addTodo(model);
-        axios.post(`/session/${props.redux.active.id}/task`, model);
+        addTodo(text);
         props.setState({ value: '' });
     };
 
