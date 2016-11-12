@@ -1,5 +1,5 @@
 import { diff, patch, create as createElement } from 'virtual-dom';
-import { h } from 'virtual-dom';
+import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import { htmlFor } from './middleware/html';
@@ -175,12 +175,19 @@ export { default as path } from './helpers/path';
 export { pipe, compose } from './helpers/composition';
 
 /**
- * @constant element
+ * @method element
  * @param {HTMLElement} el
  * @param {Object} props
  * @param {Array} children
  * @return {Object}
  */
 export const element = (el, props, ...children) => {
-    return h(el, props, children);
+    return vdomH(el, props, children);
 };
+
+/**
+ * @method h
+ * @alias element
+ * @return {Object}
+ */
+export const h = element;

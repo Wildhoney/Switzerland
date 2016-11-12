@@ -1,7 +1,7 @@
 import { Router } from 'director';
 import * as R from 'ramda';
 import PropTypes from 'prop-types';
-import { create, pipe, element } from '../switzerland';
+import { create, pipe, h } from '../switzerland';
 import { html, attrs, validate, once, transclude } from '../middleware';
 
 /**
@@ -65,7 +65,7 @@ export default R.once((routes, options = defaultOptions) => {
 
     create('router-link', pipe(attrs, transclude, styles, validate(propTypes), html(props => {
 
-        return element('a', {
+        return h('a', {
             onclick: () => router.setRoute(props.attrs.to)
         }, props.children);
 
