@@ -1,6 +1,7 @@
 import { always } from 'ramda';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
 import { html, redux, include } from '../../../../../../src/middleware';
+import { createRouter, route } from '../../../../../../src/components';
 import { store, removeTodo, editTodo } from '../helpers/store';
 
 /**
@@ -11,7 +12,12 @@ import { store, removeTodo, editTodo } from '../helpers/store';
  */
 const byDate = (a, b) => a.added > b.added;
 
+
 create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), html(props => {
+
+    const router = createRouter({
+        '/author': route(<x-parent>Test</x-parent>)
+    });
 
     /**
      * @method handleEdit

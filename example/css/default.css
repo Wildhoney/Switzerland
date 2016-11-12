@@ -4,7 +4,6 @@ body {
 
 body, html {
     background-color: rgba(0, 0, 0, .015);
-    /*background: linear-gradient(180deg, #ECEFF1, #CFD8DC);*/
     display: flex;
     justify-content: center;
     align-items: center;

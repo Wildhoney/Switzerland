@@ -1,1 +1,1 @@
-export { default as createRouter } from './components/router';
+export { default as createRouter, route } from './components/router';

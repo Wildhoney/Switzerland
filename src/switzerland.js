@@ -120,9 +120,10 @@ export function create(name, component) {
 
         /**
          * @method render
+         * @param {Object} [additionalProps = {}]
          * @return {void}
          */
-        render() {
+        render(additionalProps = {}) {
 
             this[queueKey].process(async instance => {
 
@@ -132,7 +133,7 @@ export function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const props = await component({ node, render: node.render.bind(node) });
+                    const props = await component({ ...additionalProps, node, render: node.render.bind(node) });
 
                     // Memorise the last props as it's useful in the methods middleware.
                     this[lastPropsKey] = props;
