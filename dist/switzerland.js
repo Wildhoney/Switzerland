@@ -63,7 +63,10 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = undefined;
+	exports.h = exports.element = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = undefined;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	exports.create = create;
 
 	var _path = __webpack_require__(7);
@@ -154,7 +157,7 @@ module.exports =
 	        [_implementation2.default.hooks[0]]() {
 	            var _this = this;
 
-	            const queue = this[queueKey] = new _orderlyQueue2.default();
+	            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '' });
 
 	            queue.process(_asyncToGenerator(function* () {
 
@@ -220,9 +223,10 @@ module.exports =
 
 	        /**
 	         * @method render
+	         * @param {Object} [additionalProps = {}]
 	         * @return {void}
 	         */
-	        render() {
+	        render(additionalProps = {}) {
 	            var _this2 = this;
 
 	            this[queueKey].process(function () {
@@ -237,7 +241,7 @@ module.exports =
 	                    try {
 
 	                        // Apply the middleware and wait for the props to be returned.
-	                        const props = yield component({ node, render: node.render.bind(node) });
+	                        const props = yield component(_extends({}, additionalProps, { node, render: node.render.bind(node) }));
 
 	                        // Memorise the last props as it's useful in the methods middleware.
 	                        _this2[lastPropsKey] = props;
@@ -276,7 +280,7 @@ module.exports =
 	}
 
 	/**
-	 * @constant element
+	 * @method element
 	 * @param {HTMLElement} el
 	 * @param {Object} props
 	 * @param {Array} children
@@ -285,6 +289,13 @@ module.exports =
 	const element = exports.element = function (el, props, ...children) {
 	    return (0, _virtualDom.h)(el, props, children);
 	};
+
+	/**
+	 * @method h
+	 * @alias element
+	 * @return {Object}
+	 */
+	const h = exports.h = element;
 
 /***/ },
 /* 7 */
@@ -2835,7 +2846,8 @@ module.exports =
 			// Initiate the async generator, and move the cursor to the first yield.
 
 
-			var value = _ref.value,
+			var _ref$value = _ref.value,
+			    value = _ref$value === undefined ? null : _ref$value,
 			    _ref$next = _ref.next,
 			    next = _ref$next === undefined ? fn : _ref$next,
 			    _ref$error = _ref.error,
@@ -2866,7 +2878,7 @@ module.exports =
 				return iterator.next(promiseFn);
 			};
 
-			return { process: process, stop: function stop() {
+			return { process: process, abort: function abort() {
 					return iterator.return();
 				} };
 		};
@@ -2923,9 +2935,9 @@ module.exports =
 		};
 
 		/**
-	  * @param {Object} [value]
-	  * @param {Function} [next]
-	  * @param {Function} [error]
+	  * @param {Object} [value = null]
+	  * @param {Function} [next = Function.prototype]
+	  * @param {Function} [error = Function.prototype]
 	  * @return {Object}
 	  */
 

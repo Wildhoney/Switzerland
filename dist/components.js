@@ -66,6 +66,12 @@ module.exports =
 	    return _interopRequireDefault(_router).default;
 	  }
 	});
+	Object.defineProperty(exports, 'route', {
+	  enumerable: true,
+	  get: function () {
+	    return _router.route;
+	  }
+	});
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -78,8 +84,11 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.route = undefined;
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 	var _director = __webpack_require__(3);
 
@@ -104,9 +113,39 @@ module.exports =
 	 * @type {Object}
 	 */
 	const defaultOptions = {
-	    async: true,
-	    html5history: true
+	    async: true
 	};
+
+	/**
+	 * @method routerData
+	 * @type {Map}
+	 */
+	const routerData = new Map();
+	routerData.set('views', new Set());
+	routerData.set('lastRoute', null);
+
+	/**
+	 * @method register
+	 * @param {Object} props
+	 * @return {Object}
+	 */
+	function register(props) {
+	    routerData.get('views').add(props.node);
+	    return props;
+	}
+
+	/**
+	 * @method change
+	 * @param {Object} props
+	 * @return {void}
+	 */
+	function change(props) {
+	    var _props$args = _slicedToArray(props.args, 1);
+
+	    const children = _props$args[0];
+
+	    props.render({ children });
+	}
 
 	/**
 	 * @param {Object} routes
@@ -114,26 +153,25 @@ module.exports =
 	 */
 	exports.default = R.once(function (routes, options = defaultOptions) {
 
-	    const router = (0, _director.Router)(routes).configure(_extends({}, defaultOptions, options));
-	    router.init();
+	    const router = (0, _director.Router)(routes).configure(_extends({}, defaultOptions, options)).init();
 
 	    /**
 	     * @constant propTypes
 	     * @type {Object}
 	     */
 	    const propTypes = {
-	        children: _propTypes2.default.string.isRequired,
+	        children: _propTypes2.default.object.isRequired,
 	        attrs: _propTypes2.default.shape({
-	            to: _propTypes2.default.string.isRequired
+	            href: _propTypes2.default.string.isRequired
 	        }).isRequired
 	    };
 
 	    /**
-	     * @constant styles
+	     * @constant routerLinkStyles
 	     * @param {Object} props
 	     * @return {Object}
 	     */
-	    const styles = (0, _middleware.once)(function (props) {
+	    const routerLinkStyles = (0, _middleware.once)(function (props) {
 
 	        const styleNode = document.createElement('style');
 	        styleNode.setAttribute('type', 'text/css');
@@ -143,19 +181,50 @@ module.exports =
 	        return props;
 	    });
 
-	    (0, _switzerland.create)('router-link', (0, _switzerland.pipe)(_middleware.attrs, _middleware.transclude, styles, (0, _middleware.validate)(propTypes), (0, _middleware.html)(function (props) {
-
-	        return (0, _switzerland.element)('a', {
-	            onclick: function () {
-	                return router.setRoute(props.attrs.to);
-	            }
-	        }, props.children);
+	    (0, _switzerland.create)('router-link', (0, _switzerland.pipe)(_middleware.attrs, _middleware.transclude, routerLinkStyles, (0, _middleware.validate)(propTypes), (0, _middleware.html)(function (props) {
+	        return (0, _switzerland.element)(
+	            'a',
+	            { onclick: function () {
+	                    return router.setRoute(props.attrs.href);
+	                } },
+	            props.children
+	        );
 	    })));
 
-	    // create('router-view', html(() => {
-	    //
-	    // }));
+	    /**
+	     * @constant routerViewStyles
+	     * @param {Object} props
+	     * @return {Object}
+	     */
+	    const routerViewStyles = (0, _middleware.once)(function (props) {
+
+	        const styleNode = document.createElement('style');
+	        styleNode.setAttribute('type', 'text/css');
+	        styleNode.innerHTML = '\n            :host {\n                display: inline-block;\n                \n                --router-view-loading: {\n                    display: none;\n                };\n                \n                --router-view-loaded: {\n                    display: block;\n                };\n            }\n        \n            section :first-child:not(.loaded) {\n                @apply --router-view-loading;\n            }\n        \n            section :first-child.loaded {\n                @apply --router-view-loaded;\n            }\n        ';
+
+	        props.node.shadowRoot.appendChild(styleNode);
+	        return props;
+	    });
+
+	    (0, _switzerland.create)('router-view', (0, _switzerland.pipe)((0, _middleware.once)(register), routerViewStyles, (0, _middleware.methods)({ change }), (0, _middleware.html)(function (props) {
+	        return (0, _switzerland.element)(
+	            'section',
+	            null,
+	            routerData.get('lastRoute') || props.children
+	        );
+	    })));
 	});
+	const route = exports.route = function (html) {
+
+	    return function () {
+
+	        routerData.set('lastRoute', html);
+
+	        Array.from(routerData.get('views').values()).forEach(function (node) {
+	            node.change(html);
+	        });
+	    };
+	};
 
 /***/ },
 /* 3 */
@@ -708,7 +777,10 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.element = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = undefined;
+	exports.h = exports.element = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = undefined;
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	exports.create = create;
 
 	var _path = __webpack_require__(7);
@@ -799,7 +871,7 @@ module.exports =
 	        [_implementation2.default.hooks[0]]() {
 	            var _this = this;
 
-	            const queue = this[queueKey] = new _orderlyQueue2.default();
+	            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '' });
 
 	            queue.process(_asyncToGenerator(function* () {
 
@@ -865,9 +937,10 @@ module.exports =
 
 	        /**
 	         * @method render
+	         * @param {Object} [additionalProps = {}]
 	         * @return {void}
 	         */
-	        render() {
+	        render(additionalProps = {}) {
 	            var _this2 = this;
 
 	            this[queueKey].process(function () {
@@ -882,7 +955,7 @@ module.exports =
 	                    try {
 
 	                        // Apply the middleware and wait for the props to be returned.
-	                        const props = yield component({ node, render: node.render.bind(node) });
+	                        const props = yield component(_extends({}, additionalProps, { node, render: node.render.bind(node) }));
 
 	                        // Memorise the last props as it's useful in the methods middleware.
 	                        _this2[lastPropsKey] = props;
@@ -921,7 +994,7 @@ module.exports =
 	}
 
 	/**
-	 * @constant element
+	 * @method element
 	 * @param {HTMLElement} el
 	 * @param {Object} props
 	 * @param {Array} children
@@ -930,6 +1003,13 @@ module.exports =
 	const element = exports.element = function (el, props, ...children) {
 	    return (0, _virtualDom.h)(el, props, children);
 	};
+
+	/**
+	 * @method h
+	 * @alias element
+	 * @return {Object}
+	 */
+	const h = exports.h = element;
 
 /***/ },
 /* 7 */
@@ -3480,7 +3560,8 @@ module.exports =
 			// Initiate the async generator, and move the cursor to the first yield.
 
 
-			var value = _ref.value,
+			var _ref$value = _ref.value,
+			    value = _ref$value === undefined ? null : _ref$value,
 			    _ref$next = _ref.next,
 			    next = _ref$next === undefined ? fn : _ref$next,
 			    _ref$error = _ref.error,
@@ -3511,7 +3592,7 @@ module.exports =
 				return iterator.next(promiseFn);
 			};
 
-			return { process: process, stop: function stop() {
+			return { process: process, abort: function abort() {
 					return iterator.return();
 				} };
 		};
@@ -3568,9 +3649,9 @@ module.exports =
 		};
 
 		/**
-	  * @param {Object} [value]
-	  * @param {Function} [next]
-	  * @param {Function} [error]
+	  * @param {Object} [value = null]
+	  * @param {Function} [next = Function.prototype]
+	  * @param {Function} [error = Function.prototype]
 	  * @return {Object}
 	  */
 
