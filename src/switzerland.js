@@ -40,13 +40,13 @@ export function create(name, component) {
      * @constant component
      * @type {Object}
      */
-    implementation.customElement(name, class extends window.HTMLElement {
+    implementation.customElement(name, {
 
         /**
          * @method connectedCallback
          * @return {void}
          */
-        [implementation.hooks[0]]() {
+        connected() {
 
             const queue = this[queueKey] = new OrderlyQueue({ value: '' });
 
@@ -102,13 +102,13 @@ export function create(name, component) {
 
             });
 
-        }
+        },
 
         /**
          * @method disconnectedCallback
          * @return {void}
          */
-        [implementation.hooks[1]]() {
+        disconnected() {
 
             clearHTMLFor(this);
 
@@ -116,7 +116,7 @@ export function create(name, component) {
             // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
             this.render();
 
-        }
+        },
 
         /**
          * @method render

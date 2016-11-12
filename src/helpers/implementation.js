@@ -5,13 +5,55 @@
 const implementations = {
 
     v0: {
-        hooks: ['attachedCallback', 'detachedCallback'],
-        customElement: (tag, component) => document.registerElement(tag, component),
+
+        /**
+         * @method customElement
+         * @param {String} tag
+         * @param {Object} component
+         * @return {void}
+         */
+        customElement: (tag, component) => {
+
+            const prototype = Object.create(HTMLElement.prototype, {
+                createdCallback: { value: component.connected },
+                detatchedCallback: { value: component.disconnected }
+            });
+
+            prototype.render = component.render;
+            document.registerElement(tag, { prototype });
+
+        },
+
+        /**
+         * @method shadowBoundary
+         * @param {HTMLElement} node
+         * @return {void}
+         */
         shadowBoundary: node => node.createShadowRoot()
     },
     v1: {
-        hooks: ['connectedCallback', 'disconnectedCallback'],
-        customElement: (tag, component) => window.customElements.define(tag, component),
+
+        /**
+         * @method customElement
+         * @param {String} tag
+         * @param {Object} component
+         * @return {void}
+         */
+        customElement: (tag, component) => {
+
+            window.customElements.define(tag, class extends HTMLElement {
+                connectedCallback() { component.connected.apply(this); }
+                disconnectedCallback() { component.disconnected.apply(this); }
+                render() { component.render.apply(this); }
+            });
+
+        },
+
+        /**
+         * @method shadowBoundary
+         * @param {HTMLElement} node
+         * @return {void}
+         */
         shadowBoundary: node => node.attachShadow({ mode: 'open' })
     }
 
