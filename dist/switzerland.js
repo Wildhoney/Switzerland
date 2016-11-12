@@ -148,13 +148,13 @@ module.exports =
 	     * @constant component
 	     * @type {Object}
 	     */
-	    _implementation2.default.customElement(name, class extends window.HTMLElement {
+	    _implementation2.default.customElement(name, {
 
 	        /**
 	         * @method connectedCallback
 	         * @return {void}
 	         */
-	        [_implementation2.default.hooks[0]]() {
+	        connected() {
 	            var _this = this;
 
 	            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '' });
@@ -206,20 +206,20 @@ module.exports =
 	                    (0, _messages.error)(err);
 	                }
 	            }));
-	        }
+	        },
 
 	        /**
 	         * @method disconnectedCallback
 	         * @return {void}
 	         */
-	        [_implementation2.default.hooks[1]]() {
+	        disconnected() {
 
 	            clearHTMLFor(this);
 
 	            // Once the node has been removed then we perform one last pass, however the render function
 	            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
 	            this.render();
-	        }
+	        },
 
 	        /**
 	         * @method render
@@ -2961,19 +2961,65 @@ module.exports =
 	const implementations = {
 
 	    v0: {
-	        hooks: ['attachedCallback', 'detachedCallback'],
+
+	        /**
+	         * @method customElement
+	         * @param {String} tag
+	         * @param {Object} component
+	         * @return {void}
+	         */
 	        customElement: function (tag, component) {
-	            return document.registerElement(tag, component);
+
+	            const prototype = Object.create(window.HTMLElement.prototype, {
+	                createdCallback: {
+	                    value: component.connected
+	                },
+	                detachedCallback: {
+	                    value: component.disconnected
+	                }
+	            });
+
+	            prototype.render = component.render;
+	            document.registerElement(tag, { prototype });
 	        },
+
+	        /**
+	         * @method shadowBoundary
+	         * @param {HTMLElement} node
+	         * @return {void}
+	         */
 	        shadowBoundary: function (node) {
 	            return node.createShadowRoot();
 	        }
 	    },
 	    v1: {
-	        hooks: ['connectedCallback', 'disconnectedCallback'],
+
+	        /**
+	         * @method customElement
+	         * @param {String} tag
+	         * @param {Object} component
+	         * @return {void}
+	         */
 	        customElement: function (tag, component) {
-	            return window.customElements.define(tag, component);
+
+	            window.customElements.define(tag, class extends window.HTMLElement {
+	                connectedCallback() {
+	                    component.connected.apply(this);
+	                }
+	                disconnectedCallback() {
+	                    component.disconnected.apply(this);
+	                }
+	                render() {
+	                    component.render.apply(this);
+	                }
+	            });
 	        },
+
+	        /**
+	         * @method shadowBoundary
+	         * @param {HTMLElement} node
+	         * @return {void}
+	         */
 	        shadowBoundary: function (node) {
 	            return node.attachShadow({ mode: 'open' });
 	        }
