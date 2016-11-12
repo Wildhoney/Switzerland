@@ -112,12 +112,14 @@
       ],
       "new-cap": "off",
       "array-bracket-spacing": "off",
-      "no-unused-vars": [
-        1
-      ],
       "max-nested-callbacks": [
         1,
         5
+      ],
+      "no-unused-vars": [
+        1, {
+          "varsIgnorePattern": "element"
+        }
       ],
       "default-case": "off",
       "no-unused-expressions": "off",

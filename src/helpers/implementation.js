@@ -14,9 +14,13 @@ const implementations = {
          */
         customElement: (tag, component) => {
 
-            const prototype = Object.create(HTMLElement.prototype, {
-                createdCallback: { value: component.connected },
-                detatchedCallback: { value: component.disconnected }
+            const prototype = Object.create(window.HTMLElement.prototype, {
+                createdCallback: {
+                    value: component.connected
+                },
+                detachedCallback: {
+                    value: component.disconnected
+                }
             });
 
             prototype.render = component.render;
@@ -41,10 +45,16 @@ const implementations = {
          */
         customElement: (tag, component) => {
 
-            window.customElements.define(tag, class extends HTMLElement {
-                connectedCallback() { component.connected.apply(this); }
-                disconnectedCallback() { component.disconnected.apply(this); }
-                render() { component.render.apply(this); }
+            window.customElements.define(tag, class extends window.HTMLElement {
+                connectedCallback() {
+                    component.connected.apply(this);
+                }
+                disconnectedCallback() {
+                    component.disconnected.apply(this);
+                }
+                render() {
+                    component.render.apply(this);
+                }
             });
 
         },

@@ -2,7 +2,7 @@ import { Router } from 'director';
 import * as R from 'ramda';
 import PropTypes from 'prop-types';
 import { create, pipe, element } from '../switzerland';
-import { html, attrs, validate, once, transclude, methods, vars } from '../middleware';
+import { html, attrs, validate, once, transclude, methods } from '../middleware';
 
 /**
  * @constant defaultOptions
@@ -10,7 +10,7 @@ import { html, attrs, validate, once, transclude, methods, vars } from '../middl
  */
 const defaultOptions = {
     async: true,
-    // html5history: true
+    html5history: true
 };
 
 /**
