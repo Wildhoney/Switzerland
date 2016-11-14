@@ -10,7 +10,7 @@
 &nbsp;
 ![License MIT](http://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)
 
-![Screenshot](media/screenshot-todo.png)
+![Screenshot](media/screenshot.png)
 
 ---
 
