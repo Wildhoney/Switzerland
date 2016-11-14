@@ -11,6 +11,11 @@ body, html {
     height: 100%;
 }
 
+section.container {
+    display: flex;
+    flex-direction: column;
+}
+
 todo-manager {
     opacity: 0;
 }
@@ -18,3 +23,31 @@ todo-manager {
 todo-manager.loaded {
     opacity: 1;
 }
+
+h1 {
+    margin: 0 0 10px 0;
+}
+
+img {
+    width: 15vmax;
+    filter: grayscale(100%);
+    opacity: .25;
+}
+
+@media (max-width: 768px) {
+
+    img {
+        width: 25vmax;
+    }
+
+    h1 {
+        padding-left: 5vw;
+    }
+
+    section.container {
+        justify-content: flex-start;
+        height: 100vh;
+        padding-top: 5vh;
+    }
+}
+
