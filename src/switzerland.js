@@ -1,3 +1,4 @@
+import 'webcomponents.js';
 import { diff, patch, create as createElement } from 'virtual-dom';
 import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';

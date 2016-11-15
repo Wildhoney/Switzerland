@@ -34,6 +34,10 @@ img {
     opacity: .25;
 }
 
+img:hover {
+    filter: grayscale(0%);
+}
+
 @media (max-width: 768px) {
 
     img {

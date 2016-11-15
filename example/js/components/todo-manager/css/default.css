@@ -3,6 +3,11 @@
     font-family: Arial, Tahoma, Helvetica, sans-serif;
 }
 
+todo-manager {
+    display: block;
+    font-family: Arial, Tahoma, Helvetica, sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -17,13 +22,19 @@ h1 {
     text-transform: uppercase;
 }
 
+div.container {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .075), 0 0 125px rgba(0, 0, 0, .125);
+    border: 1px solid rgba(0, 0, 0, .1);
+}
+
 todo-add {
     height: 50px;
     overflow: hidden;
 }
 
 todo-list {
-    height: calc(100% - 50px);
+    max-height: calc(65vh - 50px);
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -31,14 +42,7 @@ todo-list {
 section.todo-manager {
     display: flex;
     width: 45vw;
-    max-height: 65vh;
     background-color: white;
-}
-
-div.container {
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .075), 0 0 125px rgba(0, 0, 0, .125);
-    border: 1px solid rgba(0, 0, 0, .1);
 }
 
 @media (max-width: 768px) {

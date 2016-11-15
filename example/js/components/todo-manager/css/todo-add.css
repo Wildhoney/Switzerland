@@ -4,6 +4,12 @@
     font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
 }
 
+todo-add {
+    all: initial;
+    display: block;
+    font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+}
+
 * {
     margin: 0;
     padding: 0;

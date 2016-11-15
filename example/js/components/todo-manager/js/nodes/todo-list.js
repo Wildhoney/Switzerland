@@ -45,9 +45,9 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
                 return (
                     <li key={model.id} className={model.done ? 'done' : ''}>
 
-                        <p onpointerup={() => handleEdit(model)}>{model.text}</p>
+                        <p onclick={() => handleEdit(model)}>{model.text}</p>
 
-                        <button onpointerup={() => handleRemove(model)}>
+                        <button onclick={() => handleRemove(model)}>
                             Delete
                         </button>
 
