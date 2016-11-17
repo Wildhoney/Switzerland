@@ -12,7 +12,8 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loaders: ['envify-loader', 'babel-loader']
+                loaders: ['envify-loader', 'babel-loader'],
+                exclude: /node_modules/i
             },
             {
                 test: /\.json$/,
