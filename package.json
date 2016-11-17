@@ -127,6 +127,7 @@
       "default-case": "off",
       "no-unused-expressions": "off",
       "no-case-declarations": "off",
+      "import/no-unassigned-import": "off",
       "import/no-named-as-default": "off",
       "import/prefer-default-export": "off",
       "no-duplicate-imports": "off"
