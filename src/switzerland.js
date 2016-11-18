@@ -4,7 +4,7 @@ import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import { htmlFor } from './middleware/html';
 import { invokeFor, purgeFor } from './middleware/refs';
-import { treeResolved, awaitEventName } from './middleware/await';
+import { resolvingChildren, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
 
 /**
@@ -91,7 +91,7 @@ export function create(name, component) {
                     node.resolved = (async () => {
 
                         // Setup listener for children being resolved.
-                        await treeResolved(props);
+                        await resolvingChildren(props);
 
                         // Emit the event that the node has been resolved.
                         node.dispatchEvent(new window.CustomEvent(awaitEventName, {
@@ -99,6 +99,8 @@ export function create(name, component) {
                             bubbles: true,
                             composed: true
                         }));
+
+                        return node;
 
                     })();
 
@@ -185,6 +187,7 @@ export function create(name, component) {
 
 export { default as path } from './helpers/path';
 export { pipe, compose } from './helpers/composition';
+export { resolved } from './middleware/await';
 
 /**
  * @method element
