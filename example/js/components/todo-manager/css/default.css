@@ -24,7 +24,7 @@ h1 {
 
 div.container {
     width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .075), 0 0 125px rgba(0, 0, 0, .125);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .075), 0 0 125px rgba(0, 0, 0, .025);
     border: 1px solid rgba(0, 0, 0, .1);
 }
 
