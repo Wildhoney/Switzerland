@@ -528,7 +528,7 @@ const font = props => {
 
 };
 
-create('swiss-cheese', pipe(redux(store), once(font), include(path('css/swiss-cheese.css')), html(props => {
+create('swiss-cheese', pipe(once(font), redux(store), include(path('css/swiss-cheese.css')), html(props => {
 
     return (
         <ul>

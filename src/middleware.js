@@ -1,17 +1,3 @@
-import { options as stateOptions } from './middleware/state';
-import { options as includeOptions } from './middleware/include';
-import { options as onceOptions } from './middleware/once';
-
-/**
- * @constant options
- * @type {Object}
- */
-export const options = {
-    state: stateOptions,
-    include: includeOptions,
-    once: onceOptions
-};
-
 export { default as html } from './middleware/html';
 export { default as once } from './middleware/once';
 export { default as attrs } from './middleware/attributes';
