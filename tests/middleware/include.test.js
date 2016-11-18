@@ -1,7 +1,8 @@
 import test from 'ava';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import include, { options } from '../../src/middleware/include';
+import { options } from '../../src/switzerland';
+import include from '../../src/middleware/include';
 
 test.beforeEach(t => {
 

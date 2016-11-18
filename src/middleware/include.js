@@ -3,7 +3,8 @@ import { get as fetch } from 'axios';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
-import once, { options as onceOptions } from './once';
+import { options } from '../switzerland';
+import once from './once';
 
 /**
  * @constant includeMap
@@ -13,15 +14,6 @@ const includeMap = [
     { extensions: ['js'], tag: 'script', attrs: { type: 'text/javascript' } },
     { extensions: ['css'], tag: 'style', attrs: { type: 'text/css' } }
 ];
-
-/**
- * @constant options
- * @type {Object}
- */
-export const options = {
-    DEFAULT: 1,
-    ASYNC: 2
-};
 
 /**
  * @method fetchInclude
@@ -118,7 +110,7 @@ const attachFiles = once(props => {
 
     });
 
-}, onceOptions.RESET);
+}, options.RESET);
 
 /**
  * @param {String[]|String} files

@@ -1,4 +1,5 @@
-import once, { options } from './once';
+import { options } from '../switzerland';
+import once from './once';
 
 export default fn => {
 

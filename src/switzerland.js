@@ -8,6 +8,17 @@ import { treeResolved, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
 
 /**
+ * @constant options
+ * @type {Object}
+ */
+export const options = {
+    DEFAULT: 1,
+    ASYNC: 2,
+    RESET: 4,
+    DEFER: 8
+};
+
+/**
  * @constant queueKey
  * @type {Symbol}
  */

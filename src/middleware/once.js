@@ -1,17 +1,10 @@
+import { options } from '../switzerland';
+
 /**
  * @constant once
  * @type {WeakMap}
  */
 const once = new WeakMap();
-
-/**
- * @constant options
- * @type {Object}
- */
-export const options = {
-    DEFAULT: 1,
-    RESET: 2
-};
 
 /**
  * @param {Function} callback
