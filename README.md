@@ -56,7 +56,8 @@ Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elemen
 Components are typically defined using [`pipe`](http://ramdajs.com/docs/#pipe) or [`compose`](http://ramdajs.com/docs/#compose) depending on preference &mdash; however for the simplest component all you need to pass is the name of the component and its render function, which contains the [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) or [`virtual-dom/h`](https://github.com/Matt-Esch/virtual-dom#example) markup.
 
 ```javascript
-import { create, html, element } from 'switzerland';
+import { create, element } from 'switzerland';
+import { html } from 'switzerland/middleware';
 
 create('swiss-cheese', html(() => {
 
@@ -89,7 +90,8 @@ Needless to say that our static `swiss-cheese` component is fairly uninteresting
 Let's allow our users to add cheeses to our `swiss-cheese` component by updating the element's attributes &mdash; for this we can either build our own, or use the pre-existing `attrs` middleware.
 
 ```javascript
-import { create, html, element, pipe, attrs } from 'switzerland';
+import { create, element, pipe } from 'switzerland';
+import { html, attrs } from 'switzerland/middleware';
 
 create('swiss-cheese', pipe(attrs, html(props => {
 
@@ -131,7 +133,8 @@ As using attributes isn't the most elegant approach to updating components, we c
 > Note: Try *fiddling* with the [JSFiddle we've created](https://jsfiddle.net/chs2fnod/) for your convenience!
 
 ```javascript
-import { create, html, element, pipe, state } from 'switzerland';
+import { create, element, pipe } from 'switzerland';
+import { html, state } from 'switzerland/middleware';
 
 const initialState = {
     cheeses: ['Swiss', 'Feta', 'Cheddar']
@@ -167,7 +170,8 @@ By applying the `state` middleware to the `swiss-cheese` component, we are hande
 In the above `setState` example it was assumed that we *knew* the list of cheeses beforehand &ndash; however this is unlikely to be case in the real world. Instead we would pull a list of cheeses from a Cheese API&trade;. In order to do this we'll use the `once` middleware to ensure fetching the cheeses occurs only once.
 
 ```javascript
-import { create, html, element, pipe, state, once } from 'switzerland';
+import { create, element, pipe } from 'switzerland';
+import { html, state, once } from 'switzerland/middleware';
 
 const initialState = {
     cheeses: []
@@ -221,7 +225,8 @@ While using `state` and `setState` work just fine, the functional approach these
 Assuming we want to keep the same functionality as before, we can simply migrate piece-by-piece until we achieve that.
 
 ```javascript
-import { create, html, element, pipe, redux } from 'switzerland';
+import { create, element, pipe } from 'switzerland';
+import { html, redux } from 'switzerland/middleware';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 
@@ -270,7 +275,8 @@ It's worth noting that the `redux` middleware accepts an *optional* second argum
 By switching over our `swiss-cheese` component to use Redux we immediately lost the ability to update the `cheeses` from **outside** of the component &ndash; we instead added Mozarella by a node internal to the component's DOM. When we were using the [`attributes` approach](#via-attributes), mutating the `data-cheeses` attribute caused a re-render, which is a common requirement for communication between components and the outside world &mdash; enter the `methods` middleware.
 
 ```javascript
-import { create, html, element, pipe, redux, methods } from 'switzerland';
+import { create, element, pipe } from 'switzerland';
+import { html, redux, methods } from 'switzerland/middleware';
 import { store } from './the-swiss-cheese-store';
 
 const add = props => {
@@ -312,7 +318,8 @@ swissCheese.add('Mozarella');
 Previously we attached an `add` function to the `HTMLElement.prototype` for our `swiss-cheese` component. However, we may often wish to communicate **from inside our component** to the outside world &ndash; using the simple `events` middleware allows us to achieve just this. It's worth noting that we can easily emit our own events using `props.node.dispatchEvent`.
 
 ```javascript
-import { create, html, element, pipe, redux, events } from 'switzerland';
+import { create, element, pipe } from 'switzerland';
+import { html, redux, events } from 'switzerland/middleware';
 import { store } from './the-swiss-cheese-store';
 
 create('swiss-cheese', pipe(events, redux(store), html(props => {
@@ -356,7 +363,8 @@ Validating props allows you to ensure your components are used correctly &ndash;
 In the previous examples we have been referencing `props.redux.cheese` by **assuming** it exists &ndash; however using `validate` we can **assert** that it exists otherwise a warning is thrown.
 
 ```javascript
-import { create, html, element, pipe, redux, methods, validate } from 'switzerland';
+import { create, element, pipe } from 'switzerland';
+import { html, redux, methods, validate } from 'switzerland/middleware';
 import PropTypes from 'prop-types';
 import { store } from './the-swiss-cheese-store';
 
@@ -397,7 +405,8 @@ As we're using `pipe` to construct our component it matters where we place the `
 Now that we have a functioning `swiss-cheese` component, the next logical step would be applying styles to the component. Switzerland supports attaching CSS and JS files to the component by using the `include` middleware.
 
 ```javascript
-import { create, html, element, pipe, redux, include, path } from 'switzerland';
+import { create, element, pipe, path } from 'switzerland';
+import { html, redux, include } from 'switzerland/middleware';
 import { store } from './the-swiss-cheese-store';
 
 create('swiss-cheese', pipe(redux(store), include(path('css/swiss-cheese.css')), html(props => {
@@ -451,7 +460,8 @@ Using [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS
 In our case we're going to have a different background colour depending on the amount of cheeses we have &ndash; for this we'll utilise the `vars` middleware.
 
 ```javascript
-import { create, html, element, pipe, redux, vars, include, path } from 'switzerland';
+import { create, element, pipe, path } from 'switzerland';
+import { redux, vars, include } from 'switzerland/middleware';
 import { store } from './the-swiss-cheese-store';
 
 const css = props => {
@@ -508,7 +518,8 @@ We're going to enhance our `swiss-cheese` component even further by using a cust
 Please note that in the following example we're using the `once` middleware to load the font **only once**, rather than in each re-rendering of the component.
 
 ```javascript
-import { create, html, element, pipe, redux, once, include, path } from 'switzerland';
+import { create, element, pipe, path } from 'switzerland';
+import { html, redux, once, include } from 'switzerland/middleware';
 import { store } from './the-swiss-cheese-store';
 
 const font = props => {
