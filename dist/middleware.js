@@ -15376,7 +15376,6 @@ module.exports =
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.delay = exports.timeEnd = exports.time = exports.transclude = exports.await = exports.vars = exports.cleanup = exports.validate = exports.events = exports.methods = exports.refs = exports.redux = exports.include = exports.state = exports.attrs = exports.once = exports.html = exports.options = undefined;
 
 var _html = __webpack_require__(66);
 
@@ -15529,16 +15528,6 @@ Object.defineProperty(exports, 'delay', {
 });
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @constant options
- * @type {Object}
- */
-const options = exports.options = {
-  state: _state.options,
-  include: _include.options,
-  once: _once.options
-};
 
 /***/ },
 /* 152 */

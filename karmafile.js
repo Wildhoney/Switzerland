@@ -4,7 +4,7 @@ module.exports = function(options) {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
-            'example/js/components/iss-position/build.js',
+            'example/js/components/iss-position/js/build.js',
             'tests/karma/*.test.js'
         ],
         customLaunchers: {
@@ -15,11 +15,11 @@ module.exports = function(options) {
         },
         reporters: ['progress'],
         port: 9876,
+        singleRun: false,
         colors: true,
         logLevel: options.LOG_INFO,
         autoWatch: false,
-        browsers: ['Chrome'],
-        singleRun: false,
+        browsers: ['Chrome']
     };
 
     if (process.env.TRAVIS) {

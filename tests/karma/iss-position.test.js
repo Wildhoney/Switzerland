@@ -8,18 +8,17 @@ describe('iss-position', () => {
         setTimeout(() => {
 
             const sectionNode = node.shadowRoot.querySelector('section');
-            const imgNode = sectionNode.querySelector('img.loading');
+            const labelNode = sectionNode.querySelector('label.error');
             const buttonNode = sectionNode.querySelector('button');
 
             expect(document.querySelectorAll('iss-position').length).toBe(1);
             expect(sectionNode instanceof HTMLElement).toBeTruthy();
-            expect(imgNode instanceof HTMLImageElement).toBeTruthy();
+            expect(labelNode instanceof HTMLLabelElement).toBeTruthy();
             expect(buttonNode instanceof HTMLButtonElement).toBeTruthy();
 
-            expect(1).toBe(1);
             done();
 
-        });
+        }, 2000);
 
     });
 

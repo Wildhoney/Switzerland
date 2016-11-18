@@ -10,8 +10,7 @@ npm-debug.log
 yarn.lock
 
 # examples
-example/js/components/iss-position/build.js
-example/js/components/iss-position/worker.js
+example/js/components/iss-position/js/build.js
 example/js/components/todo-manager/js/build.js
 
 # redis

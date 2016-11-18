@@ -9,7 +9,7 @@
     "watch": "webpack --watch --config webpack.example.js",
     "test": "npm run lint && npm run spec",
     "spec": "NODE_ENV=development ava",
-    "karma": "karma start karmafile.js --single-run",
+    "karma": "npm run dev && karma start karmafile.js --single-run",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
     "start": "babel example/server/default.js | node",
