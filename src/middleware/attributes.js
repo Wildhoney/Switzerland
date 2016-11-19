@@ -21,13 +21,23 @@ const attributes = new WeakMap();
 const removePrefix = name => name.replace('data-', '');
 
 /**
+ * @constant excluded
+ * @type {Array}
+ */
+const excluded = ['class', 'id'];
+
+/**
  * @method transform
  * @param {NamedNodeMap} attributes
  * @return {Object}
  */
 const transform = attributes => {
 
-    return Object.keys(attributes).reduce((acc, index) => {
+    const isExcluded = index => {
+        return !excluded.includes(attributes[index].nodeName);
+    };
+
+    return Object.keys(attributes).filter(isExcluded).reduce((acc, index) => {
 
         // Transform each attribute into a plain object.
         const model = attributes[index];
@@ -50,11 +60,19 @@ export default props => {
     // Obtain the reference to the observer, using the WeakMap to query whether we have an existing
     // one to utilise before creating another.
     const hasObserver = observers.has(node);
-    const observer = hasObserver ? observers.get(node) : new window.MutationObserver(() => {
+    const observer = hasObserver ? observers.get(node) : new window.MutationObserver(mutations => {
 
-        // Remove the existing memorisation of the node's attributes before re-rendering.
-        attributes.delete(node);
-        render();
+        const mutatedAttributes = mutations.map(model => model.attributeName);
+
+        // Prevent a re-render of the component if every mutated attribute is included in the `excluded`
+        // list.
+        if (!mutatedAttributes.every(model => excluded.includes(model))) {
+
+            // Remove the existing memorisation of the node's attributes before re-rendering.
+            attributes.delete(node);
+            render();
+
+        }
 
     });
 
