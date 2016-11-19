@@ -8,7 +8,7 @@ export default fn => {
     return props => {
 
         // Invoke the function if the node isn't connected to the DOM.
-        return props.node.isConnected ? props : { ...cleanupFn(props), ...props };
+        return props.attached ? props : { ...cleanupFn(props), ...props };
 
     };
 

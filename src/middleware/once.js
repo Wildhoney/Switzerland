@@ -31,7 +31,7 @@ export default (callback, flags = options.DEFAULT) => {
 
         // Remove the callback if the node has been deleted, which will cause it to be invoked
         // again if the node is re-added.
-        flags & options.RESET && !props.node.isConnected && once.get(key).delete(callback);
+        flags & options.RESET && !props.attached && once.get(key).delete(callback);
 
         return 'then' in Object(response) ? response.then(onceProps => ({ ...onceProps, ...props })) :
                                             { ...response, ...props };

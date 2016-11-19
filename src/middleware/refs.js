@@ -57,7 +57,7 @@ export default props => {
     };
 
     // Delete the refs if the node has been removed from the DOM.
-    hasRef && !props.node.isConnected && refs.delete(props.node);
+    hasRef && !props.attached && refs.delete(props.node);
 
     return { ...props, ref };
 

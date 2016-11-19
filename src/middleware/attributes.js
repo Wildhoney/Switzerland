@@ -84,7 +84,7 @@ export default props => {
     attributes.set(node, attrs);
 
     // Clean up the observer if the node is no longer present in the DOM.
-    !node.isConnected && observer.disconnect();
+    !props.attached && observer.disconnect();
 
     return { ...props, attrs };
 

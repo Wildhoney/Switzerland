@@ -40,6 +40,15 @@ const clearHTMLFor = node => {
 };
 
 /**
+ * @method isAttached
+ * @param {HTMLElement} node
+ * @return {Boolean}
+ */
+const isAttached = node => {
+    return 'isConnected' in node ? node.isConnected : document.contains(node);
+};
+
+/**
  * @method create
  * @param {String} name
  * @param {Function} component
@@ -60,6 +69,7 @@ export function create(name, component) {
         connected() {
 
             const queue = this[queueKey] = new OrderlyQueue({ value: '' });
+            const attached = isAttached(this);
 
             queue.process(async () => {
 
@@ -71,7 +81,7 @@ export function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const props = await component({ node, render: node.render.bind(node) });
+                    const props = await component({ node, render: node.render.bind(node), attached });
 
                     // Memorise the last props as it's useful in the methods middleware.
                     this[lastPropsKey] = props;
@@ -137,6 +147,8 @@ export function create(name, component) {
          */
         render() {
 
+            const attached = isAttached(this);
+
             this[queueKey].process(async instance => {
 
                 // Gather the props from the previous rendering of the component.
@@ -145,7 +157,7 @@ export function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const props = await component({ node, render: node.render.bind(node) });
+                    const props = await component({ node, render: node.render.bind(node), attached });
 
                     // Memorise the last props as it's useful in the methods middleware.
                     this[lastPropsKey] = props;
