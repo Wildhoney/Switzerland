@@ -2261,9 +2261,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.h = exports.element = exports.resolved = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = exports.options = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 exports.create = create;
 
 var _path = __webpack_require__(95);
@@ -2440,10 +2437,9 @@ function create(name, component) {
 
         /**
          * @method render
-         * @param {Object} [additionalProps = {}]
          * @return {void}
          */
-        render(additionalProps = {}) {
+        render() {
             var _this2 = this;
 
             this[queueKey].process(function () {
@@ -2458,7 +2454,7 @@ function create(name, component) {
                     try {
 
                         // Apply the middleware and wait for the props to be returned.
-                        const props = yield component(_extends({}, additionalProps, { node, render: node.render.bind(node) }));
+                        const props = yield component({ node, render: node.render.bind(node) });
 
                         // Memorise the last props as it's useful in the methods middleware.
                         _this2[lastPropsKey] = props;
@@ -15980,9 +15976,12 @@ const setPrototypeFor = function (node, fns) {
                 return;
             }
 
+            const lastProps = this[_switzerland.lastPropsKey];
+
             // Gather the props that caused the last render of the component, and then invoke
-            // the prototype function.
-            fn(_extends({}, this[_switzerland.lastPropsKey], { args }));
+            // the prototype function. If only one argument has been passed, then we'll also define
+            // the `arg` variable to make it more gramtically correct.
+            args.length === 1 ? fn(_extends({}, lastProps, { args, arg: args[0] })) : fn(_extends({}, lastProps, { args }));
         };
     });
 };
