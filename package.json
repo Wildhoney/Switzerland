@@ -12,8 +12,8 @@
     "karma": "npm run dev && karma start karmafile.js --single-run",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
-    "start": "babel example/server/default.js | node",
-    "prepublish": "mv dist/middleware.js . && mv dist/components.js .",
+    "start": "npm i && npm run dev && babel example/server/default.js | node",
+    "prepublishOnly": "mv dist/middleware.js . && mv dist/components.js .",
     "postpublish": "mv middleware.js dist/ && mv components.js dist/"
   },
   "repository": {
@@ -66,6 +66,7 @@
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.0.2",
     "moment": "^2.15.2",
+    "opener": "^1.4.2",
     "orderly-queue": "^0.1.5",
     "path-parse": "^1.0.5",
     "promised-pipe": "^1.0.1",
