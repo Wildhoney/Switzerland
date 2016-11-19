@@ -589,6 +589,15 @@ const clearHTMLFor = function (node) {
 };
 
 /**
+ * @method isAttached
+ * @param {HTMLElement} node
+ * @return {Boolean}
+ */
+const isAttached = function (node) {
+    return 'isConnected' in node ? node.isConnected : document.contains(node);
+};
+
+/**
  * @method create
  * @param {String} name
  * @param {Function} component
@@ -610,6 +619,7 @@ function create(name, component) {
             var _this = this;
 
             const queue = this[queueKey] = new _orderlyQueue2.default({ value: '' });
+            const attached = isAttached(this);
 
             queue.process(_asyncToGenerator(function* () {
 
@@ -621,7 +631,7 @@ function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const props = yield component({ node, render: node.render.bind(node) });
+                    const props = yield component({ node, render: node.render.bind(node), attached });
 
                     // Memorise the last props as it's useful in the methods middleware.
                     _this[lastPropsKey] = props;
@@ -682,6 +692,8 @@ function create(name, component) {
         render() {
             var _this2 = this;
 
+            const attached = isAttached(this);
+
             this[queueKey].process(function () {
                 var _ref3 = _asyncToGenerator(function* (instance) {
 
@@ -694,7 +706,7 @@ function create(name, component) {
                     try {
 
                         // Apply the middleware and wait for the props to be returned.
-                        const props = yield component({ node, render: node.render.bind(node) });
+                        const props = yield component({ node, render: node.render.bind(node), attached });
 
                         // Memorise the last props as it's useful in the methods middleware.
                         _this2[lastPropsKey] = props;
@@ -2493,7 +2505,7 @@ exports.default = function (props) {
     };
 
     // Delete the refs if the node has been removed from the DOM.
-    hasRef && !props.node.isConnected && refs.delete(props.node);
+    hasRef && !props.attached && refs.delete(props.node);
 
     return _extends({}, props, { ref });
 };

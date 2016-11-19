@@ -2349,6 +2349,15 @@ const clearHTMLFor = function (node) {
 };
 
 /**
+ * @method isAttached
+ * @param {HTMLElement} node
+ * @return {Boolean}
+ */
+const isAttached = function (node) {
+    return 'isConnected' in node ? node.isConnected : document.contains(node);
+};
+
+/**
  * @method create
  * @param {String} name
  * @param {Function} component
@@ -2370,6 +2379,7 @@ function create(name, component) {
             var _this = this;
 
             const queue = this[queueKey] = new _orderlyQueue2.default({ value: '' });
+            const attached = isAttached(this);
 
             queue.process(_asyncToGenerator(function* () {
 
@@ -2381,7 +2391,7 @@ function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const props = yield component({ node, render: node.render.bind(node) });
+                    const props = yield component({ node, render: node.render.bind(node), attached });
 
                     // Memorise the last props as it's useful in the methods middleware.
                     _this[lastPropsKey] = props;
@@ -2442,6 +2452,8 @@ function create(name, component) {
         render() {
             var _this2 = this;
 
+            const attached = isAttached(this);
+
             this[queueKey].process(function () {
                 var _ref3 = _asyncToGenerator(function* (instance) {
 
@@ -2454,7 +2466,7 @@ function create(name, component) {
                     try {
 
                         // Apply the middleware and wait for the props to be returned.
-                        const props = yield component({ node, render: node.render.bind(node) });
+                        const props = yield component({ node, render: node.render.bind(node), attached });
 
                         // Memorise the last props as it's useful in the methods middleware.
                         _this2[lastPropsKey] = props;
@@ -3301,7 +3313,7 @@ exports.default = function (callback, flags = _switzerland.options.DEFAULT) {
 
     // Remove the callback if the node has been deleted, which will cause it to be invoked
     // again if the node is re-added.
-    flags & _switzerland.options.RESET && !props.node.isConnected && once.get(key).delete(callback);
+    flags & _switzerland.options.RESET && !props.attached && once.get(key).delete(callback);
 
     return 'then' in Object(response) ? response.then(function (onceProps) {
       return _extends({}, onceProps, props);
@@ -4063,7 +4075,7 @@ exports.default = function (props) {
     };
 
     // Delete the refs if the node has been removed from the DOM.
-    hasRef && !props.node.isConnected && refs.delete(props.node);
+    hasRef && !props.attached && refs.delete(props.node);
 
     return _extends({}, props, { ref });
 };
@@ -15644,13 +15656,23 @@ const removePrefix = function (name) {
 };
 
 /**
+ * @constant excluded
+ * @type {Array}
+ */
+const excluded = ['class', 'id'];
+
+/**
  * @method transform
  * @param {NamedNodeMap} attributes
  * @return {Object}
  */
 const transform = function (attributes) {
 
-  return Object.keys(attributes).reduce(function (acc, index) {
+  const isExcluded = function (index) {
+    return !excluded.includes(attributes[index].nodeName);
+  };
+
+  return Object.keys(attributes).filter(isExcluded).reduce(function (acc, index) {
 
     // Transform each attribute into a plain object.
     const model = attributes[index];
@@ -15673,11 +15695,22 @@ exports.default = function (props) {
   // one to utilise before creating another.
 
   const hasObserver = observers.has(node);
-  const observer = hasObserver ? observers.get(node) : new window.MutationObserver(function () {
+  const observer = hasObserver ? observers.get(node) : new window.MutationObserver(function (mutations) {
 
-    // Remove the existing memorisation of the node's attributes before re-rendering.
-    attributes.delete(node);
-    render();
+    const mutatedAttributes = mutations.map(function (model) {
+      return model.attributeName;
+    });
+
+    // Prevent a re-render of the component if every mutated attribute is included in the `excluded`
+    // list.
+    if (!mutatedAttributes.every(function (model) {
+      return excluded.includes(model);
+    })) {
+
+      // Remove the existing memorisation of the node's attributes before re-rendering.
+      attributes.delete(node);
+      render();
+    }
   });
 
   observer.observe(node, { attributes: true });
@@ -15688,7 +15721,7 @@ exports.default = function (props) {
   attributes.set(node, attrs);
 
   // Clean up the observer if the node is no longer present in the DOM.
-  !node.isConnected && observer.disconnect();
+  !props.attached && observer.disconnect();
 
   return _extends({}, props, { attrs });
 };
@@ -15721,7 +15754,7 @@ exports.default = function (fn) {
     return function (props) {
 
         // Invoke the function if the node isn't connected to the DOM.
-        return props.node.isConnected ? props : _extends({}, cleanupFn(props), props);
+        return props.attached ? props : _extends({}, cleanupFn(props), props);
     };
 };
 
@@ -16231,7 +16264,7 @@ exports.default = function (fn) {
         // Update the style's HTML content, and then append it to the root node, if it doesn't
         // already exist there.
         styleNode.innerHTML = ':host { ' + transform(fn(props)) + ' }';
-        !styleNode.isConnected && props.node.shadowRoot.appendChild(styleNode);
+        !styleprops.attached && props.node.shadowRoot.appendChild(styleNode);
 
         return props;
     };
