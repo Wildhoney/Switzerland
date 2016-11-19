@@ -14,10 +14,12 @@ body, html {
 section.container {
     display: flex;
     flex-direction: column;
+    min-width: 45vw;
 }
 
 todo-manager {
     opacity: 0;
+    transition: all .5s;
 }
 
 todo-manager.loaded {
@@ -45,13 +47,14 @@ img:hover {
     }
 
     h1 {
-        padding-left: 5vw;
+        padding: 0 0 5px 5vw;
     }
 
     section.container {
         justify-content: flex-start;
         height: 100vh;
         padding-top: 5vh;
+        min-width: 100vw;
     }
 }
 
