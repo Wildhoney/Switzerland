@@ -68,7 +68,13 @@ export function create(name, component) {
          */
         connected() {
 
-            const queue = this[queueKey] = new OrderlyQueue({ value: '' });
+            const queue = this[queueKey] = new OrderlyQueue({ value: '', next: lastProps => {
+
+                // Memorise the last props as it's useful in the methods middleware.
+                this[lastPropsKey] = lastProps;
+
+            }});
+
             const attached = isAttached(this);
 
             queue.process(async () => {
@@ -82,9 +88,6 @@ export function create(name, component) {
 
                     // Apply the middleware and wait for the props to be returned.
                     const props = await component({ node, render: node.render.bind(node), attached });
-
-                    // Memorise the last props as it's useful in the methods middleware.
-                    this[lastPropsKey] = props;
 
                     // Setup the Virtual DOM instance, and then append the component to the DOM.
                     const tree = htmlFor(props);
@@ -158,9 +161,6 @@ export function create(name, component) {
 
                     // Apply the middleware and wait for the props to be returned.
                     const props = await component({ node, render: node.render.bind(node), attached });
-
-                    // Memorise the last props as it's useful in the methods middleware.
-                    this[lastPropsKey] = props;
 
                     // Create the Virtual DOM tree based on the current props.
                     const tree = htmlFor(props);
