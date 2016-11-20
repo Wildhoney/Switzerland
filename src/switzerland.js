@@ -73,7 +73,7 @@ export function create(name, component) {
                 // Memorise the last props as it's useful in the methods middleware.
                 this[lastPropsKey] = lastProps;
 
-            }});
+            } });
 
             const attached = isAttached(this);
 
