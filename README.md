@@ -533,7 +533,7 @@ const font = props => {
 
         document.fonts.add(fontFace);
         fontFace.load();
-        return fontFace.loaded.then(() => resolve(props));
+        return fontFace.loaded.then(() => resolve({ ...props, fontFace }));
 
     });
 
@@ -577,7 +577,70 @@ const font = async props => {
     document.fonts.add(fontFace);
     fontFace.load();
     await fontFace.loaded;
-    return props;
+    
+    return { ...props, fontFace };
 
 };
 ```
+
+## Cleaning Up
+
+Whenever you have such things as event listeners, observables &ndash; even AJAX requests for your component, it's desirable to be able to clean up once the component has been removed from the DOM. Ideally you'd want to be able to create and destroy the component an infinite number of times whilst having zero memory leaks and a component that's able to manage itself &ndash; enter the `cleanup`.
+
+In our `swiss-cheese` example we're using the Cheese and Mouse font, but once we've introduced a side-effect in that we've added it to `document.fonts` which is a global register &ndash; as Cheese and Mouse is **only** used by `swiss-cheese`, it makes sense to remove it from `document.fonts` once we've removed it from the DOM.
+ 
+```javascript
+import { create, element, pipe, path } from 'switzerland';
+import { html, redux, once, include, cleanup } from 'switzerland/middleware';
+import { font } from './the-swiss-cheese-font';
+import { store } from './the-swiss-cheese-store';
+
+const remove = props => {
+    document.fonts.delete(props.fontFace);
+    return props;
+};
+
+create('swiss-cheese', pipe(once(font), cleanup(remove), redux(store), include(path('css/swiss-cheese.css')), html(props => {
+
+    return (
+        <ul>
+
+            {props.redux.cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+
+        </ul>
+    );
+
+})));
+```
+
+**Note:** `cleanup` uses the `once` middleware with the `options.RESET` flag meaning it will be invoked **once** per destroy.
+
+At the time `swiss-cheese` has been removed from the DOM based on the `props.attached` property &mdash; which uses either `node.isConnected` or `document.contains(node)` &mdash; the `remove` function will be invoked and we take that opportunity to remove the `props.fontFace` &mdash; which is passed through from `font` &mdash; from the `document`.
+
+By removing the component from the DOM we can `add` and `delete` multiple times without any adverse effects &ndash; our component is successfully cleaning up after itself, and then reinitialising itself once re-added to the DOM.
+
+```javascript
+const swissCheese = document.createElement('swiss-cheese');
+
+// Font loaded and ready to use.
+document.body.appendChild(swissCheese);
+
+// Font remove from global register.
+document.remove.remove(swissCheese);
+
+// Font loaded and ready to use again.
+document.body.appendChild(swissCheese);
+
+// ...And now she's disappeared once more.
+document.remove.remove(swissCheese);
+```
+
+As Switzerland helpfully invokes your middleware functions before removing it from the DOM &mdash; although there's no attempt to reconcile the DOM &mdash; when writing your own components you can use the `cleanup` middleware, or simply verify that `props.attached` is `false` in conjunction with the `once` middleware. Ensure to use the `options.RESET` flag as the second argument for `once` to ensure the function is invoked for each create&ndash;remove cycle, rather than simply **once** for its entire lifetime.
