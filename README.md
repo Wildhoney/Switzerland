@@ -26,9 +26,10 @@
   5. [Element Methods](#element-methods)
   6. [Sending Events](#sending-events)
   7. [Prop Validation](#prop-validation)
-  8. [Applying Styles](#applying-styles)
-  9. [CSS Variables](#css-variables)
-  10. [Using Promises](#using-promises)
+  8. [Using Promises](#using-promises)
+  9. [Cleaning Up](#cleaning-up)
+  10. [Applying Styles](#applying-styles)
+  11. [CSS Variables](#css-variables)
 
 ## Advantages
 
@@ -400,6 +401,142 @@ create('swiss-cheese', pipe(redux(store), validate(propTypes), html(props => {
 
 As we're using `pipe` to construct our component it matters where we place the `validate` middleware, since we need to ensure the `redux` middleware has added the store props before asserting that they exist. We have asserted that **both** `redux.cheeses` and `dispatch` exist in the component's props, which offers us a certain amount of confidence that our component will behave as expected.
 
+## Using Promises
+
+Up until now we have been immediately yielding `props` from our middleware, however in Switzerland middleware **also** supports yielding a [`Promise`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise), which will cause the piping/composing to pause until the promise has been resolved before continuining &ndash; inevitably this also causes a delay in the first rendering of the component's HTML.
+
+We're going to enhance our `swiss-cheese` component even further by using a custom font for our cheese list. For this we could simply use the `@font-face` rule in CSS which has its problems, or in our case we're going to wait for the font to be available before rendering the `swiss-cheese` component by using the `FontFace` constructor.
+
+Please note that in the following example we're using the `once` middleware to load the font **only once**, rather than in each re-rendering of the component.
+
+```javascript
+import { create, element, pipe, path } from 'switzerland';
+import { html, redux, once } from 'switzerland/middleware';
+import { store } from './the-swiss-cheese-store';
+
+const font = props => {
+
+    return new Promise(resolve => {
+
+        const fontFace = new FontFace('Cheese and Mouse', `url(${path('fonts/cheese-and-mouse.ttf')})`, {
+            style: 'normal',
+            weight: '400'
+        });
+
+        document.fonts.add(fontFace);
+        fontFace.load();
+        return fontFace.loaded.then(() => resolve({ ...props, fontFace }));
+
+    });
+
+};
+
+create('swiss-cheese', pipe(once(font), redux(store)), html(props => {
+
+    return (
+        <ul>
+
+            {props.redux.cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+
+        </ul>
+    );
+
+})));
+```
+
+> Note: We haven't handled rejections for the `Promise` for the sake of brevity &ndash; but you should!
+
+In the above example we're using the famous [Cheese and Mouse font](http://www.dafont.com/cheese-and-mouse.font) but it's also worth noting that we've created our own `font` middleware that yields a promise. Once the `Promise` has been resolved, we can be guaranteed that once we reach the CSS, the font has been loaded. Any semblance of FOUC by using the previous method is caused by latency of loading the stylesheet &ndash; resolving this problem requires hiding the component until we have the [`resolved` class on the `swiss-cheese` node](#applying-styles).
+
+Curiously you could also opt to use [async functions](https://developers.google.com/web/fundamentals/getting-started/primers/async-functions) to handle your async logic instead of using explicitly using `Promise`.
+
+```javascript
+const font = async props => {
+
+    const fontFace = new FontFace('Cheese and Mouse', `url(${path('fonts/cheese-and-mouse.ttf')})`, {
+        style: 'normal',
+        weight: '400'
+    });
+
+    document.fonts.add(fontFace);
+    fontFace.load();
+    await fontFace.loaded;
+    
+    return { ...props, fontFace };
+
+};
+```
+
+## Cleaning Up
+
+Whenever you have such things as event listeners, observables &ndash; even AJAX requests for your component, it's desirable to be able to clean up once the component has been removed from the DOM. Ideally you'd want to be able to create and destroy the component an infinite number of times whilst having zero memory leaks and a component that's able to manage itself &ndash; enter the `cleanup`.
+
+In our `swiss-cheese` example we're using the Cheese and Mouse font, but once we've introduced a side-effect in that we've added it to `document.fonts` which is a global register &ndash; as Cheese and Mouse is **only** used by `swiss-cheese`, it makes sense to remove it from `document.fonts` once we've removed it from the DOM.
+ 
+```javascript
+import { create, element, pipe, path } from 'switzerland';
+import { html, redux, once, cleanup } from 'switzerland/middleware';
+import { font } from './the-swiss-cheese-font';
+import { store } from './the-swiss-cheese-store';
+
+const remove = props => {
+    document.fonts.delete(props.fontFace);
+    return props;
+};
+
+create('swiss-cheese', pipe(once(font), cleanup(remove), redux(store)), html(props => {
+
+    return (
+        <ul>
+
+            {props.redux.cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+
+        </ul>
+    );
+
+})));
+```
+
+**Note:** `cleanup` uses the `once` middleware with the `options.RESET` flag meaning it will be invoked **once** per destroy.
+
+At the time `swiss-cheese` has been removed from the DOM based on the `props.attached` property &mdash; which uses either `node.isConnected` or `document.contains(node)` &mdash; the `remove` function will be invoked and we take that opportunity to remove the `props.fontFace` &mdash; which is passed through from `font` &mdash; from the `document`.
+
+By removing the component from the DOM we can `add` and `delete` multiple times without any adverse effects &ndash; our component is successfully cleaning up after itself, and then reinitialising itself once re-added to the DOM.
+
+```javascript
+const swissCheese = document.createElement('swiss-cheese');
+
+// Font loaded and ready to use.
+document.body.appendChild(swissCheese);
+
+// Font remove from global register.
+document.remove.remove(swissCheese);
+
+// Font loaded and ready to use again.
+document.body.appendChild(swissCheese);
+
+// ...And now she's disappeared once more.
+document.remove.remove(swissCheese);
+```
+
+As Switzerland helpfully invokes your middleware functions before removing it from the DOM &mdash; although there's no attempt to reconcile the DOM &mdash; when writing your own components you can use the `cleanup` middleware, or simply verify that `props.attached` is `false` in conjunction with the `once` middleware. Ensure to use the `options.RESET` flag as the second argument for `once` to ensure the function is invoked for each create&ndash;remove cycle, rather than simply **once** for its entire lifetime.
+
 ### Applying Styles
 
 Now that we have a functioning `swiss-cheese` component, the next logical step would be applying styles to the component. Switzerland supports attaching CSS and JS files to the component by using the `include` middleware.
@@ -508,139 +645,3 @@ Once we've returned a camelcased object of CSS Variables we can happily use thos
     font-size: 1rem;
 }
 ```
-
-## Using Promises
-
-Up until now we have been immediately yielding `props` from our middleware, however in Switzerland middleware **also** supports yielding a [`Promise`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise), which will cause the piping/composing to pause until the promise has been resolved before continuining &ndash; inevitably this also causes a delay in the first rendering of the component's HTML.
-
-We're going to enhance our `swiss-cheese` component even further by using a custom font for our cheese list. For this we could simply use the `@font-face` rule in CSS which has its problems, or in our case we're going to wait for the font to be available before rendering the `swiss-cheese` component by using the `FontFace` constructor.
-
-Please note that in the following example we're using the `once` middleware to load the font **only once**, rather than in each re-rendering of the component.
-
-```javascript
-import { create, element, pipe, path } from 'switzerland';
-import { html, redux, once, include } from 'switzerland/middleware';
-import { store } from './the-swiss-cheese-store';
-
-const font = props => {
-
-    return new Promise(resolve => {
-
-        const fontFace = new FontFace('Cheese and Mouse', `url(${path('fonts/cheese-and-mouse.ttf')})`, {
-            style: 'normal',
-            weight: '400'
-        });
-
-        document.fonts.add(fontFace);
-        fontFace.load();
-        return fontFace.loaded.then(() => resolve({ ...props, fontFace }));
-
-    });
-
-};
-
-create('swiss-cheese', pipe(once(font), redux(store), include(path('css/swiss-cheese.css')), html(props => {
-
-    return (
-        <ul>
-
-            {props.redux.cheeses.map(cheese => {
-                return <li>{cheese}</li>
-            })}
-
-            <li>
-                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
-                    Add Mozarella
-                </a>
-            </li>
-
-        </ul>
-    );
-
-})));
-```
-
-> Note: We haven't handled rejections for the `Promise` for the sake of brevity &ndash; but you should!
-
-In the above example we're using the famous [Cheese and Mouse font](http://www.dafont.com/cheese-and-mouse.font) but it's also worth noting that we've created our own `font` middleware that yields a promise. Once the `Promise` has been resolved, we can be guaranteed that once we reach the CSS, the font has been loaded. Any semblance of FOUC by using the previous method is caused by latency of loading the stylesheet &ndash; resolving this problem requires hiding the component until we have the [`resolved` class on the `swiss-cheese` node](#applying-styles).
-
-Curiously you could also opt to use [async functions](https://developers.google.com/web/fundamentals/getting-started/primers/async-functions) to handle your async logic instead of using explicitly using `Promise`.
-
-```javascript
-const font = async props => {
-
-    const fontFace = new FontFace('Cheese and Mouse', `url(${path('fonts/cheese-and-mouse.ttf')})`, {
-        style: 'normal',
-        weight: '400'
-    });
-
-    document.fonts.add(fontFace);
-    fontFace.load();
-    await fontFace.loaded;
-    
-    return { ...props, fontFace };
-
-};
-```
-
-## Cleaning Up
-
-Whenever you have such things as event listeners, observables &ndash; even AJAX requests for your component, it's desirable to be able to clean up once the component has been removed from the DOM. Ideally you'd want to be able to create and destroy the component an infinite number of times whilst having zero memory leaks and a component that's able to manage itself &ndash; enter the `cleanup`.
-
-In our `swiss-cheese` example we're using the Cheese and Mouse font, but once we've introduced a side-effect in that we've added it to `document.fonts` which is a global register &ndash; as Cheese and Mouse is **only** used by `swiss-cheese`, it makes sense to remove it from `document.fonts` once we've removed it from the DOM.
- 
-```javascript
-import { create, element, pipe, path } from 'switzerland';
-import { html, redux, once, include, cleanup } from 'switzerland/middleware';
-import { font } from './the-swiss-cheese-font';
-import { store } from './the-swiss-cheese-store';
-
-const remove = props => {
-    document.fonts.delete(props.fontFace);
-    return props;
-};
-
-create('swiss-cheese', pipe(once(font), cleanup(remove), redux(store), include(path('css/swiss-cheese.css')), html(props => {
-
-    return (
-        <ul>
-
-            {props.redux.cheeses.map(cheese => {
-                return <li>{cheese}</li>
-            })}
-
-            <li>
-                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
-                    Add Mozarella
-                </a>
-            </li>
-
-        </ul>
-    );
-
-})));
-```
-
-**Note:** `cleanup` uses the `once` middleware with the `options.RESET` flag meaning it will be invoked **once** per destroy.
-
-At the time `swiss-cheese` has been removed from the DOM based on the `props.attached` property &mdash; which uses either `node.isConnected` or `document.contains(node)` &mdash; the `remove` function will be invoked and we take that opportunity to remove the `props.fontFace` &mdash; which is passed through from `font` &mdash; from the `document`.
-
-By removing the component from the DOM we can `add` and `delete` multiple times without any adverse effects &ndash; our component is successfully cleaning up after itself, and then reinitialising itself once re-added to the DOM.
-
-```javascript
-const swissCheese = document.createElement('swiss-cheese');
-
-// Font loaded and ready to use.
-document.body.appendChild(swissCheese);
-
-// Font remove from global register.
-document.remove.remove(swissCheese);
-
-// Font loaded and ready to use again.
-document.body.appendChild(swissCheese);
-
-// ...And now she's disappeared once more.
-document.remove.remove(swissCheese);
-```
-
-As Switzerland helpfully invokes your middleware functions before removing it from the DOM &mdash; although there's no attempt to reconcile the DOM &mdash; when writing your own components you can use the `cleanup` middleware, or simply verify that `props.attached` is `false` in conjunction with the `once` middleware. Ensure to use the `options.RESET` flag as the second argument for `once` to ensure the function is invoked for each create&ndash;remove cycle, rather than simply **once** for its entire lifetime.
