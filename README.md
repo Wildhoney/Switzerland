@@ -72,7 +72,7 @@ create('swiss-cheese', html(() => {
 }));
 ```
 
-> Note: You need to import `element` even for JSX, and JSX will be compiled to `virtual-dom`.
+> Note: You need to import `element` even for JSX, as the JSX will be compiled to `virtual-dom` vtrees.
 
 Interestingly due to Switzerland's focus on interoperability you are now able to use `swiss-cheese` as a standard HTML component thanks to [Custom Elements](https://www.w3.org/TR/custom-elements/).
 
@@ -210,7 +210,7 @@ create('swiss-cheese', pipe(state(initialState), once(fetch), html(props => {
 
 > Note: We're using `setTimeout` to simulate a 250ms latency for an actual AJAX request.
 
-By wrapping our `fetch` function in the `once` middleware, we can be assured that `fetch` will be invoked only **one per instance** &ndash; thus if we had two `swiss-cheese` nodes in the DOM `fetch` would be invoked twice. It's important to understand the importance of `once` &ndash; without it we'd effectively be creating an infinite loop.
+By wrapping our `fetch` function in the `once` middleware, we can be assured that `fetch` will be invoked only **once per instance** &ndash; thus if we had two `swiss-cheese` nodes in the DOM `fetch` would be invoked twice. It's important to understand the importance of `once` &ndash; without it we'd effectively be creating an infinite loop.
 
 Pay close attention to the fact that `fetch` appears **after** the `state` middleware &ndash; in our example it's immaterial, however when invoking `fetch` we need a guarantee that the `state` middleware has given us the required `setState` function in the `props`.
 
