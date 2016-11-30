@@ -18,8 +18,7 @@
 
 1. [Advantages](#advantages)
 2. [Browser Support](#browser-support)
-3. [Middleware Cheatsheet](#middleware-cheatsheet)
-4. [Getting Started](#getting-started)
+3. [Getting Started](#getting-started)
   1. [Via Attributes](#via-attributes)
   2. [Using State](#using-state)
   3. [Fetching Data](#fetching-data)
@@ -31,6 +30,7 @@
   9. [Cleaning Up](#cleaning-up)
   10. [Applying Styles](#applying-styles)
   11. [CSS Variables](#css-variables)
+4. [Middleware Cheatsheet](#middleware-cheatsheet)
 
 ## Advantages
 
@@ -52,25 +52,6 @@
 <img src="https://github.com/alrra/browser-logos/blob/master/firefox/firefox_128x128.png?raw=true" width="64" />
 
 Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elements) and [Shadow DOM](http://caniuse.com/#feat=shadowdom) &mdash; both v0 and v1 implementations are supported by Switzerland.
-
-## Middleware Cheatsheet
-
-| Name          | Parameters            | Responsibility                                                            |
-| ------------- | --------------------- | ------------------------------------------------------------------------- |
-| `attributes`  | &mdash;               | Parses `data` attributes and observes mutations.                          |
-| `await`       | `String[]`            | Observes named children and adds `resolved` to node.                      |
-| `cleanup`     | `Function`            | Invokes function each time component is removed from the DOM.             |
-| `events`      | &mdash;               | Attached `props.event` for dispatching `composed` events upwards.         |
-| `html`        | `Object`              | Takes ` virtual-dom` `vtree` or JSX that is rendered into the component.  |
-| `include`     | `String`, `Number`    | List of CSS/JS files to attach to the component's shadow boundary.        |
-| `methods`     | `Object`              | Named functions that are attached to the node's `prototype`.              |
-| `once`        | `Function`, `Number`  | Function to invoke only one per instance of the component.                |
-| `redux`       | `Object`, `Function`  | Sets up Redux to re-render the component when store is mutated.           |
-| `refs`        | `Object`, `Function`  | Adds `props.refs` which facilitates setting up node refs.                 |
-| `state`       | `Object`, `Number`    | Gives you React-esque `props.state`, `props.setState` functionality.      |
-| `transclude`  | `Object`, `Number`    | Transforms a component's HTML children into `virtual-dom` `vtree`s.       |
-| `validate`    | `Object`              | Takes an object of `PropTypes` for React-esque `prop` validation.         |
-| `vars`        | `Function`            | Accepts a function that yields an object to transform into CSS Variables. |
 
 ## Getting Started
 
@@ -666,3 +647,23 @@ Once we've returned a camelcased object of CSS Variables we can happily use thos
     font-size: 1rem;
 }
 ```
+
+## Middleware Cheatsheet
+
+| Name          | Parameters            | Responsibility                                                            |
+| ------------- | --------------------- | ------------------------------------------------------------------------- |
+| `attributes`  | &mdash;               | Parses `data` attributes and observes mutations.                          |
+| `await`       | `String[]`            | Observes named children and adds `resolved` to node.                      |
+| `cleanup`     | `Function`            | Invokes function each time component is removed from the DOM.             |
+| `events`      | &mdash;               | Attached `props.event` for dispatching `composed` events upwards.         |
+| `html`        | `Object`              | Takes ` virtual-dom` `vtree` or JSX that is rendered into the component.  |
+| `include`     | `String`, `Number`    | List of CSS/JS files to attach to the component's shadow boundary.        |
+| `methods`     | `Object`              | Named functions that are attached to the node's `prototype`.              |
+| `once`        | `Function`, `Number`  | Function to invoke only one per instance of the component.                |
+| `redux`       | `Object`, `Function`  | Sets up Redux to re-render the component when store is mutated.           |
+| `refs`        | `Object`, `Function`  | Adds `props.refs` which facilitates setting up node refs.                 |
+| `state`       | `Object`, `Number`    | Gives you React-esque `props.state`, `props.setState` functionality.      |
+| `transclude`  | `Object`, `Number`    | Transforms a component's HTML children into `virtual-dom` `vtree`s.       |
+| `validate`    | `Object`              | Takes an object of `PropTypes` for React-esque `prop` validation.         |
+| `vars`        | `Function`            | Accepts a function that yields an object to transform into CSS Variables. |
+
