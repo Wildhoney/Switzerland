@@ -1,8 +1,7 @@
 module.exports = {
     entry: {
-        switzerland: ['babel-polyfill', './src/switzerland.js'],
-        middleware: ['./src/middleware.js'],
-        components: ['./src/components.js']
+        switzerland: ['./src/switzerland.js'],
+        middleware: ['./src/middleware.js']
     },
     output: {
         path: __dirname + '/dist',
@@ -13,7 +12,8 @@ module.exports = {
     externals: {
         axios: 'axios',
         director: 'director',
-        ramda: 'ramda'
+        ramda: 'ramda',
+        'promised-pipe': 'promised-pipe'
     },
     module: {
         loaders: [
