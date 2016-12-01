@@ -11,9 +11,7 @@ module.exports = {
     },
     externals: {
         axios: 'axios',
-        director: 'director',
-        ramda: 'ramda',
-        'promised-pipe': 'promised-pipe'
+        ramda: 'ramda'
     },
     module: {
         loaders: [
