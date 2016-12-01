@@ -1,6 +1,6 @@
 {
   "name": "switzerland",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc... out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
   "main": "switzerland.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
     "start": "npm i && npm run dev && babel example/server/default.js | node",
-    "prepublishOnly": "mv dist/switzerland.js . && mv dist/middleware.js .",
+    "prepublishOnly": "npm run build && mv dist/switzerland.js . && mv dist/middleware.js .",
     "postpublish": "mv switzerland.js dist/ && mv middleware.js dist/"
   },
   "files": [
