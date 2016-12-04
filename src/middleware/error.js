@@ -1,8 +1,14 @@
 /**
+ * @constant handlers
+ * @type {WeakMap}
+ */
+const handlers = new WeakMap();
+
+/**
  * @constant htmlErrorKey
  * @type {Symbol}
  */
-const htmlErrorKey = Symbol('switzerland/html-error');
+const htmlErrorKey = Symbol('switzerland/error');
 
 /**
  * @method htmlErrorFor
@@ -18,10 +24,10 @@ export default errorHtml => {
 
     return props => {
 
-        !props.node[htmlErrorKey] && (() => {
+        !handlers.has[props.node] && (() => {
 
             // Assign the HTML error function to the node if it hasn't yet been defined.
-            props.node[htmlErrorKey] = errorHtml;
+            handlers[props.node] = errorHtml;
 
         })();
 
