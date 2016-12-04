@@ -5,31 +5,21 @@
 const handlers = new WeakMap();
 
 /**
- * @constant htmlErrorKey
- * @type {Symbol}
- */
-const htmlErrorKey = Symbol('switzerland/error');
-
-/**
  * @method htmlErrorFor
  * @return {Object}
  */
-export const htmlErrorFor = node => node[htmlErrorKey];
+export const htmlErrorFor = node => handlers.get(node);
 
 /**
- * @param {Function} errorHtml
+ * @param {Function} html
  * @return {Function}
  */
-export default errorHtml => {
+export default html => {
 
     return props => {
 
-        !handlers.has[props.node] && (() => {
-
-            // Assign the HTML error function to the node if it hasn't yet been defined.
-            handlers[props.node] = errorHtml;
-
-        })();
+        // Assign the HTML error function to the node if it hasn't yet been defined.
+        !handlers.has[props.node] && handlers.set(props.node, html);
 
         return props;
 
