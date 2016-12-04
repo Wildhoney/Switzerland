@@ -62,7 +62,7 @@ const handle = async (node, component) => {
         // Use the component's defined HTML, otherwise we'll use the Switzerland default to prevent
         // the component from entering an invalid state.
         const errorHtml = htmlErrorFor(node) || (() => {
-            return <h1 style={{ color: 'red' }}>{err.message}</h1>;
+            return <div style={{ color: 'red' }}>{node.nodeName}: {err.message}</div>;
         });
 
         // Yield the vtree for the rendering of the error, if it exists.
