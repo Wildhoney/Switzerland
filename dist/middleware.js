@@ -3726,39 +3726,36 @@ exports.default = function (...nodes) {
 /***/ function(module, exports) {
 
 "use strict";
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 /**
- * @constant htmlErrorKey
- * @type {Symbol}
+ * @constant handlers
+ * @type {WeakMap}
  */
-const htmlErrorKey = Symbol('switzerland/html-error');
+const handlers = new WeakMap();
 
 /**
  * @method htmlErrorFor
  * @return {Object}
  */
 const htmlErrorFor = exports.htmlErrorFor = function (node) {
-  return node[htmlErrorKey];
+  return handlers.get(node);
 };
 
 /**
- * @param {Function} errorHtml
+ * @param {Function} html
  * @return {Function}
  */
 
-exports.default = function (errorHtml) {
+exports.default = function (html) {
 
   return function (props) {
 
-    !props.node[htmlErrorKey] && function () {
-
-      // Assign the HTML error function to the node if it hasn't yet been defined.
-      props.node[htmlErrorKey] = errorHtml;
-    }();
+    // Assign the HTML error function to the node if it hasn't yet been defined.
+    !handlers.has[props.node] && handlers.set(props.node, html);
 
     return props;
   };
