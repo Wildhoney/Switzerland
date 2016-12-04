@@ -53,13 +53,20 @@ const handle = async (node, component) => {
 
     try {
 
-        // Render the component and yield the `props` along with the virtual-dom tree.
+        // Render the component and yield the `props` along with the virtual-dom vtree.
         const props = await component({ node, render, attached });
         return { props, tree: htmlFor(props) };
 
-    } catch (error) {
+    } catch (err) {
 
-        return { props: { node }, tree: htmlErrorFor(node)(error) };
+        // Use the component's defined HTML, otherwise we'll use the Switzerland default to prevent
+        // the component from entering an invalid state.
+        const errorHtml = htmlErrorFor(node) || (() => {
+            return <h1 style={{ color: 'red' }}>{err.message}</h1>;
+        });
+
+        // Yield the vtree for the rendering of the error, if it exists.
+        return { props: { node }, tree: errorHtml(err) };
 
     }
 
