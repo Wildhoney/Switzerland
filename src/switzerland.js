@@ -41,6 +41,15 @@ const clearHTMLFor = node => {
 };
 
 /**
+ * @method isAttached
+ * @param {HTMLElement} node
+ * @return {Boolean}
+ */
+const isAttached = node => {
+    return 'isConnected' in node ? node.isConnected : document.contains(node);
+};
+
+/**
  * @method handle
  * @param {HTMLElement} node
  * @param {Function} component
@@ -48,13 +57,10 @@ const clearHTMLFor = node => {
  */
 const handle = async (node, component) => {
 
-    const render = node.render.bind(node);
-    const attached = isAttached(node);
-
     try {
 
         // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ node, render, attached });
+        const props = await component({ node, render: node.render.bind(node), attached: isAttached(node) });
         return { props, tree: htmlFor(props) };
 
     } catch (err) {
@@ -70,15 +76,6 @@ const handle = async (node, component) => {
 
     }
 
-};
-
-/**
- * @method isAttached
- * @param {HTMLElement} node
- * @return {Boolean}
- */
-const isAttached = node => {
-    return 'isConnected' in node ? node.isConnected : document.contains(node);
 };
 
 /**
@@ -179,8 +176,6 @@ export function create(name, component) {
          * @return {void}
          */
         render() {
-
-            const attached = isAttached(this);
 
             this[queueKey].process(async instance => {
 
