@@ -3,6 +3,7 @@ import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import { htmlFor } from './middleware/html';
+import { htmlErrorFor } from './middleware/error';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { resolvingChildren, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
@@ -37,6 +38,31 @@ export const lastPropsKey = Symbol('switzerland/last-props');
  */
 const clearHTMLFor = node => {
     node.shadowRoot.innerHTML = '';
+};
+
+/**
+ * @method handle
+ * @param {HTMLElement} node
+ * @param {Function} component
+ * @return {Object}
+ */
+const handle = async (node, component) => {
+
+    const render = node.render.bind(node);
+    const attached = isAttached(node);
+
+    try {
+
+        // Render the component and yield the `props` along with the virtual-dom tree.
+        const props = await component({ node, render, attached });
+        return { props, tree: htmlFor(props) };
+
+    } catch (error) {
+
+        return { props: { node }, tree: htmlErrorFor(node)(error) };
+
+    }
+
 };
 
 /**
@@ -75,8 +101,6 @@ export function create(name, component) {
 
             } });
 
-            const attached = isAttached(this);
-
             queue.process(async () => {
 
                 // Setup the shadow boundary for the current node.
@@ -87,10 +111,9 @@ export function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const props = await component({ node, render: node.render.bind(node), attached });
+                    const { props, tree } = await handle(node, component);
 
                     // Setup the Virtual DOM instance, and then append the component to the DOM.
-                    const tree = htmlFor(props);
                     const root = createElement(tree);
                     boundary.insertBefore(root, boundary.firstChild);
 
@@ -160,10 +183,7 @@ export function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const props = await component({ node, render: node.render.bind(node), attached });
-
-                    // Create the Virtual DOM tree based on the current props.
-                    const tree = htmlFor(props);
+                    const { props, tree } = await handle(node, component);
 
                     // Clear any previously defined refs for the current component.
                     'ref' in props && purgeFor(node);
