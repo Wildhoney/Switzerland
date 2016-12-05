@@ -28,6 +28,7 @@
   7. [Prop Validation](#prop-validation)
   8. [Using Promises](#using-promises)
   9. [Cleaning Up](#cleaning-up)
+  9. [Handling Errors](#handling-errors)
   10. [Applying Styles](#applying-styles)
   11. [CSS Variables](#css-variables)
 4. [Middleware Cheatsheet](#middleware-cheatsheet)
@@ -404,7 +405,7 @@ As we're using `pipe` to construct our component it matters where we place the `
 
 ## Using Promises
 
-Up until now we have been immediately yielding `props` from our middleware, however in Switzerland middleware **also** supports yielding a [`Promise`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise), which will cause the piping/composing to pause until the promise has been resolved before continuining &ndash; inevitably this also causes a delay in the first rendering of the component's HTML.
+Up until now we have been immediately yielding `props` from our middleware, however in Switzerland middleware **also** supports yielding a [`Promise`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise), which will cause the piping/composing to pause until the promise has been resolved before continuing &ndash; inevitably this also causes a delay in the first rendering of the component's HTML.
 
 We're going to enhance our `swiss-cheese` component even further by using a custom font for our cheese list. For this we could simply use the `@font-face` rule in CSS which has its problems, or in our case we're going to wait for the font to be available before rendering the `swiss-cheese` component by using the `FontFace` constructor.
 
@@ -528,16 +529,63 @@ const swissCheese = document.createElement('swiss-cheese');
 document.body.appendChild(swissCheese);
 
 // Font removed from global register.
-document.remove.remove(swissCheese);
+document.body.remove(swissCheese);
 
 // Font loaded and ready to use again.
 document.body.appendChild(swissCheese);
 
 // ...And now she's disappeared once more.
-document.remove.remove(swissCheese);
+document.body.remove(swissCheese);
 ```
 
 As Switzerland helpfully invokes your middleware functions before removing it from the DOM &mdash; although there's no attempt to reconcile the DOM &mdash; when writing your own components you can use the `cleanup` middleware, or simply verify that `props.attached` is `false` in conjunction with the `once` middleware. Ensure to use the `options.RESET` flag as the second argument for `once` to ensure the function is invoked for each create&ndash;remove cycle, rather than simply **once** for its entire lifetime.
+
+### Handling Errors
+
+Since each component is nicely isolated and capable of managing its own resources, it logically follows that each component should be able to handle its own errors. In our `swiss-cheese` example we're simply assuming the font has been loaded correctly, and then using it regardless in the next step. In the case of the font we could simply use a fallback, however for illustration purposes we'll assume that no other font will suffice, and thus if the Cheese and Mouse font fails to load, we'll render an alternate HTML to let everybody know.
+ 
+For handling errors when one occurs, we'll use the aptly named `error` middleware. It's vitally important we place the `error` middleware at the beginning of the chain, as the error could occur at any point and we need to ensure the `error` middleware has been configured.
+ 
+```javascript
+import { create, element, pipe, path } from 'switzerland';
+import { html, redux, once, error } from 'switzerland/middleware';
+import { store, font } from './the-swiss-cheese-store';
+
+const handle = error => {
+    
+    return (
+        <ul>
+            <li className="error">Our Cheese and Mouse font has gone to meet the Queen.</li>
+            <li className="technical">Actual error raised: {error.message}</li>
+        </ul>
+    );
+    
+};
+
+create('swiss-cheese', pipe(error(handle), once(font), redux(store)), html(props => {
+
+    return (
+        <ul>
+
+            {props.redux.cheeses.map(cheese => {
+                return <li>{cheese}</li>
+            })}
+
+            <li>
+                <a onclick={() => props.dispatch({ type: 'ADD', cheese: 'Mozarella' })}>
+                    Add Mozarella
+                </a>
+            </li>
+
+        </ul>
+    );
+
+}));
+```
+
+> **Note:** You could test the `error` middleware yourself by manually raising an error: `throw new Error('Uff...');`.
+
+Using the above middleware chain we can successfully render the alternate HTML if an error is thrown in any of the subsequent middleware &ndash; especially in our `font` middleware function. Without specifying the `error` middleware an uncaught error will be raised in development, and both in development and production an empty `<span />` rendered which highlights the importance of correct error handling.
 
 ### Applying Styles
 
