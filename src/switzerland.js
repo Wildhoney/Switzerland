@@ -2,6 +2,7 @@ import { diff, patch, create as createElement } from 'virtual-dom';
 import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
+import isDevelopment from './helpers/environment';
 import { htmlFor } from './middleware/html';
 import { htmlErrorFor } from './middleware/error';
 import { invokeFor, purgeFor } from './middleware/refs';
@@ -68,7 +69,17 @@ const handle = async (node, component) => {
         // Use the component's defined HTML, otherwise we'll use the Switzerland default to prevent
         // the component from entering an invalid state.
         const errorHtml = htmlErrorFor(node) || (() => {
-            return <div style={{ color: 'red' }}>{node.nodeName}: {err.message}</div>;
+
+            if (isDevelopment()) {
+
+                // Display the uncaught error.
+                const nodeName = node.nodeName.toLowerCase();
+                error(`<${nodeName} /> threw an uncaught error when rendering: "${Object(err).message || err}"`);
+
+            }
+
+            return <span />;
+
         });
 
         // Yield the vtree for the rendering of the error, if it exists.
