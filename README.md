@@ -548,19 +548,19 @@ For handling errors when one occurs, we'll use the aptly named `error` middlewar
  
 ```javascript
 import { create, element, pipe, path } from 'switzerland';
-import { html, redux, once, error } from 'switzerland/middleware';
+import { html, redux, once, include, error } from 'switzerland/middleware';
 import { store, font } from './the-swiss-cheese-store';
 
-const handle = error => {
-    
+const handle = pipe(include(path('css/swiss-cheese.css')), html(props => {
+
     return (
         <ul>
             <li className="error">Our Cheese and Mouse font has gone to meet the Queen.</li>
-            <li className="technical">Actual error raised: {error.message}</li>
+            <li className="technical">Actual error raised: {props.error.message}</li>
         </ul>
     );
     
-};
+}));
 
 create('swiss-cheese', pipe(error(handle), once(font), redux(store)), html(props => {
 
