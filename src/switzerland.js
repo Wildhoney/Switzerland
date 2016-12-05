@@ -4,7 +4,7 @@ import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import isDevelopment from './helpers/environment';
 import { htmlFor } from './middleware/html';
-import { htmlErrorFor } from './middleware/error';
+import { htmlErrorFor, ignoreKey } from './middleware/error';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { resolvingChildren, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
@@ -58,23 +58,26 @@ const isAttached = node => {
  */
 const handle = async (node, component) => {
 
+    const render = node.render.bind(node);
+    const attached = isAttached(node);
+
     try {
 
         // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ node, render: node.render.bind(node), attached: isAttached(node) });
+        const props = await component({ node, render, attached });
         return { props, tree: htmlFor(props) };
 
     } catch (err) {
 
         // Use the component's defined HTML, otherwise we'll use the Switzerland default to prevent
         // the component from entering an invalid state.
-        const errorHtml = htmlErrorFor(node) || (() => {
+        const componentError = htmlErrorFor(node) || (() => {
 
             if (isDevelopment()) {
 
                 // Display the uncaught error.
                 const nodeName = node.nodeName.toLowerCase();
-                error(`<${nodeName} /> threw an uncaught error when rendering: "${Object(err).message || err}"`);
+                error(`<${nodeName} /> threw an uncaught error when rendering: ${Object(err).message || err}`);
 
             }
 
@@ -83,7 +86,8 @@ const handle = async (node, component) => {
         });
 
         // Yield the vtree for the rendering of the error, if it exists.
-        return { props: { node }, tree: errorHtml(err) };
+        const props = await componentError({ node, render, attached, error: err, [ignoreKey]: true });
+        return { props, tree: htmlFor(props) };
 
     }
 

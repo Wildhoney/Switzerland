@@ -11,6 +11,12 @@ const handlers = new WeakMap();
 export const htmlErrorFor = node => handlers.get(node);
 
 /**
+ * @constant ignoreKey
+ * @type {Symbol}
+ */
+export const ignoreKey = Symbol('switzerland/ignore-once');
+
+/**
  * @param {Function} html
  * @return {Function}
  */
