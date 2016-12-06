@@ -30,6 +30,10 @@ ul li {
     justify-content: space-between;
 }
 
+ul li:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, .015);
+}
+
 ul li p {
     padding: 15px 20px;
     font-size: 12px;

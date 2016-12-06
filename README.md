@@ -507,13 +507,13 @@ const swissCheese = document.createElement('swiss-cheese');
 document.body.appendChild(swissCheese);
 
 // Font removed from global register.
-document.body.remove(swissCheese);
+swissCheese.remove();
 
 // Font loaded and ready to use again.
 document.body.appendChild(swissCheese);
 
 // ...And now she's disappeared once more.
-document.body.remove(swissCheese);
+swissCheese.remove();
 ```
 
 As Switzerland helpfully invokes your middleware functions before removing it from the DOM &mdash; although there's no attempt to reconcile the DOM &mdash; when writing your own components you can use the `cleanup` middleware, or simply verify that `props.attached` is `false` in conjunction with the `once` middleware. Ensure to use the `options.RESET` flag as the second argument for `once` to ensure the function is invoked for each create&ndash;remove cycle, rather than simply **once** for its entire lifetime.
