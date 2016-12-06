@@ -16,9 +16,7 @@
 
 ## Table of Contents
 
-1. [Advantages](#advantages)
-2. [Browser Support](#browser-support)
-3. [Getting Started](#getting-started)
+1. [Getting Started](#getting-started)
   1. [Via Attributes](#via-attributes)
   2. [Using State](#using-state)
   3. [Fetching Data](#fetching-data)
@@ -31,20 +29,8 @@
   9. [Handling Errors](#handling-errors)
   10. [Applying Styles](#applying-styles)
   11. [CSS Variables](#css-variables)
-4. [Middleware Cheatsheet](#middleware-cheatsheet)
-
-## Advantages
-
-- [x] Uses [native concepts](https://www.w3.org/TR/custom-elements/) which results in performance and bandwidth gains.
-- [x] Components are created using functional `pipe` or `compose` meaning you already know Switzerland.
-- [x] All behaviours are applied using [lightweight middleware](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware), allowing for the creation of custom middleware.
-- [x] As [Switzerland is tiny](https://github.com/Wildhoney/Switzerland/blob/master/src/switzerland.js) there's no esoteric black magic happening behind the scenes.
-- [x] Templates are created using [`virtual-dom`](https://github.com/Matt-Esch/virtual-dom) which you're already familiar with.
-- [x] Components can be transported anywhere, including vanilla, React, Angular environments.
-- [x] Shadow DOM allows for style encapsulation meaning no CSS Modules and/or BEM.
-- [x] Pass variables defined in JS to your stylesheets via [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_variables).
-
-![Functional](https://cdn-images-1.medium.com/max/800/1*AM83LP9sGGjIul3c5hIsWg.png)
+2. [Browser Support](#browser-support)
+3. [Middleware Cheatsheet](#middleware-cheatsheet)
 
 ## Browser Support
 
