@@ -32,14 +32,6 @@
 2. [Browser Support](#browser-support)
 3. [Middleware Cheatsheet](#middleware-cheatsheet)
 
-## Browser Support
-
-<img src="https://github.com/alrra/browser-logos/blob/master/chrome/chrome_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/master/opera/opera_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/master/firefox/firefox_128x128.png?raw=true" width="64" />
-
-Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elements) and [Shadow DOM](http://caniuse.com/#feat=shadowdom) &mdash; both v0 and v1 implementations are supported by Switzerland.
-
 ## Getting Started
 
 Components are typically defined using [`pipe`](http://ramdajs.com/docs/#pipe) or [`compose`](http://ramdajs.com/docs/#compose) depending on preference &mdash; however for the simplest component all you need to pass is the name of the component and its render function, which contains the [JSX](https://facebook.github.io/react/docs/jsx-in-depth.html) or [`virtual-dom/h`](https://github.com/Matt-Esch/virtual-dom#example) markup.
@@ -530,11 +522,11 @@ As Switzerland helpfully invokes your middleware functions before removing it fr
 
 Since each component is nicely isolated and capable of managing its own resources, it logically follows that each component should be able to handle its own errors. In our `swiss-cheese` example we're simply assuming the font has been loaded correctly, and then using it regardless in the next step. In the case of the font we could simply use a fallback, however for illustration purposes we'll assume that no other font will suffice, and thus if the Cheese and Mouse font fails to load, we'll render an alternate HTML to let everybody know.
  
-For handling errors when one occurs, we'll use the aptly named `error` middleware. It's vitally important we place the `error` middleware at the beginning of the chain, as the error could occur at any point and we need to ensure the `error` middleware has been configured.
+For handling errors when one occurs, we'll use the aptly named `rescue` middleware. It's vitally important we place the `rescue` middleware at the beginning of the chain, as the error could occur at any point and we need to ensure the `rescue` middleware has been configured.
  
 ```javascript
 import { create, element, pipe, path } from 'switzerland';
-import { html, redux, once, include, error } from 'switzerland/middleware';
+import { html, redux, once, include, rescue } from 'switzerland/middleware';
 import { store, font } from './the-swiss-cheese-store';
 
 const handle = pipe(include(path('css/swiss-error.css')), html(props => {
@@ -543,12 +535,13 @@ const handle = pipe(include(path('css/swiss-error.css')), html(props => {
         <ul>
             <li className="error">Our Cheese and Mouse font has gone to meet the Queen.</li>
             <li className="technical">Actual error raised: {props.error.message}</li>
+            <li className="retry">Would you like to <a onclick={props.render}>retry?</a></li>
         </ul>
     );
     
 }));
 
-create('swiss-cheese', pipe(error(handle), once(font), redux(store)), html(props => {
+create('swiss-cheese', pipe(rescue(handle), once(font), redux(store)), html(props => {
 
     return (
         <ul>
@@ -569,9 +562,9 @@ create('swiss-cheese', pipe(error(handle), once(font), redux(store)), html(props
 }));
 ```
 
-> **Note:** You could test the `error` middleware yourself by manually raising an error: `throw new Error('Uff...');`.
+> **Note:** You could test the `rescue` middleware yourself by manually raising an error: `throw new Error('Uff...');`.
 
-Using the above middleware chain we can successfully render the alternate HTML if an error is thrown in any of the subsequent middleware &ndash; especially in our `font` middleware function. Without specifying the `error` middleware an uncaught error will be raised in development, and both in development and production an empty `<span />` rendered which highlights the importance of correct error handling.
+Using the above middleware chain we can successfully render the alternate HTML if an error is thrown in any of the subsequent middleware &ndash; especially in our `font` middleware function. Without specifying the `rescue` middleware an uncaught error will be raised in development, and both in development and production an empty `<span />` rendered which highlights the importance of correct error handling.
 
 ### Applying Styles
 
@@ -682,6 +675,14 @@ Once we've returned a camelcased object of CSS Variables we can happily use thos
 }
 ```
 
+## Browser Support
+
+<img src="https://github.com/alrra/browser-logos/blob/master/chrome/chrome_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/opera/opera_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/master/firefox/firefox_128x128.png?raw=true" width="64" />
+
+Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elements) and [Shadow DOM](http://caniuse.com/#feat=shadowdom) &mdash; both v0 and v1 implementations are supported by Switzerland.
+
 ## Middleware Cheatsheet
 
 | Name          | Parameters            | Responsibility                                                            |
@@ -697,6 +698,7 @@ Once we've returned a camelcased object of CSS Variables we can happily use thos
 | `redux`       | `Object`, `Function`  | Sets up Redux to re-render the component when store is mutated.           |
 | `refs`        | `Object`, `Function`  | Adds `props.refs` which facilitates setting up node refs.                 |
 | `state`       | `Object`, `Number`    | Gives you React-esque `props.state`, `props.setState` functionality.      |
+| `rescue`      | `Function`            | Takes a function that yields a `vtree` for when an error occurs.          |
 | `transclude`  | `Object`, `Number`    | Transforms a component's HTML children into `virtual-dom` `vtree`s.       |
 | `validate`    | `Object`              | Takes an object of `PropTypes` for React-esque `prop` validation.         |
 | `vars`        | `Function`            | Accepts a function that yields an object to transform into CSS Variables. |

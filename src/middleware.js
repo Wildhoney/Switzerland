@@ -12,6 +12,6 @@ export { default as cleanup } from './middleware/cleanup';
 export { default as vars } from './middleware/vars';
 export { default as await } from './middleware/await';
 export { default as transclude } from './middleware/transclude';
-export { default as error } from './middleware/error';
+export { default as rescue } from './middleware/rescue';
 export { time, timeEnd } from './debug/timer';
 export { default as delay } from './debug/delay';

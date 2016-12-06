@@ -4,7 +4,7 @@ import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import isDevelopment from './helpers/environment';
 import html, { htmlFor } from './middleware/html';
-import { htmlErrorFor } from './middleware/error';
+import { htmlErrorFor } from './middleware/rescue';
 import { ignoreKey } from './middleware/once';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { resolvingChildren, awaitEventName } from './middleware/await';

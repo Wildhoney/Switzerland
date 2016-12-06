@@ -1,5 +1,5 @@
 import test from 'ava';
-import error, { htmlErrorFor } from '../../src/middleware/error';
+import error, { htmlErrorFor } from '../../src/middleware/rescue';
 
 test('Should be able to memorise error handlers;', t => {
 
