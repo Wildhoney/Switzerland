@@ -1,5 +1,4 @@
 /**
- * @method timeEnd
  * @param {Number} by
  * @return {Object}
  */
