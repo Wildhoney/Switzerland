@@ -529,7 +529,7 @@ import { create, element, pipe, path } from 'switzerland';
 import { html, redux, once, include, rescue } from 'switzerland/middleware';
 import { store, font } from './the-swiss-cheese-store';
 
-const handle = pipe(include(path('css/swiss-error.css')), html(props => {
+const handler = pipe(include(path('css/swiss-error.css')), html(props => {
 
     return (
         <ul>
@@ -541,7 +541,7 @@ const handle = pipe(include(path('css/swiss-error.css')), html(props => {
     
 }));
 
-create('swiss-cheese', pipe(rescue(handle), once(font), redux(store)), html(props => {
+create('swiss-cheese', pipe(rescue(handler), once(font), redux(store)), html(props => {
 
     return (
         <ul>
