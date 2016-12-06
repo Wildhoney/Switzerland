@@ -15,3 +15,4 @@ export { default as transclude } from './middleware/transclude';
 export { default as rescue } from './middleware/rescue';
 export { time, timeEnd } from './debug/timer';
 export { default as delay } from './debug/delay';
+export { default as error } from './debug/error';
