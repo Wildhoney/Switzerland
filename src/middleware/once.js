@@ -1,5 +1,10 @@
 import { options } from '../switzerland';
-import { ignoreKey } from '../middleware/error';
+
+/**
+ * @constant ignoreKey
+ * @type {Symbol}
+ */
+export const ignoreKey = Symbol('switzerland/ignore-once');
 
 /**
  * @constant once
@@ -28,7 +33,7 @@ export default (callback, flags = options.DEFAULT) => {
 
         // Only promises will be yielded in the next tick, whereas functions that
         // yield objects will return immediately.
-        const response = once.get(key).get(callback) || callback(props);
+        const response = once.get(key).get(callback) || (props[ignoreKey] && callback(props));
 
         // Remove the callback if the node has been deleted, which will cause it to be invoked
         // again if the node is re-added.

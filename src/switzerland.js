@@ -4,7 +4,8 @@ import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import isDevelopment from './helpers/environment';
 import { htmlFor } from './middleware/html';
-import { htmlErrorFor, ignoreKey } from './middleware/error';
+import { htmlErrorFor } from './middleware/error';
+import { ignoreKey } from './middleware/once';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { resolvingChildren, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
@@ -85,9 +86,19 @@ const handle = async (node, component) => {
 
         });
 
-        // Yield the vtree for the rendering of the error, if it exists.
-        const props = await componentError({ node, render, attached, error: err, [ignoreKey]: true });
-        return { props, tree: htmlFor(props) };
+        try {
+
+            // Yield the vtree for the rendering of the error, if it exists.
+            const props = await componentError({ node, render, attached, error: err, [ignoreKey]: true });
+            return { props, tree: htmlFor(props) };
+
+        } catch (err) {
+
+            // Catch any errors that were thrown in the error handler.
+            error('Throwing an error within an error handler is disallowed, and as such should be entirely side-effect free');
+            return { props: {}, tree: <span /> };
+
+        }
 
     }
 
