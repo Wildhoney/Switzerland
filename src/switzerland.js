@@ -3,7 +3,7 @@ import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import isDevelopment from './helpers/environment';
-import { htmlFor } from './middleware/html';
+import html, { htmlFor } from './middleware/html';
 import { htmlErrorFor } from './middleware/error';
 import { ignoreKey } from './middleware/once';
 import { invokeFor, purgeFor } from './middleware/refs';
@@ -70,15 +70,17 @@ const handle = async (node, component) => {
 
     } catch (err) {
 
-        // Use the component's defined HTML, otherwise we'll use the Switzerland default to prevent
-        // the component from entering an invalid state.
-        const componentError = htmlErrorFor(node) || (() => {
+        // As the component has raised an error during the processing of its middleware, we'll attempt
+        // to find the error vtree from the component's `error` middleware, otherwise we'll use a
+        // the Switzerland default vtree as well as raising an error to prevent the component from being
+        // rendered in an invalid state.
+        const componentError = htmlErrorFor(node) || html(props => {
 
             if (isDevelopment()) {
 
                 // Display the uncaught error.
-                const nodeName = node.nodeName.toLowerCase();
-                error(`<${nodeName} /> threw an uncaught error when rendering: ${Object(err).message || err}`);
+                const nodeName = props.node.nodeName.toLowerCase();
+                error(`<${nodeName} /> threw an uncaught error when rendering: ${props.error.message || props.error}`);
 
             }
 
@@ -88,13 +90,14 @@ const handle = async (node, component) => {
 
         try {
 
-            // Yield the vtree for the rendering of the error, if it exists.
+            // Invoke the middleware for rendering the error vtree for the component.
             const props = await componentError({ node, render, attached, error: err, [ignoreKey]: true });
             return { props, tree: htmlFor(props) };
 
         } catch (err) {
 
-            // Catch any errors that were thrown in the error handler.
+            // Catch any errors that were thrown in the error handler, which is forbidden as otherwise
+            // we'd be entering an Inception-esque down-the-rabbit-hole labyrinth.
             error('Throwing an error within an error handler is forbidden, and as such should be entirely side-effect free');
             return { props: { node }, tree: <span /> };
 
