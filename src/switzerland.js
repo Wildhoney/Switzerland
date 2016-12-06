@@ -95,8 +95,8 @@ const handle = async (node, component) => {
         } catch (err) {
 
             // Catch any errors that were thrown in the error handler.
-            error('Throwing an error within an error handler is disallowed, and as such should be entirely side-effect free');
-            return { props: {}, tree: <span /> };
+            error('Throwing an error within an error handler is forbidden, and as such should be entirely side-effect free');
+            return { props: { node }, tree: <span /> };
 
         }
 
