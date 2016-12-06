@@ -23,26 +23,40 @@ export const resolvingChildren = props => {
 
     return awaitKey in props ? new Promise(resolve => {
 
+        /**
+         * @method done
+         * @param {HTMLElement} node
+         * @return {void}
+         */
+        function done(node) {
+
+            // Tree has been resolved.
+            node.removeEventListener(awaitEventName, resolved);
+            resolve(waitFor);
+            props.node.classList.add('loaded');
+
+        }
+
         node.addEventListener(awaitEventName, function resolved(event) {
 
             // Resolve the current node if we have it in the map.
             waitFor.has(event.detail) && waitFor.set(event.detail, true);
 
-            // Determine whether all awaiting nodes have been resolved.
-            Array.from(waitFor.values()).every(resolved => resolved === true) && (() => {
-
-                // Tree has been resolved.
-                node.removeEventListener(awaitEventName, resolved);
-                resolve(waitFor);
-                props.node.classList.add('loaded');
-
-            })();
+            // Determine whether all awaiting nodes have been resolved, and if so then we'll
+            // resolve the current node.
+            Array.from(waitFor.values()).every(resolved => resolved === true) && (() => done(node))();
 
         });
 
         // Place all of the nodes we're awaiting into the map.
-        const nodes = boundary.querySelectorAll(props[awaitKey].join(','));
+        const nodeNames = props[awaitKey].join(',');
+
+        // Attempt to find any matching nodes and await their resolution.
+        const nodes = nodeNames.length && boundary.querySelectorAll(nodeNames);
         Array.from(nodes).forEach(awaitNode => waitFor.set(awaitNode, false));
+
+        // If we were unable to find any of the `await` nodes then we'll simply resolve.
+        !nodes.length && done(node);
 
     }) : Promise.resolve();
 
