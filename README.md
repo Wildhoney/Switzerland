@@ -551,7 +551,7 @@ import { create, element, pipe, path } from 'switzerland';
 import { html, redux, once, include, error } from 'switzerland/middleware';
 import { store, font } from './the-swiss-cheese-store';
 
-const handle = pipe(include(path('css/swiss-cheese.css')), html(props => {
+const handle = pipe(include(path('css/swiss-error.css')), html(props => {
 
     return (
         <ul>
