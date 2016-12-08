@@ -78,20 +78,24 @@ const fetchIncludes = files => {
 
 /**
  * @method attachFiles
- * @param props {Object}
- * @return {Promise}
+ * @param flags {Number}
+ * @return {Function}
  */
-const attachFiles = once(props => {
+const attachFiles = flags => once(props => {
 
     return new Promise(resolve => {
+
+        console.log('Here');
 
         const { node, files } = props;
         const boundary = node.shadowRoot;
 
         if (files.length !== 0) {
 
-            node.classList.add('styling');
-            node.classList.remove('styled');
+            if (flags & options.ASYNC) {
+                node.classList.add('styling');
+                node.classList.remove('styled');
+            }
 
             fetchIncludes(files).then(nodes => {
 
@@ -99,8 +103,10 @@ const attachFiles = once(props => {
                 // them to the component's shadow boundary.
                 nodes.filter(identity).forEach(node => boundary.appendChild(node));
 
-                node.classList.add('styled');
-                node.classList.remove('styling');
+                if (flags & options.ASYNC) {
+                    node.classList.add('styled');
+                    node.classList.remove('styling');
+                }
 
                 resolve();
 
@@ -119,10 +125,12 @@ const attachFiles = once(props => {
  */
 export default (files, flags = options.DEFAULT) => {
 
+    const attach = attachFiles(flags);
+
     return props => {
 
         // Attach the documents using the `once` middleware.
-        const attached = attachFiles({ ...props, files: Array.isArray(files) ? files : [files] });
+        const attached = attach({ ...props, files: Array.isArray(files) ? files : [files] });
         return flags & options.ASYNC ? props : attached.then(() => props);
 
     };
