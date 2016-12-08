@@ -3,7 +3,6 @@ import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import isDevelopment from './helpers/environment';
-import { statusKey, statuses } from './helpers/status';
 import html, { htmlFor } from './middleware/html';
 import { htmlErrorFor } from './middleware/rescue';
 import { invokeFor, purgeFor } from './middleware/refs';
@@ -65,7 +64,7 @@ const handle = async (node, component) => {
     try {
 
         // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ node, render, attached, [statusKey]: statuses.ok });
+        const props = await component({ node, render, attached });
         return { props, tree: htmlFor(props) };
 
     } catch (err) {
@@ -91,7 +90,7 @@ const handle = async (node, component) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ node, render: () => render(false), attached, error: err, [statusKey]: statuses.error });
+            const props = await componentError({ node, render: () => render(false), attached, error: err });
             return { props, tree: htmlFor(props) };
 
         } catch (err) {
@@ -112,21 +111,25 @@ const handle = async (node, component) => {
  * @param {HTMLElement} node
  * @param {Object} tree
  * @param {Object} props
+ * @param {HTMLElement} currentRoot
  * @return {Object}
  */
-const transition = async (node, tree, props) => {
+const transition = async (node, tree, props, currentRoot) => {
+
+    // Prevent any interactions with the current root, as technically it is now inactive.
+    currentRoot.style.pointerEvents = 'none';
 
     // Render the updated vtree and hide it.
     const boundary = node.shadowRoot;
     const root = createElement(tree);
     root.style.display = 'none';
-    boundary.appendChild(root);
+    boundary.insertBefore(root, boundary.firstChild);
 
     // Wait until the children have been resolved.
     await children(props);
 
     // ...And then remove the previous child and show the newly rendered vtree.
-    boundary.firstChild.remove();
+    currentRoot.remove();
     root.style.display = 'block';
 
     return { node, tree, root };
@@ -260,7 +263,7 @@ export function create(name, component) {
 
                             return { node, tree, root };
 
-                        })() : transition(node, tree, props);
+                        })() : transition(node, tree, props, currentRoot);
 
                     }
 
