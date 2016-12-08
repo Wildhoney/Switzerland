@@ -62,7 +62,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 158);
+/******/ 	return __webpack_require__(__webpack_require__.s = 157);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -350,7 +350,7 @@ module.exports = g;
 /* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(60).nextTick;
+/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(59).nextTick;
 var apply = Function.prototype.apply;
 var slice = Array.prototype.slice;
 var immediateIds = {};
@@ -441,7 +441,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.h = exports.element = exports.resolved = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = exports.options = undefined;
 exports.create = create;
 
-var _path = __webpack_require__(40);
+var _path = __webpack_require__(39);
 
 Object.defineProperty(exports, 'path', {
     enumerable: true,
@@ -450,7 +450,7 @@ Object.defineProperty(exports, 'path', {
     }
 });
 
-var _composition = __webpack_require__(38);
+var _composition = __webpack_require__(37);
 
 Object.defineProperty(exports, 'pipe', {
     enumerable: true,
@@ -465,7 +465,7 @@ Object.defineProperty(exports, 'compose', {
     }
 });
 
-var _await = __webpack_require__(30);
+var _await = __webpack_require__(29);
 
 Object.defineProperty(exports, 'resolved', {
     enumerable: true,
@@ -474,13 +474,13 @@ Object.defineProperty(exports, 'resolved', {
     }
 });
 
-var _virtualDom = __webpack_require__(37);
+var _virtualDom = __webpack_require__(36);
 
-var _orderlyQueue = __webpack_require__(48);
+var _orderlyQueue = __webpack_require__(47);
 
 var _orderlyQueue2 = _interopRequireDefault(_orderlyQueue);
 
-var _implementation = __webpack_require__(39);
+var _implementation = __webpack_require__(38);
 
 var _implementation2 = _interopRequireDefault(_implementation);
 
@@ -488,15 +488,13 @@ var _environment = __webpack_require__(14);
 
 var _environment2 = _interopRequireDefault(_environment);
 
-var _status = __webpack_require__(29);
-
-var _html = __webpack_require__(31);
+var _html = __webpack_require__(30);
 
 var _html2 = _interopRequireDefault(_html);
 
-var _rescue = __webpack_require__(34);
+var _rescue = __webpack_require__(33);
 
-var _refs = __webpack_require__(33);
+var _refs = __webpack_require__(32);
 
 var _messages = __webpack_require__(15);
 
@@ -560,7 +558,7 @@ const handle = function () {
         try {
 
             // Render the component and yield the `props` along with the virtual-dom vtree.
-            const props = yield component({ node, render, attached, [_status.statusKey]: _status.statuses.ok });
+            const props = yield component({ node, render, attached });
             return { props, tree: (0, _html.htmlFor)(props) };
         } catch (err) {
 
@@ -585,7 +583,7 @@ const handle = function () {
                 // Invoke the middleware for rendering the error vtree for the component.
                 const props = yield componentError({ node, render: function () {
                         return render(false);
-                    }, attached, error: err, [_status.statusKey]: _status.statuses.error });
+                    }, attached, error: err });
                 return { props, tree: (0, _html.htmlFor)(props) };
             } catch (err) {
 
@@ -607,28 +605,32 @@ const handle = function () {
  * @param {HTMLElement} node
  * @param {Object} tree
  * @param {Object} props
+ * @param {HTMLElement} currentRoot
  * @return {Object}
  */
 const transition = function () {
-    var _ref2 = _asyncToGenerator(function* (node, tree, props) {
+    var _ref2 = _asyncToGenerator(function* (node, tree, props, currentRoot) {
+
+        // Prevent any interactions with the current root, as technically it is now inactive.
+        currentRoot.style.pointerEvents = 'none';
 
         // Render the updated vtree and hide it.
         const boundary = node.shadowRoot;
         const root = (0, _virtualDom.create)(tree);
         root.style.display = 'none';
-        boundary.appendChild(root);
+        boundary.insertBefore(root, boundary.firstChild);
 
         // Wait until the children have been resolved.
         yield (0, _await.children)(props);
 
         // ...And then remove the previous child and show the newly rendered vtree.
-        boundary.firstChild.remove();
+        currentRoot.remove();
         root.style.display = 'block';
 
         return { node, tree, root };
     });
 
-    return function transition(_x3, _x4, _x5) {
+    return function transition(_x3, _x4, _x5, _x6) {
         return _ref2.apply(this, arguments);
     };
 }();
@@ -765,7 +767,7 @@ function create(name, component) {
                                 'ref' in props && (0, _refs.invokeFor)(node);
 
                                 return { node, tree, root };
-                            }() : transition(node, tree, props);
+                            }() : transition(node, tree, props, currentRoot);
                         }
                     } catch (err) {
 
@@ -774,7 +776,7 @@ function create(name, component) {
                     }
                 });
 
-                return function (_x6) {
+                return function (_x7) {
                     return _ref6.apply(this, arguments);
                 };
             }());
@@ -827,7 +829,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _once = __webpack_require__(55);
+var _once = __webpack_require__(54);
 
 var _once2 = _interopRequireDefault(_once);
 
@@ -916,7 +918,7 @@ module.exports = require("ramda");
 
 /* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
-var minDoc = __webpack_require__(75);
+var minDoc = __webpack_require__(74);
 
 if (typeof document !== 'undefined') {
     module.exports = document;
@@ -1276,46 +1278,6 @@ VirtualText.prototype.type = "VirtualText"
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
- * @constant statuses
- * @type {Object}
- */
-const statuses = exports.statuses = { ok: 1, error: 2 };
-
-/**
- * @constant statusKey
- * @type {Symbol}
- */
-const statusKey = exports.statusKey = Symbol('switzerland/status');
-
-/**
- * @method isOk
- * @param {Object} props
- * @return {Boolean}
- */
-const isOk = exports.isOk = function (props) {
-  return Boolean(props[statusKey] & statuses.ok);
-};
-
-/**
- * @method isError
- * @param {Object} props
- * @return {Boolean}
- */
-const isError = exports.isError = function (props) {
-  return Boolean(props[statusKey] & statuses.error);
-};
-
-/***/ },
-/* 30 */
-/***/ function(module, exports) {
-
-"use strict";
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
@@ -1429,7 +1391,7 @@ exports.default = function (...nodes) {
 };
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1469,8 +1431,8 @@ exports.default = function (html) {
 };
 
 /***/ },
-/* 32 */,
-/* 33 */
+/* 31 */,
+/* 32 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1548,7 +1510,7 @@ exports.default = function (props) {
 };
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1588,7 +1550,7 @@ exports.default = function (html) {
 };
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1689,14 +1651,14 @@ module.exports.win32 = win32.parse;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 36 */,
-/* 37 */
+/* 35 */,
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-var diff = __webpack_require__(62)
-var patch = __webpack_require__(64)
-var h = __webpack_require__(63)
-var create = __webpack_require__(61)
+var diff = __webpack_require__(61)
+var patch = __webpack_require__(63)
+var h = __webpack_require__(62)
+var create = __webpack_require__(60)
 var VNode = __webpack_require__(26)
 var VText = __webpack_require__(28)
 
@@ -1711,7 +1673,7 @@ module.exports = {
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1722,7 +1684,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.compose = exports.pipe = undefined;
 
-var _promisedPipe = __webpack_require__(50);
+var _promisedPipe = __webpack_require__(49);
 
 var _promisedPipe2 = _interopRequireDefault(_promisedPipe);
 
@@ -1745,7 +1707,7 @@ const compose = exports.compose = function (...fns) {
 };
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -1830,7 +1792,7 @@ const implementations = {
 exports.default = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1840,7 +1802,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pathParse = __webpack_require__(35);
+var _pathParse = __webpack_require__(34);
 
 var _pathParse2 = _interopRequireDefault(_pathParse);
 
@@ -1888,7 +1850,7 @@ exports.default = function () {
 }();
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports) {
 
 /*!
@@ -2000,14 +1962,14 @@ module.exports = (function split(undef) {
 
 
 /***/ },
-/* 42 */,
-/* 43 */
+/* 41 */,
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var OneVersionConstraint = __webpack_require__(45);
+var OneVersionConstraint = __webpack_require__(44);
 
 var MY_VERSION = '7';
 OneVersionConstraint('ev-store', MY_VERSION);
@@ -2028,7 +1990,7 @@ function EvStore(elem) {
 
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2055,13 +2017,13 @@ function Individual(key, value) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var Individual = __webpack_require__(44);
+var Individual = __webpack_require__(43);
 
 module.exports = OneVersion;
 
@@ -2084,9 +2046,9 @@ function OneVersion(moduleName, version, defaultValue) {
 
 
 /***/ },
+/* 45 */,
 /* 46 */,
-/* 47 */,
-/* 48 */
+/* 47 */
 /***/ function(module, exports) {
 
 module.exports =
@@ -2322,13 +2284,13 @@ var defaultOptions = { value: null, next: fn, error: fn };
 /******/ ]);
 
 /***/ },
-/* 49 */,
-/* 50 */
+/* 48 */,
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 // Dependencies
 var pipe = __webpack_require__(16).pipe
-var promised = __webpack_require__(51).promised
+var promised = __webpack_require__(50).promised
 
 // Public intefrace
 module.exports = promisedPipe
@@ -2340,7 +2302,7 @@ function promisedPipe() {
 
 
 /***/ },
-/* 51 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, setImmediate) {// vim:ts=4:sts=4:sw=4:
@@ -4395,7 +4357,7 @@ return Q;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(10).setImmediate))
 
 /***/ },
-/* 52 */
+/* 51 */
 /***/ function(module, exports) {
 
 module.exports = function _arity(n, fn) {
@@ -4418,10 +4380,10 @@ module.exports = function _arity(n, fn) {
 
 
 /***/ },
-/* 53 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
-var _isPlaceholder = __webpack_require__(54);
+var _isPlaceholder = __webpack_require__(53);
 
 
 /**
@@ -4444,7 +4406,7 @@ module.exports = function _curry1(fn) {
 
 
 /***/ },
-/* 54 */
+/* 53 */
 /***/ function(module, exports) {
 
 module.exports = function _isPlaceholder(a) {
@@ -4455,11 +4417,11 @@ module.exports = function _isPlaceholder(a) {
 
 
 /***/ },
-/* 55 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
-var _arity = __webpack_require__(52);
-var _curry1 = __webpack_require__(53);
+var _arity = __webpack_require__(51);
+var _curry1 = __webpack_require__(52);
 
 
 /**
@@ -4496,11 +4458,11 @@ module.exports = _curry1(function once(fn) {
 
 
 /***/ },
+/* 55 */,
 /* 56 */,
 /* 57 */,
 /* 58 */,
-/* 59 */,
-/* 60 */
+/* 59 */
 /***/ function(module, exports) {
 
 // shim for using process in browser
@@ -4686,7 +4648,7 @@ process.umask = function() { return 0; };
 
 
 /***/ },
-/* 61 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 var createElement = __webpack_require__(24)
@@ -4695,34 +4657,34 @@ module.exports = createElement
 
 
 /***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+var diff = __webpack_require__(73)
+
+module.exports = diff
+
+
+/***/ },
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-var diff = __webpack_require__(74)
+var h = __webpack_require__(70)
 
-module.exports = diff
+module.exports = h
 
 
 /***/ },
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-var h = __webpack_require__(71)
-
-module.exports = h
-
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-var patch = __webpack_require__(67)
+var patch = __webpack_require__(66)
 
 module.exports = patch
 
 
 /***/ },
-/* 65 */
+/* 64 */
 /***/ function(module, exports) {
 
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
@@ -4813,7 +4775,7 @@ function ascending(a, b) {
 
 
 /***/ },
-/* 66 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 var applyProperties = __webpack_require__(23)
@@ -4821,7 +4783,7 @@ var applyProperties = __webpack_require__(23)
 var isWidget = __webpack_require__(0)
 var VPatch = __webpack_require__(27)
 
-var updateWidget = __webpack_require__(68)
+var updateWidget = __webpack_require__(67)
 
 module.exports = applyPatch
 
@@ -4970,15 +4932,15 @@ function replaceRoot(oldRoot, newRoot) {
 
 
 /***/ },
-/* 67 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 var document = __webpack_require__(20)
 var isArray = __webpack_require__(13)
 
 var render = __webpack_require__(24)
-var domIndex = __webpack_require__(65)
-var patchOp = __webpack_require__(66)
+var domIndex = __webpack_require__(64)
+var patchOp = __webpack_require__(65)
 module.exports = patch
 
 function patch(rootNode, patches, renderOptions) {
@@ -5056,7 +5018,7 @@ function patchIndices(patches) {
 
 
 /***/ },
-/* 68 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 var isWidget = __webpack_require__(0)
@@ -5077,13 +5039,13 @@ function updateWidget(a, b) {
 
 
 /***/ },
-/* 69 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var EvStore = __webpack_require__(43);
+var EvStore = __webpack_require__(42);
 
 module.exports = EvHook;
 
@@ -5111,7 +5073,7 @@ EvHook.prototype.unhook = function(node, propertyName) {
 
 
 /***/ },
-/* 70 */
+/* 69 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -5135,7 +5097,7 @@ SoftSetHook.prototype.hook = function (node, propertyName) {
 
 
 /***/ },
-/* 71 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5151,9 +5113,9 @@ var isWidget = __webpack_require__(0);
 var isHook = __webpack_require__(6);
 var isVThunk = __webpack_require__(5);
 
-var parseTag = __webpack_require__(72);
-var softSetHook = __webpack_require__(70);
-var evHook = __webpack_require__(69);
+var parseTag = __webpack_require__(71);
+var softSetHook = __webpack_require__(69);
+var evHook = __webpack_require__(68);
 
 module.exports = h;
 
@@ -5279,13 +5241,13 @@ function errorString(obj) {
 
 
 /***/ },
-/* 72 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var split = __webpack_require__(41);
+var split = __webpack_require__(40);
 
 var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 var notClassId = /^\.|#/;
@@ -5340,7 +5302,7 @@ function parseTag(tag, props) {
 
 
 /***/ },
-/* 73 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(22)
@@ -5404,7 +5366,7 @@ function getPrototype(value) {
 
 
 /***/ },
-/* 74 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 var isArray = __webpack_require__(13)
@@ -5416,7 +5378,7 @@ var isWidget = __webpack_require__(0)
 var isThunk = __webpack_require__(5)
 var handleThunk = __webpack_require__(25)
 
-var diffProps = __webpack_require__(73)
+var diffProps = __webpack_require__(72)
 
 module.exports = diff
 
@@ -5837,12 +5799,13 @@ function appendPatch(apply, patch) {
 
 
 /***/ },
-/* 75 */
+/* 74 */
 /***/ function(module, exports) {
 
 /* (ignored) */
 
 /***/ },
+/* 75 */,
 /* 76 */,
 /* 77 */,
 /* 78 */,
@@ -5924,8 +5887,7 @@ function appendPatch(apply, patch) {
 /* 154 */,
 /* 155 */,
 /* 156 */,
-/* 157 */,
-/* 158 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(11);
