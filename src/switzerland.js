@@ -7,7 +7,7 @@ import html, { htmlFor } from './middleware/html';
 import { htmlErrorFor } from './middleware/rescue';
 import { ignoreKey } from './middleware/once';
 import { invokeFor, purgeFor } from './middleware/refs';
-import { resolvingChildren, awaitEventName } from './middleware/await';
+import { children, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
 
 /**
@@ -123,7 +123,7 @@ const transition = async (node, tree, props) => {
     boundary.appendChild(root);
 
     // Wait until the children have been resolved.
-    await resolvingChildren(props);
+    await children(props);
 
     // ...And then remove the previous child and show the newly rendered vtree.
     boundary.firstChild.remove();
@@ -186,7 +186,7 @@ export function create(name, component) {
                     node.resolved = (async () => {
 
                         // Setup listener for children being resolved.
-                        await resolvingChildren(props);
+                        await children(props);
 
                         // Emit the event that the node has been resolved.
                         node.dispatchEvent(new window.CustomEvent(awaitEventName, {

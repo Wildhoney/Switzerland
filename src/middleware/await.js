@@ -11,11 +11,11 @@ export const awaitKey = Symbol('switzerland/await');
 export const awaitEventName = 'switzerland/node-resolved';
 
 /**
- * @method resolvingChildren
+ * @method children
  * @param {Object} props
  * @return {Promise}
  */
-export const resolvingChildren = props => {
+export const children = props => {
 
     const waitFor = new Map();
     const { node } = props;
