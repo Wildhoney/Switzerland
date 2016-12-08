@@ -3,9 +3,9 @@ import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
 import isDevelopment from './helpers/environment';
+import { statusKey, statuses } from './helpers/status';
 import html, { htmlFor } from './middleware/html';
 import { htmlErrorFor } from './middleware/rescue';
-import { ignoreKey } from './middleware/once';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { children, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
@@ -65,7 +65,7 @@ const handle = async (node, component) => {
     try {
 
         // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ node, render, attached });
+        const props = await component({ node, render, attached, [statusKey]: statuses.ok });
         return { props, tree: htmlFor(props) };
 
     } catch (err) {
@@ -91,7 +91,7 @@ const handle = async (node, component) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ node, render: () => render(false), attached, error: err, [ignoreKey]: true });
+            const props = await componentError({ node, render: () => render(false), attached, error: err, [statusKey]: statuses.error });
             return { props, tree: htmlFor(props) };
 
         } catch (err) {

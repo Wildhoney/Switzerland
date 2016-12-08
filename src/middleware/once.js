@@ -1,10 +1,5 @@
 import { options } from '../switzerland';
-
-/**
- * @constant ignoreKey
- * @type {Symbol}
- */
-export const ignoreKey = Symbol('switzerland/ignore-once');
+import { isOk, isError } from '../helpers/status';
 
 /**
  * @constant once
@@ -29,11 +24,11 @@ export default (callback, flags = options.DEFAULT) => {
 
         // Determine whether the function has been called already.
         const hasFunction = once.get(key).has(callback);
-        !props[ignoreKey] && !hasFunction && once.get(key).set(callback, callback(props));
+        isOk(props) && !hasFunction && once.get(key).set(callback, callback(props));
 
         // Only promises will be yielded in the next tick, whereas functions that
         // yield objects will return immediately.
-        const response = once.get(key).get(callback) || (props[ignoreKey] && callback(props));
+        const response = once.get(key).get(callback) || (isError(props) && callback(props));
 
         // Remove the callback if the node has been deleted, which will cause it to be invoked
         // again if the node is re-added.
