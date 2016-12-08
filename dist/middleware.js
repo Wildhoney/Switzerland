@@ -62,7 +62,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 153);
+/******/ 	return __webpack_require__(__webpack_require__.s = 157);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -378,341 +378,6 @@ module.exports = g;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.h = exports.element = exports.resolved = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = exports.options = undefined;
-exports.create = create;
-
-var _path = __webpack_require__(39);
-
-Object.defineProperty(exports, 'path', {
-    enumerable: true,
-    get: function () {
-        return _interopRequireDefault(_path).default;
-    }
-});
-
-var _composition = __webpack_require__(37);
-
-Object.defineProperty(exports, 'pipe', {
-    enumerable: true,
-    get: function () {
-        return _composition.pipe;
-    }
-});
-Object.defineProperty(exports, 'compose', {
-    enumerable: true,
-    get: function () {
-        return _composition.compose;
-    }
-});
-
-var _await = __webpack_require__(30);
-
-Object.defineProperty(exports, 'resolved', {
-    enumerable: true,
-    get: function () {
-        return _await.resolved;
-    }
-});
-
-var _virtualDom = __webpack_require__(36);
-
-var _orderlyQueue = __webpack_require__(47);
-
-var _orderlyQueue2 = _interopRequireDefault(_orderlyQueue);
-
-var _implementation = __webpack_require__(38);
-
-var _implementation2 = _interopRequireDefault(_implementation);
-
-var _environment = __webpack_require__(15);
-
-var _environment2 = _interopRequireDefault(_environment);
-
-var _html = __webpack_require__(31);
-
-var _html2 = _interopRequireDefault(_html);
-
-var _rescue = __webpack_require__(33);
-
-var _once = __webpack_require__(12);
-
-var _refs = __webpack_require__(32);
-
-var _messages = __webpack_require__(16);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-/**
- * @constant options
- * @type {Object}
- */
-const options = exports.options = {
-    DEFAULT: 1,
-    ASYNC: 2,
-    RESET: 4,
-    DEFER: 8
-};
-
-/**
- * @constant queueKey
- * @type {Symbol}
- */
-const queueKey = Symbol('switzerland/queue');
-
-/**
- * @constant lastPropsKey
- * @type {Symbol}
- */
-const lastPropsKey = exports.lastPropsKey = Symbol('switzerland/last-props');
-
-/**
- * @method clearHTMLFor
- * @param {HTMLElement} node
- * @return {void}
- */
-const clearHTMLFor = function (node) {
-    node.shadowRoot.innerHTML = '';
-};
-
-/**
- * @method isAttached
- * @param {HTMLElement} node
- * @return {Boolean}
- */
-const isAttached = function (node) {
-    return 'isConnected' in node ? node.isConnected : document.contains(node);
-};
-
-/**
- * @method handle
- * @param {HTMLElement} node
- * @param {Function} component
- * @return {Object}
- */
-const handle = function () {
-    var _ref = _asyncToGenerator(function* (node, component) {
-
-        const render = node.render.bind(node);
-        const attached = isAttached(node);
-
-        try {
-
-            // Render the component and yield the `props` along with the virtual-dom vtree.
-            const props = yield component({ node, render, attached });
-            return { props, tree: (0, _html.htmlFor)(props) };
-        } catch (err) {
-
-            // As the component has raised an error during the processing of its middleware, we'll attempt
-            // to find the error vtree from the component's `error` middleware, otherwise we'll use a
-            // the Switzerland default vtree as well as raising an error to prevent the component from being
-            // rendered in an invalid state.
-            const componentError = (0, _rescue.htmlErrorFor)(node) || (0, _html2.default)(function (props) {
-
-                if ((0, _environment2.default)()) {
-
-                    // Display the uncaught error.
-                    const nodeName = props.node.nodeName.toLowerCase();
-                    (0, _messages.error)('<' + nodeName + ' /> threw an uncaught error when rendering: ' + (props.error.message || props.error));
-                }
-
-                return element('span', null);
-            });
-
-            try {
-
-                // Invoke the middleware for rendering the error vtree for the component.
-                const props = yield componentError({ node, render, attached, error: err, [_once.ignoreKey]: true });
-                return { props, tree: (0, _html.htmlFor)(props) };
-            } catch (err) {
-
-                // Catch any errors that were thrown in the error handler, which is forbidden as otherwise
-                // we'd be entering an Inception-esque down-the-rabbit-hole labyrinth.
-                (0, _messages.error)('Throwing an error within an error handler is forbidden, and as such should be entirely side-effect free');
-                return { props: { node }, tree: element('span', null) };
-            }
-        }
-    });
-
-    return function handle(_x, _x2) {
-        return _ref.apply(this, arguments);
-    };
-}();
-
-/**
- * @method create
- * @param {String} name
- * @param {Function} component
- * @return {void}
- */
-function create(name, component) {
-
-    /**
-     * @constant component
-     * @type {Object}
-     */
-    _implementation2.default.customElement(name, {
-
-        /**
-         * @method connectedCallback
-         * @return {void}
-         */
-        connected() {
-            var _this = this;
-
-            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '', next: function (lastProps) {
-
-                    // Memorise the last props as it's useful in the methods middleware.
-                    _this[lastPropsKey] = lastProps;
-                } });
-
-            queue.process(_asyncToGenerator(function* () {
-
-                // Setup the shadow boundary for the current node.
-                const node = _this;
-                node.shadowRoot && clearHTMLFor(node);
-                const boundary = node.shadowRoot || _implementation2.default.shadowBoundary(node);
-
-                try {
-
-                    // Apply the middleware and wait for the props to be returned.
-                    var _ref3 = yield handle(node, component);
-
-                    const props = _ref3.props,
-                          tree = _ref3.tree;
-
-                    // Setup the Virtual DOM instance, and then append the component to the DOM.
-
-                    const root = (0, _virtualDom.create)(tree);
-                    boundary.insertBefore(root, boundary.firstChild);
-
-                    // Invoke any ref callbacks defined in the component's `render` method.
-                    'ref' in props && (0, _refs.invokeFor)(node);
-
-                    /**
-                     * @constant resolved
-                     * @type {Promise}
-                     */
-                    node.resolved = _asyncToGenerator(function* () {
-
-                        // Setup listener for children being resolved.
-                        yield (0, _await.resolvingChildren)(props);
-
-                        // Emit the event that the node has been resolved.
-                        node.dispatchEvent(new window.CustomEvent(_await.awaitEventName, {
-                            detail: node,
-                            bubbles: true,
-                            composed: true
-                        }));
-
-                        return node;
-                    })();
-
-                    return { tree, root, node };
-                } catch (err) {
-
-                    // Capture any errors that were thrown in processing the component.
-                    (0, _messages.error)(err);
-                }
-            }));
-        },
-
-        /**
-         * @method disconnectedCallback
-         * @return {void}
-         */
-        disconnected() {
-
-            clearHTMLFor(this);
-
-            // Once the node has been removed then we perform one last pass, however the render function
-            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
-            this.render();
-        },
-
-        /**
-         * @method render
-         * @return {void}
-         */
-        render() {
-
-            this[queueKey].process(function () {
-                var _ref5 = _asyncToGenerator(function* (instance) {
-
-                    // Gather the props from the previous rendering of the component.
-                    const currentTree = instance.tree,
-                          currentRoot = instance.root,
-                          node = instance.node;
-
-
-                    try {
-
-                        // Apply the middleware and wait for the props to be returned.
-                        var _ref6 = yield handle(node, component);
-
-                        const props = _ref6.props,
-                              tree = _ref6.tree;
-
-                        // Clear any previously defined refs for the current component.
-
-                        'ref' in props && (0, _refs.purgeFor)(node);
-
-                        if (node.isConnected) {
-
-                            // Diff and patch the current DOM state with the new one.
-                            const patches = (0, _virtualDom.diff)(currentTree, tree);
-                            const root = (0, _virtualDom.patch)(currentRoot, patches);
-
-                            // Invoke any ref callbacks defined in the component's `render` method.
-                            'ref' in props && (0, _refs.invokeFor)(node);
-
-                            return { node, tree, root };
-                        }
-                    } catch (err) {
-
-                        // Capture any errors that were thrown in processing the component.
-                        (0, _messages.error)(err);
-                    }
-                });
-
-                return function (_x3) {
-                    return _ref5.apply(this, arguments);
-                };
-            }());
-        }
-
-    });
-}
-
-/**
- * @method element
- * @param {HTMLElement} el
- * @param {Object} props
- * @param {Array} children
- * @return {Object}
- */
-const element = exports.element = function (el, props, ...children) {
-    return (0, _virtualDom.h)(el, props, children);
-};
-
-/**
- * @method h
- * @alias element
- * @return {Object}
- */
-const h = exports.h = element;
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
  * The buffer module from node.js, for the browser.
  *
@@ -723,9 +388,9 @@ const h = exports.h = element;
 
 'use strict'
 
-var base64 = __webpack_require__(100)
-var ieee754 = __webpack_require__(129)
-var isArray = __webpack_require__(82)
+var base64 = __webpack_require__(102)
+var ieee754 = __webpack_require__(131)
+var isArray = __webpack_require__(83)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -2503,13 +2168,13 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10).Buffer, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9).Buffer, __webpack_require__(8)))
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(59).nextTick;
+/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(60).nextTick;
 var apply = Function.prototype.apply;
 var slice = Array.prototype.slice;
 var immediateIds = {};
@@ -2585,72 +2250,383 @@ exports.setImmediate = typeof setImmediate === "function" ? setImmediate : funct
 exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
   delete immediateIds[id];
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11).setImmediate, __webpack_require__(11).clearImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10).setImmediate, __webpack_require__(10).clearImmediate))
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
-exports.ignoreKey = undefined;
+exports.h = exports.element = exports.resolved = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = exports.options = undefined;
+exports.create = create;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _path = __webpack_require__(40);
 
-var _switzerland = __webpack_require__(9);
+Object.defineProperty(exports, 'path', {
+    enumerable: true,
+    get: function () {
+        return _interopRequireDefault(_path).default;
+    }
+});
+
+var _composition = __webpack_require__(38);
+
+Object.defineProperty(exports, 'pipe', {
+    enumerable: true,
+    get: function () {
+        return _composition.pipe;
+    }
+});
+Object.defineProperty(exports, 'compose', {
+    enumerable: true,
+    get: function () {
+        return _composition.compose;
+    }
+});
+
+var _await = __webpack_require__(30);
+
+Object.defineProperty(exports, 'resolved', {
+    enumerable: true,
+    get: function () {
+        return _await.resolved;
+    }
+});
+
+var _virtualDom = __webpack_require__(37);
+
+var _orderlyQueue = __webpack_require__(48);
+
+var _orderlyQueue2 = _interopRequireDefault(_orderlyQueue);
+
+var _implementation = __webpack_require__(39);
+
+var _implementation2 = _interopRequireDefault(_implementation);
+
+var _environment = __webpack_require__(14);
+
+var _environment2 = _interopRequireDefault(_environment);
+
+var _status = __webpack_require__(29);
+
+var _html = __webpack_require__(31);
+
+var _html2 = _interopRequireDefault(_html);
+
+var _rescue = __webpack_require__(34);
+
+var _refs = __webpack_require__(33);
+
+var _messages = __webpack_require__(15);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 /**
- * @constant ignoreKey
- * @type {Symbol}
+ * @constant options
+ * @type {Object}
  */
-const ignoreKey = exports.ignoreKey = Symbol('switzerland/ignore-once');
-
-/**
- * @constant once
- * @type {WeakMap}
- */
-const once = new WeakMap();
-
-/**
- * @param {Function} callback
- * @param {Number} [flags = options.DEFAULT]
- * @return {Function}
- */
-
-exports.default = function (callback, flags = _switzerland.options.DEFAULT) {
-
-  return function (props) {
-
-    const key = props.node;
-
-    // Ensure the node has an entry in the map.
-    const hasNode = once.has(key);
-    !hasNode && once.set(key, new WeakMap());
-
-    // Determine whether the function has been called already.
-    const hasFunction = once.get(key).has(callback);
-    !props[ignoreKey] && !hasFunction && once.get(key).set(callback, callback(props));
-
-    // Only promises will be yielded in the next tick, whereas functions that
-    // yield objects will return immediately.
-    const response = once.get(key).get(callback) || props[ignoreKey] && callback(props);
-
-    // Remove the callback if the node has been deleted, which will cause it to be invoked
-    // again if the node is re-added.
-    flags & _switzerland.options.RESET && !props.attached && once.get(key).delete(callback);
-
-    return 'then' in Object(response) ? response.then(function (onceProps) {
-      return _extends({}, onceProps, props);
-    }) : _extends({}, response, props);
-  };
+const options = exports.options = {
+    DEFAULT: 1,
+    ASYNC: 2,
+    RESET: 4,
+    DEFER: 8
 };
 
+/**
+ * @constant queueKey
+ * @type {Symbol}
+ */
+const queueKey = Symbol('switzerland/queue');
+
+/**
+ * @constant lastPropsKey
+ * @type {Symbol}
+ */
+const lastPropsKey = exports.lastPropsKey = Symbol('switzerland/last-props');
+
+/**
+ * @method clearHTMLFor
+ * @param {HTMLElement} node
+ * @return {void}
+ */
+const clearHTMLFor = function (node) {
+    node.shadowRoot.innerHTML = '';
+};
+
+/**
+ * @method isAttached
+ * @param {HTMLElement} node
+ * @return {Boolean}
+ */
+const isAttached = function (node) {
+    return 'isConnected' in node ? node.isConnected : document.contains(node);
+};
+
+/**
+ * @method handle
+ * @param {HTMLElement} node
+ * @param {Function} component
+ * @return {Object}
+ */
+const handle = function () {
+    var _ref = _asyncToGenerator(function* (node, component) {
+
+        const render = node.render.bind(node);
+        const attached = isAttached(node);
+
+        try {
+
+            // Render the component and yield the `props` along with the virtual-dom vtree.
+            const props = yield component({ node, render, attached, [_status.statusKey]: _status.statuses.ok });
+            return { props, tree: (0, _html.htmlFor)(props) };
+        } catch (err) {
+
+            // As the component has raised an error during the processing of its middleware, we'll attempt
+            // to find the error vtree from the component's `error` middleware, otherwise we'll use a
+            // the Switzerland default vtree as well as raising an error to prevent the component from being
+            // rendered in an invalid state.
+            const componentError = (0, _rescue.htmlErrorFor)(node) || (0, _html2.default)(function (props) {
+
+                if ((0, _environment2.default)()) {
+
+                    // Display the uncaught error.
+                    const nodeName = props.node.nodeName.toLowerCase();
+                    (0, _messages.error)('<' + nodeName + ' /> threw an uncaught error when rendering: ' + (props.error.message || props.error));
+                }
+
+                return element('span', null);
+            });
+
+            try {
+
+                // Invoke the middleware for rendering the error vtree for the component.
+                const props = yield componentError({ node, render: function () {
+                        return render(false);
+                    }, attached, error: err, [_status.statusKey]: _status.statuses.error });
+                return { props, tree: (0, _html.htmlFor)(props) };
+            } catch (err) {
+
+                // Catch any errors that were thrown in the error handler, which is forbidden as otherwise
+                // we'd be entering an Inception-esque down-the-rabbit-hole labyrinth.
+                (0, _messages.error)('Throwing an error within an error handler is forbidden, and as such should be entirely side-effect free');
+                return { props: { node }, tree: element('span', null) };
+            }
+        }
+    });
+
+    return function handle(_x, _x2) {
+        return _ref.apply(this, arguments);
+    };
+}();
+
+/**
+ * @method transition
+ * @param {HTMLElement} node
+ * @param {Object} tree
+ * @param {Object} props
+ * @return {Object}
+ */
+const transition = function () {
+    var _ref2 = _asyncToGenerator(function* (node, tree, props) {
+
+        // Render the updated vtree and hide it.
+        const boundary = node.shadowRoot;
+        const root = (0, _virtualDom.create)(tree);
+        root.style.display = 'none';
+        boundary.appendChild(root);
+
+        // Wait until the children have been resolved.
+        yield (0, _await.children)(props);
+
+        // ...And then remove the previous child and show the newly rendered vtree.
+        boundary.firstChild.remove();
+        root.style.display = 'block';
+
+        return { node, tree, root };
+    });
+
+    return function transition(_x3, _x4, _x5) {
+        return _ref2.apply(this, arguments);
+    };
+}();
+
+/**
+ * @method create
+ * @param {String} name
+ * @param {Function} component
+ * @return {void}
+ */
+function create(name, component) {
+
+    /**
+     * @constant component
+     * @type {Object}
+     */
+    _implementation2.default.customElement(name, {
+
+        /**
+         * @method connectedCallback
+         * @return {void}
+         */
+        connected() {
+            var _this = this;
+
+            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '', next: function (lastProps) {
+
+                    // Memorise the last props as it's useful in the methods middleware.
+                    _this[lastPropsKey] = lastProps;
+                } });
+
+            queue.process(_asyncToGenerator(function* () {
+
+                // Setup the shadow boundary for the current node.
+                const node = _this;
+                node.shadowRoot && clearHTMLFor(node);
+                const boundary = node.shadowRoot || _implementation2.default.shadowBoundary(node);
+
+                try {
+
+                    // Apply the middleware and wait for the props to be returned.
+                    var _ref4 = yield handle(node, component);
+
+                    const props = _ref4.props,
+                          tree = _ref4.tree;
+
+                    // Setup the Virtual DOM instance, and then append the component to the DOM.
+
+                    const root = (0, _virtualDom.create)(tree);
+                    boundary.insertBefore(root, boundary.firstChild);
+
+                    // Invoke any ref callbacks defined in the component's `render` method.
+                    'ref' in props && (0, _refs.invokeFor)(node);
+
+                    /**
+                     * @constant resolved
+                     * @type {Promise}
+                     */
+                    node.resolved = _asyncToGenerator(function* () {
+
+                        // Setup listener for children being resolved.
+                        yield (0, _await.children)(props);
+
+                        // Emit the event that the node has been resolved.
+                        node.dispatchEvent(new window.CustomEvent(_await.awaitEventName, {
+                            detail: node,
+                            bubbles: true,
+                            composed: true
+                        }));
+
+                        return node;
+                    })();
+
+                    return { tree, root, node };
+                } catch (err) {
+
+                    // Capture any errors that were thrown in processing the component.
+                    (0, _messages.error)(err);
+                }
+            }));
+        },
+
+        /**
+         * @method disconnectedCallback
+         * @return {void}
+         */
+        disconnected() {
+
+            clearHTMLFor(this);
+
+            // Once the node has been removed then we perform one last pass, however the render function
+            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
+            this.render();
+        },
+
+        /**
+         * @method render
+         * @param {Boolean} [delta = true]
+         * @return {void}
+         */
+        render(delta = true) {
+
+            this[queueKey].process(function () {
+                var _ref6 = _asyncToGenerator(function* (instance) {
+
+                    // Gather the props from the previous rendering of the component.
+                    const currentTree = instance.tree,
+                          currentRoot = instance.root,
+                          node = instance.node;
+
+
+                    try {
+
+                        // Apply the middleware and wait for the props to be returned.
+                        var _ref7 = yield handle(node, component);
+
+                        const props = _ref7.props,
+                              tree = _ref7.tree;
+
+                        // Clear any previously defined refs for the current component.
+
+                        'ref' in props && (0, _refs.purgeFor)(node);
+
+                        if (node.isConnected) {
+
+                            // Determine whether we're transitioning or patching.
+                            return delta ? function () {
+
+                                // Diff and patch the current DOM state with the new one.
+                                const patches = (0, _virtualDom.diff)(currentTree, tree);
+                                const root = (0, _virtualDom.patch)(currentRoot, patches);
+
+                                // Invoke any ref callbacks defined in the component's `render` method.
+                                'ref' in props && (0, _refs.invokeFor)(node);
+
+                                return { node, tree, root };
+                            }() : transition(node, tree, props);
+                        }
+                    } catch (err) {
+
+                        // Capture any errors that were thrown in processing the component.
+                        (0, _messages.error)(err);
+                    }
+                });
+
+                return function (_x6) {
+                    return _ref6.apply(this, arguments);
+                };
+            }());
+        }
+
+    });
+}
+
+/**
+ * @method element
+ * @param {HTMLElement} el
+ * @param {Object} props
+ * @param {Array} children
+ * @return {Object}
+ */
+const element = exports.element = function (el, props, ...children) {
+    return (0, _virtualDom.h)(el, props, children);
+};
+
+/**
+ * @method h
+ * @alias element
+ * @return {Object}
+ */
+const h = exports.h = element;
+
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2674,16 +2650,16 @@ var objectKeys = Object.keys || function (obj) {
 module.exports = Duplex;
 
 /*<replacement>*/
-var processNextTick = __webpack_require__(48);
+var processNextTick = __webpack_require__(49);
 /*</replacement>*/
 
 /*<replacement>*/
-var util = __webpack_require__(18);
+var util = __webpack_require__(17);
 util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
-var Readable = __webpack_require__(86);
-var Writable = __webpack_require__(56);
+var Readable = __webpack_require__(87);
+var Writable = __webpack_require__(57);
 
 util.inherits(Duplex, Readable);
 
@@ -2731,7 +2707,7 @@ function forEach(xs, f) {
 }
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 var nativeIsArray = Array.isArray
@@ -2745,7 +2721,7 @@ function isArray(obj) {
 
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2755,7 +2731,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _once = __webpack_require__(54);
+var _once = __webpack_require__(55);
 
 var _once2 = _interopRequireDefault(_once);
 
@@ -2784,7 +2760,7 @@ exports.default = (0, _once2.default)(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2795,7 +2771,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.warning = exports.error = undefined;
 
-var _environment = __webpack_require__(15);
+var _environment = __webpack_require__(14);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -2830,13 +2806,13 @@ const warning = exports.warning = function (text) {
 };
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports) {
 
 module.exports = require("ramda");
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
@@ -2947,10 +2923,10 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9).Buffer))
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports) {
 
 //Types of elements found in the DOM
@@ -2971,7 +2947,7 @@ module.exports = {
 
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -3279,12 +3255,12 @@ function isUndefined(arg) {
 
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
-var minDoc = __webpack_require__(74);
+var minDoc = __webpack_require__(75);
 
 if (typeof document !== 'undefined') {
     module.exports = document;
@@ -3301,11 +3277,11 @@ if (typeof document !== 'undefined') {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-var Parser = __webpack_require__(78),
-    DomHandler = __webpack_require__(105);
+var Parser = __webpack_require__(79),
+    DomHandler = __webpack_require__(107);
 
 function defineProp(name, value){
 	delete module.exports[name];
@@ -3315,26 +3291,26 @@ function defineProp(name, value){
 
 module.exports = {
 	Parser: Parser,
-	Tokenizer: __webpack_require__(79),
-	ElementType: __webpack_require__(19),
+	Tokenizer: __webpack_require__(80),
+	ElementType: __webpack_require__(18),
 	DomHandler: DomHandler,
 	get FeedHandler(){
-		return defineProp("FeedHandler", __webpack_require__(126));
+		return defineProp("FeedHandler", __webpack_require__(128));
 	},
 	get Stream(){
-		return defineProp("Stream", __webpack_require__(128));
+		return defineProp("Stream", __webpack_require__(130));
 	},
 	get WritableStream(){
-		return defineProp("WritableStream", __webpack_require__(80));
+		return defineProp("WritableStream", __webpack_require__(81));
 	},
 	get ProxyHandler(){
-		return defineProp("ProxyHandler", __webpack_require__(127));
+		return defineProp("ProxyHandler", __webpack_require__(129));
 	},
 	get DomUtils(){
-		return defineProp("DomUtils", __webpack_require__(107));
+		return defineProp("DomUtils", __webpack_require__(109));
 	},
 	get CollectingHandler(){
-		return defineProp("CollectingHandler", __webpack_require__(125));
+		return defineProp("CollectingHandler", __webpack_require__(127));
 	},
 	// For legacy support
 	DefaultHandler: DomHandler,
@@ -3375,7 +3351,7 @@ module.exports = {
 
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -3387,10 +3363,10 @@ module.exports = function isObject(x) {
 
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(23)
+var isObject = __webpack_require__(22)
 var isHook = __webpack_require__(6)
 
 module.exports = applyProperties
@@ -3490,17 +3466,17 @@ function getPrototype(value) {
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(21)
+var document = __webpack_require__(20)
 
-var applyProperties = __webpack_require__(24)
+var applyProperties = __webpack_require__(23)
 
 var isVNode = __webpack_require__(2)
 var isVText = __webpack_require__(7)
 var isWidget = __webpack_require__(0)
-var handleThunk = __webpack_require__(26)
+var handleThunk = __webpack_require__(25)
 
 module.exports = createElement
 
@@ -3542,7 +3518,7 @@ function createElement(vnode, opts) {
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 var isVNode = __webpack_require__(2)
@@ -3588,7 +3564,7 @@ function renderThunk(thunk, previous) {
 
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 var version = __webpack_require__(3)
@@ -3666,7 +3642,7 @@ VirtualNode.prototype.type = "VirtualNode"
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 var version = __webpack_require__(3)
@@ -3694,7 +3670,7 @@ VirtualPatch.prototype.type = "VirtualPatch"
 
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 var version = __webpack_require__(3)
@@ -3708,6 +3684,46 @@ function VirtualText(text) {
 VirtualText.prototype.version = version
 VirtualText.prototype.type = "VirtualText"
 
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * @constant statuses
+ * @type {Object}
+ */
+const statuses = exports.statuses = { ok: 1, error: 2 };
+
+/**
+ * @constant statusKey
+ * @type {Symbol}
+ */
+const statusKey = exports.statusKey = Symbol('switzerland/status');
+
+/**
+ * @method isOk
+ * @param {Object} props
+ * @return {Boolean}
+ */
+const isOk = exports.isOk = function (props) {
+  return Boolean(props[statusKey] & statuses.ok);
+};
+
+/**
+ * @method isError
+ * @param {Object} props
+ * @return {Boolean}
+ */
+const isError = exports.isError = function (props) {
+  return Boolean(props[statusKey] & statuses.error);
+};
 
 /***/ },
 /* 30 */
@@ -3735,11 +3751,11 @@ const awaitKey = exports.awaitKey = Symbol('switzerland/await');
 const awaitEventName = exports.awaitEventName = 'switzerland/node-resolved';
 
 /**
- * @method resolvingChildren
+ * @method children
  * @param {Object} props
  * @return {Promise}
  */
-const resolvingChildren = exports.resolvingChildren = function (props) {
+const children = exports.children = function (props) {
 
     const waitFor = new Map();
     const node = props.node;
@@ -3748,29 +3764,45 @@ const resolvingChildren = exports.resolvingChildren = function (props) {
 
     return awaitKey in props ? new Promise(function (resolve) {
 
+        /**
+         * @method done
+         * @param {HTMLElement} node
+         * @return {void}
+         */
+        function done(node) {
+
+            // Tree has been resolved.
+            node.removeEventListener(awaitEventName, resolved);
+            resolve(waitFor);
+            props.node.classList.add('resolved');
+        }
+
         node.addEventListener(awaitEventName, function resolved(event) {
 
             // Resolve the current node if we have it in the map.
             waitFor.has(event.detail) && waitFor.set(event.detail, true);
 
-            // Determine whether all awaiting nodes have been resolved.
+            // Determine whether all awaiting nodes have been resolved, and if so then we'll
+            // resolve the current node.
             Array.from(waitFor.values()).every(function (resolved) {
                 return resolved === true;
             }) && function () {
-
-                // Tree has been resolved.
-                node.removeEventListener(awaitEventName, resolved);
-                resolve(waitFor);
-                props.node.classList.add('loaded');
+                return done(node);
             }();
         });
 
         // Place all of the nodes we're awaiting into the map.
-        const nodes = boundary.querySelectorAll(props[awaitKey].join(','));
+        const nodeNames = props[awaitKey].join(',');
+
+        // Attempt to find any matching nodes and await their resolution.
+        const nodes = nodeNames.length && boundary.querySelectorAll(nodeNames);
         Array.from(nodes).forEach(function (awaitNode) {
             return waitFor.set(awaitNode, false);
         });
-    }) : Promise.resolve();
+
+        // If we were unable to find any of the `await` nodes then we'll simply resolve.
+        !nodes.length && done(node);
+    }) : Promise.resolve() && props.node.classList.add('resolved');
 };
 
 /**
@@ -3850,6 +3882,63 @@ exports.default = function (html) {
 
 /***/ },
 /* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _switzerland = __webpack_require__(11);
+
+var _status = __webpack_require__(29);
+
+/**
+ * @constant once
+ * @type {WeakMap}
+ */
+const once = new WeakMap();
+
+/**
+ * @param {Function} callback
+ * @param {Number} [flags = options.DEFAULT]
+ * @return {Function}
+ */
+
+exports.default = function (callback, flags = _switzerland.options.DEFAULT) {
+
+  return function (props) {
+
+    const key = props.node;
+
+    // Ensure the node has an entry in the map.
+    const hasNode = once.has(key);
+    !hasNode && once.set(key, new WeakMap());
+
+    // Determine whether the function has been called already.
+    const hasFunction = once.get(key).has(callback);
+    (0, _status.isOk)(props) && !hasFunction && once.get(key).set(callback, callback(props));
+
+    // Only promises will be yielded in the next tick, whereas functions that
+    // yield objects will return immediately.
+    const response = once.get(key).get(callback) || (0, _status.isError)(props) && callback(props);
+
+    // Remove the callback if the node has been deleted, which will cause it to be invoked
+    // again if the node is re-added.
+    flags & _switzerland.options.RESET && !props.attached && once.get(key).delete(callback);
+
+    return 'then' in Object(response) ? response.then(function (onceProps) {
+      return _extends({}, onceProps, props);
+    }) : _extends({}, response, props);
+  };
+};
+
+/***/ },
+/* 33 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -3927,7 +4016,7 @@ exports.default = function (props) {
 };
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -3967,7 +4056,7 @@ exports.default = function (html) {
 };
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4068,7 +4157,7 @@ module.exports.win32 = win32.parse;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -4094,15 +4183,15 @@ module.exports.win32 = win32.parse;
 
 module.exports = Stream;
 
-var EE = __webpack_require__(20).EventEmitter;
+var EE = __webpack_require__(19).EventEmitter;
 var inherits = __webpack_require__(4);
 
 inherits(Stream, EE);
-Stream.Readable = __webpack_require__(137);
-Stream.Writable = __webpack_require__(139);
-Stream.Duplex = __webpack_require__(134);
-Stream.Transform = __webpack_require__(138);
-Stream.PassThrough = __webpack_require__(136);
+Stream.Readable = __webpack_require__(139);
+Stream.Writable = __webpack_require__(141);
+Stream.Duplex = __webpack_require__(136);
+Stream.Transform = __webpack_require__(140);
+Stream.PassThrough = __webpack_require__(138);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -4201,15 +4290,15 @@ Stream.prototype.pipe = function(dest, options) {
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-var diff = __webpack_require__(61)
-var patch = __webpack_require__(63)
-var h = __webpack_require__(62)
-var create = __webpack_require__(60)
-var VNode = __webpack_require__(27)
-var VText = __webpack_require__(29)
+var diff = __webpack_require__(62)
+var patch = __webpack_require__(64)
+var h = __webpack_require__(63)
+var create = __webpack_require__(61)
+var VNode = __webpack_require__(26)
+var VText = __webpack_require__(28)
 
 module.exports = {
     diff: diff,
@@ -4222,7 +4311,7 @@ module.exports = {
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4233,7 +4322,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.compose = exports.pipe = undefined;
 
-var _promisedPipe = __webpack_require__(49);
+var _promisedPipe = __webpack_require__(50);
 
 var _promisedPipe2 = _interopRequireDefault(_promisedPipe);
 
@@ -4256,7 +4345,7 @@ const compose = exports.compose = function (...fns) {
 };
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -4320,8 +4409,8 @@ const implementations = {
                 disconnectedCallback() {
                     component.disconnected.apply(this);
                 }
-                render() {
-                    component.render.apply(this);
+                render(transition) {
+                    component.render.call(this, transition);
                 }
             });
         },
@@ -4341,7 +4430,7 @@ const implementations = {
 exports.default = typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4351,11 +4440,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pathParse = __webpack_require__(34);
+var _pathParse = __webpack_require__(35);
 
 var _pathParse2 = _interopRequireDefault(_pathParse);
 
-var _messages = __webpack_require__(16);
+var _messages = __webpack_require__(15);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4399,7 +4488,7 @@ exports.default = function () {
 }();
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports) {
 
 /*!
@@ -4511,13 +4600,13 @@ module.exports = (function split(undef) {
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(global) {'use strict';
 
-var buffer = __webpack_require__(10);
+var buffer = __webpack_require__(9);
 var Buffer = buffer.Buffer;
 var SlowBuffer = buffer.SlowBuffer;
 var MAX_LEN = buffer.kMaxLength || 2147483647;
@@ -4627,13 +4716,13 @@ exports.allocUnsafeSlow = function allocUnsafeSlow(size) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var OneVersionConstraint = __webpack_require__(44);
+var OneVersionConstraint = __webpack_require__(45);
 
 var MY_VERSION = '7';
 OneVersionConstraint('ev-store', MY_VERSION);
@@ -4654,7 +4743,7 @@ function EvStore(elem) {
 
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4681,13 +4770,13 @@ function Individual(key, value) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var Individual = __webpack_require__(43);
+var Individual = __webpack_require__(44);
 
 module.exports = OneVersion;
 
@@ -4710,7 +4799,7 @@ function OneVersion(moduleName, version, defaultValue) {
 
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -6842,7 +6931,7 @@ module.exports = {
 };
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -6854,7 +6943,7 @@ module.exports = {
 };
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports) {
 
 module.exports =
@@ -7090,7 +7179,7 @@ var defaultOptions = { value: null, next: fn, error: fn };
 /******/ ]);
 
 /***/ },
-/* 48 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7141,12 +7230,12 @@ function nextTick(fn, arg1, arg2, arg3) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 49 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 // Dependencies
-var pipe = __webpack_require__(17).pipe
-var promised = __webpack_require__(50).promised
+var pipe = __webpack_require__(16).pipe
+var promised = __webpack_require__(51).promised
 
 // Public intefrace
 module.exports = promisedPipe
@@ -7158,7 +7247,7 @@ function promisedPipe() {
 
 
 /***/ },
-/* 50 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, setImmediate) {// vim:ts=4:sts=4:sw=4:
@@ -9210,10 +9299,10 @@ return Q;
 
 });
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(11).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(10).setImmediate))
 
 /***/ },
-/* 51 */
+/* 52 */
 /***/ function(module, exports) {
 
 module.exports = function _arity(n, fn) {
@@ -9236,10 +9325,10 @@ module.exports = function _arity(n, fn) {
 
 
 /***/ },
-/* 52 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
-var _isPlaceholder = __webpack_require__(53);
+var _isPlaceholder = __webpack_require__(54);
 
 
 /**
@@ -9262,7 +9351,7 @@ module.exports = function _curry1(fn) {
 
 
 /***/ },
-/* 53 */
+/* 54 */
 /***/ function(module, exports) {
 
 module.exports = function _isPlaceholder(a) {
@@ -9273,11 +9362,11 @@ module.exports = function _isPlaceholder(a) {
 
 
 /***/ },
-/* 54 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-var _arity = __webpack_require__(51);
-var _curry1 = __webpack_require__(52);
+var _arity = __webpack_require__(52);
+var _curry1 = __webpack_require__(53);
 
 
 /**
@@ -9314,7 +9403,7 @@ module.exports = _curry1(function once(fn) {
 
 
 /***/ },
-/* 55 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9364,10 +9453,10 @@ module.exports = _curry1(function once(fn) {
 
 module.exports = Transform;
 
-var Duplex = __webpack_require__(13);
+var Duplex = __webpack_require__(12);
 
 /*<replacement>*/
-var util = __webpack_require__(18);
+var util = __webpack_require__(17);
 util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
@@ -9502,7 +9591,7 @@ function done(stream, er, data) {
 }
 
 /***/ },
-/* 56 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9515,7 +9604,7 @@ function done(stream, er, data) {
 module.exports = Writable;
 
 /*<replacement>*/
-var processNextTick = __webpack_require__(48);
+var processNextTick = __webpack_require__(49);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -9529,13 +9618,13 @@ var Duplex;
 Writable.WritableState = WritableState;
 
 /*<replacement>*/
-var util = __webpack_require__(18);
+var util = __webpack_require__(17);
 util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(148)
+  deprecate: __webpack_require__(152)
 };
 /*</replacement>*/
 
@@ -9543,16 +9632,16 @@ var internalUtil = {
 var Stream;
 (function () {
   try {
-    Stream = __webpack_require__(35);
+    Stream = __webpack_require__(36);
   } catch (_) {} finally {
-    if (!Stream) Stream = __webpack_require__(20).EventEmitter;
+    if (!Stream) Stream = __webpack_require__(19).EventEmitter;
   }
 })();
 /*</replacement>*/
 
-var Buffer = __webpack_require__(10).Buffer;
+var Buffer = __webpack_require__(9).Buffer;
 /*<replacement>*/
-var bufferShim = __webpack_require__(41);
+var bufferShim = __webpack_require__(42);
 /*</replacement>*/
 
 util.inherits(Writable, Stream);
@@ -9567,7 +9656,7 @@ function WriteReq(chunk, encoding, cb) {
 }
 
 function WritableState(options, stream) {
-  Duplex = Duplex || __webpack_require__(13);
+  Duplex = Duplex || __webpack_require__(12);
 
   options = options || {};
 
@@ -9701,7 +9790,7 @@ if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.protot
 }
 
 function Writable(options) {
-  Duplex = Duplex || __webpack_require__(13);
+  Duplex = Duplex || __webpack_require__(12);
 
   // Writable ctor is applied to Duplexes, too.
   // `realHasInstance` is necessary because using plain `instanceof`
@@ -10060,16 +10149,16 @@ function CorkedRequest(state) {
     }
   };
 }
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(11).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(10).setImmediate))
 
 /***/ },
-/* 57 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var randomFromSeed = __webpack_require__(146);
+var randomFromSeed = __webpack_require__(148);
 
 var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 var alphabet;
@@ -10168,7 +10257,7 @@ module.exports = {
 
 
 /***/ },
-/* 58 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 // Copyright Joyent, Inc. and other Node contributors.
@@ -10192,7 +10281,7 @@ module.exports = {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var Buffer = __webpack_require__(10).Buffer;
+var Buffer = __webpack_require__(9).Buffer;
 
 var isBufferEncoding = Buffer.isEncoding
   || function(encoding) {
@@ -10395,7 +10484,7 @@ function base64DetectIncompleteChar(buffer) {
 
 
 /***/ },
-/* 59 */
+/* 60 */
 /***/ function(module, exports) {
 
 // shim for using process in browser
@@ -10581,43 +10670,43 @@ process.umask = function() { return 0; };
 
 
 /***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-var createElement = __webpack_require__(25)
-
-module.exports = createElement
-
-
-/***/ },
 /* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
-var diff = __webpack_require__(73)
+var createElement = __webpack_require__(24)
 
-module.exports = diff
+module.exports = createElement
 
 
 /***/ },
 /* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
-var h = __webpack_require__(70)
+var diff = __webpack_require__(74)
 
-module.exports = h
+module.exports = diff
 
 
 /***/ },
 /* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-var patch = __webpack_require__(66)
+var h = __webpack_require__(71)
+
+module.exports = h
+
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+var patch = __webpack_require__(67)
 
 module.exports = patch
 
 
 /***/ },
-/* 64 */
+/* 65 */
 /***/ function(module, exports) {
 
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
@@ -10708,15 +10797,15 @@ function ascending(a, b) {
 
 
 /***/ },
-/* 65 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-var applyProperties = __webpack_require__(24)
+var applyProperties = __webpack_require__(23)
 
 var isWidget = __webpack_require__(0)
-var VPatch = __webpack_require__(28)
+var VPatch = __webpack_require__(27)
 
-var updateWidget = __webpack_require__(67)
+var updateWidget = __webpack_require__(68)
 
 module.exports = applyPatch
 
@@ -10865,15 +10954,15 @@ function replaceRoot(oldRoot, newRoot) {
 
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(21)
-var isArray = __webpack_require__(14)
+var document = __webpack_require__(20)
+var isArray = __webpack_require__(13)
 
-var render = __webpack_require__(25)
-var domIndex = __webpack_require__(64)
-var patchOp = __webpack_require__(65)
+var render = __webpack_require__(24)
+var domIndex = __webpack_require__(65)
+var patchOp = __webpack_require__(66)
 module.exports = patch
 
 function patch(rootNode, patches, renderOptions) {
@@ -10951,7 +11040,7 @@ function patchIndices(patches) {
 
 
 /***/ },
-/* 67 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 var isWidget = __webpack_require__(0)
@@ -10972,13 +11061,13 @@ function updateWidget(a, b) {
 
 
 /***/ },
-/* 68 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var EvStore = __webpack_require__(42);
+var EvStore = __webpack_require__(43);
 
 module.exports = EvHook;
 
@@ -11006,7 +11095,7 @@ EvHook.prototype.unhook = function(node, propertyName) {
 
 
 /***/ },
-/* 69 */
+/* 70 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -11030,25 +11119,25 @@ SoftSetHook.prototype.hook = function (node, propertyName) {
 
 
 /***/ },
-/* 70 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var isArray = __webpack_require__(14);
+var isArray = __webpack_require__(13);
 
-var VNode = __webpack_require__(27);
-var VText = __webpack_require__(29);
+var VNode = __webpack_require__(26);
+var VText = __webpack_require__(28);
 var isVNode = __webpack_require__(2);
 var isVText = __webpack_require__(7);
 var isWidget = __webpack_require__(0);
 var isHook = __webpack_require__(6);
 var isVThunk = __webpack_require__(5);
 
-var parseTag = __webpack_require__(71);
-var softSetHook = __webpack_require__(69);
-var evHook = __webpack_require__(68);
+var parseTag = __webpack_require__(72);
+var softSetHook = __webpack_require__(70);
+var evHook = __webpack_require__(69);
 
 module.exports = h;
 
@@ -11174,13 +11263,13 @@ function errorString(obj) {
 
 
 /***/ },
-/* 71 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var split = __webpack_require__(40);
+var split = __webpack_require__(41);
 
 var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 var notClassId = /^\.|#/;
@@ -11235,10 +11324,10 @@ function parseTag(tag, props) {
 
 
 /***/ },
-/* 72 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(23)
+var isObject = __webpack_require__(22)
 var isHook = __webpack_require__(6)
 
 module.exports = diffProps
@@ -11299,19 +11388,19 @@ function getPrototype(value) {
 
 
 /***/ },
-/* 73 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(14)
+var isArray = __webpack_require__(13)
 
-var VPatch = __webpack_require__(28)
+var VPatch = __webpack_require__(27)
 var isVNode = __webpack_require__(2)
 var isVText = __webpack_require__(7)
 var isWidget = __webpack_require__(0)
 var isThunk = __webpack_require__(5)
-var handleThunk = __webpack_require__(26)
+var handleThunk = __webpack_require__(25)
 
-var diffProps = __webpack_require__(72)
+var diffProps = __webpack_require__(73)
 
 module.exports = diff
 
@@ -11732,13 +11821,13 @@ function appendPatch(apply, patch) {
 
 
 /***/ },
-/* 74 */
+/* 75 */
 /***/ function(module, exports) {
 
 /* (ignored) */
 
 /***/ },
-/* 75 */
+/* 76 */
 /***/ function(module, exports) {
 
 // This object will be used as the prototype for Nodes when creating a
@@ -11788,18 +11877,18 @@ Object.keys(domLvl1).forEach(function(key) {
 
 
 /***/ },
-/* 76 */
-/***/ function(module, exports, __webpack_require__) {
-
-exports.encode = __webpack_require__(115);
-exports.decode = __webpack_require__(114);
-
-
-/***/ },
 /* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
-var decodeMap = __webpack_require__(132);
+exports.encode = __webpack_require__(117);
+exports.decode = __webpack_require__(116);
+
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+var decodeMap = __webpack_require__(134);
 
 module.exports = decodeCodePoint;
 
@@ -11828,10 +11917,10 @@ function decodeCodePoint(codePoint){
 
 
 /***/ },
-/* 78 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
-var Tokenizer = __webpack_require__(79);
+var Tokenizer = __webpack_require__(80);
 
 /*
 	Options:
@@ -11953,7 +12042,7 @@ function Parser(cbs, options){
 	if(this._cbs.onparserinit) this._cbs.onparserinit(this);
 }
 
-__webpack_require__(4)(Parser, __webpack_require__(20).EventEmitter);
+__webpack_require__(4)(Parser, __webpack_require__(19).EventEmitter);
 
 Parser.prototype._updatePosition = function(initialOffset){
 	if(this.endIndex === null){
@@ -12187,15 +12276,15 @@ module.exports = Parser;
 
 
 /***/ },
-/* 79 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = Tokenizer;
 
-var decodeCodePoint = __webpack_require__(77),
-    entityMap = __webpack_require__(45),
-    legacyMap = __webpack_require__(83),
-    xmlMap    = __webpack_require__(46),
+var decodeCodePoint = __webpack_require__(78),
+    entityMap = __webpack_require__(46),
+    legacyMap = __webpack_require__(84),
+    xmlMap    = __webpack_require__(47),
 
     i = 0,
 
@@ -13099,15 +13188,15 @@ Tokenizer.prototype._emitPartial = function(value){
 
 
 /***/ },
-/* 80 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = Stream;
 
-var Parser = __webpack_require__(78),
-    WritableStream = __webpack_require__(35).Writable || __webpack_require__(151).Writable,
-    StringDecoder = __webpack_require__(58).StringDecoder,
-    Buffer = __webpack_require__(10).Buffer;
+var Parser = __webpack_require__(79),
+    WritableStream = __webpack_require__(36).Writable || __webpack_require__(155).Writable,
+    StringDecoder = __webpack_require__(59).StringDecoder,
+    Buffer = __webpack_require__(9).Buffer;
 
 function Stream(cbs, options){
 	var parser = this._parser = new Parser(cbs, options);
@@ -13129,7 +13218,7 @@ WritableStream.prototype._write = function(chunk, encoding, cb){
 };
 
 /***/ },
-/* 81 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;// =========
@@ -13276,7 +13365,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;// =========
 
 
 /***/ },
-/* 82 */
+/* 83 */
 /***/ function(module, exports) {
 
 var toString = {}.toString;
@@ -13287,7 +13376,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ },
-/* 83 */
+/* 84 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -13400,7 +13489,7 @@ module.exports = {
 };
 
 /***/ },
-/* 84 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.1 by @mathias */
@@ -13935,10 +14024,10 @@ module.exports = {
 
 }(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(149)(module), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(153)(module), __webpack_require__(8)))
 
 /***/ },
-/* 85 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13950,10 +14039,10 @@ module.exports = {
 
 module.exports = PassThrough;
 
-var Transform = __webpack_require__(55);
+var Transform = __webpack_require__(56);
 
 /*<replacement>*/
-var util = __webpack_require__(18);
+var util = __webpack_require__(17);
 util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
@@ -13970,7 +14059,7 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 /***/ },
-/* 86 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13979,11 +14068,11 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 module.exports = Readable;
 
 /*<replacement>*/
-var processNextTick = __webpack_require__(48);
+var processNextTick = __webpack_require__(49);
 /*</replacement>*/
 
 /*<replacement>*/
-var isArray = __webpack_require__(82);
+var isArray = __webpack_require__(83);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -13993,7 +14082,7 @@ var Duplex;
 Readable.ReadableState = ReadableState;
 
 /*<replacement>*/
-var EE = __webpack_require__(20).EventEmitter;
+var EE = __webpack_require__(19).EventEmitter;
 
 var EElistenerCount = function (emitter, type) {
   return emitter.listeners(type).length;
@@ -14004,25 +14093,25 @@ var EElistenerCount = function (emitter, type) {
 var Stream;
 (function () {
   try {
-    Stream = __webpack_require__(35);
+    Stream = __webpack_require__(36);
   } catch (_) {} finally {
-    if (!Stream) Stream = __webpack_require__(20).EventEmitter;
+    if (!Stream) Stream = __webpack_require__(19).EventEmitter;
   }
 })();
 /*</replacement>*/
 
-var Buffer = __webpack_require__(10).Buffer;
+var Buffer = __webpack_require__(9).Buffer;
 /*<replacement>*/
-var bufferShim = __webpack_require__(41);
+var bufferShim = __webpack_require__(42);
 /*</replacement>*/
 
 /*<replacement>*/
-var util = __webpack_require__(18);
+var util = __webpack_require__(17);
 util.inherits = __webpack_require__(4);
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(152);
+var debugUtil = __webpack_require__(156);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -14031,7 +14120,7 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__(135);
+var BufferList = __webpack_require__(137);
 var StringDecoder;
 
 util.inherits(Readable, Stream);
@@ -14051,7 +14140,7 @@ function prependListener(emitter, event, fn) {
 }
 
 function ReadableState(options, stream) {
-  Duplex = Duplex || __webpack_require__(13);
+  Duplex = Duplex || __webpack_require__(12);
 
   options = options || {};
 
@@ -14113,14 +14202,14 @@ function ReadableState(options, stream) {
   this.decoder = null;
   this.encoding = null;
   if (options.encoding) {
-    if (!StringDecoder) StringDecoder = __webpack_require__(58).StringDecoder;
+    if (!StringDecoder) StringDecoder = __webpack_require__(59).StringDecoder;
     this.decoder = new StringDecoder(options.encoding);
     this.encoding = options.encoding;
   }
 }
 
 function Readable(options) {
-  Duplex = Duplex || __webpack_require__(13);
+  Duplex = Duplex || __webpack_require__(12);
 
   if (!(this instanceof Readable)) return new Readable(options);
 
@@ -14223,7 +14312,7 @@ function needMoreData(state) {
 
 // backwards compatibility.
 Readable.prototype.setEncoding = function (enc) {
-  if (!StringDecoder) StringDecoder = __webpack_require__(58).StringDecoder;
+  if (!StringDecoder) StringDecoder = __webpack_require__(59).StringDecoder;
   this._readableState.decoder = new StringDecoder(enc);
   this._readableState.encoding = enc;
   return this;
@@ -14918,7 +15007,7 @@ function indexOf(xs, x) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 87 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14937,7 +15026,7 @@ Object.defineProperty(exports, 'html', {
   }
 });
 
-var _once = __webpack_require__(12);
+var _once = __webpack_require__(32);
 
 Object.defineProperty(exports, 'once', {
   enumerable: true,
@@ -14946,7 +15035,7 @@ Object.defineProperty(exports, 'once', {
   }
 });
 
-var _attributes = __webpack_require__(90);
+var _attributes = __webpack_require__(92);
 
 Object.defineProperty(exports, 'attrs', {
   enumerable: true,
@@ -14955,7 +15044,7 @@ Object.defineProperty(exports, 'attrs', {
   }
 });
 
-var _state = __webpack_require__(96);
+var _state = __webpack_require__(98);
 
 Object.defineProperty(exports, 'state', {
   enumerable: true,
@@ -14964,7 +15053,7 @@ Object.defineProperty(exports, 'state', {
   }
 });
 
-var _include = __webpack_require__(93);
+var _include = __webpack_require__(95);
 
 Object.defineProperty(exports, 'include', {
   enumerable: true,
@@ -14973,7 +15062,7 @@ Object.defineProperty(exports, 'include', {
   }
 });
 
-var _redux = __webpack_require__(95);
+var _redux = __webpack_require__(97);
 
 Object.defineProperty(exports, 'redux', {
   enumerable: true,
@@ -14982,7 +15071,7 @@ Object.defineProperty(exports, 'redux', {
   }
 });
 
-var _refs = __webpack_require__(32);
+var _refs = __webpack_require__(33);
 
 Object.defineProperty(exports, 'refs', {
   enumerable: true,
@@ -14991,7 +15080,7 @@ Object.defineProperty(exports, 'refs', {
   }
 });
 
-var _methods = __webpack_require__(94);
+var _methods = __webpack_require__(96);
 
 Object.defineProperty(exports, 'methods', {
   enumerable: true,
@@ -15000,7 +15089,7 @@ Object.defineProperty(exports, 'methods', {
   }
 });
 
-var _events = __webpack_require__(92);
+var _events = __webpack_require__(94);
 
 Object.defineProperty(exports, 'events', {
   enumerable: true,
@@ -15009,7 +15098,7 @@ Object.defineProperty(exports, 'events', {
   }
 });
 
-var _validate = __webpack_require__(98);
+var _validate = __webpack_require__(100);
 
 Object.defineProperty(exports, 'validate', {
   enumerable: true,
@@ -15018,7 +15107,7 @@ Object.defineProperty(exports, 'validate', {
   }
 });
 
-var _cleanup = __webpack_require__(91);
+var _cleanup = __webpack_require__(93);
 
 Object.defineProperty(exports, 'cleanup', {
   enumerable: true,
@@ -15027,7 +15116,7 @@ Object.defineProperty(exports, 'cleanup', {
   }
 });
 
-var _vars = __webpack_require__(99);
+var _vars = __webpack_require__(101);
 
 Object.defineProperty(exports, 'vars', {
   enumerable: true,
@@ -15045,7 +15134,7 @@ Object.defineProperty(exports, 'await', {
   }
 });
 
-var _transclude = __webpack_require__(97);
+var _transclude = __webpack_require__(99);
 
 Object.defineProperty(exports, 'transclude', {
   enumerable: true,
@@ -15054,7 +15143,7 @@ Object.defineProperty(exports, 'transclude', {
   }
 });
 
-var _rescue = __webpack_require__(33);
+var _rescue = __webpack_require__(34);
 
 Object.defineProperty(exports, 'rescue', {
   enumerable: true,
@@ -15063,7 +15152,7 @@ Object.defineProperty(exports, 'rescue', {
   }
 });
 
-var _timer = __webpack_require__(89);
+var _timer = __webpack_require__(91);
 
 Object.defineProperty(exports, 'time', {
   enumerable: true,
@@ -15078,7 +15167,7 @@ Object.defineProperty(exports, 'timeEnd', {
   }
 });
 
-var _delay = __webpack_require__(88);
+var _delay = __webpack_require__(89);
 
 Object.defineProperty(exports, 'delay', {
   enumerable: true,
@@ -15087,10 +15176,19 @@ Object.defineProperty(exports, 'delay', {
   }
 });
 
+var _error = __webpack_require__(90);
+
+Object.defineProperty(exports, 'error', {
+  enumerable: true,
+  get: function () {
+    return _interopRequireDefault(_error).default;
+  }
+});
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15101,7 +15199,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 /**
- * @method timeEnd
  * @param {Number} by
  * @return {Object}
  */
@@ -15117,7 +15214,40 @@ exports.default = function (by) {
 };
 
 /***/ },
-/* 89 */
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _starwars = __webpack_require__(150);
+
+var _starwars2 = _interopRequireDefault(_starwars);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @param {Number} [value = 0.5]
+ * @return {Object}
+ */
+exports.default = function (value = 0.5) {
+
+    return function (props) {
+
+        Math.random() > value && function (message) {
+            throw new Error(message);
+        }((0, _starwars2.default)());
+
+        return props;
+    };
+};
+
+/***/ },
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15130,7 +15260,7 @@ exports.timeEnd = exports.time = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _shortid = __webpack_require__(140);
+var _shortid = __webpack_require__(142);
 
 /**
  * @constant timers
@@ -15166,7 +15296,7 @@ const timeEnd = exports.timeEnd = function (props) {
 };
 
 /***/ },
-/* 90 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15178,9 +15308,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _humps = __webpack_require__(81);
+var _humps = __webpack_require__(82);
 
-var _ramda = __webpack_require__(17);
+var _ramda = __webpack_require__(16);
 
 /**
  * @constant observers
@@ -15275,7 +15405,7 @@ exports.default = function (props) {
 };
 
 /***/ },
-/* 91 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15287,9 +15417,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _switzerland = __webpack_require__(9);
+var _switzerland = __webpack_require__(11);
 
-var _once = __webpack_require__(12);
+var _once = __webpack_require__(32);
 
 var _once2 = _interopRequireDefault(_once);
 
@@ -15307,7 +15437,7 @@ exports.default = function (fn) {
 };
 
 /***/ },
-/* 92 */
+/* 94 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15346,7 +15476,7 @@ exports.default = function (props) {
 };
 
 /***/ },
-/* 93 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15358,25 +15488,25 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _ramda = __webpack_require__(17);
+var _ramda = __webpack_require__(16);
 
-var _axios = __webpack_require__(150);
+var _axios = __webpack_require__(154);
 
-var _cssUrlParser = __webpack_require__(101);
+var _cssUrlParser = __webpack_require__(103);
 
 var _cssUrlParser2 = _interopRequireDefault(_cssUrlParser);
 
-var _pathParse = __webpack_require__(34);
+var _pathParse = __webpack_require__(35);
 
 var _pathParse2 = _interopRequireDefault(_pathParse);
 
-var _escapeStringRegexp = __webpack_require__(119);
+var _escapeStringRegexp = __webpack_require__(121);
 
 var _escapeStringRegexp2 = _interopRequireDefault(_escapeStringRegexp);
 
-var _switzerland = __webpack_require__(9);
+var _switzerland = __webpack_require__(11);
 
-var _once = __webpack_require__(12);
+var _once = __webpack_require__(32);
 
 var _once2 = _interopRequireDefault(_once);
 
@@ -15462,38 +15592,44 @@ const fetchIncludes = function (files) {
 
 /**
  * @method attachFiles
- * @param props {Object}
- * @return {Promise}
+ * @param flags {Number}
+ * @return {Function}
  */
-const attachFiles = (0, _once2.default)(function (props) {
+const attachFiles = function (flags) {
+    return (0, _once2.default)(function (props) {
 
-    return new Promise(function (resolve) {
-        const node = props.node,
-              files = props.files;
+        return new Promise(function (resolve) {
+            const node = props.node,
+                  files = props.files;
 
-        const boundary = node.shadowRoot;
+            const boundary = node.shadowRoot;
 
-        if (files.length !== 0) {
+            if (files.length !== 0) {
 
-            node.classList.add('resolving');
-            node.classList.remove('resolved');
+                if (flags & _switzerland.options.ASYNC) {
+                    node.classList.add('styling');
+                    node.classList.remove('styled');
+                }
 
-            fetchIncludes(files).then(function (nodes) {
+                fetchIncludes(files).then(function (nodes) {
 
-                // Remove any `null` values which means the content of the file was empty, and then append
-                // them to the component's shadow boundary.
-                nodes.filter(_ramda.identity).forEach(function (node) {
-                    return boundary.appendChild(node);
+                    // Remove any `null` values which means the content of the file was empty, and then append
+                    // them to the component's shadow boundary.
+                    nodes.filter(_ramda.identity).forEach(function (node) {
+                        return boundary.appendChild(node);
+                    });
+
+                    if (flags & _switzerland.options.ASYNC) {
+                        node.classList.add('styled');
+                        node.classList.remove('styling');
+                    }
+
+                    resolve();
                 });
-
-                node.classList.add('resolved');
-                node.classList.remove('resolving');
-
-                resolve();
-            });
-        }
-    });
-}, _switzerland.options.RESET);
+            }
+        });
+    }, _switzerland.options.RESET);
+};
 
 /**
  * @param {String[]|String} files
@@ -15503,10 +15639,12 @@ const attachFiles = (0, _once2.default)(function (props) {
 
 exports.default = function (files, flags = _switzerland.options.DEFAULT) {
 
+    const attach = attachFiles(flags);
+
     return function (props) {
 
         // Attach the documents using the `once` middleware.
-        const attached = attachFiles(_extends({}, props, { files: Array.isArray(files) ? files : [files] }));
+        const attached = attach(_extends({}, props, { files: Array.isArray(files) ? files : [files] }));
         return flags & _switzerland.options.ASYNC ? props : attached.then(function () {
             return props;
         });
@@ -15514,7 +15652,7 @@ exports.default = function (files, flags = _switzerland.options.DEFAULT) {
 };
 
 /***/ },
-/* 94 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15526,9 +15664,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _switzerland = __webpack_require__(9);
+var _switzerland = __webpack_require__(11);
 
-var _messages = __webpack_require__(16);
+var _messages = __webpack_require__(15);
 
 /**
  * @constant registered
@@ -15585,7 +15723,7 @@ exports.default = function (fns) {
 };
 
 /***/ },
-/* 95 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15597,7 +15735,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _ramda = __webpack_require__(17);
+var _ramda = __webpack_require__(16);
 
 /**
  * @constant subscriptions
@@ -15629,7 +15767,7 @@ exports.default = (0, _ramda.curry)(function (store, handler = function () {
 });
 
 /***/ },
-/* 96 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15641,7 +15779,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _switzerland = __webpack_require__(9);
+var _switzerland = __webpack_require__(11);
 
 /**
  * @constant states
@@ -15687,7 +15825,7 @@ exports.default = function (initialState, flags = _switzerland.options.DEFAULT) 
 };
 
 /***/ },
-/* 97 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15699,13 +15837,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _virtualDom = __webpack_require__(36);
+var _virtualDom = __webpack_require__(37);
 
-var _htmlToVdom = __webpack_require__(120);
+var _htmlToVdom = __webpack_require__(122);
 
 var _htmlToVdom2 = _interopRequireDefault(_htmlToVdom);
 
-var _once = __webpack_require__(12);
+var _once = __webpack_require__(32);
 
 var _once2 = _interopRequireDefault(_once);
 
@@ -15728,7 +15866,7 @@ exports.default = (0, _once2.default)(function (props) {
 });
 
 /***/ },
-/* 98 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15738,9 +15876,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _propTypes = __webpack_require__(133);
+var _propTypes = __webpack_require__(135);
 
-var _environment = __webpack_require__(15);
+var _environment = __webpack_require__(14);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -15759,7 +15897,7 @@ exports.default = function (schema) {
 };
 
 /***/ },
-/* 99 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15769,7 +15907,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _humps = __webpack_require__(81);
+var _humps = __webpack_require__(82);
 
 /**
  * @constant nodes
@@ -15815,7 +15953,7 @@ exports.default = function (fn) {
 };
 
 /***/ },
-/* 100 */
+/* 102 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -15936,15 +16074,15 @@ function fromByteArray (uint8) {
 
 
 /***/ },
-/* 101 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
-var parseCssUrls = __webpack_require__(102);
+var parseCssUrls = __webpack_require__(104);
 module.exports = parseCssUrls;
 
 
 /***/ },
-/* 102 */
+/* 104 */
 /***/ function(module, exports) {
 
 var embeddedRegexp = /data:(.*?);base64,/;
@@ -15977,14 +16115,14 @@ module.exports = getUrls;
 
 
 /***/ },
-/* 103 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 /*
   Module dependencies
 */
-var ElementType = __webpack_require__(104);
-var entities = __webpack_require__(116);
+var ElementType = __webpack_require__(106);
+var entities = __webpack_require__(118);
 
 /*
   Boolean Attributes
@@ -16161,7 +16299,7 @@ function renderComment(elem) {
 
 
 /***/ },
-/* 104 */
+/* 106 */
 /***/ function(module, exports) {
 
 //Types of elements found in the DOM
@@ -16180,14 +16318,14 @@ module.exports = {
 };
 
 /***/ },
-/* 105 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
-var ElementType = __webpack_require__(19);
+var ElementType = __webpack_require__(18);
 
 var re_whitespace = /\s+/g;
-var NodePrototype = __webpack_require__(75);
-var ElementPrototype = __webpack_require__(106);
+var NodePrototype = __webpack_require__(76);
+var ElementPrototype = __webpack_require__(108);
 
 function DomHandler(callback, options, elementCB){
 	if(typeof callback === "object"){
@@ -16368,11 +16506,11 @@ module.exports = DomHandler;
 
 
 /***/ },
-/* 106 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 // DOM-Level-1-compliant structure
-var NodePrototype = __webpack_require__(75);
+var NodePrototype = __webpack_require__(76);
 var ElementPrototype = module.exports = Object.create(NodePrototype);
 
 var domLvl1 = {
@@ -16394,18 +16532,18 @@ Object.keys(domLvl1).forEach(function(key) {
 
 
 /***/ },
-/* 107 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 var DomUtils = module.exports;
 
 [
+	__webpack_require__(114),
+	__webpack_require__(115),
 	__webpack_require__(112),
 	__webpack_require__(113),
-	__webpack_require__(110),
 	__webpack_require__(111),
-	__webpack_require__(109),
-	__webpack_require__(108)
+	__webpack_require__(110)
 ].forEach(function(ext){
 	Object.keys(ext).forEach(function(key){
 		DomUtils[key] = ext[key].bind(DomUtils);
@@ -16414,7 +16552,7 @@ var DomUtils = module.exports;
 
 
 /***/ },
-/* 108 */
+/* 110 */
 /***/ function(module, exports) {
 
 // removeSubsets
@@ -16561,10 +16699,10 @@ exports.uniqueSort = function(nodes) {
 
 
 /***/ },
-/* 109 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
-var ElementType = __webpack_require__(19);
+var ElementType = __webpack_require__(18);
 var isTag = exports.isTag = ElementType.isTag;
 
 exports.testElement = function(options, element){
@@ -16654,7 +16792,7 @@ exports.getElementsByTagType = function(type, element, recurse, limit){
 
 
 /***/ },
-/* 110 */
+/* 112 */
 /***/ function(module, exports) {
 
 exports.removeElement = function(elem){
@@ -16737,10 +16875,10 @@ exports.prepend = function(elem, prev){
 
 
 /***/ },
-/* 111 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
-var isTag = __webpack_require__(19).isTag;
+var isTag = __webpack_require__(18).isTag;
 
 module.exports = {
 	filter: filter,
@@ -16837,11 +16975,11 @@ function findAll(test, elems){
 
 
 /***/ },
-/* 112 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
-var ElementType = __webpack_require__(19),
-    getOuterHTML = __webpack_require__(103),
+var ElementType = __webpack_require__(18),
+    getOuterHTML = __webpack_require__(105),
     isTag = ElementType.isTag;
 
 module.exports = {
@@ -16865,7 +17003,7 @@ function getText(elem){
 
 
 /***/ },
-/* 113 */
+/* 115 */
 /***/ function(module, exports) {
 
 var getChildren = exports.getChildren = function(elem){
@@ -16895,11 +17033,11 @@ exports.getName = function(elem){
 
 
 /***/ },
-/* 114 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
-var punycode = __webpack_require__(84);
-var entities = __webpack_require__(130);
+var punycode = __webpack_require__(85);
+var entities = __webpack_require__(132);
 
 module.exports = decode;
 
@@ -16933,11 +17071,11 @@ function decode (str) {
 
 
 /***/ },
-/* 115 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
-var punycode = __webpack_require__(84);
-var revEntities = __webpack_require__(131);
+var punycode = __webpack_require__(85);
+var revEntities = __webpack_require__(133);
 
 module.exports = encode;
 
@@ -16978,11 +17116,11 @@ function encode (str, opts) {
 
 
 /***/ },
-/* 116 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
-var encode = __webpack_require__(118),
-    decode = __webpack_require__(117);
+var encode = __webpack_require__(120),
+    decode = __webpack_require__(119);
 
 exports.decode = function(data, level){
 	return (!level || level <= 0 ? decode.XML : decode.HTML)(data);
@@ -17017,13 +17155,13 @@ exports.escape = encode.escape;
 
 
 /***/ },
-/* 117 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
-var entityMap = __webpack_require__(45),
-    legacyMap = __webpack_require__(83),
-    xmlMap    = __webpack_require__(46),
-    decodeCodePoint = __webpack_require__(77);
+var entityMap = __webpack_require__(46),
+    legacyMap = __webpack_require__(84),
+    xmlMap    = __webpack_require__(47),
+    decodeCodePoint = __webpack_require__(78);
 
 var decodeXMLStrict  = getStrictDecoder(xmlMap),
     decodeHTMLStrict = getStrictDecoder(entityMap);
@@ -17094,15 +17232,15 @@ module.exports = {
 };
 
 /***/ },
-/* 118 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-var inverseXML = getInverseObj(__webpack_require__(46)),
+var inverseXML = getInverseObj(__webpack_require__(47)),
     xmlReplacer = getInverseReplacer(inverseXML);
 
 exports.XML = getInverse(inverseXML, xmlReplacer);
 
-var inverseHTML = getInverseObj(__webpack_require__(45)),
+var inverseHTML = getInverseObj(__webpack_require__(46)),
     htmlReplacer = getInverseReplacer(inverseHTML);
 
 exports.HTML = getInverse(inverseHTML, htmlReplacer);
@@ -17173,7 +17311,7 @@ exports.escape = escapeXML;
 
 
 /***/ },
-/* 119 */
+/* 121 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -17191,10 +17329,10 @@ module.exports = function (str) {
 
 
 /***/ },
-/* 120 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
-var convertHTML = __webpack_require__(122);
+var convertHTML = __webpack_require__(124);
 module.exports = function initializeConverter (dependencies) {
     if (!dependencies.VNode || !dependencies.VText) {
         throw new Error('html-to-vdom needs to be initialized with VNode and VText');
@@ -17204,13 +17342,13 @@ module.exports = function initializeConverter (dependencies) {
 
 
 /***/ },
-/* 121 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 /*
     Adapted from https://github.com/facebook/react/blob/c265504fe2fdeadf0e5358879a3c141628b37a23/src/renderers/dom/shared/HTMLDOMPropertyConfig.js
  */
-var decode = __webpack_require__(76).decode;
+var decode = __webpack_require__(77).decode;
 
 var MUST_USE_ATTRIBUTE = 0x1;
 var MUST_USE_PROPERTY = 0x2;
@@ -17487,11 +17625,11 @@ module.exports = convertTagAttributes;
 
 
 /***/ },
-/* 122 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
-var createConverter = __webpack_require__(123);
-var parseHTML = __webpack_require__(124);
+var createConverter = __webpack_require__(125);
+var parseHTML = __webpack_require__(126);
 
 module.exports = function initializeHtmlToVdom (VTree, VText) {
     var htmlparserToVdom = createConverter(VTree, VText);
@@ -17521,11 +17659,11 @@ module.exports = function initializeHtmlToVdom (VTree, VText) {
 
 
 /***/ },
-/* 123 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
-var decode = __webpack_require__(76).decode;
-var convertTagAttributes = __webpack_require__(121);
+var decode = __webpack_require__(77).decode;
+var convertTagAttributes = __webpack_require__(123);
 
 module.exports = function createConverter (VNode, VText) {
     var converter = {
@@ -17559,10 +17697,10 @@ module.exports = function createConverter (VNode, VText) {
 
 
 /***/ },
-/* 124 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
-var htmlparser = __webpack_require__(22);
+var htmlparser = __webpack_require__(21);
 
 var parseHTML = function parseHTML (html) {
     var handler = new htmlparser.DomHandler();
@@ -17578,7 +17716,7 @@ module.exports = parseHTML;
 
 
 /***/ },
-/* 125 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = CollectingHandler;
@@ -17588,7 +17726,7 @@ function CollectingHandler(cbs){
 	this.events = [];
 }
 
-var EVENTS = __webpack_require__(22).EVENTS;
+var EVENTS = __webpack_require__(21).EVENTS;
 Object.keys(EVENTS).forEach(function(name){
 	if(EVENTS[name] === 0){
 		name = "on" + name;
@@ -17639,10 +17777,10 @@ CollectingHandler.prototype.restart = function(){
 
 
 /***/ },
-/* 126 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
-var index = __webpack_require__(22),
+var index = __webpack_require__(21),
     DomHandler = index.DomHandler,
     DomUtils = index.DomUtils;
 
@@ -17740,7 +17878,7 @@ module.exports = FeedHandler;
 
 
 /***/ },
-/* 127 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = ProxyHandler;
@@ -17749,7 +17887,7 @@ function ProxyHandler(cbs){
 	this._cbs = cbs || {};
 }
 
-var EVENTS = __webpack_require__(22).EVENTS;
+var EVENTS = __webpack_require__(21).EVENTS;
 Object.keys(EVENTS).forEach(function(name){
 	if(EVENTS[name] === 0){
 		name = "on" + name;
@@ -17772,12 +17910,12 @@ Object.keys(EVENTS).forEach(function(name){
 });
 
 /***/ },
-/* 128 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = Stream;
 
-var Parser = __webpack_require__(80);
+var Parser = __webpack_require__(81);
 
 function Stream(options){
 	Parser.call(this, new Cbs(this), options);
@@ -17791,7 +17929,7 @@ function Cbs(scope){
 	this.scope = scope;
 }
 
-var EVENTS = __webpack_require__(22).EVENTS;
+var EVENTS = __webpack_require__(21).EVENTS;
 
 Object.keys(EVENTS).forEach(function(name){
 	if(EVENTS[name] === 0){
@@ -17812,7 +17950,7 @@ Object.keys(EVENTS).forEach(function(name){
 });
 
 /***/ },
-/* 129 */
+/* 131 */
 /***/ function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -17902,7 +18040,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ },
-/* 130 */
+/* 132 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -20140,7 +20278,7 @@ module.exports = {
 };
 
 /***/ },
-/* 131 */
+/* 133 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -21460,7 +21598,7 @@ module.exports = {
 };
 
 /***/ },
-/* 132 */
+/* 134 */
 /***/ function(module, exports) {
 
 module.exports = {
@@ -21495,7 +21633,7 @@ module.exports = {
 };
 
 /***/ },
-/* 133 */
+/* 135 */
 /***/ function(module, exports) {
 
 module.exports =
@@ -22009,22 +22147,22 @@ module.exports =
 /******/ ]);
 
 /***/ },
-/* 134 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(13)
+module.exports = __webpack_require__(12)
 
 
 /***/ },
-/* 135 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var Buffer = __webpack_require__(10).Buffer;
+var Buffer = __webpack_require__(9).Buffer;
 /*<replacement>*/
-var bufferShim = __webpack_require__(41);
+var bufferShim = __webpack_require__(42);
 /*</replacement>*/
 
 module.exports = BufferList;
@@ -22086,28 +22224,28 @@ BufferList.prototype.concat = function (n) {
 };
 
 /***/ },
-/* 136 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(85)
+module.exports = __webpack_require__(86)
 
 
 /***/ },
-/* 137 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process) {var Stream = (function (){
   try {
-    return __webpack_require__(35); // hack to fix a circular dependency issue when used with browserify
+    return __webpack_require__(36); // hack to fix a circular dependency issue when used with browserify
   } catch(_){}
 }());
-exports = module.exports = __webpack_require__(86);
+exports = module.exports = __webpack_require__(87);
 exports.Stream = Stream || exports;
 exports.Readable = exports;
-exports.Writable = __webpack_require__(56);
-exports.Duplex = __webpack_require__(13);
-exports.Transform = __webpack_require__(55);
-exports.PassThrough = __webpack_require__(85);
+exports.Writable = __webpack_require__(57);
+exports.Duplex = __webpack_require__(12);
+exports.Transform = __webpack_require__(56);
+exports.PassThrough = __webpack_require__(86);
 
 if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
   module.exports = Stream;
@@ -22116,35 +22254,35 @@ if (!process.browser && process.env.READABLE_STREAM === 'disable' && Stream) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 138 */
-/***/ function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(55)
-
-
-/***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(56)
 
 
 /***/ },
-/* 140 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-module.exports = __webpack_require__(143);
-
-
-/***/ },
 /* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(57)
+
+
+/***/ },
+/* 142 */
+/***/ function(module, exports, __webpack_require__) {
+
 "use strict";
 'use strict';
-var alphabet = __webpack_require__(57);
+module.exports = __webpack_require__(145);
+
+
+/***/ },
+/* 143 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+var alphabet = __webpack_require__(58);
 
 /**
  * Decode the id to get the version and worker
@@ -22163,13 +22301,13 @@ module.exports = decode;
 
 
 /***/ },
-/* 142 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var randomByte = __webpack_require__(145);
+var randomByte = __webpack_require__(147);
 
 function encode(lookup, number) {
     var loopCounter = 0;
@@ -22189,16 +22327,16 @@ module.exports = encode;
 
 
 /***/ },
-/* 143 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-var alphabet = __webpack_require__(57);
-var encode = __webpack_require__(142);
-var decode = __webpack_require__(141);
-var isValid = __webpack_require__(144);
+var alphabet = __webpack_require__(58);
+var encode = __webpack_require__(144);
+var decode = __webpack_require__(143);
+var isValid = __webpack_require__(146);
 
 // Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 // This number should be updated every year or so to keep the generated id short.
@@ -22213,7 +22351,7 @@ var version = 6;
 // has a unique value for worker
 // Note: I don't know if this is automatically set when using third
 // party cluster solutions such as pm2.
-var clusterWorkerId = __webpack_require__(147) || 0;
+var clusterWorkerId = __webpack_require__(149) || 0;
 
 // Counter is used when shortid is called multiple times in one second.
 var counter;
@@ -22296,12 +22434,12 @@ module.exports.isValid = isValid;
 
 
 /***/ },
-/* 144 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
-var alphabet = __webpack_require__(57);
+var alphabet = __webpack_require__(58);
 
 function isShortId(id) {
     if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -22322,7 +22460,7 @@ module.exports = isShortId;
 
 
 /***/ },
-/* 145 */
+/* 147 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -22343,7 +22481,7 @@ module.exports = randomByte;
 
 
 /***/ },
-/* 146 */
+/* 148 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -22375,7 +22513,7 @@ module.exports = {
 
 
 /***/ },
-/* 147 */
+/* 149 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -22385,7 +22523,389 @@ module.exports = 0;
 
 
 /***/ },
-/* 148 */
+/* 150 */
+/***/ function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(151);
+
+/***/ },
+/* 151 */
+/***/ function(module, exports) {
+
+var quotes = [
+  'At last we will reveal ourselves to the Jedi. At last we will have revenge.',
+  'Do not defy the council, Master, not again.',
+  'Compassion, which I would define as unconditional love, is essential...',
+  'Governor Tarkin. I should have expected to find you holding Vader\'s leash. I recognized your foul stench when I was brought onboard.',
+  'These aren\'t the droids you\'re looking for.',
+  'Remember... the Force will be with you, always.',
+  'Be mindful of your thoughts Anakin. They\'ll betray you.',
+  'Princess, we\'ll find Han. I promise.',
+  'There\'s always a bigger fish.',
+  'I\'m just a simple man trying to make my way in the universe.',
+  'I\'ve been waiting for you, Obi-Wan. We meet again, at last. The circle is now complete.',
+  'Sir, the possibility of successfully navigating an asteroid field is approximately 3,720 to 1.',
+  'Obi-Wan Kenobi. Obi-Wan. Now that\'s a name I have not heard in a long time. A long time.',
+  'Search your feelings, you know it to be true.',
+  'Wait. I know that laugh...',
+  'The force is with you, young Skywalker, but you are not a Jedi yet.',
+  'Luke, we\'re gonna have company!',
+  'Told you I did. Reckless is he. ...Now, matters are worse.',
+  'Sometimes there are things no one can fix.',
+  'A young Jedi named Darth Vader, who was a pupil of mine until he turned to evil, helped the Empire hunt down and destroy the Jedi knights.',
+  'I thought they smelled bad on the outside!',
+  'Obi-Wan has taught you well.',
+  'Now, young Skywalker... you will die.',
+  'Do what must be done.',
+  'You cannot hide forever.',
+  'You are a part of the Rebel Alliance and a traitor! Take her away!',
+  'A Jedi\'s strength flows from the force.',
+  'R2-D2, it is you, It is you!',
+  'I sense great fear in you, Skywalker. You have hate... you have anger... but you don\'t use them.',
+  'I can save him. I can turn him back to the good side. I have to try.',
+  'Attacking that battle station is not my idea of courage. It\'s more like, suicide.',
+  'Oh no, young Jedi. You will find that it is you who are mistaken - about a great many things.',
+  'Did you hear that? They shut down the main reactor. We\'ll be destroyed for sure. This is madness.',
+  'I do believe they think I am some kind of god.',
+  'Luke, when gone am I... the last of the Jedi will you be.',
+  'Twice the pride, double the fall.',
+  'I will come back and free you, Mom. I promise.',
+  'Down here, I am. Find a ladder, I must!',
+  'Don\'t call me a mindless philosopher, you overweight glob of grease.',
+  'You were the chosen one! It was said that you would destroy the Sith, not join them.',
+  'Just being around her again is... intoxicating.',
+  'All mentors have a way of seeing more of our faults than we would like. It\'s the only way we grow.',
+  'Into the garbage chute, flyboy!',
+  'Our fate is in your hands.',
+  'Midi-chlorians are a microscopic life form that resides within all living cells.',
+  'Would it help if I got out and pushed?',
+  'I\'m a member of the Imperial Senate on a diplomatic mission to Alderaan.',
+  'I\'m terribly sorry about all this. After all, he\'s only a Wookiee.',
+  'You may have been a good smuggler, but now you\'re Bantha fodder.',
+  'You were right about me. Tell your sister... you were right.',
+  'Commander, tear this ship apart until you\'ve found those plans. And bring me the passengers, I want them alive!',
+  'I have failed you Anakin. I have failed you.',
+  'The Jedi are selfless, they only care about others.',
+  'How wude.',
+  'That is the sound of a thousand terrible things headed this way.',
+  'Don\'t be too proud of this technological terror you\'ve constructed.',
+  'You were right about one thing, Master. The negotiations were short.',
+  'I know.',
+  'It\'s against my programming to impersonate a deity.',
+  'You still have much to learn, my young padawan.',
+  'The force surrounds us and penetrates us. It binds the galaxy together.',
+  'Train yourself to let go of everything you fear to lose.',
+  'That\'s a good story. I think you just can\'t bear to let a gorgeous guy like me out of your sight.',
+  'This bounty hunter is my kind of scum. Fearless and inventive.',
+  'Use the Force, Luke.',
+  'There is good in him. I\'ve felt it.',
+  'Jedi Masters don\'t go crazy, they just get eccentric.',
+  'Right now I feel like I could take on the whole Empire myself.',
+  'The Sith rely on their passion for their strength. They think inward, only about themselves.',
+  'Boring conversation anyway.',
+  'No one can kill a Jedi.',
+  'No more training do you require. Already know you that which you need.',
+  'Well, short help is better than no help at all.',
+  'I truly... deeply... love you and before we die I want you to know.',
+  'Soon will I rest, yes, forever sleep. Earned it I have. Twilight is upon me, soon night must fall.',
+  'You fool! I have been trained in your Jedi arts by Count Dooku.',
+  'Oh, Han, it\'s not like that at all. He\'s my brother.',
+  'Love won\'t save you, Padme. Only my new powers can do that.',
+  'He will not let me down. He never has.',
+  'This is some rescue. You came in here and you didn\'t have a plan for getting out?',
+  'A Long Time Ago In A Galaxy Far Far Away...',
+  'Droids don\'t pull people\'s arms outta their sockets when they lose... Wookies are known to do that...',
+  'Why you stuck-up, half-witted, scruffy-looking nerf-herder!',
+  'I suggest a new strategy, R2. Let the wookiee win.',
+  'Don\'t make me destroy you.',
+  'One thing\'s for sure, we\'re all going to be a lot thinner.',
+  'I\'ve got a very bad feeling about this.',
+  'R2-D2, you know better than to trust a strange computer!',
+  'General Grievous, you\'re shorter than I expected.',
+  'There\'s nothing for me here now. I want to learn the ways of the Force and be a Jedi, like my father before me.',
+  'It\'s a trap!',
+  'If there\'s a bright centre to the universe, you\'re on the planet that it\'s farthest from.',
+  'Greed can be a very powerful ally.',
+  'We seem to be made to suffer. It\'s our lot in life.',
+  'Your thoughts betray you father. I feel the good in you. The conflict.',
+  'Anakin, you\'re breaking my heart! And you\'re going down a path I cannot follow!',
+  'Just for once, let me look on you with my own eyes.',
+  'Clear your mind must be, if you are to discover the real villains behind this plot.',
+  'Listen to them, they\'re dying, R2. Curse my metal body. I wasn\'t fast enough. It\'s all my fault. My poor master.',
+  'Look, Your Worshipfulness, let\'s get one thing straight... I take orders from one person! Me!',
+  'I can\'t do it, R2. I can\'t go on alone.',
+  'Sometimes we must do what is requested of us.',
+  'So this is how liberty dies, with thunderous applause.',
+  'Look, good against remotes is one thing, good against the living, that\'s something else.',
+  'Luke, I don\'t want to lose you to the Emperor the way I lost Vader.',
+  'The Force runs strong in my family. My father has it. I have it. And... my sister has it. Yes. It\'s you, Leia.',
+  'Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.',
+  'You are unwise to lower your defenses...',
+  'I sense something; a presence I\'ve not felt since...',
+  'Beware of the dark side.',
+  'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained.',
+  'Don\'t center on your anxieties, Obi-Wan.',
+  'Pain, suffering, death I feel. Something terrible has happened. Young Skywalker is in pain. Terrible pain.',
+  'Only a master of evil, Darth.',
+  'Everything is proceeding as I have foreseen.',
+  'You don\'t know how hard I found it, signing the order to terminate your life.',
+  'Dreams pass in time.',
+  'This party\'s over.',
+  'He\'s holding a thermal detonator!',
+  'Are you an angel? I\'ve heard the deep space pilots talk about them. They\'re the most beautiful creatures in the universe.',
+  'You refer to the prophecy of The One, who will bring balance to the Force. You believe it\'s this boy?',
+  'Scoundrel? Scoundrel? I like the sound of that.',
+  'In time, you will learn to trust your feelings. Then, you will be invincible.',
+  'Without the midi-chlorians, life could not exist, and we would have no knowledge of the Force.',
+  'There\'s no mystical energy field that controls my destiny.',
+  'You must repair him! Sir, if any of my circuits or gears will help, I\'ll gladly donate them.',
+  'Size matters not. Look at me. Judge me by my size, do you? Hmm? Hmm.',
+  'All who gain power are afraid to lose it.',
+  'Patience, my blue friend.',
+  'I can only protect you, I cannot fight a war for you.',
+  'Lando\'s not a system he\'s a man!',
+  'I don\'t want to hear anymore about Obi-Wan. The Jedi turned against me! Don\'t you turn against me!',
+  'You must feel the force around you. Here, between you, me, the tree, the rock... everywhere! Yes, even between this land and that ship!',
+  'If so powerful you are, why leave?',
+  'It is possible that the war itself has been only one further move in some greater game.',
+  'Do not assume anything. Clear, your mind must be.',
+  'Great, kid! Don\'t get cocky.',
+  'You can\'t win. But there are alternatives to fighting.',
+  'Difficult to see. Always in motion is the future.',
+  'Good Anakin. Good. Kill him. Kill him now.',
+  'Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight.',
+  'Luke, you can destroy the Emperor. He has foreseen this. It is your destiny. Join me, and together we can rule the galaxy as father and son.',
+  'I\'m not afraid to die.',
+  'Mudhole? Slimy? My home this is!',
+  'You look absolutely beautiful. You truly belong here with us among the clouds.',
+  'Either shut him up or shut him down!',
+  'Oh my. Space travel sound rather perilous. I can assure you they will never get me on one of those dreadful Star Ships.',
+  'I\'m Luke Skywalker, I\'m here to rescue you.',
+  'Your overconfidence is your weakness.',
+  'Anger, fear, aggression... the dark side are they. Once you start down the dark path, forever will it dominate your destiny.',
+  'Every generation has a legend. Every journey has a first step. Every saga has a beginning.',
+  'Always two there are, no more, no less: a master and an apprentice.',
+  'Victory? Victory, you say? Master Obi-Wan, not victory. The shroud of the Dark Side has fallen. Begun, the Clone War has!',
+  'Uh, we had a slight weapons malfunction, but uh, everything\'s perfectly all right now.',
+  'That boy is our last hope.',
+  'Luminous beings are we. Not this crude matter.',
+  'Oh, my! What have you done? I\'m BACKWARDS. You flea-bitten furball! Only an overgrown mop-head like you would be stupid enough to...',
+  'Luke... Luke... do not... do not underestimate the powers of the Emperor or suffer your father\'s fate you will.',
+  'The ability to speak does not make you intelligent.',
+  'He was meant to root out the Rebels, not give them hope. His sacrifice will only inspire them...',
+  'You have your moments. Not many of them, but you do have them.',
+  'The council has granted me permission to train you. You will be a Jedi, I promise.',
+  'For over a thousand generations, the Jedi Knights were the guardians of peace and justice in the Old Republic.',
+  'Ex-squeeze me, but the mostest safest place would be Gunga City.',
+  'Boy, it\'s lucky you have these compartments!',
+  'The drums of conflict are my beating heart.',
+  'I find your lack of faith disturbing.',
+  'That\'s your uncle talking.',
+  'The Force is strong with him. The son of Skywalker must not become a Jedi.',
+  'I can hold it... I can hold it... I CAN\'T HOLD IT!',
+  'In his belly you will find a new definition of pain and suffering as you are slowly digested over a thousand years.',
+  'Then I\'ll see you in hell!',
+  'He is as clumsy as he is stupid. General, prepare your troops for a surface attack.',
+  'Pass on what you have learned.',
+  'From the moment I met you, all those years ago, not a day has gone by when I haven\'t thought of you.',
+  'Look, I ain\'t in this for your revolution, and I\'m not in it for you, Princess. I expect to be well paid. I\'m in it for the money.',
+  'Luke, you switched off your targeting computer - what\'s wrong?',
+  'Will someone get this big walking carpet out of my way?',
+  'Mom, you said that the biggest problem in the universe is no one helps each other.',
+  'Your eyes can deceive you; don\'t trust them.',
+  'Uh, uh... negative, negative. We had a reactor leak here now. Give us a few minutes to lock it down. Large leak, very dangerous.',
+  'Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
+  'You may dispense with the pleasantries, Commander. I am here to put you back on schedule.',
+  'Master Kenobi, you disappoint me. Yoda holds you in such high esteem. Surely you can do better!',
+  'He\'s quite clever, you know... for a human being.',
+  'This is Red 5, I\'m going in.',
+  'Because you are my Son!',
+  'I haven\'t gone by the name of Obi-Wan since... oh, before you were born.',
+  'He will join us or die, my master.',
+  'I think I\'m finally getting the hang of this flying business.',
+  'Never tell me the odds.',
+  'And I am C-3PO, human-cyborg relations. And this is my counterpart R2D2.',
+  'She may not look like much, but she\'s got it where it counts, kid.',
+  'Jedi business. Go back to your drinks.',
+  'It\'s not wise to upset a Wookiee.',
+  'I don\'t know who you are or where you\'ve come from, but from now on you\'ll do as I say, okay?',
+  'How you doin\' Chewbacca? Still hanging around with this loser?',
+  'Some day you\'re gonna be wrong, I just hope I\'m there to see it.',
+  'The ability to destroy a planet is insignificant next to the power of the Force.',
+  'Crush them! Make them suffer!',
+  'Use my knowledge, I beg you.',
+  'I felt a great disturbance in the force, as if millions of voices suddenly cried out in terror and were suddenly silenced.',
+  'Anakin, please tell me this isn\'t another of your patented rescues where we\'ll require the whole Republic army to get safely away.',
+  'I have you now!',
+  'But which one was destroyed? The master or the apprentice?',
+  'I don\'t believe what I\'m hearing... Obi-Wan was right. You\'ve changed.',
+  'Always on the move.',
+  'The Dark Side of the Force is the pathway to many abilities some consider to be... Unnatural.',
+  'When 900 years old, you reach... Look as good, you will not.',
+  'You were my brother, Anakin. I loved you.',
+  'Army or not. You must realize, you are doomed.',
+  'Hold your fire. There\'s no life forms. It must have short-circuited.',
+  'Captain, being held by you isn\'t quite enough to get me excited.',
+  'You can forget your troubles with those Imperial slugs. I told you I\'d outrun \'em. Don\'t everyone thank me at once.',
+  'You can\'t win, Darth. Strike me down, and I will become more powerful than you could possibly imagine.',
+  'You\'ll be dead!',
+  'Nooooooooooooooooooo!',
+  'Attachment is forbidden. Possession is forbidden. Compassion, which I would define as unconditional love, is essential to a Jedi\'s life.',
+  'I sense a great deal of confusion in you, young Skywalker. There\'s much fear that clouds your judgement.',
+  'Keep your concentration here and now, where it belongs.',
+  'Into exile I must go, failed I have.',
+  'Watch your mouth kid, or you\'ll find yourself floating home.',
+  'Aren\'t you a little short for a stormtrooper?',
+  'Truly wonderful, the mind of a child is.',
+  'Laugh it up, Fuzz ball.',
+  'Promise. Promise me you will train the boy. He... is the chosen one... he will bring balance. Train him.',
+  'Impressive, most impressive.',
+  'Oh my goodness, shut me down! Machines making machines. How perverse.',
+  'I\'m Luke Skywalker. I\'m here to rescue you.',
+  'Keep your distance, Chewie, but don\'t, y\'know, look like you\'re keeping your distance.',
+  'Don\'t get technical with me. What mission? What are you talking about? I\'ve just about had enough of you. Go that way, you\'ll be malfunctioning in a day you near-sighted scrap pile.',
+  'I have waited a long time for this moment, my little green friend. At last, the Jedi are no more.',
+  'Blind we are, if creation of this clone army we could not see.',
+  'Asteroids do not concern me, Admiral. I want that ship, not excuses.',
+  'A tremor in the Force. The last time I felt it was in the presence of my old master.',
+  'Bargain rather than fight? He\'s no Jedi.',
+  'The Force can have a strong influence on the weak-minded.',
+  'Aaaaaaargh!',
+  'Now, be brave and don\'t look back. Don\'t look back.',
+  'Patience, use the Force, think!',
+  'I don\'t like you either. You just watch yourself. We\'re wanted men. I have the death sentence on twelve systems.',
+  'The Jedi are extinct, their fire has gone out of the universe. You, my friend, are all that\'s left of their religion.',
+  'I hope so Commander, for your sake. The Emperor is not as forgiving as I am.',
+  'What a piece of junk!',
+  'I\'m getting too old for this sort of thing.',
+  'You fool! I\'ve been trained in your Jedi arts by Count Dooku.',
+  'Make, at least, 20 people smile in a day.',
+  'Mmm. Lost a planet, Master Obi-Wan has. How embarrassing.',
+  'Bring \'em on, I\'d prefer a straight fight to all this sneaking around.',
+  'In my experience, there\'s no such thing as luck.',
+  'I guess you don\'t know everything about women yet.',
+  'Evacuate in our moment of triumph? I think you overestimate their chances.',
+  'To a dark place this line of thought will carry us. Great care we must take.',
+  'All his life has he looked away... to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing.',
+  'I was not elected to watch my people suffer and die while you discuss this invasion in a committee!',
+  'Wonderful girl. Either I\'m going to kill her or I\'m beginning to like her.',
+  'Why do I sense we\'ve picked up another pathetic life-form?',
+  'These blast points - too accurate for sandpeople. Only imperial stormtroopers are so precise.',
+  'How ya feeling kid? You don\'t look so bad to me. You look strong enough to pull the ears off a gundark.',
+  'No, my father didn\'t fight in the Clone Wars. He was a navigator on a spice freighter.',
+  'You were to bring balance to the force, not leave it in darkness.',
+  'Mesa called JaJa Binks, mesa youse humble servant!',
+  'A Jedi uses the force for knowledge and defense, never for attack.',
+  'I don\'t like sand. It\'s coarse and rough and irritating and it gets everywhere. Not like here. Here everything is soft and smooth.',
+  'Me? A Master? I\'m overwhelmed, sir. But the Council elects its own members. They will never accept this.',
+  'One truth, one hate.',
+  'Thank the maker!',
+  'Many Bothans died to bring us this information.',
+  'Help me Obi-Wan Kenobi, you\'re my only hope.',
+  'The Force is what gives a Jedi his power. It\'s an energy field created by all living things. It surrounds us and penetrates us. It binds the galaxy together.',
+  'If you have warriors, now is the time.',
+  'This will be a day long remembered. It has seen the end of Kenobi, and will soon see the end of the rebellion.',
+  'I recognized your foul stench when I was brought on board.',
+  'You\'ve never heard of the Millennium Falcon?... It\'s the ship that made the Kessel run in less than 12 parsecs.',
+  'Son, my place is here, my future is here. It is time for you to let go.',
+  'We are indebted to you for your bravery, Obi-Wan Kenobi. And you, young Skywalker; we will watch your career with great interest.',
+  'I\'m altering the deal. Pray I don\'t alter it any further.',
+  'To be angry is to be human.',
+  'You came in that thing? You\'re braver than I thought.',
+  'Attachment leads to jealousy. The shadow of greed that is.',
+  'You know better than to trust a strange computer.',
+  'Someday I\'ll be the most powerful Jedi ever.',
+  'You were the Chosen one!',
+  'Traveling through hyperspace ain\'t like dusting crops, farm boy.',
+  'You can either profit by this or be destroyed. It\'s your choice, but I warn you not to underestimate my power.',
+  'R2, why did you have to be so brave?',
+  'Jabba, you\'re a wonderful human being.',
+  'All who gain power are afraid to lose it.',
+  'Help me Obi-Wan Kenobi. You\'re my only hope.',
+  'You\'re asking me to be rational. That is something I know I cannot do. Believe me, I wish I could just wish away my feelings, but I can\'t.',
+  'What if the democracy we thought we were serving no longer exists, and the Republic has become the very evil we\'ve been fighting to destroy?',
+  'Hello. I don\'t believe we have been introduced. R2-D2? A pleasure to meet you. I am C-3PO, Human-Cyborg Relations.',
+  'Faith in your new apprentice, misplaced may be. As is your faith in the dark side of the Force.',
+  'Give yourself to the Dark Side. It is the only way you can save your friends. Yes your thoughts betray you.',
+  'You must unlearn what you have learned.',
+  'Now don\'t you forget this! Why I should stick my neck out for you is far beyond my capacity!',
+  'Feel the Force!',
+  'I am not training him.',
+  'Something\'s happening. I\'m not the Jedi I should be. I want more. And I know I shouldn\'t.',
+  'Feel, don\'t think.',
+  'I\'ve been waiting for you, Obi-Wan. We meet again, at last. The circle is now complete. When I left you, I was but the learner; now I am the master.',
+  'I will not condone a course of action that will lead us to war.',
+  'At the thought of not being with you, I can\'t breathe.',
+  'Don\'t try to frighten us with your sorcerous ways, Lord Vader.',
+  'It is obvious that this contest cannot be decided by our knowledge of the Force... but by our skills with a lightsaber.',
+  'Wipe them out. All of them.',
+  'Look, sir: Droids.',
+  'If you\'re not with me, then you\'re my enemy.',
+  'May the force be with you.',
+  'A Jedi Knight? Jeez, I\'m out of it for a little while, everyone gets delusions of grandeur!',
+  'These Federation types are cowards. The negotiations will be short.',
+  'Your powers are weak, old man.',
+  'Through the force, things you will see. Other places. The future... the past. Old friends long gone.',
+  'Hokey religions and ancient weapons are no match for a good blaster at your side, kid.',
+  'Clear your mind of questions.',
+  'Great shot kid, that was one in a million.',
+  'Wars not make one great.',
+  'Let the Wookie win.',
+  'This is some rescue! You came in here, but didn\'t you have a plan for getting out?',
+  'That... is why you fail.',
+  'I don\'t sense anything.',
+  'Mos Eisley spaceport. You will never find a more wretched hive of scum and villainy.',
+  'Not to worry. We\'re still flying half a ship.',
+  'Another happy landing.',
+  'Rejoice for those around you who transform into the Force.',
+  'The Force is strong with this one.',
+  'I see you becoming the greatest of all the Jedi, Anakin. Even more powerful than Master Yoda.',
+  'No. I am your Father.',
+  'It is too late for me, son. The Emperor will show you the true nature of the Force. He is your master now.',
+  'The Chancellor\'s right, Senator. We\'ll be quite safe. He won several cups for airspeeder racing back on Naboo.',
+  'No! Try not. Do, or do not. There is no try.',
+  'Anything is possible.',
+  'Your arrogance blinds you.',
+  'I\'m haunted by the kiss that you should never have given me. My heart is beating... hoping that kiss will not become a scar.',
+  'Only a sith deals in absolutes.',
+  'We live in a real world, Annie. Come back to it.',
+  'So, what do you think? You think a princess and a guy like me...',
+  'Don\'t center on your anxieties, Obi-Wan. Keep your concentration here and now, where it belongs.',
+  'I\'ll be careful.',
+  'Who\'s the more foolish: the fool, or the fool who follows him?',
+  'General, prepare your men.',
+  'The strong survive, the weak die. That\'s the way the galaxy works. The day we forgot that, we became everyone\'s lackey.',
+  'We have powerful friends. You\'re going to regret this.',
+  'I\'ve seen a lot of strange stuff, but I\'ve never seen anything to make me believe there\'s one all-powerful Force controlling everything.',
+  'Maybe you\'d like it back in your cell, your highness.',
+  'I want them alive - no disintegrations!',
+  'A Jedi must have the deepest commitment, the most serious mind.',
+  'I think my eyes are getting better. Instead of a big dark blur, I see a big light blur.',
+  'We have a new enemy, the young Rebel who destroyed the Death Star. I have no doubt this boy is the offspring of Anakin Skywalker.',
+  'Jabba\'s put a price on your head so large, every bounty hunter in the galaxy will be looking for you.',
+  'My parts are showing? Oh, my goodness, oh!',
+  'That\'s no moon, it\'s a space station.',
+  'The Force is strong with you. A powerful Sith you will become. Henceforth, you shall be known as Darth... Vader.',
+  'You slimy, double-crossing, no-good swindler. You\'ve got a lot of guts coming here, after what you pulled.',
+  'Soon, I will have a new apprentice. One far younger, and more powerful.',
+  'You\'re all clear, kid! Now let\'s blow this thing and go home!',
+  'He\'s the brains, sweetheart!',
+  'You will find that many of the truths we cling to depend greatly on our own point of view.',
+  'I\'m a person, and my name is Anakin!',
+  'This station is now the ultimate power in the universe! I suggest we use it.',
+  'Hold me, like you did by the lake on Naboo; so long ago when there was nothing but our love. No politics, no plotting, no war.',
+  'You can\'t stop the change any more than you can stop the suns from setting.',
+  'Death is a natural part of life.'
+];
+
+module.exports = function() {
+  return quotes[Math.floor(Math.random() * quotes.length)]
+}
+
+module.exports.quotes = quotes
+
+/***/ },
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -22459,7 +22979,7 @@ function config (name) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ },
-/* 149 */
+/* 153 */
 /***/ function(module, exports) {
 
 module.exports = function(module) {
@@ -22485,28 +23005,28 @@ module.exports = function(module) {
 
 
 /***/ },
-/* 150 */
+/* 154 */
 /***/ function(module, exports) {
 
 module.exports = require("axios");
 
 /***/ },
-/* 151 */
+/* 155 */
 /***/ function(module, exports) {
 
 /* (ignored) */
 
 /***/ },
-/* 152 */
+/* 156 */
 /***/ function(module, exports) {
 
 /* (ignored) */
 
 /***/ },
-/* 153 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(87);
+module.exports = __webpack_require__(88);
 
 
 /***/ }

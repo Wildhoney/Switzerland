@@ -85,8 +85,6 @@ const attachFiles = flags => once(props => {
 
     return new Promise(resolve => {
 
-        console.log('Here');
-
         const { node, files } = props;
         const boundary = node.shadowRoot;
 
