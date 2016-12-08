@@ -1,6 +1,7 @@
 import test from 'ava';
 import { spy } from 'sinon';
 import once from '../../src/middleware/once';
+import { statusKey, statuses } from '../../src/helpers/status';
 
 test('Should be able to invoke function once per node;', t => {
 
@@ -13,14 +14,14 @@ test('Should be able to invoke function once per node;', t => {
 
     return new Promise(resolve => {
 
-        applyWorker({ node: firstNode, name: 'Switzerland' });
-        applyWorker({ node: firstNode, name: 'Switzerland' }).then(props => {
+        applyWorker({ node: firstNode, name: 'Switzerland', [statusKey]: statuses.ok });
+        applyWorker({ node: firstNode, name: 'Switzerland', [statusKey]: statuses.ok }).then(props => {
             t.deepEqual({ worker, node: firstNode, name: 'Switzerland' }, props);
         });
 
-        applyWorker({ node: secondNode, name: 'Switzerland' });
-        applyWorker({ node: secondNode, name: 'Switzerland' }).then(props => {
-            t.deepEqual({ worker, node: secondNode, name: 'Switzerland' }, props);
+        applyWorker({ node: secondNode, name: 'Switzerland', [statusKey]: statuses.ok });
+        applyWorker({ node: secondNode, name: 'Switzerland', [statusKey]: statuses.ok }).then(props => {
+            t.deepEqual({ worker, node: secondNode, name: 'Switzerland', [statusKey]: statuses.ok }, props);
         });
 
         t.is(fn.callCount, 2);

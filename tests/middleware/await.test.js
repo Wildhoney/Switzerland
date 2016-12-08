@@ -1,6 +1,6 @@
 import test from 'ava';
 import { spy } from 'sinon';
-import waitFor, { awaitKey, awaitEventName, resolvingChildren, resolved } from '../../src/middleware/await';
+import waitFor, { awaitKey, awaitEventName, children, resolved } from '../../src/middleware/await';
 
 test('Should be able to augment the props;', t => {
 
@@ -44,7 +44,7 @@ test('Should be able to determine when whole node tree has been resolved;', t =>
 
     const props = waitFor('x-one', 'x-two', 'x-three')({ node });
 
-    resolvingChildren(props).then(tree => {
+    children(props).then(tree => {
 
         t.is(tree.size, 3);
         t.true(tree.get(xOneNode));
