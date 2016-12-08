@@ -609,10 +609,10 @@ Once the component is mounted in the DOM, the attached CSS document will be fetc
 }
 ```
 
-During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash; will have a class name of `styling`, whereas after **all** files have been downloaded and attached, the `styling` class name will be replaced with `styled` &ndash; this allows you to apply clever behaviour, such as hiding the component until the styles have been applied.
+By default all stylesheets are loaded synchronously which means you don't have to worry about FOUC &ndash; however by passing `options.ASYNC` as the second argument the **host component** &mdash; `swiss-cheese` &mdash; will have a class name of `styling`, whereas after **all** files have been downloaded and attached, the `styling` class name will be replaced with `styled` &ndash; this allows you to apply clever behaviour, such as hiding the component until the styles have been applied.
 
 ```html
-<swiss-cheese class="resolving">
+<swiss-cheese class="styling">
     <!-- ... -->
 </swiss-cheese>
 ```
