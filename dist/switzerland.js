@@ -1348,6 +1348,23 @@ const children = exports.children = function (props) {
     return awaitKey in props ? new Promise(function (resolve) {
 
         /**
+         * @method resolved
+         * @param {Object} event
+         * @return {void}
+         */
+        function resolved(event) {
+
+            // Resolve the current node if we have it in the map.
+            waitFor.has(event.detail) && waitFor.set(event.detail, true);
+
+            // Determine whether all awaiting nodes have been resolved, and if so then we'll
+            // resolve the current node.
+            Array.from(waitFor.values()).every(function (resolved) {
+                return resolved === true;
+            }) && done(node);
+        }
+
+        /**
          * @method done
          * @param {HTMLElement} node
          * @return {void}
@@ -1360,19 +1377,7 @@ const children = exports.children = function (props) {
             props.node.classList.add('resolved');
         }
 
-        node.addEventListener(awaitEventName, function resolved(event) {
-
-            // Resolve the current node if we have it in the map.
-            waitFor.has(event.detail) && waitFor.set(event.detail, true);
-
-            // Determine whether all awaiting nodes have been resolved, and if so then we'll
-            // resolve the current node.
-            Array.from(waitFor.values()).every(function (resolved) {
-                return resolved === true;
-            }) && function () {
-                return done(node);
-            }();
-        });
+        node.addEventListener(awaitEventName, resolved);
 
         // Place all of the nodes we're awaiting into the map.
         const nodeNames = props[awaitKey].join(',');
