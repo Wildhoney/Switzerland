@@ -90,8 +90,8 @@ const attachFiles = once(props => {
 
         if (files.length !== 0) {
 
-            node.classList.add('resolving');
-            node.classList.remove('resolved');
+            node.classList.add('styling');
+            node.classList.remove('styled');
 
             fetchIncludes(files).then(nodes => {
 
@@ -99,8 +99,8 @@ const attachFiles = once(props => {
                 // them to the component's shadow boundary.
                 nodes.filter(identity).forEach(node => boundary.appendChild(node));
 
-                node.classList.add('resolved');
-                node.classList.remove('resolving');
+                node.classList.add('styled');
+                node.classList.remove('styling');
 
                 resolve();
 

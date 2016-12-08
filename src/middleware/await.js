@@ -33,7 +33,7 @@ export const resolvingChildren = props => {
             // Tree has been resolved.
             node.removeEventListener(awaitEventName, resolved);
             resolve(waitFor);
-            props.node.classList.add('loaded');
+            props.node.classList.add('resolved');
 
         }
 
@@ -58,7 +58,7 @@ export const resolvingChildren = props => {
         // If we were unable to find any of the `await` nodes then we'll simply resolve.
         !nodes.length && done(node);
 
-    }) : Promise.resolve() && props.node.classList.add('loaded');
+    }) : Promise.resolve() && props.node.classList.add('resolved');
 
 };
 

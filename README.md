@@ -434,7 +434,7 @@ create('swiss-cheese', pipe(once(font), redux(store)), html(props => {
 
 > Note: We haven't handled rejections for the `Promise` for the sake of brevity &ndash; but you should!
 
-In the above example we're using the famous [Cheese and Mouse font](http://www.dafont.com/cheese-and-mouse.font) but it's also worth noting that we've created our own `font` middleware that yields a promise. Once the `Promise` has been resolved, we can be guaranteed that once we reach the CSS, the font has been loaded. Any semblance of FOUC by using the previous method is caused by latency of loading the stylesheet &ndash; resolving this problem requires hiding the component until we have the [`resolved` class on the `swiss-cheese` node](#applying-styles).
+In the above example we're using the famous [Cheese and Mouse font](http://www.dafont.com/cheese-and-mouse.font) but it's also worth noting that we've created our own `font` middleware that yields a promise. Once the `Promise` has been resolved, we can be guaranteed that once we reach the CSS, the font has been loaded. Any semblance of FOUC by using the previous method is caused by latency of loading the stylesheet &ndash; resolving this problem requires hiding the component until we have the [`styled` class on the `swiss-cheese` node](#applying-styles).
 
 Curiously you could also opt to use [async functions](https://developers.google.com/web/fundamentals/getting-started/primers/async-functions) to handle your async logic instead of using explicitly using `Promise`.
 
@@ -609,7 +609,7 @@ Once the component is mounted in the DOM, the attached CSS document will be fetc
 }
 ```
 
-During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash; will have a class name of `resolving`, whereas after **all** files have been downloaded and attached, the `resolving` class name will be replaced with `resolved` &ndash; this allows you to apply clever behaviour, such as hiding the component until the styles have been applied.
+During the fetching phase, the **host component** &mdash; `swiss-cheese` &mdash; will have a class name of `styling`, whereas after **all** files have been downloaded and attached, the `styling` class name will be replaced with `styled` &ndash; this allows you to apply clever behaviour, such as hiding the component until the styles have been applied.
 
 ```html
 <swiss-cheese class="resolving">
