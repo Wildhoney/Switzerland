@@ -58,7 +58,7 @@ export const resolvingChildren = props => {
         // If we were unable to find any of the `await` nodes then we'll simply resolve.
         !nodes.length && done(node);
 
-    }) : Promise.resolve();
+    }) : Promise.resolve() && props.node.classList.add('loaded');
 
 };
 

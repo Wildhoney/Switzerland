@@ -91,7 +91,7 @@ const handle = async (node, component) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ node, render, attached, error: err, [ignoreKey]: true });
+            const props = await componentError({ node, render: () => render(false), attached, error: err, [ignoreKey]: true });
             return { props, tree: htmlFor(props) };
 
         } catch (err) {
@@ -104,6 +104,32 @@ const handle = async (node, component) => {
         }
 
     }
+
+};
+
+/**
+ * @method transition
+ * @param {HTMLElement} node
+ * @param {Object} tree
+ * @param {Object} props
+ * @return {Object}
+ */
+const transition = async (node, tree, props) => {
+
+    // Render the updated vtree and hide it.
+    const boundary = node.shadowRoot;
+    const root = createElement(tree);
+    root.style.display = 'none';
+    boundary.appendChild(root);
+
+    // Wait until the children have been resolved.
+    await resolvingChildren(props);
+
+    // ...And then remove the previous child and show the newly rendered vtree.
+    boundary.firstChild.remove();
+    root.style.display = 'block';
+
+    return { node, tree, root };
 
 };
 
@@ -202,9 +228,10 @@ export function create(name, component) {
 
         /**
          * @method render
+         * @param {Boolean} [delta = true]
          * @return {void}
          */
-        render() {
+        render(delta = true) {
 
             this[queueKey].process(async instance => {
 
@@ -221,14 +248,19 @@ export function create(name, component) {
 
                     if (node.isConnected) {
 
-                        // Diff and patch the current DOM state with the new one.
-                        const patches = diff(currentTree, tree);
-                        const root = patch(currentRoot, patches);
+                        // Determine whether we're transitioning or patching.
+                        return delta ? (() => {
 
-                        // Invoke any ref callbacks defined in the component's `render` method.
-                        'ref' in props && invokeFor(node);
+                            // Diff and patch the current DOM state with the new one.
+                            const patches = diff(currentTree, tree);
+                            const root = patch(currentRoot, patches);
 
-                        return { node, tree, root };
+                            // Invoke any ref callbacks defined in the component's `render` method.
+                            'ref' in props && invokeFor(node);
+
+                            return { node, tree, root };
+
+                        })() : transition(node, tree, props);
 
                     }
 

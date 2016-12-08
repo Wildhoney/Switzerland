@@ -52,8 +52,8 @@ const implementations = {
                 disconnectedCallback() {
                     component.disconnected.apply(this);
                 }
-                render() {
-                    component.render.apply(this);
+                render(transition) {
+                    component.render.call(this, transition);
                 }
             });
 
