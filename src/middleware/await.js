@@ -8,7 +8,7 @@ export const awaitKey = Symbol('switzerland/await');
  * @constant awaitEventName
  * @type {String}
  */
-export const awaitEventName = 'switzerland/node-resolved';
+export const awaitEventName = 'switzerland/resolved';
 
 /**
  * @method children
