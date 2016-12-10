@@ -1,3 +1,4 @@
+import { merge, __ } from 'ramda';
 import { options } from '../switzerland';
 
 /**
@@ -7,11 +8,11 @@ import { options } from '../switzerland';
 const once = new WeakMap();
 
 /**
- * @param {Function} callback
+ * @param {Function} fn
  * @param {Number} [flags = options.DEFAULT]
  * @return {Function}
  */
-export default (callback, flags = options.DEFAULT) => {
+export default (fn, flags = options.DEFAULT) => {
 
     return props => {
 
@@ -22,19 +23,18 @@ export default (callback, flags = options.DEFAULT) => {
         !hasNode && once.set(key, new WeakMap());
 
         // Determine whether the function has been called already.
-        const hasFunction = once.get(key).has(callback);
-        !hasFunction && once.get(key).set(callback, callback(props));
+        const hasFunction = once.get(key).has(fn);
+        !hasFunction && once.get(key).set(fn, fn(props));
 
         // Only promises will be yielded in the next tick, whereas functions that
         // yield objects will return immediately.
-        const response = once.get(key).get(callback);
+        const response = once.get(key).get(fn);
 
         // Remove the callback if the node has been deleted, which will cause it to be invoked
         // again if the node is re-added.
-        flags & options.RESET && !props.attached && once.get(key).delete(callback);
+        flags & options.RESET && !props.attached && once.get(key).delete(fn);
 
-        return 'then' in Object(response) ? response.then(onceProps => ({ ...onceProps, ...props })) :
-                                            { ...response, ...props };
+        return 'then' in Object(response) ? response.then(merge(__, props)) : { ...response, ...props };
 
     };
 

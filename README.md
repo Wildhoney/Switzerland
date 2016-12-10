@@ -690,7 +690,7 @@ Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elemen
 | `attributes`  | &mdash;               | Parses `data` attributes and observes mutations.                          |
 | `await`       | `String[]`            | Observes named children and adds `resolved` to node.                      |
 | `cleanup`     | `Function`            | Invokes function each time component is removed from the DOM.             |
-| `events`      | &mdash;               | Attached `props.event` for dispatching `composed` events upwards.         |
+| `events`      | &mdash;               | Attaches `props.event` for dispatching `composed` events upwards.         |
 | `html`        | `Object`              | Takes ` virtual-dom` `vtree` or JSX that is rendered into the component.  |
 | `include`     | `String`, `Number`    | List of CSS/JS files to attach to the component's shadow boundary.        |
 | `methods`     | `Object`              | Named functions that are attached to the node's `prototype`.              |

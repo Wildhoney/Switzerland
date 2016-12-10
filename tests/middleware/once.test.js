@@ -29,3 +29,13 @@ test('Should be able to invoke function once per node;', t => {
     });
 
 });
+
+test('Should be able to take the fresh props over the `once` props;', t => {
+
+    const node = document.createElement('div');
+    const fn = spy(props => ({ ...props, state: 'stale', name: 'Switzerland' }));
+    const applyProps = once(fn);
+
+    t.deepEqual(applyProps({ node, state: 'fresh' }), { node, state: 'fresh', name: 'Switzerland' });
+
+});
