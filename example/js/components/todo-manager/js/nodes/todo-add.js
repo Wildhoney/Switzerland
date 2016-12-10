@@ -22,11 +22,11 @@ create('todo-add', pipe(redux(store, always(false)), state({ value: '' }), inclu
             <input
                 type="text"
                 value={props.state.value}
-                placeholder="Specify an item to add to your todo list..."
+                placeholder="What do you need to do?"
                 oninput={event => props.setState({ value: event.target.value })}
                 />
 
-            <button disabled={!props.state.value.length}>Add Todo</button>
+            <button disabled={!props.state.value.length} />
 
         </form>
     );

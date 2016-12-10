@@ -30,13 +30,14 @@ todo-manager.resolved {
 
 @media (max-width: 768px) {
 
-    todo-manager {
-        transform: scale(1);
-    }
-
     body {
         align-items: initial;
+        flex-direction: row;
         justify-content: initial;
+    }
+
+    todo-manager {
+        transform: scale(1);
     }
 }
 
