@@ -484,7 +484,7 @@ var _implementation = __webpack_require__(38);
 
 var _implementation2 = _interopRequireDefault(_implementation);
 
-var _environment = __webpack_require__(14);
+var _environment = __webpack_require__(15);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -496,7 +496,7 @@ var _rescue = __webpack_require__(33);
 
 var _refs = __webpack_require__(32);
 
-var _messages = __webpack_require__(15);
+var _messages = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -820,6 +820,12 @@ function isArray(obj) {
 
 /***/ },
 /* 14 */
+/***/ function(module, exports) {
+
+module.exports = require("ramda");
+
+/***/ },
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -858,7 +864,7 @@ exports.default = (0, _once2.default)(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -869,7 +875,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.warning = exports.error = undefined;
 
-var _environment = __webpack_require__(14);
+var _environment = __webpack_require__(15);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -902,12 +908,6 @@ const error = exports.error = function (text) {
 const warning = exports.warning = function (text) {
   return message(text, window.console.warn);
 };
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-module.exports = require("ramda");
 
 /***/ },
 /* 17 */,
@@ -1293,7 +1293,7 @@ const awaitKey = exports.awaitKey = Symbol('switzerland/await');
  * @constant awaitEventName
  * @type {String}
  */
-const awaitEventName = exports.awaitEventName = 'switzerland/node-resolved';
+const awaitEventName = exports.awaitEventName = 'switzerland/resolved';
 
 /**
  * @method children
@@ -1806,7 +1806,7 @@ var _pathParse = __webpack_require__(34);
 
 var _pathParse2 = _interopRequireDefault(_pathParse);
 
-var _messages = __webpack_require__(15);
+var _messages = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2289,7 +2289,7 @@ var defaultOptions = { value: null, next: fn, error: fn };
 /***/ function(module, exports, __webpack_require__) {
 
 // Dependencies
-var pipe = __webpack_require__(16).pipe
+var pipe = __webpack_require__(14).pipe
 var promised = __webpack_require__(50).promised
 
 // Public intefrace

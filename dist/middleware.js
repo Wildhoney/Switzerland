@@ -2308,7 +2308,7 @@ var _implementation = __webpack_require__(38);
 
 var _implementation2 = _interopRequireDefault(_implementation);
 
-var _environment = __webpack_require__(14);
+var _environment = __webpack_require__(15);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -2320,7 +2320,7 @@ var _rescue = __webpack_require__(33);
 
 var _refs = __webpack_require__(32);
 
-var _messages = __webpack_require__(15);
+var _messages = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2724,6 +2724,12 @@ function isArray(obj) {
 
 /***/ },
 /* 14 */
+/***/ function(module, exports) {
+
+module.exports = require("ramda");
+
+/***/ },
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2762,7 +2768,7 @@ exports.default = (0, _once2.default)(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2773,7 +2779,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.warning = exports.error = undefined;
 
-var _environment = __webpack_require__(14);
+var _environment = __webpack_require__(15);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -2806,12 +2812,6 @@ const error = exports.error = function (text) {
 const warning = exports.warning = function (text) {
   return message(text, window.console.warn);
 };
-
-/***/ },
-/* 16 */
-/***/ function(module, exports) {
-
-module.exports = require("ramda");
 
 /***/ },
 /* 17 */
@@ -3710,7 +3710,7 @@ const awaitKey = exports.awaitKey = Symbol('switzerland/await');
  * @constant awaitEventName
  * @type {String}
  */
-const awaitEventName = exports.awaitEventName = 'switzerland/node-resolved';
+const awaitEventName = exports.awaitEventName = 'switzerland/resolved';
 
 /**
  * @method children
@@ -3855,10 +3855,12 @@ exports.default = function (html) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _ramda = __webpack_require__(14);
 
 var _switzerland = __webpack_require__(11);
 
@@ -3869,37 +3871,35 @@ var _switzerland = __webpack_require__(11);
 const once = new WeakMap();
 
 /**
- * @param {Function} callback
+ * @param {Function} fn
  * @param {Number} [flags = options.DEFAULT]
  * @return {Function}
  */
 
-exports.default = function (callback, flags = _switzerland.options.DEFAULT) {
+exports.default = function (fn, flags = _switzerland.options.DEFAULT) {
 
-  return function (props) {
+    return function (props) {
 
-    const key = props.node;
+        const key = props.node;
 
-    // Ensure the node has an entry in the map.
-    const hasNode = once.has(key);
-    !hasNode && once.set(key, new WeakMap());
+        // Ensure the node has an entry in the map.
+        const hasNode = once.has(key);
+        !hasNode && once.set(key, new WeakMap());
 
-    // Determine whether the function has been called already.
-    const hasFunction = once.get(key).has(callback);
-    !hasFunction && once.get(key).set(callback, callback(props));
+        // Determine whether the function has been called already.
+        const hasFunction = once.get(key).has(fn);
+        !hasFunction && once.get(key).set(fn, fn(props));
 
-    // Only promises will be yielded in the next tick, whereas functions that
-    // yield objects will return immediately.
-    const response = once.get(key).get(callback);
+        // Only promises will be yielded in the next tick, whereas functions that
+        // yield objects will return immediately.
+        const response = once.get(key).get(fn);
 
-    // Remove the callback if the node has been deleted, which will cause it to be invoked
-    // again if the node is re-added.
-    flags & _switzerland.options.RESET && !props.attached && once.get(key).delete(callback);
+        // Remove the callback if the node has been deleted, which will cause it to be invoked
+        // again if the node is re-added.
+        flags & _switzerland.options.RESET && !props.attached && once.get(key).delete(fn);
 
-    return 'then' in Object(response) ? response.then(function (onceProps) {
-      return _extends({}, onceProps, props);
-    }) : _extends({}, response, props);
-  };
+        return 'then' in Object(response) ? response.then((0, _ramda.merge)(_ramda.__, props)) : _extends({}, response, props);
+    };
 };
 
 /***/ },
@@ -4409,7 +4409,7 @@ var _pathParse = __webpack_require__(34);
 
 var _pathParse2 = _interopRequireDefault(_pathParse);
 
-var _messages = __webpack_require__(15);
+var _messages = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -7199,7 +7199,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 /***/ function(module, exports, __webpack_require__) {
 
 // Dependencies
-var pipe = __webpack_require__(16).pipe
+var pipe = __webpack_require__(14).pipe
 var promised = __webpack_require__(50).promised
 
 // Public intefrace
@@ -15275,7 +15275,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _humps = __webpack_require__(81);
 
-var _ramda = __webpack_require__(16);
+var _ramda = __webpack_require__(14);
 
 /**
  * @constant observers
@@ -15453,7 +15453,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _ramda = __webpack_require__(16);
+var _ramda = __webpack_require__(14);
 
 var _axios = __webpack_require__(153);
 
@@ -15631,7 +15631,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _switzerland = __webpack_require__(11);
 
-var _messages = __webpack_require__(15);
+var _messages = __webpack_require__(16);
 
 /**
  * @constant registered
@@ -15700,7 +15700,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _ramda = __webpack_require__(16);
+var _ramda = __webpack_require__(14);
 
 /**
  * @constant subscriptions
@@ -15843,7 +15843,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _propTypes = __webpack_require__(134);
 
-var _environment = __webpack_require__(14);
+var _environment = __webpack_require__(15);
 
 var _environment2 = _interopRequireDefault(_environment);
 
