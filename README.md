@@ -687,7 +687,7 @@ Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elemen
 
 | Name          | Parameters            | Responsibility                                                            |
 | ------------- | --------------------- | ------------------------------------------------------------------------- |
-| `attributes`  | &mdash;               | Parses `data` attributes and observes mutations.                          |
+| `attrs`       | &mdash;               | Parses `data` attributes and observes mutations.                          |
 | `await`       | `String[]`            | Observes named children and adds `resolved` to node.                      |
 | `cleanup`     | `Function`            | Invokes function each time component is removed from the DOM.             |
 | `events`      | &mdash;               | Attaches `props.event` for dispatching `composed` events upwards.         |
