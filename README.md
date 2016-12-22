@@ -677,9 +677,9 @@ Once we've returned a camelcased object of CSS Variables we can happily use thos
 
 ## Browser Support
 
-<img src="https://github.com/alrra/browser-logos/blob/master/chrome/chrome_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/master/opera/opera_128x128.png?raw=true" width="64" />
-<img src="https://github.com/alrra/browser-logos/blob/master/firefox/firefox_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/37.2.1/chrome/chrome_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/37.2.1/opera/opera_128x128.png?raw=true" width="64" />
+<img src="https://github.com/alrra/browser-logos/blob/37.2.1/firefox/firefox_128x128.png?raw=true" width="64" />
 
 Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elements) and [Shadow DOM](http://caniuse.com/#feat=shadowdom) &mdash; both v0 and v1 implementations are supported by Switzerland.
 
