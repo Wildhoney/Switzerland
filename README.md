@@ -702,4 +702,3 @@ Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elemen
 | `transclude`  | `Object`, `Number`    | Transforms a component's HTML children into `virtual-dom` `vtree`s.       |
 | `validate`    | `Object`              | Takes an object of `PropTypes` for React-esque `prop` validation.         |
 | `vars`        | `Function`            | Accepts a function that yields an object to transform into CSS Variables. |
-
