@@ -5,21 +5,23 @@
   "main": "switzerland.js",
   "scripts": {
     "build": "webpack --config webpack.build.js && npm run dev",
-    "dev": "webpack --config webpack.example.js",
-    "watch": "webpack --watch --config webpack.example.js",
+    "dev": "webpack --config",
+    "watch": "webpack --watch",
     "test": "npm run lint && npm run spec",
     "spec": "NODE_ENV=development ava",
     "karma": "npm run dev && karma start karmafile.js --single-run",
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
     "start": "npm i && npm run dev && babel example/server/default.js | node",
-    "prepare": "npm run build && mv dist/switzerland.js . && mv dist/middleware.js . && mv dist/common.js .",
-    "postpublish": "mv switzerland.js dist/ && mv middleware.js dist/ && mv common.js dist/"
+    "prepare": "./build/prepare.sh",
+    "postpublish": "./build/postpublish.sh"
   },
   "files": [
     "switzerland.js",
     "middleware.js",
-    "common.js"
+    "./helpers/*.js",
+    "./middleware/*.js",
+    "./debug/*.js"
   ],
   "repository": {
     "type": "git",
