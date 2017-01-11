@@ -13,12 +13,13 @@
     "lint": "xo src/*.js src/**/*.js",
     "cleanup": "rimraf node_modules",
     "start": "npm i && npm run dev && babel example/server/default.js | node",
-    "prepare": "npm run build && mv dist/switzerland.js . && mv dist/middleware.js .",
-    "postpublish": "mv switzerland.js dist/ && mv middleware.js dist/"
+    "prepare": "npm run build && mv dist/switzerland.js . && mv dist/middleware.js . && mv dist/common.js .",
+    "postpublish": "mv switzerland.js dist/ && mv middleware.js dist/ && mv common.js dist/"
   },
   "files": [
     "switzerland.js",
-    "middleware.js"
+    "middleware.js",
+    "common.js"
   ],
   "repository": {
     "type": "git",

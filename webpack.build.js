@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
     entry: {
         switzerland: ['./src/switzerland.js'],
@@ -13,6 +15,9 @@ module.exports = {
         axios: 'axios',
         ramda: 'ramda'
     },
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('common')
+    ],
     module: {
         loaders: [
             {
