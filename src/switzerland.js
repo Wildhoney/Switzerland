@@ -52,22 +52,32 @@ const isAttached = node => {
 };
 
 /**
+ * @method isLastError
+ * @param {HTMLElement} node
+ * @return {Boolean}
+ */
+const isLastError = node => {
+    return 'error' in Object(node[prevPropsKey].props);
+};
+
+/**
  * @method handle
  * @param {HTMLElement} node
  * @param {Function} component
+ * @param {Object} [mergeProps = {}]
  * @return {Object}
  */
-const handle = async (node, component) => {
+const handle = async (node, component, mergeProps = {}) => {
 
     const render = node.render.bind(node);
     const attached = isAttached(node);
-    const props = 'error' in Object(node[prevPropsKey].props) ? null : (node[prevPropsKey].props || null);
+    const props = isLastError(node) ? null : (node[prevPropsKey].props || null);
     const prevProps = { [vDomPropsKey]: node[prevPropsKey], prevProps: props };
 
     try {
 
         // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ node, render, attached, ...prevProps });
+        const props = await component({ ...mergeProps, node, render, attached, ...prevProps });
         return { props, tree: htmlFor(props) };
 
     } catch (err) {
@@ -93,7 +103,7 @@ const handle = async (node, component) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ node, render: () => render(false), attached, error: err });
+            const props = await componentError({ ...mergeProps, node, render: () => render(false), attached, error: err });
             return { props, tree: htmlFor(props) || <span /> };
 
         } catch (err) {
@@ -234,10 +244,10 @@ export function create(name, component) {
 
         /**
          * @method render
-         * @param {Boolean} [delta = true]
+         * @param {Boolean} [mergeProps = {}]
          * @return {void}
          */
-        render(delta = true) {
+        render(mergeProps = {}) {
 
             this[queueKey].process(async instance => {
 
@@ -247,7 +257,7 @@ export function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const { props, tree } = await handle(node, component);
+                    const { props, tree } = await handle(node, component, mergeProps);
 
                     // Use either the loading root and tree, or from the previous render.
                     const patchRoot = vDomPropsKey in props ? props[vDomPropsKey].root : currentRoot;
@@ -259,7 +269,7 @@ export function create(name, component) {
                     if (node.isConnected) {
 
                         // Determine whether we're transitioning or patching.
-                        return delta ? (() => {
+                        return isLastError(node) ? transition(node, tree, props, patchRoot) : (() => {
 
                             // Diff and patch the current DOM state with the new one.
                             const patches = diff(patchTree, tree);
@@ -270,7 +280,7 @@ export function create(name, component) {
 
                             return { node, tree, root, props };
 
-                        })() : transition(node, tree, props, patchRoot);
+                        })();
 
                     }
 
