@@ -71,7 +71,8 @@ const handle = async (node, component, mergeProps = {}) => {
 
     const render = node.render.bind(node);
     const attached = isAttached(node);
-    const props = isLastError(node) ? null : (node[prevPropsKey].props || null);
+    const lastProps = node[prevPropsKey].props || null;
+    const props = isLastError(node) ? null : lastProps;
     const prevProps = { [vDomPropsKey]: node[prevPropsKey], prevProps: props };
 
     try {
@@ -103,7 +104,7 @@ const handle = async (node, component, mergeProps = {}) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ ...mergeProps, node, render, attached, prevProps: props, error: err });
+            const props = await componentError({ ...mergeProps, node, render, attached, prevProps: lastProps, error: err });
             return { props, tree: htmlFor(props) || <span /> };
 
         } catch (err) {
