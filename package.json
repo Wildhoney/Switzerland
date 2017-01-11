@@ -18,9 +18,9 @@
   "files": [
     "switzerland.js",
     "middleware.js",
-    "./helpers/*.js",
-    "./middleware/*.js",
-    "./debug/*.js"
+    "./helpers",
+    "./middleware",
+    "./debug"
   ],
   "repository": {
     "type": "git",
