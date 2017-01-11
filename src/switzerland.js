@@ -5,6 +5,7 @@ import implementation from './helpers/implementation';
 import isDevelopment from './helpers/environment';
 import html, { htmlFor } from './middleware/html';
 import { htmlErrorFor } from './middleware/rescue';
+import { vDomPropsKey } from './middleware/loading';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { children, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
@@ -60,19 +61,20 @@ const handle = async (node, component) => {
 
     const render = node.render.bind(node);
     const attached = isAttached(node);
-    const prevProps = node[prevPropsKey] || {};
+    const props = 'error' in Object(node[prevPropsKey].props) ? null : (node[prevPropsKey].props || null);
+    const prevProps = { [vDomPropsKey]: node[prevPropsKey], prevProps: props };
 
     try {
 
         // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ node, render, attached, prevProps });
+        const props = await component({ node, render, attached, ...prevProps });
         return { props, tree: htmlFor(props) };
 
     } catch (err) {
 
         // As the component has raised an error during the processing of its middleware, we'll attempt
-        // to find the error vtree from the component's `error` middleware, otherwise we'll use a
-        // the Switzerland default vtree as well as raising an error to prevent the component from being
+        // to find the error vtree from the component's `error` middleware, otherwise we'll use the
+        // Switzerland default vtree as well as raising an error to prevent the component from being
         // rendered in an invalid state.
         const componentError = htmlErrorFor(node) || html(props => {
 
@@ -91,8 +93,8 @@ const handle = async (node, component) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ node, render: () => render(false), attached, prevProps, error: err });
-            return { props, tree: htmlFor(props) };
+            const props = await componentError({ node, render: () => render(false), attached, error: err });
+            return { props, tree: htmlFor(props) || <span /> };
 
         } catch (err) {
 
@@ -248,8 +250,8 @@ export function create(name, component) {
                     const { props, tree } = await handle(node, component);
 
                     // Use either the loading root and tree, or from the previous render.
-                    const patchRoot = props.root || currentRoot;
-                    const patchTree = props.tree || currentTree;
+                    const patchRoot = vDomPropsKey in props ? props[vDomPropsKey].root : currentRoot;
+                    const patchTree = vDomPropsKey in props ? props[vDomPropsKey].tree : currentTree;
 
                     // Clear any previously defined refs for the current component.
                     'ref' in props && purgeFor(node);
@@ -268,7 +270,7 @@ export function create(name, component) {
 
                             return { node, tree, root, props };
 
-                        })() : transition(node, tree, props, currentRoot);
+                        })() : transition(node, tree, props, patchRoot);
 
                     }
 
