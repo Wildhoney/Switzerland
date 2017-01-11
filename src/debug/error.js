@@ -1,14 +1,15 @@
 import starwars from 'starwars';
 
 /**
- * @param {Number} [value = 0.5]
+ * @param {Number} [errorPercentage = 50]
  * @return {Object}
  */
-export default (value = 0.5) => {
+export default (errorPercentage = 50) => {
 
     return props => {
 
-        Math.random() > value && (message => {
+        Math.random() < (errorPercentage / 100) && (message => {
+            console.error(`Switzerland Debug: Throwing ${message}.`);
             throw new Error(message);
         })(starwars());
 
