@@ -103,7 +103,7 @@ const handle = async (node, component, mergeProps = {}) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ ...mergeProps, node, render, attached, error: err });
+            const props = await componentError({ ...mergeProps, node, render, attached, prevProps: props, error: err });
             return { props, tree: htmlFor(props) || <span /> };
 
         } catch (err) {
