@@ -27,10 +27,10 @@ export const options = {
 const queueKey = Symbol('switzerland/queue');
 
 /**
- * @constant lastPropsKey
+ * @constant prevPropsKey
  * @type {Symbol}
  */
-export const lastPropsKey = Symbol('switzerland/last-props');
+export const prevPropsKey = Symbol('switzerland/last-props');
 
 /**
  * @method clearHTMLFor
@@ -60,11 +60,12 @@ const handle = async (node, component) => {
 
     const render = node.render.bind(node);
     const attached = isAttached(node);
+    const prevProps = node[prevPropsKey] || {};
 
     try {
 
         // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ node, render, attached });
+        const props = await component({ node, render, attached, prevProps });
         return { props, tree: htmlFor(props) };
 
     } catch (err) {
@@ -90,7 +91,7 @@ const handle = async (node, component) => {
         try {
 
             // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ node, render: () => render(false), attached, error: err });
+            const props = await componentError({ node, render: () => render(false), attached, prevProps, error: err });
             return { props, tree: htmlFor(props) };
 
         } catch (err) {
@@ -156,10 +157,10 @@ export function create(name, component) {
          */
         connected() {
 
-            const queue = this[queueKey] = new OrderlyQueue({ value: '', next: lastProps => {
+            const queue = this[queueKey] = new OrderlyQueue({ value: '', next: prevProps => {
 
-                // Memorise the last props as it's useful in the methods middleware.
-                this[lastPropsKey] = lastProps;
+                // Memorise the previous props as it's useful in the methods middleware.
+                this[prevPropsKey] = prevProps;
 
             } });
 
@@ -202,7 +203,7 @@ export function create(name, component) {
 
                     })();
 
-                    return { tree, root, node };
+                    return { tree, root, node, props };
 
                 } catch (err) {
 
@@ -246,6 +247,10 @@ export function create(name, component) {
                     // Apply the middleware and wait for the props to be returned.
                     const { props, tree } = await handle(node, component);
 
+                    // Use either the loading root and tree, or from the previous render.
+                    const patchRoot = props.root || currentRoot;
+                    const patchTree = props.tree || currentTree;
+
                     // Clear any previously defined refs for the current component.
                     'ref' in props && purgeFor(node);
 
@@ -255,13 +260,13 @@ export function create(name, component) {
                         return delta ? (() => {
 
                             // Diff and patch the current DOM state with the new one.
-                            const patches = diff(currentTree, tree);
-                            const root = patch(currentRoot, patches);
+                            const patches = diff(patchTree, tree);
+                            const root = patch(patchRoot, patches);
 
                             // Invoke any ref callbacks defined in the component's `render` method.
                             'ref' in props && invokeFor(node);
 
-                            return { node, tree, root };
+                            return { node, tree, root, props };
 
                         })() : transition(node, tree, props, currentRoot);
 
