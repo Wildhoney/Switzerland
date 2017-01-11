@@ -34,16 +34,18 @@ module.exports =
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 
-/******/ 	// identity function for calling harmory imports with the correct context
+/******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
 
-/******/ 	// define getter function for harmory exports
+/******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		Object.defineProperty(exports, name, {
-/******/ 			configurable: false,
-/******/ 			enumerable: true,
-/******/ 			get: getter
-/******/ 		});
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
 /******/ 	};
 
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
@@ -62,7 +64,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 157);
+/******/ 	return __webpack_require__(__webpack_require__.s = 158);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -283,45 +285,7 @@ module.exports = "2"
 
 
 /***/ },
-/* 4 */,
-/* 5 */
-/***/ function(module, exports) {
-
-module.exports = isThunk
-
-function isThunk(t) {
-    return t && t.type === "Thunk"
-}
-
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-module.exports = isHook
-
-function isHook(hook) {
-    return hook &&
-      (typeof hook.hook === "function" && !hook.hasOwnProperty("hook") ||
-       typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
-}
-
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-var version = __webpack_require__(3)
-
-module.exports = isVirtualText
-
-function isVirtualText(x) {
-    return x && x.type === "VirtualText" && x.version === version
-}
-
-
-/***/ },
-/* 8 */
+/* 4 */
 /***/ function(module, exports) {
 
 var g;
@@ -346,99 +310,54 @@ module.exports = g;
 
 
 /***/ },
-/* 9 */,
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
+/* 5 */,
+/* 6 */
+/***/ function(module, exports) {
 
-/* WEBPACK VAR INJECTION */(function(setImmediate, clearImmediate) {var nextTick = __webpack_require__(59).nextTick;
-var apply = Function.prototype.apply;
-var slice = Array.prototype.slice;
-var immediateIds = {};
-var nextImmediateId = 0;
+module.exports = isThunk
 
-// DOM APIs, for completeness
-
-exports.setTimeout = function() {
-  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
-};
-exports.setInterval = function() {
-  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
-};
-exports.clearTimeout =
-exports.clearInterval = function(timeout) { timeout.close(); };
-
-function Timeout(id, clearFn) {
-  this._id = id;
-  this._clearFn = clearFn;
+function isThunk(t) {
+    return t && t.type === "Thunk"
 }
-Timeout.prototype.unref = Timeout.prototype.ref = function() {};
-Timeout.prototype.close = function() {
-  this._clearFn.call(window, this._id);
-};
 
-// Does not start the time, just sets up the members needed.
-exports.enroll = function(item, msecs) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = msecs;
-};
-
-exports.unenroll = function(item) {
-  clearTimeout(item._idleTimeoutId);
-  item._idleTimeout = -1;
-};
-
-exports._unrefActive = exports.active = function(item) {
-  clearTimeout(item._idleTimeoutId);
-
-  var msecs = item._idleTimeout;
-  if (msecs >= 0) {
-    item._idleTimeoutId = setTimeout(function onTimeout() {
-      if (item._onTimeout)
-        item._onTimeout();
-    }, msecs);
-  }
-};
-
-// That's not how node.js implements it but the exposed api is the same.
-exports.setImmediate = typeof setImmediate === "function" ? setImmediate : function(fn) {
-  var id = nextImmediateId++;
-  var args = arguments.length < 2 ? false : slice.call(arguments, 1);
-
-  immediateIds[id] = true;
-
-  nextTick(function onNextTick() {
-    if (immediateIds[id]) {
-      // fn.call() is faster so we optimize for the common use-case
-      // @see http://jsperf.com/call-apply-segu
-      if (args) {
-        fn.apply(null, args);
-      } else {
-        fn.call(null);
-      }
-      // Prevent ids from leaking
-      exports.clearImmediate(id);
-    }
-  });
-
-  return id;
-};
-
-exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate : function(id) {
-  delete immediateIds[id];
-};
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10).setImmediate, __webpack_require__(10).clearImmediate))
 
 /***/ },
-/* 11 */
+/* 7 */
+/***/ function(module, exports) {
+
+module.exports = isHook
+
+function isHook(hook) {
+    return hook &&
+      (typeof hook.hook === "function" && !hook.hasOwnProperty("hook") ||
+       typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
+}
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+var version = __webpack_require__(3)
+
+module.exports = isVirtualText
+
+function isVirtualText(x) {
+    return x && x.type === "VirtualText" && x.version === version
+}
+
+
+/***/ },
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.h = exports.element = exports.resolved = exports.compose = exports.pipe = exports.path = exports.lastPropsKey = exports.options = undefined;
+exports.h = exports.element = exports.resolved = exports.compose = exports.pipe = exports.path = exports.prevPropsKey = exports.options = undefined;
 exports.create = create;
 
 var _path = __webpack_require__(39);
@@ -474,7 +393,7 @@ Object.defineProperty(exports, 'resolved', {
     }
 });
 
-var _virtualDom = __webpack_require__(36);
+var _virtualDom = __webpack_require__(22);
 
 var _orderlyQueue = __webpack_require__(47);
 
@@ -484,7 +403,7 @@ var _implementation = __webpack_require__(38);
 
 var _implementation2 = _interopRequireDefault(_implementation);
 
-var _environment = __webpack_require__(15);
+var _environment = __webpack_require__(14);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -496,7 +415,7 @@ var _rescue = __webpack_require__(33);
 
 var _refs = __webpack_require__(32);
 
-var _messages = __webpack_require__(16);
+var _messages = __webpack_require__(15);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -520,10 +439,10 @@ const options = exports.options = {
 const queueKey = Symbol('switzerland/queue');
 
 /**
- * @constant lastPropsKey
+ * @constant prevPropsKey
  * @type {Symbol}
  */
-const lastPropsKey = exports.lastPropsKey = Symbol('switzerland/last-props');
+const prevPropsKey = exports.prevPropsKey = Symbol('switzerland/last-props');
 
 /**
  * @method clearHTMLFor
@@ -554,11 +473,12 @@ const handle = function () {
 
         const render = node.render.bind(node);
         const attached = isAttached(node);
+        const prevProps = node[prevPropsKey] || {};
 
         try {
 
             // Render the component and yield the `props` along with the virtual-dom vtree.
-            const props = yield component({ node, render, attached });
+            const props = yield component({ node, render, attached, prevProps });
             return { props, tree: (0, _html.htmlFor)(props) };
         } catch (err) {
 
@@ -583,7 +503,7 @@ const handle = function () {
                 // Invoke the middleware for rendering the error vtree for the component.
                 const props = yield componentError({ node, render: function () {
                         return render(false);
-                    }, attached, error: err });
+                    }, attached, prevProps, error: err });
                 return { props, tree: (0, _html.htmlFor)(props) };
             } catch (err) {
 
@@ -656,10 +576,10 @@ function create(name, component) {
         connected() {
             var _this = this;
 
-            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '', next: function (lastProps) {
+            const queue = this[queueKey] = new _orderlyQueue2.default({ value: '', next: function (prevProps) {
 
-                    // Memorise the last props as it's useful in the methods middleware.
-                    _this[lastPropsKey] = lastProps;
+                    // Memorise the previous props as it's useful in the methods middleware.
+                    _this[prevPropsKey] = prevProps;
                 } });
 
             queue.process(_asyncToGenerator(function* () {
@@ -704,7 +624,7 @@ function create(name, component) {
                         return node;
                     })();
 
-                    return { tree, root, node };
+                    return { tree, root, node, props };
                 } catch (err) {
 
                     // Capture any errors that were thrown in processing the component.
@@ -750,8 +670,12 @@ function create(name, component) {
                         const props = _ref7.props,
                               tree = _ref7.tree;
 
-                        // Clear any previously defined refs for the current component.
+                        // Use either the loading root and tree, or from the previous render.
 
+                        const patchRoot = props.root || currentRoot;
+                        const patchTree = props.tree || currentTree;
+
+                        // Clear any previously defined refs for the current component.
                         'ref' in props && (0, _refs.purgeFor)(node);
 
                         if (node.isConnected) {
@@ -760,13 +684,13 @@ function create(name, component) {
                             return delta ? function () {
 
                                 // Diff and patch the current DOM state with the new one.
-                                const patches = (0, _virtualDom.diff)(currentTree, tree);
-                                const root = (0, _virtualDom.patch)(currentRoot, patches);
+                                const patches = (0, _virtualDom.diff)(patchTree, tree);
+                                const root = (0, _virtualDom.patch)(patchRoot, patches);
 
                                 // Invoke any ref callbacks defined in the component's `render` method.
                                 'ref' in props && (0, _refs.invokeFor)(node);
 
-                                return { node, tree, root };
+                                return { node, tree, root, props };
                             }() : transition(node, tree, props, currentRoot);
                         }
                     } catch (err) {
@@ -804,8 +728,9 @@ const element = exports.element = function (el, props, ...children) {
 const h = exports.h = element;
 
 /***/ },
-/* 12 */,
-/* 13 */
+/* 10 */,
+/* 11 */,
+/* 12 */
 /***/ function(module, exports) {
 
 var nativeIsArray = Array.isArray
@@ -819,17 +744,17 @@ function isArray(obj) {
 
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 module.exports = require("ramda");
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+/* WEBPACK VAR INJECTION */(function(process) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -864,18 +789,18 @@ exports.default = (0, _once2.default)(function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.warning = exports.error = undefined;
 
-var _environment = __webpack_require__(15);
+var _environment = __webpack_require__(14);
 
 var _environment2 = _interopRequireDefault(_environment);
 
@@ -910,10 +835,10 @@ const warning = exports.warning = function (text) {
 };
 
 /***/ },
+/* 16 */,
 /* 17 */,
 /* 18 */,
-/* 19 */,
-/* 20 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
@@ -932,15 +857,15 @@ if (typeof document !== 'undefined') {
     module.exports = doccy;
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 21 */,
-/* 22 */
-/***/ function(module, exports) {
+/* 20 */,
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-"use strict";
+
 
 module.exports = function isObject(x) {
 	return typeof x === "object" && x !== null;
@@ -948,11 +873,32 @@ module.exports = function isObject(x) {
 
 
 /***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+var diff = __webpack_require__(61)
+var patch = __webpack_require__(63)
+var h = __webpack_require__(62)
+var create = __webpack_require__(60)
+var VNode = __webpack_require__(26)
+var VText = __webpack_require__(28)
+
+module.exports = {
+    diff: diff,
+    patch: patch,
+    h: h,
+    create: create,
+    VNode: VNode,
+    VText: VText
+}
+
+
+/***/ },
 /* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(22)
-var isHook = __webpack_require__(6)
+var isObject = __webpack_require__(21)
+var isHook = __webpack_require__(7)
 
 module.exports = applyProperties
 
@@ -1054,12 +1000,12 @@ function getPrototype(value) {
 /* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(20)
+var document = __webpack_require__(19)
 
 var applyProperties = __webpack_require__(23)
 
 var isVNode = __webpack_require__(2)
-var isVText = __webpack_require__(7)
+var isVText = __webpack_require__(8)
 var isWidget = __webpack_require__(0)
 var handleThunk = __webpack_require__(25)
 
@@ -1083,8 +1029,8 @@ function createElement(vnode, opts) {
     }
 
     var node = (vnode.namespace === null) ?
-        doc.createElement(vnode.tagName) :
-        doc.createElementNS(vnode.namespace, vnode.tagName)
+        doc.createElement(vnode.tagName.toLowerCase()) :
+        doc.createElementNS(vnode.namespace, vnode.tagName.toLowerCase())
 
     var props = vnode.properties
     applyProperties(node, props)
@@ -1107,9 +1053,9 @@ function createElement(vnode, opts) {
 /***/ function(module, exports, __webpack_require__) {
 
 var isVNode = __webpack_require__(2)
-var isVText = __webpack_require__(7)
+var isVText = __webpack_require__(8)
 var isWidget = __webpack_require__(0)
-var isThunk = __webpack_require__(5)
+var isThunk = __webpack_require__(6)
 
 module.exports = handleThunk
 
@@ -1155,8 +1101,8 @@ function renderThunk(thunk, previous) {
 var version = __webpack_require__(3)
 var isVNode = __webpack_require__(2)
 var isWidget = __webpack_require__(0)
-var isThunk = __webpack_require__(5)
-var isVHook = __webpack_require__(6)
+var isThunk = __webpack_require__(6)
+var isVHook = __webpack_require__(7)
 
 module.exports = VirtualNode
 
@@ -1272,10 +1218,10 @@ VirtualText.prototype.type = "VirtualText"
 
 /***/ },
 /* 29 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1392,10 +1338,10 @@ exports.default = function (...nodes) {
 
 /***/ },
 /* 30 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1433,10 +1379,10 @@ exports.default = function (html) {
 /***/ },
 /* 31 */,
 /* 32 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1511,10 +1457,10 @@ exports.default = function (props) {
 
 /***/ },
 /* 33 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-"use strict";
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1554,7 +1500,7 @@ exports.default = function (html) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+/* WEBPACK VAR INJECTION */(function(process) {
 
 var isWindows = process.platform === 'win32';
 
@@ -1655,21 +1601,59 @@ module.exports.win32 = win32.parse;
 /* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-var diff = __webpack_require__(61)
-var patch = __webpack_require__(63)
-var h = __webpack_require__(62)
-var create = __webpack_require__(60)
-var VNode = __webpack_require__(26)
-var VText = __webpack_require__(28)
+var apply = Function.prototype.apply;
 
-module.exports = {
-    diff: diff,
-    patch: patch,
-    h: h,
-    create: create,
-    VNode: VNode,
-    VText: VText
+// DOM APIs, for completeness
+
+exports.setTimeout = function() {
+  return new Timeout(apply.call(setTimeout, window, arguments), clearTimeout);
+};
+exports.setInterval = function() {
+  return new Timeout(apply.call(setInterval, window, arguments), clearInterval);
+};
+exports.clearTimeout =
+exports.clearInterval = function(timeout) {
+  if (timeout) {
+    timeout.close();
+  }
+};
+
+function Timeout(id, clearFn) {
+  this._id = id;
+  this._clearFn = clearFn;
 }
+Timeout.prototype.unref = Timeout.prototype.ref = function() {};
+Timeout.prototype.close = function() {
+  this._clearFn.call(window, this._id);
+};
+
+// Does not start the time, just sets up the members needed.
+exports.enroll = function(item, msecs) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = msecs;
+};
+
+exports.unenroll = function(item) {
+  clearTimeout(item._idleTimeoutId);
+  item._idleTimeout = -1;
+};
+
+exports._unrefActive = exports.active = function(item) {
+  clearTimeout(item._idleTimeoutId);
+
+  var msecs = item._idleTimeout;
+  if (msecs >= 0) {
+    item._idleTimeoutId = setTimeout(function onTimeout() {
+      if (item._onTimeout)
+        item._onTimeout();
+    }, msecs);
+  }
+};
+
+// setimmediate attaches itself to the global object
+__webpack_require__(57);
+exports.setImmediate = setImmediate;
+exports.clearImmediate = clearImmediate;
 
 
 /***/ },
@@ -1677,7 +1661,7 @@ module.exports = {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -1708,10 +1692,10 @@ const compose = exports.compose = function (...fns) {
 
 /***/ },
 /* 38 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1796,7 +1780,7 @@ exports.default = typeof window.customElements === 'undefined' ? implementations
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1806,7 +1790,7 @@ var _pathParse = __webpack_require__(34);
 
 var _pathParse2 = _interopRequireDefault(_pathParse);
 
-var _messages = __webpack_require__(16);
+var _messages = __webpack_require__(15);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1967,7 +1951,7 @@ module.exports = (function split(undef) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 var OneVersionConstraint = __webpack_require__(44);
 
@@ -1994,7 +1978,7 @@ function EvStore(elem) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {'use strict';
+/* WEBPACK VAR INJECTION */(function(global) {
 
 /*global window, global*/
 
@@ -2014,14 +1998,14 @@ function Individual(key, value) {
     return value;
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 var Individual = __webpack_require__(43);
 
@@ -2289,7 +2273,7 @@ var defaultOptions = { value: null, next: fn, error: fn };
 /***/ function(module, exports, __webpack_require__) {
 
 // Dependencies
-var pipe = __webpack_require__(14).pipe
+var pipe = __webpack_require__(13).pipe
 var promised = __webpack_require__(50).promised
 
 // Public intefrace
@@ -4354,7 +4338,7 @@ return Q;
 
 });
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(10).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(36).setImmediate))
 
 /***/ },
 /* 51 */
@@ -4460,194 +4444,201 @@ module.exports = _curry1(function once(fn) {
 /***/ },
 /* 55 */,
 /* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */
-/***/ function(module, exports) {
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
 
-// shim for using process in browser
-var process = module.exports = {};
+/* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
+    "use strict";
 
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
+    if (global.setImmediate) {
         return;
     }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
 
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
+    var nextHandle = 1; // Spec says greater than zero
+    var tasksByHandle = {};
+    var currentlyRunningATask = false;
+    var doc = global.document;
+    var registerImmediate;
 
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
+    function setImmediate(callback) {
+      // Callback can either be a function or a string
+      if (typeof callback !== "function") {
+        callback = new Function("" + callback);
+      }
+      // Copy function arguments
+      var args = new Array(arguments.length - 1);
+      for (var i = 0; i < args.length; i++) {
+          args[i] = arguments[i + 1];
+      }
+      // Store and register the task
+      var task = { callback: callback, args: args };
+      tasksByHandle[nextHandle] = task;
+      registerImmediate(nextHandle);
+      return nextHandle++;
+    }
+
+    function clearImmediate(handle) {
+        delete tasksByHandle[handle];
+    }
+
+    function run(task) {
+        var callback = task.callback;
+        var args = task.args;
+        switch (args.length) {
+        case 0:
+            callback();
+            break;
+        case 1:
+            callback(args[0]);
+            break;
+        case 2:
+            callback(args[0], args[1]);
+            break;
+        case 3:
+            callback(args[0], args[1], args[2]);
+            break;
+        default:
+            callback.apply(undefined, args);
+            break;
+        }
+    }
+
+    function runIfPresent(handle) {
+        // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
+        // So if we're currently running a task, we'll need to delay this invocation.
+        if (currentlyRunningATask) {
+            // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
+            // "too much recursion" error.
+            setTimeout(runIfPresent, 0, handle);
+        } else {
+            var task = tasksByHandle[handle];
+            if (task) {
+                currentlyRunningATask = true;
+                try {
+                    run(task);
+                } finally {
+                    clearImmediate(handle);
+                    currentlyRunningATask = false;
+                }
             }
         }
-        queueIndex = -1;
-        len = queue.length;
     }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
 
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    function canUsePostMessage() {
+        // The test against `importScripts` prevents this implementation from being installed inside a web worker,
+        // where `global.postMessage` means something completely different and can't be used for this purpose.
+        if (global.postMessage && !global.importScripts) {
+            var postMessageIsAsynchronous = true;
+            var oldOnMessage = global.onmessage;
+            global.onmessage = function() {
+                postMessageIsAsynchronous = false;
+            };
+            global.postMessage("", "*");
+            global.onmessage = oldOnMessage;
+            return postMessageIsAsynchronous;
         }
     }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
+
+    function installPostMessageImplementation() {
+        // Installs an event handler on `global` for the `message` event: see
+        // * https://developer.mozilla.org/en/DOM/window.postMessage
+        // * http://www.whatwg.org/specs/web-apps/current-work/multipage/comms.html#crossDocumentMessages
+
+        var messagePrefix = "setImmediate$" + Math.random() + "$";
+        var onGlobalMessage = function(event) {
+            if (event.source === global &&
+                typeof event.data === "string" &&
+                event.data.indexOf(messagePrefix) === 0) {
+                runIfPresent(+event.data.slice(messagePrefix.length));
+            }
+        };
+
+        if (global.addEventListener) {
+            global.addEventListener("message", onGlobalMessage, false);
+        } else {
+            global.attachEvent("onmessage", onGlobalMessage);
+        }
+
+        registerImmediate = function(handle) {
+            global.postMessage(messagePrefix + handle, "*");
+        };
     }
-};
 
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
 
-function noop() {}
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
 
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
+    function installReadyStateChangeImplementation() {
+        var html = doc.documentElement;
+        registerImmediate = function(handle) {
+            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            var script = doc.createElement("script");
+            script.onreadystatechange = function () {
+                runIfPresent(handle);
+                script.onreadystatechange = null;
+                html.removeChild(script);
+                script = null;
+            };
+            html.appendChild(script);
+        };
+    }
 
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
+    function installSetTimeoutImplementation() {
+        registerImmediate = function(handle) {
+            setTimeout(runIfPresent, 0, handle);
+        };
+    }
 
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
+    // If supported, we should attach to the prototype of global, since that is where setTimeout et al. live.
+    var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
+    attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
 
+    // Don't get fooled by e.g. browserify environments.
+    if ({}.toString.call(global.process) === "[object process]") {
+        // For Node.js before 0.9
+        installNextTickImplementation();
+
+    } else if (canUsePostMessage()) {
+        // For non-IE10 modern browsers
+        installPostMessageImplementation();
+
+    } else if (global.MessageChannel) {
+        // For web workers, where supported
+        installMessageChannelImplementation();
+
+    } else if (doc && "onreadystatechange" in doc.createElement("script")) {
+        // For IE 6–8
+        installReadyStateChangeImplementation();
+
+    } else {
+        // For older browsers
+        installSetTimeoutImplementation();
+    }
+
+    attachTo.setImmediate = setImmediate;
+    attachTo.clearImmediate = clearImmediate;
+}(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(1)))
 
 /***/ },
+/* 58 */,
+/* 59 */,
 /* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4935,8 +4926,8 @@ function replaceRoot(oldRoot, newRoot) {
 /* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
-var document = __webpack_require__(20)
-var isArray = __webpack_require__(13)
+var document = __webpack_require__(19)
+var isArray = __webpack_require__(12)
 
 var render = __webpack_require__(24)
 var domIndex = __webpack_require__(64)
@@ -5043,7 +5034,7 @@ function updateWidget(a, b) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 var EvStore = __webpack_require__(42);
 
@@ -5074,10 +5065,10 @@ EvHook.prototype.unhook = function(node, propertyName) {
 
 /***/ },
 /* 69 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 module.exports = SoftSetHook;
 
@@ -5101,17 +5092,17 @@ SoftSetHook.prototype.hook = function (node, propertyName) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
 
-var isArray = __webpack_require__(13);
+
+var isArray = __webpack_require__(12);
 
 var VNode = __webpack_require__(26);
 var VText = __webpack_require__(28);
 var isVNode = __webpack_require__(2);
-var isVText = __webpack_require__(7);
+var isVText = __webpack_require__(8);
 var isWidget = __webpack_require__(0);
-var isHook = __webpack_require__(6);
-var isVThunk = __webpack_require__(5);
+var isHook = __webpack_require__(7);
+var isVThunk = __webpack_require__(6);
 
 var parseTag = __webpack_require__(71);
 var softSetHook = __webpack_require__(69);
@@ -5245,7 +5236,7 @@ function errorString(obj) {
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+
 
 var split = __webpack_require__(40);
 
@@ -5305,8 +5296,8 @@ function parseTag(tag, props) {
 /* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
-var isObject = __webpack_require__(22)
-var isHook = __webpack_require__(6)
+var isObject = __webpack_require__(21)
+var isHook = __webpack_require__(7)
 
 module.exports = diffProps
 
@@ -5369,13 +5360,13 @@ function getPrototype(value) {
 /* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
-var isArray = __webpack_require__(13)
+var isArray = __webpack_require__(12)
 
 var VPatch = __webpack_require__(27)
 var isVNode = __webpack_require__(2)
-var isVText = __webpack_require__(7)
+var isVText = __webpack_require__(8)
 var isWidget = __webpack_require__(0)
-var isThunk = __webpack_require__(5)
+var isThunk = __webpack_require__(6)
 var handleThunk = __webpack_require__(25)
 
 var diffProps = __webpack_require__(72)
@@ -5887,10 +5878,11 @@ function appendPatch(apply, patch) {
 /* 154 */,
 /* 155 */,
 /* 156 */,
-/* 157 */
+/* 157 */,
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(11);
+module.exports = __webpack_require__(9);
 
 
 /***/ }
