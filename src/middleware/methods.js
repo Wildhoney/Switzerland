@@ -1,4 +1,4 @@
-import { lastPropsKey } from '../switzerland';
+import { prevPropsKey } from '../switzerland';
 import { error } from '../helpers/messages';
 
 /**
@@ -23,12 +23,12 @@ const setPrototypeFor = (node, fns) => {
 
         Object.getPrototypeOf(node)[name] = function (...args) {
 
-            if (!(lastPropsKey in this)) {
+            if (!(prevPropsKey in this)) {
                 error(`You have passed an invalid context when invoking the "${name}" method`);
                 return;
             }
 
-            const lastProps = this[lastPropsKey];
+            const lastProps = this[prevPropsKey];
 
             // Gather the props that caused the last render of the component, and then invoke
             // the prototype function. If only one argument has been passed, then we'll also define
