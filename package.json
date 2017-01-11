@@ -2,7 +2,7 @@
   "name": "switzerland",
   "version": "0.1.32",
   "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc... out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
-  "main": "switzerland.js",
+  "main": "./switzerland.js",
   "scripts": {
     "build": "webpack --config webpack.build.js && npm run dev",
     "dev": "webpack --config webpack.example.js",
@@ -17,8 +17,8 @@
     "postpublish": "mv switzerland.js dist/ && mv middleware.js dist/"
   },
   "files": [
-    "switzerland.js",
-    "middleware.js"
+    "./switzerland.js",
+    "./middleware.js"
   ],
   "repository": {
     "type": "git",
