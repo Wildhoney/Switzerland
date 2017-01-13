@@ -1,11 +1,7 @@
-import { diff, patch, create as createElement } from 'virtual-dom';
 import { h as vdomH } from 'virtual-dom';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/implementation';
-import isDevelopment from './helpers/environment';
-import html, { htmlFor } from './middleware/html';
 import { htmlErrorFor } from './middleware/rescue';
-import { vDomPropsKey } from './middleware/loading';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { children, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
@@ -22,16 +18,22 @@ export const options = {
 };
 
 /**
- * @constant queueKey
+ * @constant queueMap
+ * @type {WeakMap}
+ */
+const queueMap = new WeakMap();
+
+/**
+ * @constant coreKey
  * @type {Symbol}
  */
-const queueKey = Symbol('switzerland/queue');
+export const coreKey = Symbol('switzerland/core');
 
 /**
  * @constant prevPropsKey
  * @type {Symbol}
  */
-export const prevPropsKey = Symbol('switzerland/last-props');
+export const prevPropsKey = Symbol('switzerland/props');
 
 /**
  * @method clearHTMLFor
@@ -52,101 +54,125 @@ const isAttached = node => {
 };
 
 /**
- * @method isLastError
- * @param {HTMLElement} node
- * @return {Boolean}
- */
-const isLastError = node => {
-    return 'error' in Object(node[prevPropsKey].props);
-};
-
-/**
- * @method handle
- * @param {HTMLElement} node
- * @param {Function} component
- * @param {Object} [mergeProps = {}]
+ * @method setupCore
  * @return {Object}
  */
-const handle = async (node, component, mergeProps = {}) => {
+const setupCore = () => {
 
-    const render = node.render.bind(node);
-    const attached = isAttached(node);
-    const lastProps = node[prevPropsKey].props || null;
-    const props = isLastError(node) ? null : lastProps;
-    const prevProps = { [vDomPropsKey]: node[prevPropsKey], prevProps: props };
+    const coreMap = new Map();
 
-    try {
+    return {
 
-        // Render the component and yield the `props` along with the virtual-dom vtree.
-        const props = await component({ ...mergeProps, node, render, attached, ...prevProps });
-        return { props, tree: htmlFor(props) };
+        /**
+         * @method saveVDomState
+         * @param {Object} tree
+         * @param {Object} root
+         * @return {void}
+         */
+        saveVDomState(tree, root) {
+            coreMap.set('state', { tree, root });
+        },
 
-    } catch (err) {
+        /**
+         * @method readVDomState
+         * @type {Object}
+         */
+        readVDomState() {
 
-        // As the component has raised an error during the processing of its middleware, we'll attempt
-        // to find the error vtree from the component's `error` middleware, otherwise we'll use the
-        // Switzerland default vtree as well as raising an error to prevent the component from being
-        // rendered in an invalid state.
-        const componentError = htmlErrorFor(node) || html(props => {
+            return coreMap.has('state') ? (() => {
 
-            if (isDevelopment()) {
+                // Read the tree and root state before deleting them.
+                const state = coreMap.get('state');
+                coreMap.delete('state');
+                return state;
 
-                // Display the uncaught error.
-                const nodeName = props.node.nodeName.toLowerCase();
-                error(`<${nodeName} /> threw an uncaught error when rendering: ${props.error.message || props.error}`);
-
-            }
-
-            return <span />;
-
-        });
-
-        try {
-
-            // Invoke the middleware for rendering the error vtree for the component.
-            const props = await componentError({ ...mergeProps, node, render, attached, prevProps: lastProps, error: err });
-            return { props, tree: htmlFor(props) || <span /> };
-
-        } catch (err) {
-
-            // Catch any errors that were thrown in the error handler, which is forbidden as otherwise
-            // we'd be entering an Inception-esque down-the-rabbit-hole labyrinth.
-            error('Throwing an error within an error handler is forbidden, and as such should be entirely side-effect free');
-            return { props: { node }, tree: <span /> };
+            })() : null;
 
         }
 
-    }
+    };
 
 };
 
 /**
- * @method transition
+ * @method render
  * @param {HTMLElement} node
- * @param {Object} tree
- * @param {Object} props
- * @param {HTMLElement} currentRoot
+ * @param {Function} component
+ * @param {Object} [props  = {}]
  * @return {Object}
  */
-const transition = async (node, tree, props, currentRoot) => {
+const render = async (node, component, props = {}) => {
 
-    // Prevent any interactions with the current root, as technically it is now inactive.
-    currentRoot.style.pointerEvents = 'none';
+    const render = node.render.bind(node);
+    const attached = isAttached(node);
 
-    // Render the updated vtree and hide it.
-    const boundary = node.shadowRoot;
-    const root = createElement(tree);
-    root.style.display = 'none';
-    boundary.insertBefore(root, boundary.firstChild);
+    return await component({ node, render, attached, [coreKey]: props[coreKey] || setupCore(), ...props });
 
-    // Wait until the children have been resolved.
-    await children(props);
+};
 
-    // ...And then remove the previous child and show the newly rendered vtree.
-    currentRoot.remove();
-    root.style.display = 'block';
+/**
+ * @method handleResolve
+ * @param {HTMLElement} node
+ * @param {Object} props
+ * @return {void}
+ */
+const handleResolve = (node, props) => {
 
-    return { node, tree, root };
+    /**
+     * @constant resolved
+     * @type {Promise}
+     */
+    node.resolved = (async () => {
+
+        // Setup listener for children being resolved.
+        await children(props);
+
+        // Emit the event that the node has been resolved.
+        node.dispatchEvent(new window.CustomEvent(awaitEventName, {
+            detail: node,
+            bubbles: true,
+            composed: true
+        }));
+
+        return node;
+
+    })();
+
+};
+
+/**
+ * @method handleProps
+ * @return {Function}
+ */
+const handleProps = node => () => {
+
+    return prevProps => {
+
+        // Memorise the previous props as it's useful in the methods middleware.
+        node[prevPropsKey] = prevProps;
+
+    };
+
+};
+
+/**
+ * @method appendComponent
+ * @param {HTMLElement} node
+ * @param {Object} boundary
+ * @return {Object}
+ */
+const appendComponent = (node, boundary, props) => {
+
+    // Insert the node into the DOM.
+    boundary.insertBefore(props[coreKey].root, boundary.firstChild);
+
+    // Invoke any ref callbacks defined in the component's `render` method.
+    'ref' in props && invokeFor(node);
+
+    // Handle the resolution for the node that's just been rendered.
+    handleResolve(node, props);
+
+    return props;
 
 };
 
@@ -170,57 +196,35 @@ export function create(name, component) {
          */
         connected() {
 
-            const queue = this[queueKey] = new OrderlyQueue({ value: '', next: prevProps => {
+            // Instantiate the processing queue and store it in the weak map.
+            const queue = new OrderlyQueue({ next: handleProps(this) });
+            queueMap.set(this, queue);
 
-                // Memorise the previous props as it's useful in the methods middleware.
-                this[prevPropsKey] = prevProps;
-
-            } });
+            // Remove any existing content from the node, and fetch the reference to the
+            // shadow boundary.
+            this.shadowRoot && clearHTMLFor(this);
+            const boundary = this.shadowRoot || implementation.shadowBoundary(this);
 
             queue.process(async () => {
 
-                // Setup the shadow boundary for the current node.
-                const node = this;
-                node.shadowRoot && clearHTMLFor(node);
-                const boundary = node.shadowRoot || implementation.shadowBoundary(node);
-
                 try {
 
-                    // Apply the middleware and wait for the props to be returned.
-                    const { props, tree } = await handle(node, component);
-
                     // Setup the Virtual DOM instance, and then append the component to the DOM.
-                    const root = createElement(tree);
-                    boundary.insertBefore(root, boundary.firstChild);
-
-                    // Invoke any ref callbacks defined in the component's `render` method.
-                    'ref' in props && invokeFor(node);
-
-                    /**
-                     * @constant resolved
-                     * @type {Promise}
-                     */
-                    node.resolved = (async () => {
-
-                        // Setup listener for children being resolved.
-                        await children(props);
-
-                        // Emit the event that the node has been resolved.
-                        node.dispatchEvent(new window.CustomEvent(awaitEventName, {
-                            detail: node,
-                            bubbles: true,
-                            composed: true
-                        }));
-
-                        return node;
-
-                    })();
-
-                    return { tree, root, node, props };
+                    const props = await render(this, component);
+                    return appendComponent(this, boundary, props);
 
                 } catch (err) {
 
-                    // Capture any errors that were thrown in processing the component.
+                    const component = htmlErrorFor(this);
+
+                    if (component) {
+
+                        // Render the error component if we have an error handler.
+                        const props = await render(this, component, { error: err });
+                        return appendComponent(this, boundary, props);
+
+                    }
+
                     error(err);
 
                 }
@@ -230,65 +234,59 @@ export function create(name, component) {
         },
 
         /**
-         * @method disconnectedCallback
-         * @return {void}
-         */
-        disconnected() {
-
-            clearHTMLFor(this);
-
-            // Once the node has been removed then we perform one last pass, however the render function
-            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
-            this.render();
-
-        },
-
-        /**
          * @method render
-         * @param {Boolean} [mergeProps = {}]
+         * @param {Object} [mergeProps = {}]
          * @return {void}
          */
         render(mergeProps = {}) {
 
-            this[queueKey].process(async instance => {
+            queueMap.get(this).process(async prevProps => {
 
-                // Gather the props from the previous rendering of the component.
-                const { tree: currentTree, root: currentRoot, node } = instance;
+                // Clear any previously defined refs for the current component.
+                purgeFor(this);
 
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    const { props, tree } = await handle(node, component, mergeProps);
+                    // const coreProps = { [coreKey]: prevProps[coreKey] };
+                    const props = await render(this, component, { prevProps, ...mergeProps, [coreKey]: prevProps[coreKey] });
 
-                    // Use either the loading root and tree, or from the previous render.
-                    const patchRoot = vDomPropsKey in props ? props[vDomPropsKey].root : currentRoot;
-                    const patchTree = vDomPropsKey in props ? props[vDomPropsKey].tree : currentTree;
+                    // Invoke any ref callbacks defined in the component's `render` method.
+                    'ref' in props && invokeFor(this);
 
-                    // Clear any previously defined refs for the current component.
-                    'ref' in props && purgeFor(node);
-
-                    if (node.isConnected) {
-
-                        // Determine whether we're transitioning or patching.
-                        return isLastError(node) ? transition(node, tree, props, patchRoot) : (() => {
-
-                            // Diff and patch the current DOM state with the new one.
-                            const patches = diff(patchTree, tree);
-                            const root = patch(patchRoot, patches);
-
-                            // Invoke any ref callbacks defined in the component's `render` method.
-                            'ref' in props && invokeFor(node);
-
-                            return { node, tree, root, props };
-
-                        })();
-
-                    }
+                    return props;
 
                 } catch (err) {
 
-                    // Capture any errors that were thrown in processing the component.
+                    const component = htmlErrorFor(this);
+                    const state = prevProps[coreKey].readVDomState();
+
+                    if (component) {
+
+                        if (state) {
+
+                            // Render the error component if we have an error handler.
+                            return await render(this, component, {
+                                ...prevProps, error: err,
+
+                                // However the different in this instance is that we need to write a new
+                                // root and tree because an intermediary HTML rendered a new tree before
+                                // the error was raised.
+                                [coreKey]: { ...prevProps[coreKey], ...state }
+
+                            });
+
+                        }
+
+                        // Render the error component if we have an error handler.
+                        return await render(this, component, { ...prevProps, error: err });
+
+                    }
+
+                    // Otherwise we'll simply show the error message and return the previous props.
                     error(err);
+
+                    return prevProps;
 
                 }
 
