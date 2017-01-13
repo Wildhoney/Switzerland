@@ -142,7 +142,7 @@ const handleResolve = (node, props) => {
  * @method handleProps
  * @return {Function}
  */
-const handleProps = node => () => {
+const handleProps = node => {
 
     return prevProps => {
 
