@@ -9,7 +9,7 @@
     "test": "npm run lint && npm run spec",
     "spec": "NODE_ENV=development ava",
     "karma": "npm run dev && karma start karmafile.js --single-run",
-    "lint": "xo src/*.js src/**/*.js tests/*.js tests/**/*.js !tests/karma/*",
+    "lint": "xo src/*.js src/**/*.js tests/*.js tests/**/*.js",
     "cleanup": "rimraf node_modules",
     "start": "npm i && npm run build && babel example/server/default.js | node",
     "prepare": "./build/prepare.sh",
