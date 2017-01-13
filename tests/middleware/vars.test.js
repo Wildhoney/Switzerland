@@ -1,5 +1,4 @@
 import test from 'ava';
-import { spy } from 'sinon';
 import vars from '../../src/middleware/vars';
 
 test('Should be able to render CSS variables in style node;', t => {

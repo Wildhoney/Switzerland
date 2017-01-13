@@ -1,14 +1,23 @@
 import test from 'ava';
-import { createStore } from 'redux'
+import { createStore } from 'redux';
 import { spy } from 'sinon';
 import redux from '../../src/middleware/redux';
 
 function counter(state = 0, action) {
+
     switch (action.type) {
-        case 'INCREMENT': return state + 1;
-        case 'DECREMENT': return state - 1;
-        default:          return state;
+
+        case 'INCREMENT':
+            return state + 1;
+
+        case 'DECREMENT':
+            return state - 1;
+
+        default:
+            return state;
+
     }
+
 }
 
 test('Should be able to manage state from Redux;', t => {
@@ -53,6 +62,5 @@ test('Should be able to use the handler function to determine update;', t => {
 
     t.is(render.callCount, 0);
     t.is(shouldUpdate.callCount, 1);
-
 
 });

@@ -1,8 +1,9 @@
 import { spy } from 'sinon';
+import { jsdom } from 'jsdom';
 
 export const define = spy();
 
-global.document = require('jsdom').jsdom('<body></body>');
+global.document = jsdom('<body></body>');
 global.window = document.defaultView;
 global.navigator = window.navigator;
 

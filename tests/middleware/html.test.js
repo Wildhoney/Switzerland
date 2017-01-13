@@ -1,5 +1,7 @@
 import test from 'ava';
-import html, { htmlKey } from '../../src/middleware/html';
+import { spy } from 'sinon';
+import html from '../../src/middleware/html';
+import { coreKey } from '../../src/switzerland';
 
 test('Should be able to wrap yielded HTML;', t => {
 
@@ -8,9 +10,13 @@ test('Should be able to wrap yielded HTML;', t => {
 
     const markup = props => `<h1>${props.attrs.name}</h1>`;
     const attrs = { name: 'Switzerland' };
+    const core = { saveVDomState: spy() };
 
-    t.deepEqual(html(markup)({ node, attrs }), {
-        node, [htmlKey]: markup({ attrs }), attrs
+    const props = html(markup)({ node, attrs, [coreKey]: core });
+
+    t.deepEqual(props, { node, attrs, [coreKey]:
+        { ...core, root: null, tree: markup({ attrs }) }
     });
+    t.is(core.saveVDomState.callCount, 1);
 
 });
