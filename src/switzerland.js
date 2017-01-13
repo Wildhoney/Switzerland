@@ -134,8 +134,6 @@ const handleResolve = (node, props) => {
             composed: true
         }));
 
-        return node;
-
     })();
 
 };
@@ -159,6 +157,7 @@ const handleProps = node => () => {
  * @method appendComponent
  * @param {HTMLElement} node
  * @param {Object} boundary
+ * @param {Object} props
  * @return {Object}
  */
 const appendComponent = (node, boundary, props) => {
@@ -269,7 +268,7 @@ export function create(name, component) {
                             return await render(this, component, {
                                 ...prevProps, error: err,
 
-                                // However the different in this instance is that we need to write a new
+                                // However the difference in this instance is that we need to write a new
                                 // root and tree because an intermediary HTML rendered a new tree before
                                 // the error was raised.
                                 [coreKey]: { ...prevProps[coreKey], ...state }
