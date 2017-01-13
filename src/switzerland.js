@@ -81,12 +81,12 @@ const setupCore = () => {
 
             return coreMap.has('state') ? (() => {
 
-                    // Read the tree and root state before deleting them.
-                    const state = coreMap.get('state');
-                    coreMap.delete('state');
-                    return state;
+                // Read the tree and root state before deleting them.
+                const state = coreMap.get('state');
+                coreMap.delete('state');
+                return state;
 
-                })() : null;
+            })() : null;
 
         }
 
