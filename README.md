@@ -696,7 +696,7 @@ Support is required for [Custom Elements](http://caniuse.com/#feat=custom-elemen
 | `methods`     | `Object`              | Named functions that are attached to the node's `prototype`.              |
 | `once`        | `Function`, `Number`  | Function to invoke only one per instance of the component.                |
 | `redux`       | `Object`, `Function`  | Sets up Redux to re-render the component when store is mutated.           |
-| `refs`        | `Object`, `Function`  | Adds `props.refs` which facilitates setting up node refs.                 |
+| `refs`        | &mdash;               | Adds `props.refs` which facilitates setting up node refs.                 |
 | `state`       | `Object`, `Number`    | Gives you React-esque `props.state`, `props.setState` functionality.      |
 | `rescue`      | `Function`            | Takes a function that yields a `vtree` for when an error occurs.          |
 | `transclude`  | `Object`, `Number`    | Transforms a component's HTML children into `virtual-dom` `vtree`s.       |
