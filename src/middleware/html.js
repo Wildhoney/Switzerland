@@ -1,15 +1,5 @@
-/**
- * @constant htmlKey
- * @type {Symbol}
- */
-export const htmlKey = Symbol('switzerland/html');
-
-/**
- * @method htmlFor
- * @param {Object} model
- * @return {Object}
- */
-export const htmlFor = model => model[htmlKey];
+import { patch, diff, create as createElement } from 'virtual-dom';
+import { coreKey } from '../switzerland';
 
 /**
  * @param {Function} html
@@ -18,7 +8,28 @@ export const htmlFor = model => model[htmlKey];
 export default html => {
 
     return props => {
-        return { ...props, [htmlKey]: html(props) };
+
+        const tree = html(props);
+
+        const root = 'root' in props[coreKey] ? (() => {
+
+            if (props.attached) {
+
+                // Diff and patch the current DOM state with the new one.
+                const patches = diff(props[coreKey].tree, tree);
+                return patch(props[coreKey].root, patches);
+
+            }
+
+            return props;
+
+        })() : createElement(tree);
+
+        // Save the virtual DOM state for cases where an error short-circuits the chain.
+        props[coreKey].saveVDomState(tree, root);
+
+        return { ...props, [coreKey]: { ...props[coreKey], tree, root } };
+
     };
 
 };
