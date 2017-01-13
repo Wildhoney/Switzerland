@@ -8,7 +8,7 @@
 &nbsp;
 ![npm](http://img.shields.io/npm/v/switzerland.svg?style=flat-square)
 &nbsp;
-![License MIT](http://img.shields.io/badge/License-MIT-lightgrey.svg?style=flat-square)
+![License MIT](http://img.shields.io/badge/license-mit-lightgrey.svg?style=flat-square)
 
 ![Screenshot](media/screenshot.png)
 
