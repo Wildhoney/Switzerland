@@ -28,12 +28,12 @@ const setPrototypeFor = (node, fns) => {
                 return;
             }
 
-            const lastProps = this[prevPropsKey];
+            const prevProps = this[prevPropsKey];
 
             // Gather the props that caused the last render of the component, and then invoke
             // the prototype function. If only one argument has been passed, then we'll also define
-            // the `arg` variable to make it more gramtically correct.
-            args.length === 1 ? fn({ ...lastProps, args, arg: args[0] }) : fn({ ...lastProps, args });
+            // the `arg` variable to make it more grammatically correct.
+            args.length === 1 ? fn({ ...prevProps, args, arg: args[0] }) : fn({ ...prevProps, args });
 
         };
 
