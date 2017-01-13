@@ -81,12 +81,12 @@ const setupCore = () => {
 
             return coreMap.has('state') ? (() => {
 
-                // Read the tree and root state before deleting them.
-                const state = coreMap.get('state');
-                coreMap.delete('state');
-                return state;
+                    // Read the tree and root state before deleting them.
+                    const state = coreMap.get('state');
+                    coreMap.delete('state');
+                    return state;
 
-            })() : null;
+                })() : null;
 
         }
 
@@ -224,11 +224,27 @@ export function create(name, component) {
 
                     }
 
+                    // Component threw an error on start-up without an error handler to rescue it
+                    // and therefore the component is unrecoverable.
                     error(err);
 
                 }
 
             });
+
+        },
+
+        /**
+         * @method disconnectedCallback
+         * @return {void}
+         */
+        disconnected() {
+
+            clearHTMLFor(this);
+
+            // Once the node has been removed then we perform one last pass, however the render function
+            // ensures the node is in the DOM before any reconciliation takes place, thus saving resources.
+            this.render();
 
         },
 
