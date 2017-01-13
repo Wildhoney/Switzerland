@@ -11,10 +11,9 @@
     "karma": "npm run dev && karma start karmafile.js --single-run",
     "lint": "xo src/*.js src/**/*.js tests/*.js tests/**/*.js !tests/karma/*",
     "cleanup": "rimraf node_modules",
-    "start": "npm i && npm run build && babel example/server/default.js | node",
+    "start": "npm i --ignore-scripts && npm run build && babel example/server/default.js | node",
     "prepare": "./build/prepare.sh",
-    "postpublish": "./build/postpublish.sh",
-    "postinstall": "npm run postpublish"
+    "postpublish": "./build/postpublish.sh"
   },
   "files": [
     "switzerland.js",
