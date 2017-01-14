@@ -264,7 +264,7 @@ export function create(name, component) {
 
                     // Apply the middleware and wait for the props to be returned.
                     // const coreProps = { [coreKey]: prevProps[coreKey] };
-                    const props = await render(this, component, { prevProps, ...mergeProps, [coreKey]: prevProps[coreKey] });
+                    const props = await render(this, component, { ...mergeProps, prevProps, [coreKey]: prevProps[coreKey] });
 
                     // Invoke any ref callbacks defined in the component's `render` method.
                     'ref' in props && invokeFor(this);
