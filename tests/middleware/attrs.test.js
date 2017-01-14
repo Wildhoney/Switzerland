@@ -1,5 +1,5 @@
 import test from 'ava';
-import attributes from '../../src/middleware/attributes';
+import attributes from '../../src/middleware/attrs';
 
 test('Should be able to parse attributes;', t => {
 
