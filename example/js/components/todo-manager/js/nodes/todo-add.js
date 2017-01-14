@@ -4,7 +4,7 @@ import { create, element, pipe, path } from '../../../../../../src/switzerland';
 import { html, state, redux, include } from '../../../../../../src/middleware';
 import { store, addTodo } from '../helpers/store';
 
-create('todo-add', pipe(redux(store, always(false)), state({ value: '' }), include(path('../css/todo-add.css')), html(props => {
+create('todo-add', pipe(redux(store, always(false)), include(path('../css/todo-add.css')), html(props => {
 
     /**
      * @method handleAdd
@@ -13,20 +13,26 @@ create('todo-add', pipe(redux(store, always(false)), state({ value: '' }), inclu
      */
     const handleAdd = text => {
         addTodo(text);
-        props.setState({ value: '' });
+        props.render({ text: '' });
     };
 
+    /**
+     * @constant text
+     * @type {String}
+     */
+    const text = props.text || '';
+
     return (
-        <form onsubmit={event => event.preventDefault(void handleAdd(props.state.value))}>
+        <form onsubmit={event => event.preventDefault(void handleAdd(text))}>
 
             <input
                 type="text"
-                value={props.state.value}
+                value={text}
                 placeholder="What do you need to do?"
-                oninput={event => props.setState({ value: event.target.value })}
+                oninput={event => props.render({ text: event.target.value })}
                 />
 
-            <button disabled={!props.state.value.length} />
+            <button disabled={!text.length} />
 
         </form>
     );
