@@ -1,6 +1,6 @@
 export { default as html } from './middleware/html';
 export { default as once } from './middleware/once';
-export { default as attrs } from './middleware/attributes';
+export { default as attrs } from './middleware/attrs';
 export { default as state } from './middleware/state';
 export { default as include } from './middleware/include';
 export { default as redux } from './middleware/redux';
