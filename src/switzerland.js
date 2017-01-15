@@ -144,7 +144,7 @@ const handleResolve = (node, props) => {
  */
 const handleProps = node => {
 
-    return prevProps => {
+    return (prevProps = {}) => {
 
         // Memorise the previous props as it's useful in the methods middleware.
         node[prevPropsKey] = prevProps;
