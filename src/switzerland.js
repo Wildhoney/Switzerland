@@ -101,7 +101,7 @@ const setupCore = () => {
  * @param {Object} [props  = {}]
  * @return {Object}
  */
-const render = async (node, component, props = {}) => {
+const render = async (node, component, props = { prevProps: {} }) => {
 
     const render = node.render.bind(node);
     const attached = isAttached(node);
@@ -144,7 +144,7 @@ const handleResolve = (node, props) => {
  */
 const handleProps = node => {
 
-    return (prevProps = {}) => {
+    return prevProps => {
 
         // Memorise the previous props as it's useful in the methods middleware.
         node[prevPropsKey] = prevProps;
@@ -240,6 +240,7 @@ export function create(name, component) {
          */
         disconnected() {
 
+            // Remove all child HTML nodes for the component.
             clearHTMLFor(this);
 
             // Once the node has been removed then we perform one last pass, however the render function
@@ -263,7 +264,6 @@ export function create(name, component) {
                 try {
 
                     // Apply the middleware and wait for the props to be returned.
-                    // const coreProps = { [coreKey]: prevProps[coreKey] };
                     const props = await render(this, component, { ...mergeProps, prevProps, [coreKey]: prevProps[coreKey] });
 
                     // Invoke any ref callbacks defined in the component's `render` method.
