@@ -1,4 +1,4 @@
-import { patch, diff, create as createElement } from 'virtual-dom';
+import { patch, diff, create as createElement } from 'virtual-dom-webcomponents-patch';
 import { coreKey } from '../switzerland';
 
 /**
