@@ -33,7 +33,7 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
 
                         <p onclick={() => handleEdit(model)}>{model.text}</p>
 
-                        <button onclick={() => handleRemove(model)}>
+                        <button className="delete" onclick={() => handleRemove(model)}>
                             Delete
                         </button>
 

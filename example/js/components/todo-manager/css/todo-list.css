@@ -41,7 +41,7 @@ ul li p {
     word-wrap: break-word;
 }
 
-ul li button {
+ul li button.delete {
     background: linear-gradient(180deg, rgba(0, 0, 0, .075), rgba(0, 0, 0, .125));
     margin: 10px;
     width: 100px;
@@ -54,17 +54,17 @@ ul li button {
     transition: color .25s;
 }
 
-ul li button:hover {
+ul li button.delete:hover {
     background: linear-gradient(180deg, rgba(0, 0, 0, .1), rgba(0, 0, 0, .15));
 }
 
-ul li button:active {
+ul li button.delete:active {
     box-shadow: inset 0 0 5px rgba(0, 0, 0, .05);
 }
 
 @media (max-width: 768px) {
 
-    ul li button {
+    ul li button.delete {
         width: 65px;
     }
 

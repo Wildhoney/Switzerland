@@ -2,7 +2,7 @@
     display: block;
     font-family: Arial, Tahoma, Helvetica, sans-serif;
     min-width: 65vw;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .055), 0 0 125px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .055), 0 0 125px rgba(0, 0, 0, .1), 0 20px 20px -20px rgba(0, 0, 0, .075);
     border: 1px solid rgba(0, 0, 0, .1);
     background-color: white;
 }
@@ -11,7 +11,7 @@ todo-manager {
     display: block;
     font-family: Arial, Tahoma, Helvetica, sans-serif;
     min-width: 65vw;
-    box-shadow: 0 0 5px rgba(0, 0, 0, .055), 0 0 125px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .055), 0 0 125px rgba(0, 0, 0, .1), 0 20px 20px -20px rgba(0, 0, 0, .075);
     border: 1px solid rgba(0, 0, 0, .1);
     background-color: white;
 }

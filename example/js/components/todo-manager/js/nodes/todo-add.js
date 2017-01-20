@@ -32,7 +32,7 @@ create('todo-add', pipe(redux(store, always(false)), include(path('../css/todo-a
                 oninput={event => props.render({ text: event.target.value })}
                 />
 
-            <button disabled={!text.length} />
+            <button className="add" disabled={!text.length} />
 
         </form>
     );
