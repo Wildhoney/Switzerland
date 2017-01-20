@@ -42,4 +42,3 @@ export const pipe = (...fns) => {
  * @return {Object}
  */
 export const compose = (...fns) => pipe(fns.reverse());
-

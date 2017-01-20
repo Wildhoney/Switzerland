@@ -13,7 +13,7 @@ BABEL_ENV=stats ${base} -i "./src/switzerland.js" -o "./tests/stats/build/switze
 # Stat each of the middleware items.
 
 #middleware=(attrs await cleanup events html include methods once redux refs rescue state transclude vars)
-middleware=(attrs await cleanup events html methods once redux refs rescue state vars)
+middleware=(attrs await cleanup events html include methods once redux refs rescue state vars)
 
 for file in ${middleware[@]} ; do
     BABEL_ENV=stats ${base} -i "./src/middleware/${file}.js" -o "./tests/stats/build/middleware/${file}.js"
