@@ -1,5 +1,3 @@
-import { curry } from 'ramda';
-
 /**
  * @constant subscriptions
  * @type {WeakMap}
@@ -11,7 +9,7 @@ const subscriptions = new WeakMap();
  * @param {Function} [handler]
  * @return {Function}
  */
-export default curry((store, handler = () => true) => {
+export default (store, handler = () => true) => {
 
     return props => {
 
@@ -25,4 +23,4 @@ export default curry((store, handler = () => true) => {
 
     };
 
-});
+};

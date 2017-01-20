@@ -1,5 +1,5 @@
-import { camelize } from 'humps';
-import { compose } from 'ramda';
+import { compose } from 'rambda';
+import { kebabToCamel } from '../helpers/utilities';
 
 /**
  * @constant observers
@@ -41,7 +41,7 @@ const transform = attributes => {
 
         // Transform each attribute into a plain object.
         const model = attributes[index];
-        const label = compose(camelize, removePrefix);
+        const label = compose(kebabToCamel, removePrefix);
 
         return { ...acc, [label(model.nodeName)]: model.nodeValue };
 

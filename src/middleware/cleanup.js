@@ -1,4 +1,4 @@
-import { options } from '../switzerland';
+import options from '../helpers/options';
 import once from './once';
 
 export default fn => {

@@ -1,5 +1,7 @@
-import { patch, diff, create as createElement } from 'virtual-dom-webcomponents-patch';
-import { coreKey } from '../switzerland';
+import create from 'virtual-dom-webcomponents-patch/create-element';
+import patch from 'virtual-dom-webcomponents-patch/patch';
+import diff from 'virtual-dom-webcomponents-patch/diff';
+import { coreKey } from '../helpers/keys';
 
 /**
  * @param {Function} html
@@ -23,7 +25,7 @@ export default html => {
 
             return props;
 
-        })() : createElement(tree);
+        })() : create(tree);
 
         // Save the virtual DOM state for cases where an error short-circuits the chain.
         props[coreKey].saveVDomState(tree, root);

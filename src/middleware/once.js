@@ -1,5 +1,6 @@
-import { merge, __ } from 'ramda';
-import { options } from '../switzerland';
+import __ from 'ramda/src/__';
+import merge from 'ramda/src/merge';
+import options from '../helpers/options';
 
 /**
  * @constant once

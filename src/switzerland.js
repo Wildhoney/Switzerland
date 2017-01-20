@@ -1,39 +1,17 @@
 import vdomH from 'virtual-dom-webcomponents-patch/h';
 import OrderlyQueue from 'orderly-queue';
-import implementation from './helpers/implementation';
+import implementation from './helpers/custom-elements';
 import { htmlErrorFor } from './middleware/rescue';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { children, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
-
-/**
- * @constant options
- * @type {Object}
- */
-export const options = {
-    DEFAULT: 1,
-    ASYNC: 2,
-    RESET: 4,
-    DEFER: 8
-};
+import { coreKey, prevPropsKey } from './helpers/keys';
 
 /**
  * @constant queueMap
  * @type {WeakMap}
  */
 const queueMap = new WeakMap();
-
-/**
- * @constant coreKey
- * @type {Symbol}
- */
-export const coreKey = Symbol('switzerland/core');
-
-/**
- * @constant prevPropsKey
- * @type {Symbol}
- */
-export const prevPropsKey = Symbol('switzerland/props');
 
 /**
  * @method clearHTMLFor
@@ -314,8 +292,9 @@ export function create(name, component) {
 }
 
 export { default as path } from './helpers/path';
-export { pipe, compose } from './helpers/composition';
+export { pipe, compose } from './helpers/utilities';
 export { resolved } from './middleware/await';
+export { default as options } from './helpers/options';
 
 /**
  * @method element

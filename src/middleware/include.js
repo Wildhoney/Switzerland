@@ -1,9 +1,11 @@
-import { identity, memoize, groupBy } from 'ramda';
+import identity from 'ramda/src/identity';
+import memoize from 'ramda/src/memoize';
+import groupBy from 'ramda/src/groupBy';
 import { get as fetch } from 'axios';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
-import { options } from '../switzerland';
+import options from '../helpers/options';
 import once from './once';
 
 /**

@@ -1,4 +1,4 @@
-import { prevPropsKey } from '../switzerland';
+import { prevPropsKey } from '../helpers/keys';
 import { error } from '../helpers/messages';
 
 /**

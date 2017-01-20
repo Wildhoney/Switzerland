@@ -1,4 +1,4 @@
-import { options } from '../switzerland';
+import options from '../helpers/options';
 
 /**
  * @constant states
