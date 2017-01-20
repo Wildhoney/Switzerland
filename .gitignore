@@ -12,3 +12,6 @@ yarn.lock
 # examples
 example/js/components/iss-position/js/build.js
 example/js/components/todo-manager/js/build.js
+
+# tests
+tests/stats/build
