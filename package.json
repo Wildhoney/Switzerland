@@ -69,7 +69,7 @@
     "babel-preset-stage-3": "^6.22.0",
     "babel-register": "^6.14.0",
     "cors": "^2.8.1",
-    "envify": "^3.4.1",
+    "envify": "^1.2.1",
     "envify-loader": "^0.1.0",
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "express": "^4.14.0",
@@ -100,6 +100,7 @@
     "virtual-dom-webcomponents-patch": "^2.1.1",
     "webcomponents.js": "^0.7.23",
     "webpack": "^2.1.0-beta.27",
+    "whatwg-fetch": "^2.0.2",
     "xo": "^0.17.0"
   },
   "ava": {

@@ -1,4 +1,3 @@
-import { generate } from 'shortid';
 import { always } from 'ramda';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
 import { html, state, redux, include } from '../../../../../../src/middleware';
