@@ -19,6 +19,12 @@
         "stage-3",
         ["es2015", { "modules": false }]
       ]
+    },
+    "node": {
+      "presets": [
+        "stage-3",
+        "es2015"
+      ]
     }
   }
 }
