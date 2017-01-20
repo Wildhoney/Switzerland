@@ -23,7 +23,7 @@ export const isDevelopment = once(() => env === 'development');
 
 /**
  * @method pipe
- * @param {Array} fns
+ * @param {Function} fns
  * @return {Function}
  */
 export const pipe = (...fns) => {
@@ -38,7 +38,7 @@ export const pipe = (...fns) => {
 
 /**
  * @constant compose
- * @param {Array} fns
+ * @param {Function} fns
  * @return {Object}
  */
 export const compose = (...fns) => pipe(fns.reverse());

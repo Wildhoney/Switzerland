@@ -23,7 +23,7 @@ done
 
 # Stat any miscellaneous scripts that represent a real-life example.
 
-scripts=(hello-world)
+scripts=(hello-world hello-world-include hello-world-include-state hello-world-include-state-multiple)
 
 for file in ${scripts[@]} ; do
     BABEL_ENV=stats ${base} -i "./tests/stats/scripts/${file}.js" -o "./tests/stats/build/scripts/${file}.js"
