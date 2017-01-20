@@ -51,7 +51,6 @@
   },
   "devDependencies": {
     "ava": "^0.16.0",
-    "axios-mock-adapter": "^1.7.0",
     "babel-cli": "^6.14.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.5",
@@ -74,6 +73,7 @@
     "envify-loader": "^0.1.0",
     "esprima-fb": "^15001.1001.0-dev-harmony-fb",
     "express": "^4.14.0",
+    "fetch-mock": "^5.8.1",
     "fslint": "^1.1.0",
     "jasmine": "^2.5.2",
     "jsdom": "^9.8.0",

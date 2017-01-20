@@ -1,6 +1,5 @@
 import test from 'ava';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
+import mockAdapter from 'fetch-mock';
 import { options } from '../../src/switzerland';
 import include from '../../src/middleware/include';
 
@@ -11,16 +10,15 @@ test.beforeEach(t => {
     node.shadowRoot = document.createElement('fake-shadow-root');
 
     t.context.node = node;
-    t.context.mockAdapter = new MockAdapter(axios);
 
 });
 
 test('Should be able to yield a promise by default;', t => {
 
-    const { node, mockAdapter } = t.context;
+    const { node } = t.context;
 
     const stylesheet = '* { border: 1px solid green; }';
-    mockAdapter.onGet('/first.css').reply(200, stylesheet);
+    mockAdapter.get('/first.css', { status: 200, body: stylesheet });
 
     t.falsy(include(['/first.css'], options.ASYNC)({ node }) instanceof Promise);
     t.true(include(['/first.css'])({ node }) instanceof Promise);
@@ -29,18 +27,18 @@ test('Should be able to yield a promise by default;', t => {
 
 test('Should be able to include external documents', t => {
 
-    const { node, mockAdapter } = t.context;
+    const { node } = t.context;
 
     return new Promise(resolve => {
 
-        const firstStylesheet = '* { border: 1px solid green }';
-        const secondStylesheet = '* { border: 1px solid orange }';
+        const firstStylesheet = '* { border: 1px solid green; }';
+        const secondStylesheet = '* { border: 1px solid orange; }';
         const thirdStylesheet = `* { background-image: url('../images/example.png'), content: url('../images/example.png') }`;
 
-        mockAdapter.onGet('/first.css').reply(200, firstStylesheet);
-        mockAdapter.onGet('/second.css').reply(200, secondStylesheet);
-        mockAdapter.onGet('/components/css/third.css').reply(200, thirdStylesheet);
-        mockAdapter.onGet('/fourth.css').reply(404);
+        mockAdapter.get('/first.css', { status: 200, body: firstStylesheet });
+        mockAdapter.get('/second.css', { status: 200, body: secondStylesheet });
+        mockAdapter.get('/components/css/third.css', { status: 200, body: thirdStylesheet });
+        mockAdapter.get('/fourth.css', { status: 404 });
 
         const files = ['/first.css', '/second.css', '/components/css/third.css', '/fourth.css'];
         const props = include([...files], options.ASYNC)({ node });

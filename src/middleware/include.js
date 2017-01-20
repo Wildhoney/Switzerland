@@ -1,7 +1,6 @@
-import identity from 'ramda/src/identity';
 import memoize from 'ramda/src/memoize';
 import groupBy from 'ramda/src/groupBy';
-import { get as fetch } from 'axios';
+import identity from 'ramda/src/identity';
 import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
@@ -39,7 +38,12 @@ const fetchInclude = memoize(file => {
     };
 
     return new Promise(resolve => {
-        fetch(file).then(response => transformPaths(response.data)).then(resolve).catch(() => resolve(''));
+
+        global.fetch(file).then(response => response.text())
+                          .then(response => transformPaths(response))
+                          .then(resolve)
+                          .catch(() => resolve(''));
+
     });
 
 });

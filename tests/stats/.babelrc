@@ -7,7 +7,7 @@
     "transform-es2015-template-literals",
     "transform-async-to-generator",
     ["transform-react-jsx", {
-      "pragma": "element"
+      "pragma": "h"
     }]
   ]
 }
