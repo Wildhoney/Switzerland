@@ -1,4 +1,4 @@
-import isDevelopment from './environment';
+import isDevelopment from './utilities';
 
 /**
  * @method message
