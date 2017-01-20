@@ -3,7 +3,7 @@ import { spy } from 'sinon';
 import { pipe } from 'ramda';
 import html from '../../src/middleware/html';
 import { time, timeEnd } from '../../src/debug/timer';
-import { coreKey } from '../../src/switzerland';
+import { coreKey } from '../../src/helpers/keys';
 
 test('Should be able to measure the time;', t => {
 

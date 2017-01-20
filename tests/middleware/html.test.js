@@ -1,7 +1,7 @@
 import test from 'ava';
 import { spy } from 'sinon';
 import html from '../../src/middleware/html';
-import { coreKey } from '../../src/switzerland';
+import { coreKey } from '../../src/helpers/keys';
 
 test('Should be able to wrap yielded HTML;', t => {
 
