@@ -43,9 +43,3 @@ export const pipe = (...fns) => {
  */
 export const compose = (...fns) => pipe(fns.reverse());
 
-/**
- * @method kebabToCamel
- * @param {String} str
- * @return {String}
- */
-export const kebabToCamel = str => str.replace(/(-\w)/g, match => match[1].toUpperCase());

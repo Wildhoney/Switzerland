@@ -1,5 +1,4 @@
 import { compose } from 'rambda';
-import { kebabToCamel } from '../helpers/utilities';
 
 /**
  * @constant observers
@@ -25,6 +24,13 @@ const removePrefix = name => name.replace('data-', '');
  * @type {Array}
  */
 const excluded = ['class', 'id'];
+
+/**
+ * @method kebabToCamel
+ * @param {String} str
+ * @return {String}
+ */
+export const kebabToCamel = str => str.replace(/(-\w)/g, match => match[1].toUpperCase());
 
 /**
  * @method transform
