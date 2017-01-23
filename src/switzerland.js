@@ -1,6 +1,6 @@
 import vdomH from 'virtual-dom-webcomponents-patch/h';
 import OrderlyQueue from 'orderly-queue';
-import implementation from './helpers/custom-elements';
+import implementation from './helpers/element';
 import { htmlErrorFor } from './middleware/rescue';
 import { invokeFor, purgeFor } from './middleware/refs';
 import { children, awaitEventName } from './middleware/await';
