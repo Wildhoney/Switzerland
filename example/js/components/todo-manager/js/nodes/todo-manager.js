@@ -1,7 +1,7 @@
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
 import { html, include, await as waitFor } from '../../../../../../src/middleware';
 
-create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), include(path('../css/todo-manager.css')), html(() => {
+create('todo-manager', pipe(waitFor(['todo-add', 'todo-list']), include(path('../css/todo-manager.css')), html(() => {
 
     return (
         <section className="todo-manager">

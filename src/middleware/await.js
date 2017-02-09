@@ -92,15 +92,17 @@ export const resolved = node => {
 };
 
 /**
- * @param {String[]|String} nodes
+ * @param {Function|Array} nodeNames
  * @return {Function}
  */
-export default (...nodes) => {
-
-    const nodeTags = Array.isArray(nodes) ? nodes : [nodes];
+export default nodeNames => {
 
     return props => {
-        return { ...props, [awaitKey]: nodeTags };
+
+        // Retrieve the node names to wait for before resolving.
+        const nodes = typeof nodeNames === 'function' ? nodeNames(props) : nodeNames;
+        return { ...props, [awaitKey]: Array.isArray(nodes) ? nodes : [nodes] };
+
     };
 
 };
