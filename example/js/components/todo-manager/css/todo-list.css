@@ -31,6 +31,13 @@ ul li {
     justify-content: space-between;
 }
 
+ul li.error {
+    padding: 10px 20px;
+    color: crimson;
+    font-size: 12px;
+    font-style: italic;
+}
+
 ul li:nth-of-type(even) {
     background-color: rgba(0, 0, 0, .015);
 }

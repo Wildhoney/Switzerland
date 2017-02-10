@@ -1,3 +1,4 @@
+import by from 'sort-by';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
 import { html, redux, include, once } from '../../../../../../src/middleware';
 import { store, removeTodo, editTodo } from '../helpers/store';
@@ -28,7 +29,9 @@ create('todo-list', pipe(once(indexedDb), redux(store), include(path('../css/tod
     return (
         <ul>
 
-            {props.redux.todos.length ? props.redux.todos.map(model => {
+            {!props.db.active ? <li className="error">Due to an error you currently don't have any offline support.</li> : ''}
+
+            {props.redux.todos.length ? [...props.redux.todos].sort(by('created')).map(model => {
 
                 return (
                     <li key={model.id} className={model.done ? 'done' : ''}>
