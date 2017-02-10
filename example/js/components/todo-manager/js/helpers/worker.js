@@ -1,5 +1,9 @@
 import path from '../../../../../../src/helpers/path';
 
+/**
+ * @constant NAME
+ * @type {String}
+ */
 const NAME = 'cache';
 
 /**
@@ -27,23 +31,20 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
 
-    event.respondWith(caches.match(event.request).then(cached => {
+    event.respondWith(fetch(event.request).then(response => {
 
-        const networked = fetch(event.request).then(response => {
+        // Rehydrate the cache when we have access to the network.
+        caches.open(NAME).then(cache => cache.put(event.request, response.clone()));
+        return response.clone();
 
-            // Rehydrate the cache when we have access to the network.
-            caches.open(NAME).then(cache => cache.put(event.request, response.clone()));
+    }).catch(() => {
 
-            return response.clone();
+        return caches.match(event.request).then(response => {
 
-        }).catch(() => {
-
-            // Yield a 503 if the network is currently unavailable.
-            return new Response('Service Unavailable', { status: 503 });
+            // Attempt to return the cached copy of the response, otherwise a standard 503.
+            return response.clone() || new Response('Service Unavailable', { status: 503 });
 
         });
-
-        return cached || networked;
 
     }));
 
