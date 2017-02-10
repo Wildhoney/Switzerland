@@ -1,7 +1,20 @@
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
-import { html, include, await as waitFor } from '../../../../../../src/middleware';
+import { html, include, await as waitFor, once } from '../../../../../../src/middleware';
 
-create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), include(path('../css/todo-manager.css')), html(() => {
+/**
+ * @method register
+ * @param {Object} props
+ * @return {Promise}
+ */
+const register = async props => {
+
+    // Register the service worker to allow the app to work offline.
+    await navigator.serviceWorker.register(path('worker.js'), { scope: '/' });
+    return props;
+
+};
+
+create('todo-manager', pipe(waitFor('todo-add', 'todo-list'), once(register), include(path('../css/todo-manager.css')), html(() => {
 
     return (
         <section className="todo-manager">
