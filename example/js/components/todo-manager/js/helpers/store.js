@@ -25,8 +25,7 @@ function todos(state = initialState, action) {
     switch (action.type) {
 
         case ADD_TODO:
-            const model = { id: generate(), text: action.text, done: false };
-            return { ...state, todos: [...state.todos, model] };
+            return { ...state, todos: [...state.todos, action.model] };
 
         case REMOVE_TODO:
             return { ...state, todos: state.todos.filter(model => model.id !== action.model.id) };
@@ -54,26 +53,36 @@ export const store = createStore(todos, applyMiddleware(thunk));
 /**
  * @method addTodo
  * @param {String} text
- * @return {void}
+ * @return {Object}
  */
 export const addTodo = text => {
-    store.dispatch({ type: ADD_TODO, text });
+    const model = { id: generate(), text, done: false };
+    return store.dispatch({ type: ADD_TODO, model });
+};
+
+/**
+ * @method putTodo
+ * @param {Object} model
+ * @return {Object}
+ */
+export const putTodo = model => {
+    return store.dispatch({ type: ADD_TODO, model });
 };
 
 /**
  * @method editTodo
  * @param {Object} model
- * @return {void}
+ * @return {Object}
  */
 export const editTodo = model => {
-    store.dispatch({ type: EDIT_TODO, model });
+    return store.dispatch({ type: EDIT_TODO, model });
 };
 
 /**
  * @method removeTodo
  * @param {Object} model
- * @return {void}
+ * @return {Object}
  */
 export const removeTodo = model => {
-    store.dispatch({ type: REMOVE_TODO, model });
+    return store.dispatch({ type: REMOVE_TODO, model });
 };

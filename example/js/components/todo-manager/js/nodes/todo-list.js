@@ -1,9 +1,9 @@
-import { always } from 'ramda';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
-import { html, redux, include } from '../../../../../../src/middleware';
+import { html, redux, include, once } from '../../../../../../src/middleware';
 import { store, removeTodo, editTodo } from '../helpers/store';
+import indexedDb from '../helpers/db';
 
-create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), html(props => {
+create('todo-list', pipe(once(indexedDb), redux(store), include(path('../css/todo-list.css')), html(props => {
 
     /**
      * @method handleEdit
@@ -11,7 +11,8 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
      * @return {void}
      */
     const handleEdit = model => {
-        editTodo({ ...model, done: !model.done });
+        const result = editTodo({ ...model, done: !model.done });
+        props.db.put(result.model);
     };
 
     /**
@@ -20,7 +21,8 @@ create('todo-list', pipe(redux(store), include(path('../css/todo-list.css')), ht
      * @return {void}
      */
     const handleRemove = model => {
-        removeTodo(model);
+        const result = removeTodo(model);
+        props.db.delete(result.model);
     };
 
     return (

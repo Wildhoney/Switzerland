@@ -1,9 +1,10 @@
 import { always } from 'ramda';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
-import { html, state, redux, include } from '../../../../../../src/middleware';
+import { html, state, redux, include, once } from '../../../../../../src/middleware';
 import { store, addTodo } from '../helpers/store';
+import indexedDb from '../helpers/db';
 
-create('todo-add', pipe(redux(store, always(false)), include(path('../css/todo-add.css')), html(props => {
+create('todo-add', pipe(once(indexedDb), redux(store, always(false)), include(path('../css/todo-add.css')), html(props => {
 
     /**
      * @method handleAdd
@@ -11,7 +12,8 @@ create('todo-add', pipe(redux(store, always(false)), include(path('../css/todo-a
      * @return {void}
      */
     const handleAdd = text => {
-        addTodo(text);
+        const result = addTodo(text);
+        props.db.put(result.model);
         props.render({ text: '' });
     };
 
