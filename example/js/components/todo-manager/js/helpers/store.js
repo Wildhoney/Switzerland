@@ -56,7 +56,7 @@ export const store = createStore(todos, applyMiddleware(thunk));
  * @return {Object}
  */
 export const addTodo = text => {
-    const model = { id: generate(), text, done: false };
+    const model = { id: generate(), text, done: false, created: Date.now() };
     return store.dispatch({ type: ADD_TODO, model });
 };
 
