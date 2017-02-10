@@ -9,7 +9,7 @@ import once from './once';
 export default once(props => {
 
     const html = props.node.innerHTML.trim();
-    const children = transformer({ VNode, VText })({
+    const children = html !== '' && transformer({ VNode, VText })({
         getVNodeKey: attributes => attributes.id
     }, html);
 
