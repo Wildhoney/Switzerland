@@ -98,7 +98,7 @@
     "rollup-plugin-uglify": "^1.0.1",
     "sinon": "^1.17.6",
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony",
-    "virtual-dom-webcomponents-patch": "^2.1.1",
+    "virtual-dom": "^2.1.1",
     "webcomponents.js": "^0.7.23",
     "webpack": "^2.2.0",
     "whatwg-fetch": "^2.0.2",

@@ -1,4 +1,4 @@
-import vdomH from 'virtual-dom-webcomponents-patch/h';
+import vdomH from 'virtual-dom/h';
 import OrderlyQueue from 'orderly-queue';
 import implementation from './helpers/element';
 import { htmlErrorFor } from './middleware/rescue';

@@ -1,6 +1,6 @@
-import create from 'virtual-dom-webcomponents-patch/create-element';
-import patch from 'virtual-dom-webcomponents-patch/patch';
-import diff from 'virtual-dom-webcomponents-patch/diff';
+import create from 'virtual-dom/create-element';
+import patch from 'virtual-dom/patch';
+import diff from 'virtual-dom/diff';
 import { coreKey } from '../helpers/keys';
 
 /**

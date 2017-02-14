@@ -1,4 +1,4 @@
-import { VNode, VText } from 'virtual-dom-webcomponents-patch';
+import { VNode, VText } from 'virtual-dom';
 import transformer from 'html-to-vdom';
 import once from './once';
 
