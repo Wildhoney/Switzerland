@@ -18,7 +18,7 @@ export default {
         babel(),
         commonjs({
             namedExports : {
-                'virtual-dom-webcomponents-patch/index.js' : ['h'],
+                'virtual-dom/index.js' : ['h'],
                 'node_modules/humps/humps.js' : ['camelize', 'decamelize'],
                 'node_modules/prop-types/lib/index.js': ['validate'],
                 'node_modules/shortid/index.js': ['generate']

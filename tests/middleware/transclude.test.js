@@ -1,5 +1,5 @@
 import test from 'ava';
-import { VNode } from 'virtual-dom-webcomponents-patch';
+import { VNode } from 'virtual-dom';
 import transclude from '../../src/middleware/transclude';
 
 test('Should be able to transclude HTML elements', t => {
