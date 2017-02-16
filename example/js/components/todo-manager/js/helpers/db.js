@@ -1,4 +1,5 @@
-import { once, identity } from 'ramda';
+import once from 'ramda/src/once';
+import identity from 'ramda/src/identity';
 import { putTodo } from '../helpers/store';
 
 /**

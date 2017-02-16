@@ -1,6 +1,9 @@
 import by from 'sort-by';
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
-import { html, redux, include, once } from '../../../../../../src/middleware';
+import once from '../../../../../../src/middleware/once';
+import html from '../../../../../../src/middleware/html';
+import redux from '../../../../../../src/middleware/redux';
+import include from '../../../../../../src/middleware/include';
 import { store, removeTodo, editTodo } from '../helpers/store';
 import indexedDb from '../helpers/db';
 

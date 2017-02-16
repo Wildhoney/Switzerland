@@ -1,5 +1,8 @@
 import { create, element, pipe, path } from '../../../../../../src/switzerland';
-import { html, include, await as waitFor, once } from '../../../../../../src/middleware';
+import once from '../../../../../../src/middleware/once';
+import html from '../../../../../../src/middleware/html';
+import waitFor from '../../../../../../src/middleware/await';
+import include from '../../../../../../src/middleware/include';
 
 /**
  * @method register
