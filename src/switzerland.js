@@ -53,7 +53,7 @@ const setupCore = () => {
 
         /**
          * @method readVDomState
-         * @type {Object}
+         * @return {Object|null}
          */
         readVDomState() {
 
