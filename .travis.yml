@@ -1,10 +1,7 @@
 language: node_js
 
 node_js:
-  - 6.7
-  - 6.8
-  - 6.9
-  - 7.0
+  - stable
 
 before_install:
   - export CHROME_BIN=chromium-browser
