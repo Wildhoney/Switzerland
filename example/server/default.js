@@ -1,10 +1,11 @@
 import { basename } from 'path';
 import { existsSync } from 'fs';
 import http from 'http';
-import cors from 'cors';
 import express from 'express';
-import { generate } from 'shortid';
+import cors from 'cors';
+import compression from 'compression';
 import opener from 'opener';
+import { Z_BEST_COMPRESSION } from 'zlib';
 
 const app = express();
 const server = http.createServer(app);
@@ -15,6 +16,7 @@ app.get('/*',(req, res, next) => {
     next();
 });
 
+app.use(compression({ level: Z_BEST_COMPRESSION }));
 app.use(express.static(__dirname + '/example'));
 app.use(cors());
 
