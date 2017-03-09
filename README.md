@@ -101,8 +101,8 @@ Although the output will be the same as the previous example, our `swiss-cheese`
 
 ```javascript
 const swissCheese = document.querySelector('swiss-cheese');
-const cheeses = swissCheese.getAttribute('data-cheeses');
-swissCheese.setAttribute('data-cheeses', `${cheeses},Mozarella`);
+const { cheeses } = swissCheese.dataset;
+swissCheese.dataset.cheeses = `${cheeses},Mozarella`;
 ```
 
 You'll notice that we're passing a string via the `data-cheeses` attribute, rather than an actual array &ndash; we do this because native HTML does not understand JavaScript constructs. React supports passing in JavaScript constructs, but at the sake of creating React-only components and thus sacrificing interoperability.
