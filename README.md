@@ -159,11 +159,7 @@ const initialState = {
 };
 
 const fetch = props => {
-
-    const latency = 250;
-
-    setTimeout(() => props.setState({ cheeses: ['Swiss', 'Feta', 'Cheddar'] }), latency);
-
+    Promise.resolve(() => props.setState({ cheeses: ['Swiss', 'Feta', 'Cheddar'] }));
 };
 
 create('swiss-cheese', pipe(state(initialState), once(fetch), html(props => {
@@ -189,7 +185,7 @@ create('swiss-cheese', pipe(state(initialState), once(fetch), html(props => {
 })));
 ```
 
-> Note: We're using `setTimeout` to simulate a 250ms latency for an actual AJAX request.
+> Note: We're using `Promise.resolve` for asynchronicity to simulate a actual AJAX request.
 
 By wrapping our `fetch` function in the `once` middleware, we can be assured that `fetch` will be invoked only **once per instance** &ndash; thus if we had two `swiss-cheese` nodes in the DOM `fetch` would be invoked twice. It's important to understand the importance of `once` &ndash; without it we'd effectively be creating an infinite loop.
 
