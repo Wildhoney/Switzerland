@@ -20,6 +20,7 @@ const queueMap = new WeakMap();
  */
 const clearHTMLFor = node => {
     node.shadowRoot.innerHTML = '';
+    node.classList.remove('resolved');
 };
 
 /**
@@ -139,9 +140,6 @@ const handleProps = node => {
  * @return {Object}
  */
 const appendComponent = (node, boundary, props) => {
-
-    // Insert the node into the DOM.
-    boundary.insertBefore(props[coreKey].root, boundary.firstChild);
 
     // Invoke any ref callbacks defined in the component's `render` method.
     'ref' in props && invokeFor(node);
