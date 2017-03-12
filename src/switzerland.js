@@ -33,10 +33,10 @@ const isAttached = node => {
 };
 
 /**
- * @method setupCore
+ * @method defaultProps
  * @return {Object}
  */
-const setupCore = () => {
+const defaultProps = () => {
 
     const coreMap = new Map();
 
@@ -85,7 +85,7 @@ const render = async (node, component, props = { prevProps: {} }) => {
     const render = node.render.bind(node);
     const attached = isAttached(node);
 
-    return await component({ node, render, attached, [coreKey]: props[coreKey] || setupCore(), ...props });
+    return await component({ node, render, attached, [coreKey]: props[coreKey] || defaultProps(), ...props });
 
 };
 

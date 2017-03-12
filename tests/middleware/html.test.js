@@ -10,13 +10,13 @@ test('Should be able to wrap yielded HTML;', t => {
 
     const markup = props => `<h1>${props.attrs.name}</h1>`;
     const attrs = { name: 'Switzerland' };
-    const core = { saveVDomState: spy() };
+    const core = { writeVDomState: spy() };
 
     const props = html(markup)({ node, attrs, [coreKey]: core });
 
     t.deepEqual(props, { node, attrs, [coreKey]:
         { ...core, root: null, tree: markup({ attrs }) }
     });
-    t.is(core.saveVDomState.callCount, 1);
+    t.is(core.writeVDomState.callCount, 1);
 
 });
