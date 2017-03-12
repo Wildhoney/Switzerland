@@ -49,7 +49,9 @@ export const children = props => {
             // Tree has been resolved.
             node.removeEventListener(awaitEventName, resolved);
             resolve(waitFor);
-            props.node.classList.add('resolved');
+
+            // Add a timeout to force animations to occur.
+            setTimeout(() => props.node.classList.add('resolved'));
 
         }
 
