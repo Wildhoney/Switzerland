@@ -43,12 +43,12 @@ const setupCore = () => {
     return {
 
         /**
-         * @method saveVDomState
+         * @method writeVDomState
          * @param {Object} tree
          * @param {Object} root
          * @return {void}
          */
-        saveVDomState(tree, root) {
+        writeVDomState(tree, root) {
             coreMap.set('state', { tree, root });
         },
 
