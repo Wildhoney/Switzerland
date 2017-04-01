@@ -37,7 +37,7 @@ const isAttached = node => {
  * @method defaultProps
  * @return {Object}
  */
-const defaultProps = () => {
+export const defaultProps = () => {
 
     const coreMap = new Map();
 
@@ -79,15 +79,14 @@ const defaultProps = () => {
  * @param {HTMLElement} node
  * @param {Function} component
  * @param {Object} [props  = {}]
- * @param {Boolean} [universal  = false]
  * @return {Object}
  */
-const render = async (node, component, props = { prevProps: {} }, universal = false) => {
+const render = async (node, component, props = { prevProps: {} }) => {
 
     const render = node.render.bind(node);
-    const attached = universal ? null : isAttached(node);
+    const attached = isAttached(node);
 
-    return await component({ node, universal, render, attached, [coreKey]: props[coreKey] || defaultProps(), ...props });
+    return await component({ node, render, attached, [coreKey]: props[coreKey] || defaultProps(), ...props });
 
 };
 
@@ -153,7 +152,7 @@ const appendComponent = (node, boundary, props) => {
  * @method create
  * @param {String} name
  * @param {Function} component
- * @return {Object}
+ * @return {void}
  */
 export function create(name, component) {
 
@@ -161,14 +160,13 @@ export function create(name, component) {
      * @constant component
      * @type {Object}
      */
-    return implementation.customElement(name, {
+    implementation.customElement(name, {
 
         /**
          * @method connectedCallback
-         * @param {Boolean} [universal = false]
-         * @return {Promise}
+         * @return {void}
          */
-        connected(universal = false) {
+        connected() {
 
             // Instantiate the processing queue and store it in the weak map.
             const queue = new OrderlyQueue({ next: handleProps(this) });
@@ -176,18 +174,16 @@ export function create(name, component) {
 
             // Remove any existing content from the node, and fetch the reference to the
             // shadow boundary.
-            const boundary = universal ? null : do {
-                this.shadowRoot && clearHTMLFor(this);
-                this.shadowRoot || implementation.shadowBoundary(this);
-            };
+            this.shadowRoot && clearHTMLFor(this);
+            const boundary = this.shadowRoot || implementation.shadowBoundary(this);
 
-            return queue.process(async () => {
+            queue.process(async () => {
 
                 try {
 
                     // Setup the Virtual DOM instance, and then append the component to the DOM.
-                    const props = await render(this, component, {}, universal);
-                    return universal ? props : appendComponent(this, boundary, props);
+                    const props = await render(this, component);
+                    return appendComponent(this, boundary, props);
 
                 } catch (err) {
 
