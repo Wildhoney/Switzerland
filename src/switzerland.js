@@ -6,6 +6,7 @@ import { invokeFor, purgeFor } from './middleware/refs';
 import { children, awaitEventName } from './middleware/await';
 import { error } from './helpers/messages';
 import { coreKey, prevPropsKey } from './helpers/keys';
+import { dispatchEvent } from './helpers/events';
 
 /**
  * @constant queueMap
@@ -107,11 +108,7 @@ const handleResolve = (node, props) => {
         await children(props);
 
         // Emit the event that the node has been resolved.
-        node.dispatchEvent(new window.CustomEvent(awaitEventName, {
-            detail: node,
-            bubbles: true,
-            composed: true
-        }));
+        dispatchEvent(awaitEventName, { node });
 
     })();
 

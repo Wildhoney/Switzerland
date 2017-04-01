@@ -1,3 +1,5 @@
+import { addEventListener, removeEventListener } from '../helpers/events';
+
 /**
  * @constant awaitKey
  * @type {Symbol}
@@ -31,7 +33,7 @@ export const children = props => {
         function resolved(event) {
 
             // Resolve the current node if we have it in the map.
-            waitFor.has(event.detail) && waitFor.set(event.detail, true);
+            waitFor.has(event.node) && waitFor.set(event.node, true);
 
             // Determine whether all awaiting nodes have been resolved, and if so then we'll
             // resolve the current node.
@@ -55,7 +57,7 @@ export const children = props => {
 
         }
 
-        node.addEventListener(awaitEventName, resolved);
+        addEventListener(awaitEventName, resolved);
 
         // Place all of the nodes we're awaiting into the map.
         const nodeNames = props[awaitKey].join(',');
@@ -80,10 +82,10 @@ export const resolved = node => {
 
     return 'resolved' in node ? node.resolved : new Promise(resolve => {
 
-        node.addEventListener(awaitEventName, function resolved(event) {
+        addEventListener(awaitEventName, function resolved(event) {
 
-            if (event.detail === node) {
-                node.removeEventListener(awaitEventName, resolved);
+            if (event.node === node) {
+                removeEventListener(awaitEventName, resolved);
                 node.resolved.then(() => resolve(node));
             }
 
