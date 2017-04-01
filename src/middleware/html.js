@@ -12,7 +12,7 @@ export default html => {
     return props => {
 
         const tree = html(props);
-        const boundary = props.node.shadowRoot;
+        const boundary = props.universal ? null : props.node.shadowRoot;
 
         const root = 'root' in props[coreKey] ? (() => {
 
@@ -29,7 +29,7 @@ export default html => {
         })() : create(tree);
 
         // Insert the node into the DOM.
-        props.attached && !props.node.firstChild && boundary.insertBefore(root, boundary.firstChild);
+        props.attached && !props.universal && !props.node.firstChild && boundary.insertBefore(root, boundary.firstChild);
 
         // Save the virtual DOM state for cases where an error short-circuits the chain.
         props[coreKey].writeVDomState(tree, root);
