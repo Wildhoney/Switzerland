@@ -1,6 +1,7 @@
 import test from 'ava';
 import { spy } from 'sinon';
 import waitFor, { awaitKey, awaitEventName, children, resolved } from '../../src/middleware/await';
+import { dispatchEvent } from '../../src/helpers/events';
 
 test('Should be able to augment the props;', t => {
 
@@ -18,14 +19,13 @@ test('Should be able to determine once node has been resolved;', t => {
 
     const node = document.createElement('div');
     waitFor('x-one', 'x-two', 'x-three')({ node });
+    const then = spy();
 
     resolved(node);
-    node.resolved = { then: spy(Promise.resolve) };
-    node.dispatchEvent(new window.CustomEvent(awaitEventName, {
-        detail: node
-    }));
+    node.resolved = { then };
+    dispatchEvent(awaitEventName, { node });
 
-    t.is(node.resolved.then.callCount, 1);
+    t.is(then.callCount, 1);
 
 });
 
