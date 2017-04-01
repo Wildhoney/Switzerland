@@ -1,5 +1,5 @@
-import { defaultProps } from './switzerland';
 import createElement from 'virtual-dom/create-element';
+import { defaultProps } from './switzerland';
 import { coreKey } from './helpers/keys';
 
 /**
