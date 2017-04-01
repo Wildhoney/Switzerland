@@ -10,7 +10,7 @@ const implementations = {
          * @method customElement
          * @param {String} tag
          * @param {Object} component
-         * @return {Object}
+         * @return {void}
          */
         customElement: (tag, component) => {
 
@@ -25,7 +25,6 @@ const implementations = {
 
             prototype.render = component.render;
             document.registerElement(tag, { prototype });
-            return component;
 
         },
 
@@ -42,7 +41,7 @@ const implementations = {
          * @method customElement
          * @param {String} tag
          * @param {Object} component
-         * @return {Object}
+         * @return {void}
          */
         customElement: (tag, component) => {
 
@@ -57,8 +56,6 @@ const implementations = {
                     component.render.call(this, transition);
                 }
             });
-
-            return component;
 
         },
 
