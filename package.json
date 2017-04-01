@@ -12,7 +12,7 @@
     "karma": "npm run build && karma start karmafile.js --single-run",
     "lint": "xo src/*.js src/**/*.js tests/*.js tests/**/*.js !tests/karma/* !tests/stats/*",
     "cleanup": "rimraf node_modules",
-    "start": "npm i --ignore-scripts && npm run build && BABEL_ENV=node babel example/server/default.js | BABEL_ENV=node node --require babel",
+    "start": "npm i --ignore-scripts && npm run build && BABEL_ENV=node babel example/server/default.js | BABEL_ENV=node node --require babel-register",
     "prepare": "./bash/prepare.sh",
     "postpublish": "./bash/postpublish.sh"
   },
