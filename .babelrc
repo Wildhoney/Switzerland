@@ -25,6 +25,9 @@
       ]
     },
     "node": {
+      "plugins": [
+        "transform-do-expressions"
+      ],
       "presets": [
         "stage-3",
         "es2015"
