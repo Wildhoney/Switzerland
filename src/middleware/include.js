@@ -1,4 +1,3 @@
-import { get } from 'axios';
 import memoize from 'ramda/src/memoize';
 import groupBy from 'ramda/src/groupBy';
 import identity from 'ramda/src/identity';
@@ -140,10 +139,12 @@ const attachFiles = flags => once(props => {
  */
 const mergeStylesInto = files => {
 
+    const axios = require('axios');
+
     return async props => {
 
         const cssFiles = await Promise.all(files.filter(file => ext(file).extension === 'css').map(async file => {
-            const response = await get(file);
+            const response = await axios.get(file);
             return response.data;
         }));
 
