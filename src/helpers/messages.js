@@ -13,11 +13,11 @@ const message = (text, fn) => isDevelopment() && fn(`Switzerland \uD83C\uDDE8\uD
  * @param {String} text
  * @return {void}
  */
-export const error = text => message(text, window.console.error);
+export const error = text => message(text, global.console.error);
 
 /**
  * @method warning
  * @param {String} text
  * @return {void}
  */
-export const warning = text => message(text, window.console.warn);
+export const warning = text => message(text, global.console.warn);

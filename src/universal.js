@@ -1,4 +1,5 @@
 import createElement from 'virtual-dom/create-element';
+import inlineCss from 'inline-css';
 import identity from 'ramda/src/identity';
 import { defaultProps } from './switzerland';
 import { coreKey } from './helpers/keys';
@@ -20,7 +21,11 @@ export const render = async (component, props = {}) => {
         universal: true
     });
 
-    const tree = createElement(result[coreKey].tree);
-    return 'outerHTML' in tree ? tree.outerHTML : tree.toString();
+    const { tree, css = '' } = result[coreKey];
+    const element = createElement(tree);
+
+    return await inlineCss(`<style type="text/css">${css}</style>${element.toString()}`, {
+        url: 'http://localhost:5000/'
+    });
 
 };

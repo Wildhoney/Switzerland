@@ -69,4 +69,4 @@ const implementations = {
 
 };
 
-export default typeof window.customElements === 'undefined' ? implementations.v0 : implementations.v1;
+export default typeof global.customElements === 'undefined' ? implementations.v0 : implementations.v1;

@@ -1,3 +1,4 @@
+import { get } from 'axios';
 import memoize from 'ramda/src/memoize';
 import groupBy from 'ramda/src/groupBy';
 import identity from 'ramda/src/identity';
@@ -5,6 +6,7 @@ import parseUrls from 'css-url-parser';
 import parsePath from 'path-parse';
 import escapeRegExp from 'escape-string-regexp';
 import options from '../helpers/options';
+import { coreKey } from '../helpers/keys';
 import once from './once';
 
 /**
@@ -49,6 +51,15 @@ const fetchInclude = memoize(file => {
 });
 
 /**
+ * @method ext
+ * @param {String} path
+ * @return {Object}
+ */
+const ext = path => {
+    return { path, extension: path.split('.').pop() };
+};
+
+/**
  * @method fetchIncludes
  * @param {Array} files
  * @return {Promise}
@@ -56,7 +67,7 @@ const fetchInclude = memoize(file => {
 const fetchIncludes = files => {
 
     // Group all of the files by their extension.
-    const groupedFiles = groupBy(file => file.extension)(files.map(path => ({ path, extension: path.split('.').pop() })));
+    const groupedFiles = groupBy(file => file.extension)(files.map(ext));
 
     const mappedFiles = Object.keys(groupedFiles).map(extension => {
 
@@ -123,6 +134,26 @@ const attachFiles = flags => once(props => {
 }, options.RESET);
 
 /**
+ * @method mergeStylesInto
+ * @param {String[]|String} files
+ * @return {Function}
+ */
+const mergeStylesInto = files => {
+
+    return async props => {
+
+        const cssFiles = await Promise.all(files.filter(file => ext(file).extension === 'css').map(async file => {
+            const response = await get(file);
+            return response.data;
+        }));
+
+        return { ...props, [coreKey]: { ...props[coreKey], css: cssFiles.join('\n') } };
+
+    };
+
+};
+
+/**
  * @param {String[]|String} files
  * @param {Number} [flags = options.DEFAULT]
  * @return {Function}
@@ -130,12 +161,17 @@ const attachFiles = flags => once(props => {
 export default (files, flags = options.DEFAULT) => {
 
     const attach = attachFiles(flags);
+    const merge = mergeStylesInto([].concat(files));
 
     return props => {
 
-        // Attach the documents using the `once` middleware.
-        const attached = attach({ ...props, files: Array.isArray(files) ? files : [files] });
-        return flags & options.ASYNC ? props : attached.then(() => props);
+        return props.universal ? merge(props) : do {
+
+            // Attach the documents using the `once` middleware.
+            const attached = attach({ ...props, files: [].concat(files) });
+            flags & options.ASYNC ? props : attached.then(() => props);
+
+        };
 
     };
 
