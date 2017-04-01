@@ -1,4 +1,5 @@
 import createElement from 'virtual-dom/create-element';
+import identity from 'ramda/src/identity';
 import { defaultProps } from './switzerland';
 import { coreKey } from './helpers/keys';
 
@@ -10,11 +11,16 @@ import { coreKey } from './helpers/keys';
  */
 export const render = async (component, props = {}) => {
 
-    const node = {};
-    const render = () => {};
-    const attached = true;
-    const result = await component({ node, render, attached, [coreKey]: defaultProps(), ...props, universal: true });
+    const result = await component({
+        node: {},
+        render: identity,
+        attached: true,
+        [coreKey]: defaultProps(),
+        ...props,
+        universal: true
+    });
 
-    return createElement(result[coreKey].tree).toString();
+    const tree = createElement(result[coreKey].tree);
+    return 'outerHTML' in tree ? tree.outerHTML : tree.toString();
 
 };
