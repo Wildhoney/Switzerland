@@ -1,5 +1,4 @@
 import parsePath from 'path-parse';
-import { error } from '../helpers/messages';
 
 /**
  * @constant scriptPath
