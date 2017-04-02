@@ -10,6 +10,9 @@ module.exports = {
         filename: '[name].js',
         libraryTarget: 'var'
     },
+    node: {
+        fs: 'empty'
+    },
     module: {
         loaders: [
             {
