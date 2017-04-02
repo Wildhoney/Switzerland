@@ -8,10 +8,9 @@ import { coreKey } from './helpers/keys';
  * @method render
  * @param {String} name
  * @param {Object} [props = {}]
- * @param {Object} [options = {}]
  * @return {String}
  */
-export const render = async (name, props = {}, options) => {
+export const render = async (name, props = {}) => {
 
     const component = nodeMap.get(name);
 
@@ -19,7 +18,7 @@ export const render = async (name, props = {}, options) => {
         node: {},
         render: identity,
         attached: true,
-        [coreKey]: { ...defaultProps(), base: options.url },
+        [coreKey]: defaultProps(),
         ...props,
         universal: true
     });
@@ -28,7 +27,7 @@ export const render = async (name, props = {}, options) => {
     const element = createElement(tree);
 
     return await inlineCss(`<style type="text/css">${css}</style>${element.toString()}`, {
-        url: options.url
+        url: '/'
     });
 
 };
