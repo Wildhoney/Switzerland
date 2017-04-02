@@ -2,12 +2,14 @@
     all: initial;
     display: block;
     font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+    height: 50px;
 }
 
 todo-add {
     all: initial;
     display: block;
     font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+    height: 50px;
 }
 
 * {

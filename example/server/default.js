@@ -11,6 +11,8 @@ import { Z_BEST_COMPRESSION } from 'zlib';
 import { create } from './src/switzerland';
 import { render } from './src/universal';
 import './example/js/components/todo-manager/js/todo-list.js';
+import './example/js/components/todo-manager/js/todo-manager.js';
+import './example/js/components/todo-manager/js/todo-add.js';
 
 const app = express();
 const server = http.createServer(app);
@@ -24,11 +26,9 @@ app.get('/*',(req, res, next) => {
 app.get('/', async (req, res) => {
 
     const index = readFileSync('./example/index.html', 'utf-8');
-    const app = await render('todo-list');
+    const html = await render('todo-manager');
 
-    res.send(format(index, {
-        html: `<todo-manager>${app}</todo-manager>`
-    }));
+    res.send(format(index, { html }));
 
 });
 
@@ -37,4 +37,4 @@ app.use(express.static(__dirname + '/example'));
 app.use(cors());
 
 server.listen(process.env.PORT || 5000);
-!isHeroku && opener('http://localhost:5000');
+// !isHeroku && opener('http://localhost:5000');

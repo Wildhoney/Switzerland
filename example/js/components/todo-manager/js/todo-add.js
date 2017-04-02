@@ -36,7 +36,9 @@ create('todo-add', pipe(once(indexedDb), redux(store, always(false)), include(pa
                 oninput={event => props.render({ text: event.target.value })}
                 />
 
-            <button className="add" disabled={!text.length} />
+            <button className="add" disabled={!text.length}>
+                {props.universal ? 'Add Todo' : ''}
+            </button>
 
         </form>
     );

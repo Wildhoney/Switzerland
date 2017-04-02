@@ -4,6 +4,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+    max-height: calc(65vh - 50px);
 }
 
 todo-list {
@@ -12,6 +13,7 @@ todo-list {
     overflow-x: hidden;
     overflow-y: auto;
     font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+    max-height: calc(65vh - 50px);
 }
 
 * {

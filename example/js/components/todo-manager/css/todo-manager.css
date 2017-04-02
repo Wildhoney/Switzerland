@@ -36,12 +36,10 @@ h1 a img {
 }
 
 todo-add {
-    height: 50px;
     overflow: hidden;
 }
 
 todo-list {
-    max-height: calc(65vh - 50px);
     overflow-x: hidden;
     overflow-y: auto;
 }
