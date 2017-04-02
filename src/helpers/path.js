@@ -25,7 +25,7 @@ export default (() => {
      * @param {String} file
      * @return {String}
      */
-    const path = file => `${scriptPath}/${file}`;
+    const path = file => `${scriptPath}/${file.replace(/^\/\//i, '')}`;
 
     /**
      * @method toString
