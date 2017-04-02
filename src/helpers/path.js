@@ -3,7 +3,7 @@ import { error } from '../helpers/messages';
 
 /**
  * @constant scriptPath
- * @return {String|void}
+ * @return {String}
  */
 const scriptPath = (() => {
 
