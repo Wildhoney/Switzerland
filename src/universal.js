@@ -32,7 +32,6 @@ export const render = async (name, props = {}) => {
             universal: true
         });
 
-
         const { tree, css = '' } = result[coreKey];
         const element = createElement(tree);
         // const html = `<style type="text/css">${css}</style><${name} class="resolved">${element.toString()}</${name}>`;
