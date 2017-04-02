@@ -28,6 +28,13 @@ export default once(props => {
 
     return new Promise(resolve => {
 
+        if (props.universal) {
+
+            // We're rendering the element in universal mode.
+            return void resolve({ db: { active: false }});
+
+        }
+
         const open = window.indexedDB.open('database', VERSION);
 
         open.addEventListener('upgradeneeded', () => {

@@ -12,7 +12,7 @@ import include from '../../../../../../src/middleware/include';
 const register = async props => {
 
     // Register the service worker to allow the app to work offline.
-    await navigator.serviceWorker.register(path('worker.js'), { scope: '/' });
+    !props.universal && await navigator.serviceWorker.register(path('worker.js'), { scope: '/' });
     return props;
 
 };
