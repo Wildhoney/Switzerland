@@ -1,7 +1,7 @@
 import createElement from 'virtual-dom/create-element';
 import inlineCss from 'inline-css';
 import identity from 'ramda/src/identity';
-import { defaultProps, elementMap } from './switzerland';
+import { defaultProps, nodeMap } from './switzerland';
 import { coreKey } from './helpers/keys';
 
 /**
@@ -13,7 +13,7 @@ import { coreKey } from './helpers/keys';
  */
 export const render = async (name, props = {}, options) => {
 
-    const component = elementMap.get(name);
+    const component = nodeMap.get(name);
 
     const result = await component({
         node: {},

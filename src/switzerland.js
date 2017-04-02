@@ -15,10 +15,10 @@ import { dispatchEvent } from './helpers/events';
 const queueMap = new WeakMap();
 
 /**
- * @constant elementMap
+ * @constant nodeMap
  * @type {Map}
  */
-export const elementMap = new Map();
+export const nodeMap = new Map();
 
 /**
  * @method clearHTMLFor
@@ -162,8 +162,8 @@ const appendComponent = (node, boundary, props) => {
  */
 export function create(name, component) {
 
-    // Register the current component in the element map.
-    elementMap.set(name, component);
+    // Register the current component in the node map.
+    nodeMap.set(name, component);
 
     /**
      * @constant component
