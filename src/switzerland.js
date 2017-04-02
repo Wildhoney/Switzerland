@@ -183,6 +183,7 @@ export function create(name, component) {
 
             // Remove any existing content from the node, and fetch the reference to the
             // shadow boundary.
+            this.innerHTML = '';
             this.shadowRoot && clearHTMLFor(this);
             const boundary = this.shadowRoot || implementation.shadowBoundary(this);
 
