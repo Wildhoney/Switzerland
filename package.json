@@ -41,6 +41,7 @@
     "html-to-vdom": "^0.7.0",
     "humps": "^2.0.0",
     "inline-css": "~2.2.2",
+    "jsdom": "~9.12.0",
     "orderly-queue": "^0.1.5",
     "path-parse": "^1.0.5",
     "prop-types": "^0.2.0",

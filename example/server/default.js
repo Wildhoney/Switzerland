@@ -37,4 +37,4 @@ app.use(express.static(__dirname + '/example'));
 app.use(cors());
 
 server.listen(process.env.PORT || 5000);
-// !isHeroku && opener('http://localhost:5000');
+!isHeroku && opener('http://localhost:5000');
