@@ -139,13 +139,12 @@ const attachFiles = flags => once(props => {
  */
 const mergeStylesInto = files => {
 
-    const axios = require('axios');
-
     return async props => {
 
+        const { readFileSync } = require('fs');
+
         const cssFiles = await Promise.all(files.filter(file => ext(file).extension === 'css').map(async file => {
-            const response = await axios.get(file);
-            return response.data;
+            return readFileSync(file);
         }));
 
         return { ...props, [coreKey]: { ...props[coreKey], css: cssFiles.join('\n') } };
