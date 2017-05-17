@@ -90,7 +90,6 @@
     "karma-jasmine": "^1.0.2",
     "moment": "^2.15.2",
     "opener": "^1.4.2",
-    "rambda": "^0.3.4",
     "redis": "^2.6.3",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",

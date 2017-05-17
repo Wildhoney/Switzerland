@@ -1,4 +1,4 @@
-import { compose } from 'rambda';
+import compose from 'ramda/src/compose';
 
 /**
  * @constant observers
