@@ -50,20 +50,20 @@ export const defaultProps = () => {
     return {
 
         /**
-         * @method writeVDomState
+         * @method putVDomState
          * @param {Object} tree
          * @param {Object} root
          * @return {void}
          */
-        writeVDomState(tree, root) {
+        putVDomState(tree, root) {
             coreMap.set('state', { tree, root });
         },
 
         /**
-         * @method readVDomState
+         * @method takeVDomState
          * @return {Object|null}
          */
-        readVDomState() {
+        takeVDomState() {
 
             return coreMap.has('state') ? (() => {
 
@@ -257,7 +257,7 @@ export function create(name, component) {
                 } catch (err) {
 
                     const component = htmlErrorFor(this);
-                    const state = prevProps[coreKey].readVDomState();
+                    const state = prevProps[coreKey].takeVDomState();
 
                     if (component) {
 

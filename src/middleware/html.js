@@ -32,7 +32,7 @@ export default html => {
         props.attached && !props.universal && !props.node.firstChild && boundary.insertBefore(root, boundary.firstChild);
 
         // Save the virtual DOM state for cases where an error short-circuits the chain.
-        props[coreKey].writeVDomState(tree, root);
+        props[coreKey].putVDomState(tree, root);
 
         return { ...props, [coreKey]: { ...props[coreKey], tree, root } };
 
