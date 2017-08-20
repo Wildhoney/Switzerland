@@ -5,7 +5,7 @@
   "main": "switzerland.js",
   "module": "switzerland.js",
   "scripts": {
-    "build": "NODE_ENV=production BABEL_ENV=build webpack -p",
+    "build": "NODE_ENV=production BABEL_ENV=build webpack",
     "watch": "BABEL_ENV=build webpack --watch",
     "test": "npm run lint && npm run spec && npm run stats",
     "spec": "BABEL_ENV=build NODE_ENV=development ava",
@@ -106,7 +106,7 @@
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony",
     "virtual-dom": "^2.1.1",
     "webcomponents.js": "^0.7.23",
-    "webpack": "^2.2.0",
+    "webpack": "~3.0.0",
     "whatwg-fetch": "^2.0.2",
     "xo": "^0.17.0"
   },
