@@ -4,7 +4,7 @@ import uglify from 'rollup-plugin-uglify';
 import replace from 'rollup-plugin-replace';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import { minify } from 'uglify-js';
+import { minify } from 'uglify-es';
 
 export default {
     format: 'iife',
