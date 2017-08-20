@@ -32,5 +32,5 @@ export const removeEventListener = (name, fn) => {
  * @return {void}
  */
 export const dispatchEvent = (name, data) => {
-    listeners.get(name).forEach(listener => listener(data));
+    listeners.get(name) && listeners.get(name).forEach(listener => listener(data));
 };
