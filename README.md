@@ -111,7 +111,7 @@ You'll notice that we're passing a string via the `data-cheeses` attribute, rath
 
 As using attributes isn't the most elegant approach to updating components, we can instead choose to use another state manager &mdash; think [Redux](https://github.com/reactjs/redux), [mobx](https://github.com/mobxjs/mobx), or in the following case the React-esque `setState`/`state` approach.
 
-> Note: Try *fiddling* with the [JSFiddle we've created](https://jsfiddle.net/chs2fnod/) for your convenience!
+> Note: Try *fiddling* with the [JSFiddle we've created](https://jsfiddle.net/ynbLsda4/) for your convenience!
 
 ```javascript
 import { create, element, pipe } from 'switzerland';
