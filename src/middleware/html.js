@@ -29,7 +29,7 @@ export default html => {
         })() : create(tree);
 
         // Insert the node into the DOM.
-        props.attached && !('root' in props[coreKey]) && boundary.insertBefore(root, boundary.firstChild);
+        props.attached && !props.universal && !('root' in props[coreKey]) && boundary.insertBefore(root, boundary.firstChild);
 
         // Save the virtual DOM state for cases where an error short-circuits the chain.
         props[coreKey].putVDomState(tree, root);
