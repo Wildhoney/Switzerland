@@ -1,0 +1,6 @@
+[include]
+src/default.js
+
+[ignore]
+.*/.history
+.*/node_modules
