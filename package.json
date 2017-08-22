@@ -29,5 +29,8 @@
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "devDependencies": {
     "flow": "~0.2.3"
+  },
+  "dependencies": {
+    "picodom": "~0.1.0"
   }
 }

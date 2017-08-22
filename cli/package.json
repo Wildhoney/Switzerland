@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/Wildhoney/Switzerland/issues"
   },
-  "homepage": "https://github.com/Wildhoney/Switzerland#readme"
+  "homepage": "https://github.com/Wildhoney/Switzerland#readme",
+  "devDependencies": {
+    "taskfile": "~0.5.11"
+  }
 }
