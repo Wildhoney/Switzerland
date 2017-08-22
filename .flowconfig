@@ -1,6 +1,6 @@
-[include]
-src/default.js
-
 [ignore]
 .*/.history
 .*/node_modules
+.*/build\.js
+.*/example
+.*/webpack.config.js
