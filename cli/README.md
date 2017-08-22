@@ -29,4 +29,4 @@ Once published other developers are able to use your custom element(s):
 
 Which they can then include in their HTML via the standard `script` tag and use as `<todo-list />`, `<todo-input />`.
 
-Custom elements are also React-friendly and can be included seamlessly into React components, including the passing of props.
+Custom elements are also React-friendly and can be included seamlessly into React components &ndash; including the passing of props.
