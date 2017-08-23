@@ -10,7 +10,7 @@ export function html(markup: ({} => {})): any {
 
     return props => {
 
-        const isInitial: boolean = !Boolean(props.node.shadowRoot.firstChild);
+        const isInitial: boolean = !props.node.shadowRoot.firstChild;
         const previousProps: { tree?: HTMLElement, root?: HTMLElement } = props[meta] || {};
         const tree: {} = markup({ ...props, render: props.render });
 
