@@ -4,3 +4,4 @@
 .*/build\.js
 .*/example
 .*/webpack.config.js
+.*/tests
