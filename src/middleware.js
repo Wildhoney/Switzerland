@@ -6,9 +6,7 @@ import { meta } from './switzerland';
  * @param {Object} props
  * @return {Function}
  */
-export function html(markup: ({} => {})): Function {
-
-    let root: HTMLElement;
+export function html(markup: ({} => {})): any {
 
     return props => {
 
@@ -17,12 +15,12 @@ export function html(markup: ({} => {})): Function {
         const tree: {} = markup({ ...props, render: props.render });
 
         // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
-        root = patch(previousProps.tree, tree, previousProps.root);
+        const root: HTMLElement = patch(previousProps.tree, tree, previousProps.root);
 
         // Insert the DOM representation into the shadow boundary if it's the first render of the component.
         isInitial && props.node.shadowRoot.insertBefore(root, props.node.shadowRoot.firstChild);
 
-        return { ...props, [meta]: { ...props[meta], tree, root } };
+        return { ...props, meta: { ...props[meta], tree, root } };
 
     };
 
