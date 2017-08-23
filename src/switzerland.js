@@ -1,4 +1,5 @@
 import OrderlyQueue from 'orderly-queue';
+
 export { h } from 'picodom';
 
 /**
@@ -13,11 +14,15 @@ export const meta: Symbol = Symbol('meta');
  * @param {Array} middlewares
  * @return {Object}
  */
-export function create(name: string, ...middlewares: Array<Function>): void {
+export function create(name: string, ...middlewares: Array<() => mixed>): void {
 
     const queue: OrderlyQueue = new OrderlyQueue();
 
-    customElements.define(name, class extends HTMLElement {
+    /**
+     * @class SwitzerlandElement
+     * @extends {window.HTMLElement}
+     */
+    window.customElements.define(name, class SwitzerlandElement extends window.HTMLElement {
 
         /**
          * @method connectedCallback
@@ -42,7 +47,7 @@ export function create(name: string, ...middlewares: Array<Function>): void {
         /**
          * @method render
          * @param {Object} [mergeProps = {}]
-         * @return {Promise} 
+         * @return {Promise}
          */
         render(mergeProps?: {} = {}): Promise<{}> {
 
@@ -50,9 +55,9 @@ export function create(name: string, ...middlewares: Array<Function>): void {
 
                 const initialProps = { ...mergeProps, ...prevProps, node: this, render: this.render.bind(this) };
 
-                return await middlewares.reduce(async (props, current, index) => {
+                return middlewares.reduce(async (props, current, index) => {
                     const middleware: props => props = middlewares[index];
-                    return await middleware(props);
+                    return middleware(props);
                 }, initialProps);
 
             });
