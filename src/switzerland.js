@@ -1,12 +1,13 @@
 import OrderlyQueue from 'orderly-queue';
+import { errorHandlers } from './middleware';
 
 export { h } from 'picodom';
 
 /**
- * @constant meta
+ * @constant vDomState
  * @type {Symbol}
  */
-export const meta: Symbol = Symbol('meta');
+export const vDomState: Symbol = Symbol('vdom-state');
 
 /**
  * @method create
@@ -16,13 +17,66 @@ export const meta: Symbol = Symbol('meta');
  */
 export function create(name: string, ...middlewares: Array<() => mixed>): void {
 
-    const queue: OrderlyQueue = new OrderlyQueue();
+    /**
+     * @constant queue
+     * @type {Symbol}
+     */
+    const queue: Symbol = Symbol('queue');
+
+    /**
+     * @constant registry
+     * @type {Map}
+     */
+    const registry: Map<string, { tree: {}, root: HTMLElement }> = new Map();
 
     /**
      * @class SwitzerlandElement
      * @extends {window.HTMLElement}
      */
     window.customElements.define(name, class SwitzerlandElement extends window.HTMLElement {
+
+        /**
+         * @constant queue
+         * @type {Symbol}
+         */
+        [queue]: OrderlyQueue = new OrderlyQueue({ error: err => {
+
+            if (!errorHandlers.has(this)) {
+                return void console.error(`Switzerland: ${err}`);
+            }
+
+            return this[queue].process((): Promise<void> => {
+                const getTree: {} = errorHandlers.get(this);
+                return getTree({ node: this, render: this.render.bind(this), error: err });
+            });
+
+        } });
+
+        /**
+         * @constant vDomState
+         * @type {Object}
+         */
+        [vDomState] = {
+
+            /**
+             * @method putVDomState
+             * @param {Object} tree
+             * @param {Object} root
+             * @return {void}
+             */
+            putVDomState(tree: {}, root: HTMLElement): void {
+                registry.set('state', { tree, root });
+            },
+
+            /**
+             * @method takeVDomState
+             * @return {Object|null}
+             */
+            takeVDomState(): {} | void {
+                return registry.has('state') ? registry.get('state') : null;
+            }
+
+        }
 
         /**
          * @method connectedCallback
@@ -51,12 +105,13 @@ export function create(name: string, ...middlewares: Array<() => mixed>): void {
          */
         render(mergeProps?: {} = {}): Promise<{}> {
 
-            return queue.process(async prevProps => {
+            return this[queue].process(async prevProps => {
 
-                const initialProps = { ...mergeProps, ...prevProps, node: this, render: this.render.bind(this) };
+                const initialProps = { ...prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
 
-                return middlewares.reduce(async (props, current, index) => {
+                return middlewares.reduce(async (accumP, current, index) => {
                     const middleware: props => props = middlewares[index];
+                    const props = await accumP;
                     return middleware(props);
                 }, initialProps);
 
