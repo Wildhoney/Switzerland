@@ -149,7 +149,7 @@ export function create(name: string, ...middlewares: Array<Props>): void {
                 const prevProps = this[state].takePrevProps();
                 const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
 
-                const result = await middlewares.reduce(async (accumP, current, index) => {
+                const result = await middlewares.reduce(async (accumP, _, index) => {
                     const middleware = middlewares[index];
                     return middleware(await accumP);
                 }, initialProps);
