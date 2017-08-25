@@ -11,12 +11,12 @@ export { h } from 'picodom';
 export const state: Symbol = Symbol('state');
 
 /**
- * @method renderMessage
+ * @method message
  * @param {String} message
  * @param {String} type
  * @return {void}
  */
-function renderMessage(message: string, type: 'error' | 'info' | 'log' = 'error') {
+function message(message: string, type: 'error' | 'info' | 'log' = 'error') {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
 }
 
@@ -71,7 +71,9 @@ export function create(name: string, ...middlewares: Array<Props>): void {
 
                     // We need to try-catch the recovery component because otherwise we'd be facing a potential
                     // infinite loop of throwing error messages.
-                    return renderMessage('Throwing an error from the recovery middleware is forbidden');
+                    message('Throwing an error from the recovery middleware is forbidden');
+                    console.error(err);
+                    return;
 
                 }
 

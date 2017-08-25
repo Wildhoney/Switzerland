@@ -46,10 +46,7 @@ export function html(getTree: Props => Props): any {
             const tree: {} = await getTree({ ...props, render: props.render });
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
-            const root: HTMLElement = patch(previous.tree, tree, previous.root);
-
-            // Insert the DOM representation into the shadow boundary if it's the first render of the component.
-            !previous.tree && props.node.shadowRoot.insertBefore(root, props.node.shadowRoot.firstChild);
+            const root: HTMLElement = patch(previous.tree, tree, previous.root, props.node.shadowRoot);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             props.node[state].putState(tree, root, props);
