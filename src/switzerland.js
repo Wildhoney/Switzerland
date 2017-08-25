@@ -1,6 +1,6 @@
 import OrderlyQueue from 'orderly-queue';
 import { errorHandlers } from './middleware';
-import type { TreeRoot } from './middleware';
+import type { TreeRoot, Props } from './middleware';
 
 export { h } from 'picodom';
 
@@ -12,7 +12,7 @@ export const state: Symbol = Symbol('state');
 
 /**
  * @method renderMessage
- * @param {String} message 
+ * @param {String} message
  * @param {String} type
  * @return {void}
  */
@@ -26,7 +26,7 @@ function renderMessage(message: string, type: 'error' | 'info' | 'log' = 'error'
  * @param {Array} middlewares
  * @return {Object}
  */
-export function create(name: string, ...middlewares: Array<() => mixed>): void {
+export function create(name: string, ...middlewares: Array<Props>): void {
 
     /**
      * @constant queue
@@ -52,8 +52,8 @@ export function create(name: string, ...middlewares: Array<() => mixed>): void {
          */
         [queue]: OrderlyQueue = new OrderlyQueue({ error: err => {
 
-            if (!errorHandlers.has(this)) {
-                return void console.error(`Switzerland: ${err}`);
+            if (!errorHandlers.has(this) || !window.document.contains(this)) {
+                return console.error(`Switzerland: ${err}`);
             }
 
             return this[queue].process(async (): Promise<void> => {
@@ -62,15 +62,19 @@ export function create(name: string, ...middlewares: Array<() => mixed>): void {
                 const prevProps = this[state].takePrevProps();
 
                 try {
-                    return await getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
+
+                    const result = await getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
+                    this.classList.add('resolved');
+                    return result;
+
                 } catch (err) {
 
                     // We need to try-catch the recovery component because otherwise we'd be facing a potential
                     // infinite loop of throwing error messages.
-                    return void renderMessage('Throwing an error from the recovery middleware is forbidden');
+                    return renderMessage('Throwing an error from the recovery middleware is forbidden');
 
                 }
-                
+
             });
 
         } });
@@ -114,22 +118,21 @@ export function create(name: string, ...middlewares: Array<() => mixed>): void {
 
         /**
          * @method connectedCallback
-         * @return {void}
+         * @return {Promise}
          */
-        connectedCallback(): Promise<{}> {
-
+        connectedCallback(): Promise<Props> {
             const shadowRoot: ShadowRoot | void = this.shadowRoot;
-
-            // Create the shadow boundary if the element doesn't already have one, otherwise clear the shadow
-            // boundary for a re-render attempt.
-            shadowRoot ? (() => {
-                this.innerHTML = '';
-                shadowRoot.innerHTML = '';
-                this.classList.remove('resolved');
-            })() : this.attachShadow({ mode: 'open' });
-
+            !shadowRoot && this.attachShadow({ mode: 'open' });
             return this.render();
+        }
 
+        /**
+         * @method disconnectedCallback
+         * @return {Promise}
+         */
+        disconnectedCallback(): Promise<Props> {
+            this.classList.remove('resolved');
+            return this.render();
         }
 
         /**
@@ -137,23 +140,22 @@ export function create(name: string, ...middlewares: Array<() => mixed>): void {
          * @param {Object} [mergeProps = {}]
          * @return {Promise}
          */
-        render(mergeProps?: {} = {}): Promise<{}> {
+        render(mergeProps?: {} = {}): Promise<Props> {
 
-            const result = this[queue].process(async () => {
+            return this[queue].process(async () => {
 
                 const prevProps = this[state].takePrevProps();
                 const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
 
-                return middlewares.reduce(async (accumP, current, index) => {
-                    const middleware: props => props = middlewares[index];
-                    const props = await accumP;
-                    return middleware(props);
+                const result = await middlewares.reduce(async (accumP, current, index) => {
+                    const middleware = middlewares[index];
+                    return middleware(await accumP);
                 }, initialProps);
 
-            });
+                window.document.contains(this) && this.classList.add('resolved');
+                return result;
 
-            !this.classList.contains('resolved') && this.classList.add('resolved');
-            return result;
+            });
 
         }
 
