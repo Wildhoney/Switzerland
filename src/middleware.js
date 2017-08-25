@@ -1,5 +1,5 @@
 import { patch } from 'picodom';
-import { vDomState } from './switzerland';
+import { state } from './switzerland';
 
 type Props = {} => {};
 
@@ -8,6 +8,11 @@ type Props = {} => {};
  * @type {WeakMap}
  */
 export const errorHandlers: WeakMap<Symbol, Function> = new WeakMap();
+
+/**
+ * @type TreeRoot
+ */
+export type TreeRoot = { tree: {}, root: HTMLElement, props: {} };
 
 /**
  * @method recover
@@ -30,22 +35,20 @@ export function recover(getTree: Props => Props): any {
  */
 export function html(getTree: Props => Props): any {
 
-    type PreviousProps = { tree?: HTMLElement, root?: HTMLElement };
-
-    return props => {
+    return async props => {
 
         const isInitial: boolean = !props.node.shadowRoot.firstChild;
-        const previousProps: PreviousProps = props.node[vDomState].takeVDomState() || {};
-        const tree: {} = getTree({ ...props, render: props.render });
+        const previous: TreeRoot = props.node[state].takeVDomTree() || {};
+        const tree: {} = await getTree({ ...props, render: props.render });
 
         // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
-        const root: HTMLElement = patch(previousProps.tree, tree, previousProps.root);
+        const root: HTMLElement = patch(previous.tree, tree, previous.root);
 
         // Insert the DOM representation into the shadow boundary if it's the first render of the component.
-        !('tree' in previousProps) && props.node.shadowRoot.insertBefore(root, props.node.shadowRoot.firstChild);
+        !previous.tree && props.node.shadowRoot.insertBefore(root, props.node.shadowRoot.firstChild);
 
         // Save the virtual DOM state for cases where an error short-circuits the chain.
-        props.node[vDomState].putVDomState(tree, root);
+        props.node[state].putState(tree, root, props);
 
         return props;
 
