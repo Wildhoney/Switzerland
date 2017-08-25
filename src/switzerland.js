@@ -73,7 +73,6 @@ export function create(name: string, ...middlewares: Array<Props>): void {
                     // infinite loop of throwing error messages.
                     message('Throwing an error from the recovery middleware is forbidden');
                     console.error(err);
-                    return;
 
                 }
 

@@ -22,7 +22,7 @@ export const errorHandlers: WeakMap<Symbol, Function> = new WeakMap();
  * @type {String}
  */
 const path: string = (() => {
-    const script: HTMLScriptElement | null = document.currentScript;
+    const script: window.HTMLScriptElement | null = window.document.currentScript;
     return script ? script.getAttribute('src') || '' : '';
 })();
 
@@ -36,13 +36,13 @@ export function include(...files: Array<string>): Function {
     return async props => {
 
         if (!props.node.shadowRoot.querySelector('style')) {
-            
+
             const content = await files.reduce(async (accumP, _, index) => {
                 const result = await window.fetch(files[index]).then(r => r.text());
                 return `${result} ${await accumP}`;
             }, '');
-    
-            const style = document.createElement('style');
+
+            const style = window.document.createElement('style');
             style.setAttribute('type', 'text/css');
             style.innerHTML = content;
             props.node.shadowRoot.appendChild(style);
@@ -50,6 +50,7 @@ export function include(...files: Array<string>): Function {
         }
 
         return props;
+
     };
 
 }
