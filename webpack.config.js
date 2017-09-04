@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const Uglify = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: './example/index.js',
@@ -9,6 +10,9 @@ module.exports = {
     node: {
         fs: 'empty'
     },
+    plugins: [
+        new Uglify()
+    ],
     module: {
         loaders: [
             {

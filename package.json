@@ -12,7 +12,8 @@
     "build": "webpack",
     "lint": "xo src/*.js",
     "test": "npm run flow && npm run lint && npm run spec",
-    "start": "concurrently 'http-server' 'webpack --watch'"
+    "start": "concurrently 'http-server' 'webpack --watch'",
+    "webpack-defaults": "webpack-defaults"
   },
   "repository": {
     "type": "git",
@@ -59,6 +60,7 @@
     "flow": "~0.2.3",
     "http-server": "~0.10.0",
     "puppeteer": "~0.9.0",
+    "uglifyjs-webpack-plugin": "~1.0.0-beta.1",
     "webpack": "~3.0.0",
     "xo": "~0.18.2"
   },
@@ -117,5 +119,6 @@
         }
       ]
     }
-  }
+  },
+  "pre-push": []
 }
