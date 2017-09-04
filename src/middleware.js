@@ -78,16 +78,20 @@ export function recover(getTree: Props => Props): Function {
 
 /**
  * @method attrs
+ * @param {Array} exclude
  * @return {Function}
  */
-export function attrs(): Function {
+export function attrs(exclude: Array<string> = ['class', 'id']): Function {
 
     let observer: MutationObserver | void;
 
     return props => {
 
         !observer && (() => {
-            observer = new window.MutationObserver(props.render);
+            observer = new window.MutationObserver(mutations => {
+                const rerender = !mutations.every(m => exclude.includes(m.attributeName));
+                rerender && props.render();
+            });
             observer.observe(props.node, { attributes: true });
         })();
         
