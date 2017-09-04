@@ -40,6 +40,8 @@ const path: string = (() => {
  */
 export function include(...files: Array<string>): Function {
 
+    const cache: Map<string, string> = new Map();
+
     return async props => {
 
         if (!props.node.shadowRoot.querySelector('style')) {
@@ -117,14 +119,14 @@ export function html(getTree: Props => Props): Function {
 
         if (window.document.contains(props.node)) {
 
-            const previous: TreeRoot = props.node[state].takeVDomTree() || {};
+            const previous: TreeRoot = props.node[state].takeVDomTree(props.node) || {};
             const tree: {} = await getTree({ ...props, render: props.render });
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const root: HTMLElement = patch(previous.tree, tree, previous.root, props.node.shadowRoot);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
-            props.node[state].putState(tree, root, props);
+            props.node[state].putState(props.node, tree, root, props);
 
         }
 

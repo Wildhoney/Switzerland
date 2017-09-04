@@ -1,4 +1,3 @@
-import OrderlyQueue from 'orderly-queue';
 import { errorHandlers } from './middleware';
 import type { TreeRoot, Props } from './middleware';
 
@@ -38,53 +37,19 @@ export function create(name: string, ...middlewares: Array<Props>): void {
      * @constant registry
      * @type {Map}
      */
-    const registry: Map<string, TreeRoot> = new Map();
+    const registry: Map<HTMLElement, TreeRoot> = new Map();
 
     /**
      * @class SwitzerlandElement
      * @extends {window.HTMLElement}
      */
-    window.customElements.define(name, class SwitzerlandElement extends window.HTMLElement {
-
-        /**
-         * @constant queue
-         * @type {Symbol}
-         */
-        [queue]: OrderlyQueue = new OrderlyQueue({ error: err => {
-
-            if (!errorHandlers.has(this) || !window.document.contains(this)) {
-                return console.error(`Switzerland: ${err}`);
-            }
-
-            return this[queue].process(async (): Promise<void> => {
-
-                const getTree: {} = errorHandlers.get(this);
-                const prevProps = this[state].takePrevProps();
-
-                try {
-
-                    const result = await getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
-                    !this.classList.contains('resolved') && this.classList.add('resolved');
-                    return result;
-
-                } catch (err) {
-
-                    // We need to try-catch the recovery component because otherwise we'd be facing a potential
-                    // infinite loop of throwing error messages.
-                    message('Throwing an error from the recovery middleware is forbidden');
-                    console.error(err);
-
-                }
-
-            });
-
-        } });
+    window.customElements.define(name, class SwissElement extends window.HTMLElement {
 
         /**
          * @constant state
          * @type {Object}
          */
-        [state] = {
+        [state]: {} = {
 
             /**
              * @method putState
@@ -93,26 +58,26 @@ export function create(name: string, ...middlewares: Array<Props>): void {
              * @param {Object} prevProps
              * @return {void}
              */
-            putState(tree: {}, root: HTMLElement, prevProps: {}): void {
-                registry.set('vdomTree', { tree, root });
-                prevProps && registry.set('prevProps', prevProps);
+            putState(node: HTMLElement, tree: {}, root: HTMLElement, prevProps: {}): void {
+                registry.set(node, { tree, root, prevProps });
             },
 
             /**
              * @method takeVDomTree
+             * @param {HTMLElement} node
              * @return {Object|null}
              */
-            takeVDomTree(): {} | void {
-                return registry.has('vdomTree') ? registry.get('vdomTree') : null;
+            takeVDomTree(node: HTMLElement): {} | void {
+                return registry.get(node) || null;
             },
 
             /**
              * @method takePrevProps
+             * @param {HTMLElement} node
              * @return {Object|null}
              */
-            takePrevProps(): {} | void {
-                const { prevProps, render, node, ...rest } = registry.get('prevProps') || {};
-                return rest;
+            takePrevProps(node: HTMLElement): {} | void {
+                return Object(registry.get(node)).prevProps || null;
             }
 
         }
@@ -141,12 +106,12 @@ export function create(name: string, ...middlewares: Array<Props>): void {
          * @param {Object} [mergeProps = {}]
          * @return {Promise}
          */
-        render(mergeProps?: {} = {}): Promise<Props> {
+        async render(mergeProps?: {} = {}): Promise<Props> {
 
-            return this[queue].process(async () => {
+            const prevProps = this[state].takePrevProps(this);
+            const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
 
-                const prevProps = this[state].takePrevProps();
-                const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
+            try {
 
                 const result = await middlewares.reduce(async (accumP, _, index) => {
                     const middleware = middlewares[index];
@@ -156,7 +121,31 @@ export function create(name: string, ...middlewares: Array<Props>): void {
                 window.document.contains(this) && !this.classList.contains('resolved') && this.classList.add('resolved');
                 return result;
 
-            });
+            } catch (err) {
+                
+                if (!errorHandlers.has(this) || !window.document.contains(this)) {
+                    return console.error(`Switzerland: ${err}`);
+                }
+    
+                const getTree: {} = errorHandlers.get(this);
+                const prevProps = this[state].takePrevProps(this);
+
+                try {
+
+                    const result = await getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
+                    !this.classList.contains('resolved') && this.classList.add('resolved');
+                    return result;
+
+                } catch (err) {
+
+                    // We need to try-catch the recovery component because otherwise we'd be facing a potential
+                    // infinite loop of throwing error messages.
+                    message('Throwing an error from the recovery middleware is forbidden');
+                    console.error(err);
+
+                }
+
+            }
 
         }
 

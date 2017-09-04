@@ -32,7 +32,6 @@
   },
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "dependencies": {
-    "orderly-queue": "~0.1.10",
     "picodom": "~0.1.0"
   },
   "devDependencies": {
