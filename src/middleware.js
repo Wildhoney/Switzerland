@@ -1,10 +1,11 @@
 import { patch } from 'picodom';
 import { state } from './switzerland';
+import { kebabToCamel } from './helpers';
 
 /**
  * @type Props
  */
-export type Props = { node: HTMLElement, render: Function } => { node: HTMLElement, render: Function };
+export type Props = { node: HTMLElement, render: Function };
 
 /**
  * @type TreeRoot
@@ -15,7 +16,13 @@ export type TreeRoot = { tree: {}, root: HTMLElement, props: {} };
  * @constant errorHandlers
  * @type {WeakMap}
  */
-export const errorHandlers: WeakMap<Symbol, Function> = new WeakMap();
+export const errorHandlers: WeakMap<HTMLElement, Function> = new WeakMap();
+
+/**
+ * @constant nullObject
+ * @type {Object}
+ */
+const nullObject = Object.create(null);
 
 /**
  * @constant path
@@ -62,9 +69,35 @@ export function include(...files: Array<string>): Function {
  */
 export function recover(getTree: Props => Props): Function {
 
-    return props => {
+    return (props: Props): Props => {
         !errorHandlers.has(props.node) && errorHandlers.set(props.node, getTree);
         return props;
+    };
+
+}
+
+/**
+ * @method attrs
+ * @return {Function}
+ */
+export function attrs(): Function {
+
+    let observer: MutationObserver | void;
+
+    return props => {
+
+        !observer && (() => {
+            observer = new window.MutationObserver(props.render);
+            observer.observe(props.node, { attributes: true });
+        })();
+        
+        const attrs = Object.keys(props.node.attributes).reduce((acc, index) => {
+            const attr = props.node.attributes[index];
+            return { ...acc, [kebabToCamel(attr.nodeName)]: attr.nodeValue };
+        }, nullObject);
+    
+        return { ...props, attrs };
+
     };
 
 }

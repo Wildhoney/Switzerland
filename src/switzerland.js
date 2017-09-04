@@ -64,7 +64,7 @@ export function create(name: string, ...middlewares: Array<Props>): void {
                 try {
 
                     const result = await getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
-                    this.classList.add('resolved');
+                    !this.classList.contains('resolved') && this.classList.add('resolved');
                     return result;
 
                 } catch (err) {
@@ -153,7 +153,7 @@ export function create(name: string, ...middlewares: Array<Props>): void {
                     return middleware(await accumP);
                 }, initialProps);
 
-                window.document.contains(this) && this.classList.add('resolved');
+                window.document.contains(this) && !this.classList.contains('resolved') && this.classList.add('resolved');
                 return result;
 
             });
