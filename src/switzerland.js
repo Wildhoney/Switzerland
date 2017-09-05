@@ -126,14 +126,18 @@ export function create(name, ...middlewares) {
                             return [...accum, ...Array.from(props.node.shadowRoot.querySelectorAll(name))];
                         }, []);
 
-                        addEventListener('resolved', node => {
-                            resolved.add(node);
-                            resolved.size === nodes.length && do {
-                                removeEventListener('resolved', node);   
-                                resolve();
-                                resolved.clear();
-                            };
-                        });
+                        nodes.length === 0 ? resolve() : do {
+
+                            addEventListener('resolved', node => {
+                                resolved.add(node);
+                                resolved.size === nodes.length && do {
+                                    removeEventListener('resolved', node);   
+                                    resolve();
+                                    resolved.clear();
+                                };
+                            });
+
+                        }
 
                     });
 

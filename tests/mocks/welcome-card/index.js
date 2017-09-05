@@ -31,7 +31,7 @@ const person = props => {
 create('welcome-cards', include('welcome-cards.css'), wait('welcome-card'), html(props => {
 
     return (
-        <section>
+        <section class="welcome-cards">
             <welcome-card capitalise="yes">Hello</welcome-card>
             <welcome-card capitalise="yes">Zdravstvuyte</welcome-card>
             <welcome-card capitalise="yes">Hola</welcome-card>
