@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Switzerland</title>
+    <script type="text/javascript" src="build.js"></script>
+    <style type="text/css">
+
+        welcome-card {
+            opacity: 0;
+            transition: opacity .5s;
+        }
+
+        welcome-card.resolved {
+            opacity: 1;
+        }
+
+        welcome-card:first-of-type {
+            --welcome-card-theme: purple;
+            --welcome-card-border-radius: 50%;
+        }
+
+        welcome-card:last-of-type {
+            --welcome-card-theme: green;
+            --welcome-card-border-radius: 50%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <welcome-card capitalise="yes">Hello</welcome-card>
+    <welcome-card capitalise="yes">Privet</welcome-card>
+    
+</body>
+</html>
