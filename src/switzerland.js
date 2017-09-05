@@ -21,7 +21,7 @@ const registry = new WeakMap();
  * @param {String} type
  * @return {void}
  */
-function message(message, type) {
+function message(message, type = 'error') {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
 }
 
@@ -162,7 +162,7 @@ export function create(name, ...middlewares) {
 
                         // When the error handling middleware throws an error we'll need to halt the execution
                         // because the error handler should be recovering, not compounding the problem.
-                        message('Throwing an error from the recovery middleware is forbidden');
+                        message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
                         console.error(err);
 
                     }
