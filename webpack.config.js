@@ -11,22 +11,6 @@ module.exports = {
         fs: 'empty'
     },
     plugins: [
-        new Uglify({
-            uglifyOptions: {
-                ie8: false,
-                ecma: 8,
-                mangle: true,
-                output: {
-                    comments: false,
-                    beautify: false
-                },
-                parse: {
-                    html5_comments: false,
-                    shebang: false
-                },
-                warnings: false
-            }
-        })
     ],
     module: {
         loaders: [

@@ -56,22 +56,13 @@ export function create(name, ...middlewares) {
             },
 
             /**
-             * @method takeState
-             * @param {HTMLElement} node
-             * @param {String} prop
-             * @return {Object|null}
-             */
-            takeState(node, prop) {
-                return Object(registry.get(node))[prop] || null;
-            },
-
-            /**
              * @method takeVDomTree
              * @param {HTMLElement} node
              * @return {Object|null}
              */
             takeVDomTree(node) {
-                return this[state].takeState(node, 'vDomTree');
+                const state = Object(registry.get(node));
+                return state.vDomTree;
             },
 
             /**
@@ -80,7 +71,8 @@ export function create(name, ...middlewares) {
              * @return {Object|null}
              */
             takePrevProps(node) {
-                return this[state].takeState(node, 'prevProps');
+                const state = Object(registry.get(node));
+                return state.prevProps;
             }
 
         }
@@ -143,14 +135,14 @@ export function create(name, ...middlewares) {
                         message('Throwing an error from the recovery middleware is forbidden');
                         console.error(err);
 
-                    } finally {
-
-                        // Finally we'll add the "resolved" class name regardless of how the error's rendered.
-                        document.contains(this) && !this.classList.contains('resolved') && this.classList.add('resolved');
-
                     }
 
                 };
+
+            } finally {
+                
+                // Finally we'll add the "resolved" class name regardless of how the error's rendered.
+                document.contains(this) && !this.classList.contains('resolved') && this.classList.add('resolved');
 
             }
 

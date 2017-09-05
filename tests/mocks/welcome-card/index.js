@@ -28,7 +28,7 @@ const person = props => {
 
 };
 
-create('welcome-card', attrs(), recover(errorHandler), include('example/index.css'), person, html(props => {
+create('welcome-card', attrs(), recover(errorHandler), include('index.css'), person, html(props => {
 
     const name = props.attrs.capitalise === 'yes' ? props.person.name.toUpperCase() : props.person.name;
 

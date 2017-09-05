@@ -39,13 +39,13 @@ export function include(...files) {
 
             const content = cache.has(cacheKey) ? cache.get(cacheKey) : do {
 
-                files.reduce(async (accumP, _, index) => {
+                const content = files.reduce(async (accumP, _, index) => {
                     const result = await fetch(files[index]).then(r => r.text());
                     return `${result} ${await accumP}`;
                 }, '');
 
                 cache.set(cacheKey, content);
-                files;
+                content;
 
             };
 
