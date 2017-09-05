@@ -2,16 +2,31 @@ const webpack = require('webpack');
 const Uglify = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-    entry: './example/index.js',
+    entry: './tests/mocks/welcome-card/index.js',
     output: {
-        filename: 'build.js',
+        filename: './tests/mocks/welcome-card/build.js',
         libraryTarget: 'var'
     },
     node: {
         fs: 'empty'
     },
     plugins: [
-        new Uglify()
+        new Uglify({
+            uglifyOptions: {
+                ie8: false,
+                ecma: 8,
+                mangle: true,
+                output: {
+                    comments: false,
+                    beautify: false
+                },
+                parse: {
+                    html5_comments: false,
+                    shebang: false
+                },
+                warnings: false
+            }
+        })
     ],
     module: {
         loaders: [
