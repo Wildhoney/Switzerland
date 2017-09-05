@@ -3,20 +3,10 @@ import { state } from './switzerland';
 import { kebabToCamel } from './helpers';
 
 /**
- * @type Props
- */
-export type Props = { node: HTMLElement, render: Function };
-
-/**
- * @type TreeRoot
- */
-export type TreeRoot = { tree: {}, root: HTMLElement, props: {} };
-
-/**
  * @constant errorHandlers
  * @type {WeakMap}
  */
-export const errorHandlers: WeakMap<HTMLElement, Function> = new WeakMap();
+export const errorHandlers = new WeakMap();
 
 /**
  * @constant nullObject
@@ -28,35 +18,38 @@ const nullObject = Object.create(null);
  * @constant path
  * @type {String}
  */
-const path: string = (() => {
-    const script: window.HTMLScriptElement | null = window.document.currentScript;
-    return script ? script.getAttribute('src') || '' : '';
-})();
+// const path = do {
+//     const script = document.currentScript;
+//     return script ? script.getAttribute('src') || '' : '';
+// };
 
 /**
  * @method include
  * @param {Array} files
  * @return {Function}
  */
-export function include(...files: Array<string>): Function {
+export function include(...files) {
 
-    const cache: Map<HTMLElement, string> = new Map();
+    const cache = new Map();
     const cacheKey = files.join(';');
 
     return async props => {
 
-        const fromCache = cache.has(cacheKey);
-
         if (!props.node.shadowRoot.querySelector('style')) {
 
-            const content = fromCache ? cache.get(cacheKey) : files.reduce(async (accumP, _, index) => {
-                const result = await window.fetch(files[index]).then(r => r.text());
-                return `${result} ${await accumP}`;
-            }, '');
+            const content = cache.has(cacheKey) ? cache.get(cacheKey) : do {
 
-            !fromCache && cache.set(cacheKey, content);
+                files.reduce(async (accumP, _, index) => {
+                    const result = await fetch(files[index]).then(r => r.text());
+                    return `${result} ${await accumP}`;
+                }, '');
 
-            const style = window.document.createElement('style');
+                cache.set(cacheKey, content);
+                files;
+
+            };
+
+            const style = document.createElement('style');
             style.setAttribute('type', 'text/css');
             style.innerHTML = await content;
             props.node.shadowRoot.appendChild(style);
@@ -74,9 +67,9 @@ export function include(...files: Array<string>): Function {
  * @param {Function} getTree
  * @return {Function}
  */
-export function recover(getTree: Props => Props): Function {
+export function recover(getTree) {
 
-    return (props: Props): Props => {
+    return props => {
         !errorHandlers.has(props.node) && errorHandlers.set(props.node, getTree);
         return props;
     };
@@ -88,25 +81,28 @@ export function recover(getTree: Props => Props): Function {
  * @param {Array} exclude
  * @return {Function}
  */
-export function attrs(exclude: Array<string> = ['class', 'id']): Function {
+export function attrs(exclude = ['class', 'id']) {
 
-    let observer: MutationObserver | void;
+    let observer;
 
     return props => {
 
-        !observer && (() => {
-            observer = new window.MutationObserver(mutations => {
+        !observer && do {
+
+            observer = new MutationObserver(mutations => {
                 const rerender = !mutations.every(m => exclude.includes(m.attributeName));
                 rerender && props.render();
             });
+
             observer.observe(props.node, { attributes: true });
-        })();
-        
+
+        };
+
         const attrs = Object.keys(props.node.attributes).reduce((acc, index) => {
             const attr = props.node.attributes[index];
             return { ...acc, [kebabToCamel(attr.nodeName)]: attr.nodeValue };
         }, nullObject);
-    
+
         return { ...props, attrs };
 
     };
@@ -118,17 +114,17 @@ export function attrs(exclude: Array<string> = ['class', 'id']): Function {
  * @param {Function} getTree
  * @return {Function}
  */
-export function html(getTree: Props => Props): Function {
+export function html(getTree) {
 
     return async props => {
 
-        if (window.document.contains(props.node)) {
+        if (document.contains(props.node)) {
 
-            const previous: TreeRoot = props.node[state].takeVDomTree(props.node) || {};
-            const tree: {} = await getTree({ ...props, render: props.render });
+            const previous = props.node[state].takeVDomTree(props.node) || {};
+            const tree = await getTree({ ...props, render: props.render });
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
-            const root: HTMLElement = patch(previous.tree, tree, previous.root, props.node.shadowRoot);
+            const root = patch(previous.tree, tree, previous.root, props.node.shadowRoot);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             props.node[state].putState(props.node, tree, root, props);

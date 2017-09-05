@@ -1,5 +1,4 @@
 import { errorHandlers } from './middleware';
-import type { TreeRoot, Props } from './middleware';
 
 export { h } from 'picodom';
 
@@ -7,7 +6,13 @@ export { h } from 'picodom';
  * @constant state
  * @type {Symbol}
  */
-export const state: Symbol = Symbol('state');
+export const state = Symbol('state');
+
+/**
+ * @constant registry
+ * @type {WeakMap}
+ */
+const registry = new WeakMap();
 
 /**
  * @method message
@@ -15,7 +20,7 @@ export const state: Symbol = Symbol('state');
  * @param {String} type
  * @return {void}
  */
-function message(message: string, type: 'error' | 'info' | 'log' = 'error') {
+function message(message, type) {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
 }
 
@@ -25,31 +30,19 @@ function message(message: string, type: 'error' | 'info' | 'log' = 'error') {
  * @param {Array} middlewares
  * @return {Object}
  */
-export function create(name: string, ...middlewares: Array<Props>): void {
-
-    /**
-     * @constant queue
-     * @type {Symbol}
-     */
-    const queue: Symbol = Symbol('queue');
-
-    /**
-     * @constant registry
-     * @type {Map}
-     */
-    const registry: Map<HTMLElement, TreeRoot> = new Map();
+export function create(name, ...middlewares) {
 
     /**
      * @class SwitzerlandElement
-     * @extends {window.HTMLElement}
+     * @extends {HTMLElement}
      */
-    window.customElements.define(name, class SwissElement extends window.HTMLElement {
+    customElements.define(name, class SwissElement extends HTMLElement {
 
         /**
          * @constant state
          * @type {Object}
          */
-        [state]: {} = {
+        [state] = {
 
             /**
              * @method putState
@@ -58,8 +51,18 @@ export function create(name: string, ...middlewares: Array<Props>): void {
              * @param {Object} prevProps
              * @return {void}
              */
-            putState(node: HTMLElement, tree: {}, root: HTMLElement, prevProps: {}): void {
-                registry.set(node, { tree, root, prevProps });
+            putState(node, tree, root, prevProps) {
+                registry.set(node, { prevProps, vDomTree: { tree, root } });
+            },
+
+            /**
+             * @method takeState
+             * @param {HTMLElement} node
+             * @param {String} prop
+             * @return {Object|null}
+             */
+            takeState(node, prop) {
+                return Object(registry.get(node))[prop] || null;
             },
 
             /**
@@ -67,8 +70,8 @@ export function create(name: string, ...middlewares: Array<Props>): void {
              * @param {HTMLElement} node
              * @return {Object|null}
              */
-            takeVDomTree(node: HTMLElement): {} | void {
-                return registry.get(node) || null;
+            takeVDomTree(node) {
+                return this[state].takeState(node, 'vDomTree');
             },
 
             /**
@@ -76,8 +79,8 @@ export function create(name: string, ...middlewares: Array<Props>): void {
              * @param {HTMLElement} node
              * @return {Object|null}
              */
-            takePrevProps(node: HTMLElement): {} | void {
-                return Object(registry.get(node)).prevProps || null;
+            takePrevProps(node) {
+                return this[state].takeState(node, 'prevProps');
             }
 
         }
@@ -86,8 +89,8 @@ export function create(name: string, ...middlewares: Array<Props>): void {
          * @method connectedCallback
          * @return {Promise}
          */
-        connectedCallback(): Promise<Props> {
-            const shadowRoot: ShadowRoot | void = this.shadowRoot;
+        connectedCallback() {
+            const shadowRoot = this.shadowRoot;
             !shadowRoot && this.attachShadow({ mode: 'open' });
             return this.render();
         }
@@ -96,7 +99,7 @@ export function create(name: string, ...middlewares: Array<Props>): void {
          * @method disconnectedCallback
          * @return {Promise}
          */
-        disconnectedCallback(): Promise<Props> {
+        disconnectedCallback() {
             this.classList.remove('resolved');
             return this.render();
         }
@@ -106,44 +109,48 @@ export function create(name: string, ...middlewares: Array<Props>): void {
          * @param {Object} [mergeProps = {}]
          * @return {Promise}
          */
-        async render(mergeProps?: {} = {}): Promise<Props> {
+        async render(mergeProps = {}) {
 
             const prevProps = this[state].takePrevProps(this);
             const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
 
             try {
 
-                const result = await middlewares.reduce(async (accumP, _, index) => {
+                // Attempt to render the component, catching any errors that may be thrown in the middleware to
+                // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
+                return await middlewares.reduce(async (accumP, _, index) => {
                     const middleware = middlewares[index];
                     return middleware(await accumP);
                 }, initialProps);
 
-                window.document.contains(this) && !this.classList.contains('resolved') && this.classList.add('resolved');
-                return result;
-
             } catch (err) {
-                
-                if (!errorHandlers.has(this) || !window.document.contains(this)) {
-                    return console.error(`Switzerland: ${err}`);
-                }
-    
-                const getTree: {} = errorHandlers.get(this);
+
+                const getTree = errorHandlers.get(this);
                 const prevProps = this[state].takePrevProps(this);
+                const consoleError = typeof getTree !== 'function' || !document.contains(this);
 
-                try {
+                return void consoleError ? console.error(`Switzerland: ${err}`) : do {
 
-                    const result = await getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
-                    !this.classList.contains('resolved') && this.classList.add('resolved');
-                    return result;
+                    try {
 
-                } catch (err) {
+                        // Attempt to render the component using the error handling middleware.
+                        getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
 
-                    // We need to try-catch the recovery component because otherwise we'd be facing a potential
-                    // infinite loop of throwing error messages.
-                    message('Throwing an error from the recovery middleware is forbidden');
-                    console.error(err);
+                    } catch (err) {
 
-                }
+                        // When the error handling middleware throws an error we'll need to halt the execution
+                        // because the error handler should be recovering, not compounding the problem.
+                        message('Throwing an error from the recovery middleware is forbidden');
+                        console.error(err);
+
+                    } finally {
+
+                        // Finally we'll add the "resolved" class name regardless of how the error's rendered.
+                        document.contains(this) && !this.classList.contains('resolved') && this.classList.add('resolved');
+
+                    }
+
+                };
 
             }
 
