@@ -1,4 +1,5 @@
 import { errorHandlers } from './middleware';
+import { addEventListener, removeEventListener, dispatchEvent } from './listeners';
 
 export { h } from 'picodom';
 
@@ -110,10 +111,35 @@ export function create(name, ...middlewares) {
 
                 // Attempt to render the component, catching any errors that may be thrown in the middleware to
                 // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
-                return await middlewares.reduce(async (accumP, _, index) => {
+                const props = await middlewares.reduce(async (accumP, _, index) => {
                     const middleware = middlewares[index];
                     return middleware(await accumP);
                 }, initialProps);
+
+                if ('wait' in props) {
+
+                    await new Promise(resolve => {
+
+                        // Determine which elements we need to await being resolved before we continue.
+                        const resolved = new Set();
+                        const nodes = props.wait.reduce((accum, name) => {
+                            return [...accum, ...Array.from(props.node.shadowRoot.querySelectorAll(name))];
+                        }, []);
+
+                        addEventListener('resolved', node => {
+                            resolved.add(node);
+                            resolved.size === nodes.length && do {
+                                removeEventListener('resolved', node);   
+                                resolve();
+                                resolved.clear();
+                            };
+                        });
+
+                    });
+
+                }
+
+                return props;
 
             } catch (err) {
 
@@ -141,8 +167,9 @@ export function create(name, ...middlewares) {
 
             } finally {
                 
-                // Finally we'll add the "resolved" class name regardless of how the error's rendered.
+                // Finally add the "resolved" class name regardless of how the error's rendered.
                 this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
+                dispatchEvent('resolved', this);
 
             }
 

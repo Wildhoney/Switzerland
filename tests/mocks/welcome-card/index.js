@@ -1,5 +1,5 @@
 import { create, h } from '../../../src/switzerland';
-import { html, include, rescue, attrs } from '../../../src/middleware';
+import { html, include, rescue, attrs, wait } from '../../../src/middleware';
 
 const handler = html(props => {
     return <h1 onclick={() => props.render({ name: 'Recover' })}>Error: {props.error.message}</h1>;
@@ -28,7 +28,7 @@ const person = props => {
 
 };
 
-create('welcome-cards', include('welcome-cards.css'), html(props => {
+create('welcome-cards', include('welcome-cards.css'), wait('welcome-card'), html(props => {
 
     return (
         <section>

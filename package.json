@@ -11,7 +11,8 @@
     "build": "webpack",
     "lint": "xo src/*.js",
     "test": "npm run lint && npm run spec",
-    "start": "concurrently '(cd tests/mocks/welcome-card && http-server)' 'webpack --watch'",
+    "start": "(cd tests/mocks/welcome-card && http-server)",
+    "watch": "concurrently 'npm run start' 'webpack --watch'",
     "webpack-defaults": "webpack-defaults"
   },
   "repository": {

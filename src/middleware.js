@@ -111,6 +111,15 @@ export function attrs(exclude = ['class', 'id']) {
 }
 
 /**
+ * @method wait
+ * @param {Array} names
+ * @return {Function}
+ */
+export function wait(...names) {
+    return props => ({ ...props, wait: names });
+}
+
+/**
  * @method html
  * @param {Function} getTree
  * @return {Function}
