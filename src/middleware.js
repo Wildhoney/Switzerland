@@ -18,10 +18,10 @@ const nullObject = Object.create(null);
  * @constant path
  * @type {String}
  */
-// const path = do {
-//     const script = document.currentScript;
-//     return script ? script.getAttribute('src') || '' : '';
-// };
+const path = do {
+    const script = document.currentScript;
+    script ? script.getAttribute('src') || '' : '';
+};
 
 /**
  * @method include
@@ -83,18 +83,19 @@ export function recover(getTree) {
  */
 export function attrs(exclude = ['class', 'id']) {
 
-    let observer;
+    const observers = new Map();
 
     return props => {
 
-        !observer && do {
+        !observers.has(props.node) && do {
 
-            observer = new MutationObserver(mutations => {
+            const observer = new MutationObserver(mutations => {
                 const rerender = !mutations.every(m => exclude.includes(m.attributeName));
                 rerender && props.render();
             });
 
             observer.observe(props.node, { attributes: true });
+            observers.set(props.node, observer);
 
         };
 
