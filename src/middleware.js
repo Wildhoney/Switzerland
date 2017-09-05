@@ -40,20 +40,25 @@ const path: string = (() => {
  */
 export function include(...files: Array<string>): Function {
 
-    const cache: Map<string, string> = new Map();
+    const cache: Map<HTMLElement, string> = new Map();
+    const cacheKey = files.join(';');
 
     return async props => {
 
+        const fromCache = cache.has(cacheKey);
+
         if (!props.node.shadowRoot.querySelector('style')) {
 
-            const content = await files.reduce(async (accumP, _, index) => {
+            const content = fromCache ? cache.get(cacheKey) : files.reduce(async (accumP, _, index) => {
                 const result = await window.fetch(files[index]).then(r => r.text());
                 return `${result} ${await accumP}`;
             }, '');
 
+            !fromCache && cache.set(cacheKey, content);
+
             const style = window.document.createElement('style');
             style.setAttribute('type', 'text/css');
-            style.innerHTML = content;
+            style.innerHTML = await content;
             props.node.shadowRoot.appendChild(style);
 
         }
