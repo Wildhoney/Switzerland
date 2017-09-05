@@ -1,7 +1,0 @@
-[ignore]
-.*/.history
-.*/node_modules
-.*/build\.js
-.*/example
-.*/webpack.config.js
-.*/tests

@@ -3,3 +3,6 @@
 
 # npm
 node_modules
+
+# tests
+tests/mocks/welcome-card/build.js
