@@ -63,11 +63,11 @@ export function include(...files) {
 }
 
 /**
- * @method recover
+ * @method rescue
  * @param {Function} getTree
  * @return {Function}
  */
-export function recover(getTree) {
+export function rescue(getTree) {
 
     return props => {
         !errorHandlers.has(props.node) && errorHandlers.set(props.node, getTree);
@@ -119,7 +119,7 @@ export function html(getTree) {
 
     return async props => {
 
-        if (document.contains(props.node)) {
+        if (props.node.isConnected) {
 
             const previous = props.node[state].takeVDomTree(props.node) || {};
             const tree = await getTree({ ...props, render: props.render });

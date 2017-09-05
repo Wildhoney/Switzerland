@@ -1,7 +1,7 @@
 import { create, h } from '../../../src/switzerland';
-import { html, include, recover, attrs } from '../../../src/middleware';
+import { html, include, rescue, attrs } from '../../../src/middleware';
 
-const errorHandler = html(props => {
+const handler = html(props => {
     return <h1 onclick={() => props.render({ name: 'Recover' })}>Error: {props.error.message}</h1>;
 });
 
@@ -28,7 +28,20 @@ const person = props => {
 
 };
 
-create('welcome-card', attrs(), recover(errorHandler), include('index.css'), person, html(props => {
+create('welcome-cards', include('welcome-cards.css'), html(props => {
+
+    return (
+        <section>
+            <welcome-card capitalise="yes">Hello</welcome-card>
+            <welcome-card capitalise="yes">Zdravstvuyte</welcome-card>
+            <welcome-card capitalise="yes">Hola</welcome-card>
+            <welcome-card capitalise="yes">Guten Tag</welcome-card>
+        </section>
+    );
+
+}));
+
+create('welcome-card', attrs(), rescue(handler), include('welcome-card.css'), person, html(props => {
 
     const name = props.attrs.capitalise === 'yes' ? props.person.name.toUpperCase() : props.person.name;
 

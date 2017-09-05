@@ -119,7 +119,7 @@ export function create(name, ...middlewares) {
 
                 const getTree = errorHandlers.get(this);
                 const prevProps = this[state].takePrevProps(this);
-                const consoleError = typeof getTree !== 'function' || !document.contains(this);
+                const consoleError = typeof getTree !== 'function' || !this.isConnected;
 
                 return void consoleError ? console.error(`Switzerland: ${err}`) : do {
 
@@ -142,7 +142,7 @@ export function create(name, ...middlewares) {
             } finally {
                 
                 // Finally we'll add the "resolved" class name regardless of how the error's rendered.
-                document.contains(this) && !this.classList.contains('resolved') && this.classList.add('resolved');
+                this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
 
             }
 
