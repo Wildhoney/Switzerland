@@ -14,20 +14,18 @@ module.exports = {
         fs: 'empty'
     },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+            }
+        }),
         new Uglify({
             uglifyOptions: {
-                ie8: false,
                 ecma: 8,
-                mangle: true,
-                output: {
-                    comments: false,
-                    beautify: false
-                },
-                parse: {
-                    html5_comments: false,
-                    shebang: false
-                },
-                warnings: false
+                mangle: {
+                    toplevel: true,
+                    
+                }
             }
         })
     ],
