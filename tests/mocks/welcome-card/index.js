@@ -28,7 +28,7 @@ const person = props => {
 
 };
 
-create('welcome-cards', include('welcome-cards.css'), wait('welcome-card'), html(props => {
+create('welcome-cards', include('welcome-cards.css'), html(props => {
 
     return (
         <section class="welcome-cards">
@@ -39,7 +39,7 @@ create('welcome-cards', include('welcome-cards.css'), wait('welcome-card'), html
         </section>
     );
 
-}));
+}), wait('welcome-card'));
 
 create('welcome-card', attrs(), rescue(handler), include('welcome-card.css'), person, html(props => {
 

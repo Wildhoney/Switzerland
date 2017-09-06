@@ -3,6 +3,7 @@ import parseUrls from 'css-url-parser';
 import escapeRegExp from 'escape-string-regexp';
 import { kebabToCamel } from './helpers/functions';
 import { takeVDomTree, putState } from './helpers/registry';
+import { addEventListener, removeEventListener, dispatchEvent } from './helpers/listeners';
 
 /**
  * @constant errorHandlers
@@ -191,7 +192,37 @@ export function attrs(exclude = ['id', 'class']) {
  * @return {Function}
  */
 export function wait(...names) {
-    return props => ({ ...props, wait: names });
+    
+    return async props => {
+        
+        // Determine which elements we need to await being resolved before we continue.
+        const resolved = new Set();
+
+        await new Promise(resolve => {
+
+            const nodes = names.reduce((accum, name) => {
+                return [...accum, ...Array.from(props.node.shadowRoot.querySelectorAll(name))];
+            }, []);
+
+            nodes.length === 0 ? resolve() : do {
+
+                addEventListener('resolved', node => {
+                    resolved.add(node);
+                    resolved.size === nodes.length && do {
+                        removeEventListener('resolved', node);
+                        resolve();
+                        resolved.clear();
+                    };
+                });
+
+            };
+
+        });
+
+        return props;
+
+    };
+
 }
 
 /**
