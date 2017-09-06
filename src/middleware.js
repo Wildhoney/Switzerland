@@ -2,7 +2,6 @@ import { patch } from 'picodom';
 import parseUrls from 'css-url-parser';
 import escapeRegExp from 'escape-string-regexp';
 import { listeners } from './switzerland';
-import { kebabToCamel } from './helpers/functions';
 import { takeVDomTree, putState } from './helpers/registry';
 
 /**
@@ -20,6 +19,15 @@ export const ONCE = {
     ON_MOUNT: Symbol('mount'),
     ON_UNMOUNT: Symbol('unmount')
 };
+
+/**
+ * @method kebabToCamel
+ * @param {String} value
+ * @return {String}
+ */
+function kebabToCamel(value) {
+    return value.replace(/(-\w)/g, match => match[1].toUpperCase());
+}
 
 /**
  * @constant path
@@ -76,10 +84,9 @@ export function html(getTree) {
 
         if (props.node.isConnected) {
 
+            // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || {};
             const tree = await getTree({ ...props, render: props.render });
-
-            // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const root = patch(previous.tree, tree, previous.root, props.node.shadowRoot);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
@@ -113,10 +120,7 @@ export function include(...files) {
 
                     const result = await fetch(`${path}/${files[index]}`).then(r => r.text());
                     const urls = parseUrls(result);
-                    const css = urls.length ? urls.map(url => {
-                        const replacer = new RegExp(escapeRegExp(url), 'ig');
-                        return result.replace(replacer, `${path}/${url}`);
-                    }).join() : result;
+                    const css = urls.length ? urls.map(url => result.replace(url, `${path}/${url}`)).join() : result;
 
                     return `${css} ${await accumP}`;
 
@@ -189,12 +193,12 @@ export function once(fn, strategy = ONCE.ONLY) {
         if (props.node.isConnected) {
             const result = strategy !== ONCE.ON_UNMOUNT && maybeInvoke(fn, props);
             strategy === ONCE.ON_UNMOUNT && cache.delete(fn);
-            return { ...props, ...result };
+            return { ...result, ...props };
         }
 
         const result = maybeInvoke(fn, props);
         strategy === ONCE.ON_MOUNT && cache.delete(fn);
-        return { ...props, ...result };
+        return { ...result, ...props };
 
     };
 
