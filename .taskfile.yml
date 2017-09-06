@@ -1,0 +1,27 @@
+- name: build
+  task: webpack
+
+- name: test
+  tasks:
+    - taskfile lint-js
+    - taskfile lint-fs
+    - taskfile spec
+
+- name: start
+  task: (cd tests/mocks/welcome-card && http-server)
+
+- name: watch
+  task: concurrently 'taskfile start' 'webpack --watch'
+  
+- name: lint-fs
+  tasks:
+    - npm run build
+    - - gzip core.js -f
+    - - - fslint --files=core.js.gz --limit=4096
+    - - - - rm core.js.gz
+
+- name: lint-js
+  task: xo src/*.js
+
+- name: spec
+  task: ava
