@@ -21,8 +21,8 @@ const nullObject = Object.create(null);
  * @type {String}
  */
 const path = do {
-    const script = document.currentScript && document.currentScript.getAttribute('src') || '';
-    const parts = script.split('/');
+    const has = typeof document !== 'undefined' && document.currentScript;
+    const parts = (has && document.currentScript.getAttribute('src') || '').split('/');
     parts.length === 1 ? '' : parts.slice(0, -1).join('/');
 };
 
@@ -141,7 +141,7 @@ export function html(getTree) {
 
         if (props.node.isConnected) {
 
-            const previous = props.node[state].takeVDomTree(props.node) || {};
+            const previous = props.node[state].takeVDomTree(props.node) || nullObject;
             const tree = await getTree({ ...props, render: props.render });
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
