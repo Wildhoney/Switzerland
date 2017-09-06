@@ -36,7 +36,6 @@
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "dependencies": {
     "css-url-parser": "~1.1.2",
-    "escape-string-regexp": "~1.0.5",
     "picodom": "~0.1.0"
   },
   "devDependencies": {
