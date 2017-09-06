@@ -103,8 +103,8 @@ export function create(name, ...middlewares) {
                     const prevProps = takePrevProps(this);
                     const consoleError = typeof getTree !== 'function' || !this.isConnected;
 
-                    return void consoleError ? process.env.NODE_ENV !== 'production' && message(err) : do {
-
+                    return void (consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+                        
                         try {
 
                             // Attempt to render the component using the error handling middleware.
@@ -123,7 +123,7 @@ export function create(name, ...middlewares) {
 
                         }
 
-                    };
+                    });
 
                 } finally {
 
