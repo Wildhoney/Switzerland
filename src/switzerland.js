@@ -29,156 +29,161 @@ function message(message, type = 'error') {
  * @method create
  * @param {String} name
  * @param {Array} middlewares
- * @return {Object}
+ * @return {Promise}
  */
 export function create(name, ...middlewares) {
 
-    /**
-     * @class SwitzerlandElement
-     * @extends {HTMLElement}
-     */
-    customElements.define(name, class SwissElement extends HTMLElement {
+    return new Promise(resolve => {
 
         /**
-         * @constant state
-         * @type {Object}
+         * @class SwitzerlandElement
+         * @extends {HTMLElement}
          */
-        [state] = {
+        customElements.define(name, class SwissElement extends HTMLElement {
 
             /**
-             * @method putState
-             * @param {Object} tree
-             * @param {Object} root
-             * @param {Object} prevProps
-             * @return {void}
+             * @constant state
+             * @type {Object}
              */
-            putState(node, tree, root, prevProps) {
-                registry.set(node, { prevProps, vDomTree: { tree, root } });
-            },
+            [state] = {
 
-            /**
-             * @method takeVDomTree
-             * @param {HTMLElement} node
-             * @return {Object|null}
-             */
-            takeVDomTree(node) {
-                const state = Object(registry.get(node));
-                return state.vDomTree;
-            },
+                /**
+                 * @method putState
+                 * @param {Object} tree
+                 * @param {Object} root
+                 * @param {Object} prevProps
+                 * @return {void}
+                 */
+                putState(node, tree, root, prevProps) {
+                    registry.set(node, { prevProps, vDomTree: { tree, root } });
+                },
 
-            /**
-             * @method takePrevProps
-             * @param {HTMLElement} node
-             * @return {Object|null}
-             */
-            takePrevProps(node) {
-                const state = Object(registry.get(node));
-                return state.prevProps;
-            }
+                /**
+                 * @method takeVDomTree
+                 * @param {HTMLElement} node
+                 * @return {Object|null}
+                 */
+                takeVDomTree(node) {
+                    const state = Object(registry.get(node));
+                    return state.vDomTree;
+                },
 
-        }
-
-        /**
-         * @method connectedCallback
-         * @return {Promise}
-         */
-        connectedCallback() {
-            const shadowRoot = this.shadowRoot;
-            !shadowRoot && this.attachShadow({ mode: 'open' });
-            return this.render();
-        }
-
-        /**
-         * @method disconnectedCallback
-         * @return {Promise}
-         */
-        disconnectedCallback() {
-            this.classList.remove('resolved');
-            return this.render();
-        }
-
-        /**
-         * @method render
-         * @param {Object} [mergeProps = {}]
-         * @return {Promise}
-         */
-        async render(mergeProps = {}) {
-
-            const prevProps = this[state].takePrevProps(this);
-            const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
-
-            try {
-
-                // Attempt to render the component, catching any errors that may be thrown in the middleware to
-                // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
-                const props = await middlewares.reduce(async (accumP, _, index) => {
-                    const middleware = middlewares[index];
-                    return middleware(await accumP);
-                }, initialProps);
-
-                if ('wait' in props) {
-
-                    await new Promise(resolve => {
-
-                        // Determine which elements we need to await being resolved before we continue.
-                        const resolved = new Set();
-                        const nodes = props.wait.reduce((accum, name) => {
-                            return [...accum, ...Array.from(props.node.shadowRoot.querySelectorAll(name))];
-                        }, []);
-
-                        nodes.length === 0 ? resolve() : do {
-
-                            addEventListener('resolved', node => {
-                                resolved.add(node);
-                                resolved.size === nodes.length && do {
-                                    removeEventListener('resolved', node);   
-                                    resolve();
-                                    resolved.clear();
-                                };
-                            });
-
-                        }
-
-                    });
-
+                /**
+                 * @method takePrevProps
+                 * @param {HTMLElement} node
+                 * @return {Object|null}
+                 */
+                takePrevProps(node) {
+                    const state = Object(registry.get(node));
+                    return state.prevProps;
                 }
 
-                return props;
+            }
 
-            } catch (err) {
+            /**
+             * @method connectedCallback
+             * @return {Promise}
+             */
+            connectedCallback() {
+                const shadowRoot = this.shadowRoot;
+                !shadowRoot && this.attachShadow({ mode: 'open' });
+                return this.render();
+            }
 
-                const getTree = errorHandlers.get(this);
+            /**
+             * @method disconnectedCallback
+             * @return {Promise}
+             */
+            disconnectedCallback() {
+                this.classList.remove('resolved');
+                return this.render();
+            }
+
+            /**
+             * @method render
+             * @param {Object} [mergeProps = {}]
+             * @return {Promise}
+             */
+            async render(mergeProps = {}) {
+
                 const prevProps = this[state].takePrevProps(this);
-                const consoleError = typeof getTree !== 'function' || !this.isConnected;
+                const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
 
-                return void consoleError ? console.error(`Switzerland: ${err}`) : do {
+                try {
 
-                    try {
+                    // Attempt to render the component, catching any errors that may be thrown in the middleware to
+                    // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
+                    const props = await middlewares.reduce(async (accumP, _, index) => {
+                        const middleware = middlewares[index];
+                        return middleware(await accumP);
+                    }, initialProps);
 
-                        // Attempt to render the component using the error handling middleware.
-                        getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
+                    if ('wait' in props) {
 
-                    } catch (err) {
+                        await new Promise(resolve => {
 
-                        // When the error handling middleware throws an error we'll need to halt the execution
-                        // because the error handler should be recovering, not compounding the problem.
-                        message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
-                        console.error(err);
+                            // Determine which elements we need to await being resolved before we continue.
+                            const resolved = new Set();
+                            const nodes = props.wait.reduce((accum, name) => {
+                                return [...accum, ...Array.from(props.node.shadowRoot.querySelectorAll(name))];
+                            }, []);
+
+                            nodes.length === 0 ? resolve() : do {
+
+                                addEventListener('resolved', node => {
+                                    resolved.add(node);
+                                    resolved.size === nodes.length && do {
+                                        removeEventListener('resolved', node);   
+                                        resolve();
+                                        resolved.clear();
+                                    };
+                                });
+
+                            }
+
+                        });
 
                     }
 
-                };
+                    return props;
 
-            } finally {
-                
-                // Finally add the "resolved" class name regardless of how the error's rendered.
-                this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
-                dispatchEvent('resolved', this);
+                } catch (err) {
+
+                    const getTree = errorHandlers.get(this);
+                    const prevProps = this[state].takePrevProps(this);
+                    const consoleError = typeof getTree !== 'function' || !this.isConnected;
+
+                    return void consoleError ? console.error(`Switzerland: ${err}`) : do {
+
+                        try {
+
+                            // Attempt to render the component using the error handling middleware.
+                            getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
+
+                        } catch (err) {
+
+                            // When the error handling middleware throws an error we'll need to halt the execution
+                            // because the error handler should be recovering, not compounding the problem.
+                            message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
+                            console.error(err);
+
+                        }
+
+                    };
+
+                } finally {
+                    
+                    // Finally add the "resolved" class name regardless of how the error's rendered.
+                    this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
+                    dispatchEvent('resolved', this);
+                    resolve();
+
+                }
 
             }
 
-        }
-
+        });
+        
     });
 
 }
