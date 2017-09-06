@@ -1,20 +1,14 @@
 import { patch } from 'picodom';
 import parseUrls from 'css-url-parser';
 import escapeRegExp from 'escape-string-regexp';
-import { state } from './switzerland';
-import { kebabToCamel } from './helpers';
+import { kebabToCamel } from './helpers/functions';
+import { takeVDomTree, putState } from './helpers/registry';
 
 /**
  * @constant errorHandlers
  * @type {WeakMap}
  */
 export const errorHandlers = new WeakMap();
-
-/**
- * @constant nullObject
- * @type {Object}
- */
-const nullObject = Object.create(null);
 
 /**
  * @constant path
@@ -111,7 +105,7 @@ export function rescue(getTree) {
  * @param {Array} exclude
  * @return {Function}
  */
-export function attrs(exclude = ['class', 'id']) {
+export function attrs(exclude = ['id', 'class']) {
 
     const observers = new Map();
 
@@ -132,7 +126,7 @@ export function attrs(exclude = ['class', 'id']) {
         const attrs = Object.keys(props.node.attributes).reduce((acc, index) => {
             const attr = props.node.attributes[index];
             return { ...acc, [kebabToCamel(attr.nodeName)]: attr.nodeValue };
-        }, nullObject);
+        }, {});
 
         return { ...props, attrs };
 
@@ -160,14 +154,14 @@ export function html(getTree) {
 
         if (props.node.isConnected) {
 
-            const previous = props.node[state].takeVDomTree(props.node) || nullObject;
+            const previous = takeVDomTree(props.node) || {};
             const tree = await getTree({ ...props, render: props.render });
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const root = patch(previous.tree, tree, previous.root, props.node.shadowRoot);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
-            props.node[state].putState(props.node, tree, root, props);
+            putState(props.node, tree, root, props);
 
         }
 

@@ -6,7 +6,7 @@ const listeners = new Map();
 
 /**
  * @method addEventListener
- * @param {String|Symbol} name
+ * @param {String} name
  * @param {Function} fn
  * @return {void}
  */
@@ -17,7 +17,7 @@ export const addEventListener = (name, fn) => {
 
 /**
  * @method removeEventListener
- * @param {String|Symbol} name
+ * @param {String} name
  * @param {Function} fn
  * @return {void}
  */
@@ -27,7 +27,7 @@ export const removeEventListener = (name, fn) => {
 
 /**
  * @method dispatchEvent
- * @param {String|Symbol} name
+ * @param {String} name
  * @param {*} data
  * @return {void}
  */

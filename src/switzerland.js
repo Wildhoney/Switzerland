@@ -1,28 +1,21 @@
 import { errorHandlers } from './middleware';
-import { addEventListener, removeEventListener, dispatchEvent } from './listeners';
+import { addEventListener, removeEventListener, dispatchEvent } from './helpers/listeners';
+import { takePrevProps } from './helpers/registry';
 
 export { h } from 'picodom';
 
-/**
- * @constant state
- * @type {Symbol}
- */
-export const state = Symbol('state');
+if (process.env.NODE_ENV !== 'production') {
+    
+    /**
+     * @method message
+     * @param {String} message
+     * @param {String} type
+     * @return {void}
+     */
+    function message(message, type = 'error') {
+        console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
+    }
 
-/**
- * @constant registry
- * @type {WeakMap}
- */
-const registry = new WeakMap();
-
-/**
- * @method message
- * @param {String} message
- * @param {String} type
- * @return {void}
- */
-function message(message, type = 'error') {
-    console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
 }
 
 /**
@@ -40,45 +33,6 @@ export function create(name, ...middlewares) {
          * @extends {HTMLElement}
          */
         customElements.define(name, class SwissElement extends HTMLElement {
-
-            /**
-             * @constant state
-             * @type {Object}
-             */
-            [state] = {
-
-                /**
-                 * @method putState
-                 * @param {Object} tree
-                 * @param {Object} root
-                 * @param {Object} prevProps
-                 * @return {void}
-                 */
-                putState(node, tree, root, prevProps) {
-                    registry.set(node, { prevProps, vDomTree: { tree, root } });
-                },
-
-                /**
-                 * @method takeVDomTree
-                 * @param {HTMLElement} node
-                 * @return {Object|null}
-                 */
-                takeVDomTree(node) {
-                    const state = Object(registry.get(node));
-                    return state.vDomTree || null;
-                },
-
-                /**
-                 * @method takePrevProps
-                 * @param {HTMLElement} node
-                 * @return {Object|null}
-                 */
-                takePrevProps(node) {
-                    const state = Object(registry.get(node));
-                    return state.prevProps || null;
-                }
-
-            }
 
             /**
              * @method connectedCallback
@@ -106,7 +60,7 @@ export function create(name, ...middlewares) {
              */
             async render(mergeProps = {}) {
 
-                const prevProps = this[state].takePrevProps(this);
+                const prevProps = takePrevProps(this);
                 const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
 
                 try {
@@ -150,10 +104,10 @@ export function create(name, ...middlewares) {
                 } catch (err) {
 
                     const getTree = errorHandlers.get(this);
-                    const prevProps = this[state].takePrevProps(this);
+                    const prevProps = takePrevProps(this);
                     const consoleError = typeof getTree !== 'function' || !this.isConnected;
 
-                    return void consoleError ? console.error(`Switzerland: ${err}`) : do {
+                    return void consoleError ? (message && message(err)) : do {
 
                         try {
 
@@ -162,10 +116,15 @@ export function create(name, ...middlewares) {
 
                         } catch (err) {
 
-                            // When the error handling middleware throws an error we'll need to halt the execution
-                            // because the error handler should be recovering, not compounding the problem.
-                            message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
-                            console.error(err);
+                            if (process.env.NODE_ENV !== 'production') {
+
+                                // When the error handling middleware throws an error we'll need to halt the execution
+                                // because the error handler should be recovering, not compounding the problem.
+                                message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
+                                console.error(err);
+
+                            }
+
 
                         }
 
