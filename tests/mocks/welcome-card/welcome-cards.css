@@ -4,15 +4,6 @@ section.welcome-cards {
     justify-content: space-between;
 }
 
-welcome-card {
-    opacity: 0;
-    transition: opacity .5s;
-}
-
-welcome-card.resolved {
-    opacity: 1;
-}
-
 welcome-card:nth-of-type(1) {
     --welcome-card-theme: purple;
     --welcome-card-border-radius: 50%;
