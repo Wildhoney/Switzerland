@@ -1,4 +1,6 @@
 import { patch } from 'picodom';
+import parseUrls from 'css-url-parser';
+import escapeRegExp from 'escape-string-regexp';
 import { state } from './switzerland';
 import { kebabToCamel } from './helpers';
 
@@ -19,8 +21,9 @@ const nullObject = Object.create(null);
  * @type {String}
  */
 const path = do {
-    const script = document.currentScript;
-    script ? script.getAttribute('src') || '' : '';
+    const script = document.currentScript && document.currentScript.getAttribute('src') || '';
+    const parts = script.split('/');
+    parts.length === 1 ? '' : parts.slice(0, -1).join('/');
 };
 
 /**
@@ -40,8 +43,16 @@ export function include(...files) {
             const content = cache.has(cacheKey) ? cache.get(cacheKey) : do {
 
                 const content = files.reduce(async (accumP, _, index) => {
-                    const result = await fetch(files[index]).then(r => r.text());
-                    return `${result} ${await accumP}`;
+
+                    const result = await fetch(`${path}/${files[index]}`).then(r => r.text());
+                    const urls = parseUrls(result);
+                    const css = urls.length ? urls.map(url => {
+                        const replacer = new RegExp(escapeRegExp(url), 'ig');
+                        return result.replace(replacer, `${path}/${url}`);
+                    }).toString() : result;
+
+                    return `${css} ${await accumP}`;
+
                 }, '');
 
                 cache.set(cacheKey, content);
@@ -87,7 +98,7 @@ export function attrs(exclude = ['class', 'id']) {
 
     return props => {
 
-        !observers.has(props.node) && do {
+        if (!observers.has(props.node)) {
 
             const observer = new MutationObserver(mutations => {
                 const rerender = !mutations.every(m => exclude.includes(m.attributeName));
