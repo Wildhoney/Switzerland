@@ -11,6 +11,15 @@ import { takeVDomTree, putState } from './helpers/registry';
 export const errorHandlers = new WeakMap();
 
 /**
+ * @constant onceStrategies
+ * @type {Object}
+ */
+export const ONCE = {
+    ONLY: Symbol('once/only'),
+    PER_MOUNT: Symbol('once/per-mount')
+};
+
+/**
  * @constant path
  * @type {String}
  */
@@ -19,6 +28,34 @@ const path = do {
     const parts = ((has && document.currentScript.getAttribute('src')) || '').split('/');
     parts.length === 1 ? '' : parts.slice(0, -1).join('/');
 };
+
+/**
+ * @method once
+ * @param {Function} fn
+ * @param {Symbol} [strategy = ONCE.ONLY]
+ * @return {Function}
+ */
+export function once(fn, strategy = ONCE.ONLY) {
+
+    const cache = new Set();
+
+    return async props => {
+
+        if (props.node.isConnected) {
+
+            return cache.has(fn) ? props : (async () => {
+                cache.add(fn);
+                return await fn(props);
+            })();
+
+        }
+
+        strategy === ONCE.PER_MOUNT && cache.delete(fn);
+        return props;
+
+    };
+
+}
 
 /**
  * @method methods
