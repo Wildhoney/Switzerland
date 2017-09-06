@@ -27,6 +27,25 @@ const path = do {
 };
 
 /**
+ * @method methods
+ * @param {Object} fns
+ * @return {Function}
+ */
+export function methods(fns) {
+
+    return props => {
+
+        Object.entries(fns).forEach(([name, fn]) => {
+            props.node[name] = (...args) => (fn.call(props.node, ...args, props));
+        });
+        
+        return props;
+
+    };
+
+}
+
+/**
  * @method include
  * @param {Array} files
  * @return {Function}
