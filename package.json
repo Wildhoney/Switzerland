@@ -9,6 +9,7 @@
   "scripts": {
     "spec": "taskfile spec",
     "build": "taskfile build",
+    "lint": "taskfile lint",
     "lint-js": "taskfile lint-js",
     "lint-fs": "taskfile lint-fs",
     "test": "taskfile test",

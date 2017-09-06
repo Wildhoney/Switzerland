@@ -21,11 +21,7 @@ module.exports = {
         }),
         new Uglify({
             uglifyOptions: {
-                ecma: 8,
-                mangle: {
-                    toplevel: true,
-                    
-                }
+                ecma: 8
             }
         })
     ],

@@ -7,6 +7,11 @@
     - taskfile lint-fs
     - taskfile spec
 
+- name: lint
+  tasks:
+    - taskfile lint-js
+    - taskfile lint-fs
+
 - name: start
   task: (cd tests/mocks/welcome-card && http-server)
 
