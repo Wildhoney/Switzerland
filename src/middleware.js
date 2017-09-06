@@ -11,12 +11,13 @@ import { takeVDomTree, putState } from './helpers/registry';
 export const errorHandlers = new WeakMap();
 
 /**
- * @constant onceStrategies
+ * @constant ONCE
  * @type {Object}
  */
 export const ONCE = {
-    ONLY: Symbol('once/only'),
-    PER_MOUNT: Symbol('once/per-mount')
+    ONLY: Symbol('only'),
+    ON_MOUNT: Symbol('mount'),
+    ON_UNMOUNT: Symbol('unmount')
 };
 
 /**
@@ -39,19 +40,32 @@ export function once(fn, strategy = ONCE.ONLY) {
 
     const cache = new Set();
 
+    /**
+     * @method maybeInvoke
+     * @param {Function} fn
+     * @param {Object} props
+     * @return {Object}
+     */
+    function maybeInvoke(fn, props) {
+
+        return cache.has(fn) ? props : (() => {
+            cache.add(fn);
+            return fn(props);
+        })();
+
+    }
+
     return async props => {
 
         if (props.node.isConnected) {
-
-            return cache.has(fn) ? props : (async () => {
-                cache.add(fn);
-                return await fn(props);
-            })();
-
+            const result = strategy !== ONCE.ON_UNMOUNT && maybeInvoke(fn, props);
+            strategy === ONCE.ON_UNMOUNT && cache.delete(fn);
+            return result || props;
         }
-
-        strategy === ONCE.PER_MOUNT && cache.delete(fn);
-        return props;
+        
+        const result = maybeInvoke(fn, props);
+        strategy === ONCE.ON_MOUNT && cache.delete(fn);
+        return result || props;
 
     };
 
