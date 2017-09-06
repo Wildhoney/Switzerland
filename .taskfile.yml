@@ -15,7 +15,7 @@
   
 - name: lint-fs
   tasks:
-    - npm run build
+    - NODE_ENV=production npm run build
     - - gzip core.js -f
     - - - fslint --files=core.js.gz --limit=3072
     - - - - rm core.js.gz
