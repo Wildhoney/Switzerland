@@ -16,7 +16,7 @@ export const errorHandlers = new WeakMap();
  */
 const path = do {
     const has = typeof document !== 'undefined' && document.currentScript;
-    const parts = (has && document.currentScript.getAttribute('src') || '').split('/');
+    const parts = ((has && document.currentScript.getAttribute('src')) || '').split('/');
     parts.length === 1 ? '' : parts.slice(0, -1).join('/');
 };
 
@@ -32,7 +32,7 @@ export function methods(fns) {
         Object.entries(fns).forEach(([name, fn]) => {
             props.node[name] = (...args) => (fn.call(props.node, ...args, props));
         });
-        
+
         return props;
 
     };
@@ -121,7 +121,7 @@ export function attrs(exclude = ['id', 'class']) {
             observer.observe(props.node, { attributes: true });
             observers.set(props.node, observer);
 
-        };
+        }
 
         const attrs = Object.keys(props.node.attributes).reduce((acc, index) => {
             const attr = props.node.attributes[index];

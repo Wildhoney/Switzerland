@@ -4,18 +4,14 @@ import { takePrevProps } from './helpers/registry';
 
 export { h } from 'picodom';
 
-if (process.env.NODE_ENV !== 'production') {
-    
-    /**
-     * @method message
-     * @param {String} message
-     * @param {String} type
-     * @return {void}
-     */
-    function message(message, type = 'error') {
-        console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
-    }
-
+/**
+ * @method message
+ * @param {String} message
+ * @param {String} type
+ * @return {void}
+ */
+function message(message, type = 'error') {
+    console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
 }
 
 /**
@@ -87,13 +83,13 @@ export function create(name, ...middlewares) {
                                 addEventListener('resolved', node => {
                                     resolved.add(node);
                                     resolved.size === nodes.length && do {
-                                        removeEventListener('resolved', node);   
+                                        removeEventListener('resolved', node);
                                         resolve();
                                         resolved.clear();
                                     };
                                 });
 
-                            }
+                            };
 
                         });
 
@@ -107,7 +103,7 @@ export function create(name, ...middlewares) {
                     const prevProps = takePrevProps(this);
                     const consoleError = typeof getTree !== 'function' || !this.isConnected;
 
-                    return void consoleError ? (message && message(err)) : do {
+                    return void consoleError ? process.env.NODE_ENV !== 'production' && message(err) : do {
 
                         try {
 
@@ -125,13 +121,12 @@ export function create(name, ...middlewares) {
 
                             }
 
-
                         }
 
                     };
 
                 } finally {
-                    
+
                     // Finally add the "resolved" class name regardless of how the error's rendered.
                     this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
                     dispatchEvent('resolved', this);
@@ -142,7 +137,7 @@ export function create(name, ...middlewares) {
             }
 
         });
-        
+
     });
 
 }
