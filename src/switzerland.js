@@ -65,7 +65,7 @@ export function create(name, ...middlewares) {
                  */
                 takeVDomTree(node) {
                     const state = Object(registry.get(node));
-                    return state.vDomTree;
+                    return state.vDomTree || null;
                 },
 
                 /**
@@ -75,7 +75,7 @@ export function create(name, ...middlewares) {
                  */
                 takePrevProps(node) {
                     const state = Object(registry.get(node));
-                    return state.prevProps;
+                    return state.prevProps || null;
                 }
 
             }
