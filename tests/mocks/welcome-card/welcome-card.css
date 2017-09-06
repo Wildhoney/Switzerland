@@ -23,7 +23,6 @@
 img {
     border-radius: var(--welcome-card-border-radius, 5px);
     width: 100px;
-    background: url('path/to/image.png');
 }
 
 h1 {
