@@ -5,4 +5,5 @@
 node_modules
 
 # tests
+core.js
 tests/mocks/welcome-card/build.js
