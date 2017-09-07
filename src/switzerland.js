@@ -8,6 +8,10 @@ export { h } from 'picodom';
  * @param {String} message
  * @param {String} type
  * @return {void}
+ * 
+ * Takes a message and an optional console type for output. During minification this function will be removed
+ * from the generated output if 'NODE_ENV' is defined as 'production', as it will be unused due to 'process.env'
+ * checks later on in the code.
  */
 function message(message, type = 'error') {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
@@ -16,6 +20,8 @@ function message(message, type = 'error') {
 /**
  * @constant listeners
  * @type {Map}
+ * 
+ * Responsible for listening for the resolution of specified DOM nodes.
  */
 export const listeners = new Set();
 
@@ -24,6 +30,13 @@ export const listeners = new Set();
  * @param {String} name
  * @param {Array} middlewares
  * @return {Promise}
+ * 
+ * Takes a valid name for the custom element, as well as a list of the middleware. In the future when browsers
+ * support extended native elements, the 'name' argument will allowed to be passed in a slightly different format
+ * to indicate its intention to extend a native element.
+ * 
+ * This function yields a promise that is resolved when the first instance of the node has been resolved, which
+ * includes the processing of its associated middleware.
  */
 export function create(name, ...middlewares) {
 
@@ -40,8 +53,7 @@ export function create(name, ...middlewares) {
              * @return {Promise}
              */
             connectedCallback() {
-                const shadowRoot = this.shadowRoot;
-                !shadowRoot && this.attachShadow({ mode: 'open' });
+                !this.shadowRoot && this.attachShadow({ mode: 'open' });
                 return this.render();
             }
 
@@ -68,7 +80,7 @@ export function create(name, ...middlewares) {
 
                     // Attempt to render the component, catching any errors that may be thrown in the middleware to
                     // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
-                    return await middlewares.reduce(async (accumP, _, index) => {
+                    await middlewares.reduce(async (accumP, _, index) => {
                         const middleware = middlewares[index];
                         return middleware(await accumP);
                     }, initialProps);
@@ -77,9 +89,9 @@ export function create(name, ...middlewares) {
 
                     const getTree = errorHandlers.get(this);
                     const prevProps = takePrevProps(this);
-                    const consoleError = typeof getTree !== 'function' || !this.isConnected;
+                    const consoleError = !getTree || !this.isConnected;
 
-                    return void (consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+                    consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
 
                         try {
 
@@ -99,16 +111,14 @@ export function create(name, ...middlewares) {
 
                         }
 
-                    });
-
-                } finally {
-
-                    // Finally add the "resolved" class name regardless of how the error's rendered.
-                    this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
-                    listeners.forEach(listener => listener(this));
-                    resolve();
+                    };
 
                 }
+
+                // Finally add the "resolved" class name regardless of how the error's rendered.
+                this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
+                listeners.forEach(listener => listener(this));
+                resolve();
 
             }
 
