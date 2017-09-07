@@ -309,7 +309,7 @@ export function once(fn, strategy = ONCE.ONLY) {
 export function rescue(getTree) {
 
     return props => {
-        !errorHandlers.has(props.node) && errorHandlers.set(props.node, getTree);
+        errorHandlers.set(props.node, getTree);
         return props;
     };
 

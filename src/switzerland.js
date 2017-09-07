@@ -19,7 +19,7 @@ function message(message, type = 'error') {
 
 /**
  * @constant listeners :: Set
- * @type {Map}
+ * @type {Set}
  *
  * Responsible for listening for the resolution of specified DOM nodes.
  */
@@ -116,7 +116,7 @@ export function create(name, ...middlewares) {
                 }
 
                 // Finally add the "resolved" class name regardless of how the error's rendered.
-                this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
+                setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
                 listeners.forEach(listener => listener(this));
                 resolve();
 
