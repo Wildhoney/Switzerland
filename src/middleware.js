@@ -29,6 +29,15 @@ function kebabToCamel(value) {
 }
 
 /**
+ * @method escapeRegExp
+ * @param {String} str
+ * @return {String}
+ */
+function escapeRegExp(value) {
+    return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+/**
  * @constant path
  * @type {String}
  */
@@ -140,7 +149,10 @@ export function include(...files) {
 
                     const result = await fetch(`${path}/${files[index]}`).then(r => r.text());
                     const urls = parseUrls(result);
-                    const css = urls.length ? urls.map(url => result.replace(url, `${path}/${url}`)).join() : result;
+                    const css = urls.length ? urls.map(url => {
+                        const replacer = new RegExp(escapeRegExp(url), 'ig');
+                        return result.replace(replacer, `${path}/${url}`);
+                    }).join() : result;
 
                     return `${css} ${await accumP}`;
 
