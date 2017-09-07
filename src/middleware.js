@@ -34,7 +34,7 @@ function kebabToCamel(value) {
  * @return {String}
  */
 function escapeRegExp(value) {
-    return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 }
 
 /**
@@ -48,7 +48,7 @@ const path = do {
 
 /**
  * @method attrs
- * @param {Array} [exclude = []]
+ * @param {Array} [exclude = ['class', 'id']]
  * @return {Function}
  *
  * Takes an optional list of excluded attributes that will be ignored when their values are mutated, such as you
@@ -68,8 +68,7 @@ export function attrs(exclude = ['class', 'id']) {
         if (!observers.has(props.node)) {
 
             const observer = new MutationObserver(mutations => {
-                const rerender = !mutations.every(mutation => exclude.includes(mutation.attributeName));
-                rerender && props.render();
+                !mutations.every(mutation => exclude.includes(mutation.attributeName)) && props.render();
             });
 
             observer.observe(props.node, { attributes: true });
@@ -136,29 +135,28 @@ export function html(getTree) {
  */
 export function include(...files) {
 
+    const key = files.join('');
     const cache = new Map();
-    const cacheKey = files.join('');
 
     return async props => {
 
         if (!props.node.shadowRoot.querySelector('style')) {
 
-            const content = cache.has(cacheKey) ? cache.get(cacheKey) : do {
+            const content = cache.has(key) ? cache.get(key) : do {
 
                 const content = files.reduce(async (accumP, _, index) => {
 
                     const result = await fetch(`${path}/${files[index]}`).then(r => r.text());
                     const urls = parseUrls(result);
                     const css = urls.length ? urls.map(url => {
-                        const replacer = new RegExp(escapeRegExp(url), 'ig');
-                        return result.replace(replacer, `${path}/${url}`);
+                        return result.replace(new RegExp(escapeRegExp(url), 'ig'), `${path}/${url}`);
                     }).join() : result;
 
                     return `${css} ${await accumP}`;
 
                 }, '');
 
-                cache.set(cacheKey, content);
+                cache.set(key, content);
                 content;
 
             };

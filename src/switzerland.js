@@ -88,7 +88,6 @@ export function create(name, ...middlewares) {
                 } catch (err) {
 
                     const getTree = errorHandlers.get(this);
-                    const prevProps = takePrevProps(this);
                     const consoleError = !getTree || !this.isConnected;
 
                     consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
