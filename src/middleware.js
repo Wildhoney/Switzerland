@@ -77,7 +77,7 @@ function escapeRegExp(value) {
  * @constant path :: string
  * @type {String}
  */
-const path = do {
+export const path = do {
     const parts = ((document.currentScript && document.currentScript.getAttribute('src')) || '').split('/');
     parts.length === 1 ? '' : parts.slice(0, -1).join('/');
 };
