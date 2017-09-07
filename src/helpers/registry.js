@@ -1,11 +1,11 @@
 /**
- * @constant registry
+ * @constant registry :: WeakMap
  * @type {WeakMap}
  */
 const registry = new WeakMap();
 
 /**
- * @method putState
+ * @method putState :: HTMLElement -> object -> HTMLElement -> object -> void
  * @param {Object} tree
  * @param {Object} root
  * @param {Object} prevProps
@@ -16,7 +16,7 @@ export function putState(node, tree, root, prevProps) {
 }
 
 /**
- * @method takeVDomTree
+ * @method takeVDomTree :: HTMLElement -> object | null
  * @param {HTMLElement} node
  * @return {Object|null}
  */
@@ -26,7 +26,7 @@ export function takeVDomTree(node) {
 }
 
 /**
- * @method takePrevProps
+ * @method takePrevProps :: HTMLElement -> object | null
  * @param {HTMLElement} node
  * @return {Object|null}
  */

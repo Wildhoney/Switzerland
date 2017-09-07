@@ -4,7 +4,7 @@ import { takePrevProps } from './helpers/registry';
 export { h } from 'picodom';
 
 /**
- * @method message
+ * @method message :: string -> string -> void
  * @param {String} message
  * @param {String} type
  * @return {void}
@@ -18,7 +18,7 @@ function message(message, type = 'error') {
 }
 
 /**
- * @constant listeners
+ * @constant listeners :: Set
  * @type {Map}
  *
  * Responsible for listening for the resolution of specified DOM nodes.
@@ -26,9 +26,9 @@ function message(message, type = 'error') {
 export const listeners = new Set();
 
 /**
- * @method create
+ * @method create :: string -> array function -> Promise
  * @param {String} name
- * @param {Array} middlewares
+ * @param {Array<Function>} middlewares
  * @return {Promise}
  *
  * Takes a valid name for the custom element, as well as a list of the middleware. In the future when browsers
@@ -49,7 +49,7 @@ export function create(name, ...middlewares) {
         customElements.define(name, class SwissElement extends HTMLElement {
 
             /**
-             * @method connectedCallback
+             * @method connectedCallback :: void -> Promise
              * @return {Promise}
              */
             connectedCallback() {
@@ -58,7 +58,7 @@ export function create(name, ...middlewares) {
             }
 
             /**
-             * @method disconnectedCallback
+             * @method disconnectedCallback :: void -> Promise
              * @return {Promise}
              */
             disconnectedCallback() {
@@ -67,7 +67,7 @@ export function create(name, ...middlewares) {
             }
 
             /**
-             * @method render
+             * @method render :: object -> Promise
              * @param {Object} [mergeProps = {}]
              * @return {Promise}
              */
@@ -88,6 +88,7 @@ export function create(name, ...middlewares) {
                 } catch (err) {
 
                     const getTree = errorHandlers.get(this);
+                    const prevProps = takePrevProps(this);
                     const consoleError = !getTree || !this.isConnected;
 
                     consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {

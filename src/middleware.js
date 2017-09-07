@@ -4,13 +4,13 @@ import { listeners } from './switzerland';
 import { takeVDomTree, putState } from './helpers/registry';
 
 /**
- * @constant errorHandlers
+ * @constant errorHandlers :: WeakMap
  * @type {WeakMap}
  */
 export const errorHandlers = new WeakMap();
 
 /**
- * @constant ONCE
+ * @constant ONCE :: object
  * @type {Object}
  */
 export const ONCE = {
@@ -20,7 +20,7 @@ export const ONCE = {
 };
 
 /**
- * @method kebabToCamel
+ * @method kebabToCamel :: string -> string
  * @param {String} value
  * @return {String}
  */
@@ -29,8 +29,8 @@ function kebabToCamel(value) {
 }
 
 /**
- * @method escapeRegExp
- * @param {String} str
+ * @method escapeRegExp :: string -> string
+ * @param {String} value
  * @return {String}
  */
 function escapeRegExp(value) {
@@ -38,7 +38,7 @@ function escapeRegExp(value) {
 }
 
 /**
- * @constant path
+ * @constant path :: string
  * @type {String}
  */
 const path = do {
@@ -47,10 +47,10 @@ const path = do {
 };
 
 /**
- * @method attrs
- * @param {Array} [exclude = ['class', 'id']]
+ * @method attrs :: array string -> function
+ * @param {Array<String>} [exclude = ['class', 'id']]
  * @return {Function}
- *
+ * 
  * Takes an optional list of excluded attributes that will be ignored when their values are mutated, such as you
  * may not want the component to re-render when class names are modified, such as the "resolved" class name that
  * Switzerland adds when a component has been resolved.
@@ -88,11 +88,11 @@ export function attrs(exclude = ['class', 'id']) {
 }
 
 /**
- * @method html
+ * @method html :: function -> function
  * @param {Function} getTree
  * @return {Function}
  * @see https://github.com/picodom/picodom
- *
+ * 
  * Takes a virtual DOM representation that will render to the node's shadow boundary. For size reasons, Switzerland
  * uses Picodom over VirtualDOM, and as such you can use the Picodom documentation for reference.
  */
@@ -119,8 +119,8 @@ export function html(getTree) {
 }
 
 /**
- * @method include
- * @param {Array} files
+ * @method include :: array string -> function
+ * @param {Array<String>} files
  * @return {Function}
  *
  * Takes a list of relative CSS files, reads their contents, concatenates them, and appends the
@@ -175,7 +175,7 @@ export function include(...files) {
 }
 
 /**
- * @method methods
+ * @method methods :: object -> function
  * @param {Object} fns
  * @return {Function}
  *
@@ -198,7 +198,7 @@ export function methods(fns) {
 }
 
 /**
- * @method once
+ * @method once :: function -> symbol -> function
  * @param {Function} fn
  * @param {Symbol} [strategy = ONCE.ONLY]
  * @return {Function}
@@ -252,7 +252,7 @@ export function once(fn, strategy = ONCE.ONLY) {
 }
 
 /**
- * @method rescue
+ * @method rescue :: function -> function
  * @param {Function} getTree
  * @return {Function}
  *
@@ -271,11 +271,11 @@ export function rescue(getTree) {
 
 }
 
-/**
- * @method wait
- * @param {Array} names
+/** 
+ * @method wait :: array string -> function
+ * @param {Array<String>} names
  * @return {Function}
- *
+ * 
  * Takes a list of node names that correspond to Switzerland defined custom elements. Awaits for them to
  * be mounted in the DOM, including running all of their associated middleware, before resolving the custom element
  * that the 'wait' middleware was defined on.
