@@ -1,6 +1,7 @@
 import { takePrevProps, errorHandlers } from './middleware';
 
 export { h } from 'picodom/src/h';
+export { path } from './switzerland';
 
 /**
  * @method message :: string -> string -> void
