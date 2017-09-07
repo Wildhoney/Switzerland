@@ -260,7 +260,9 @@ export function methods(fns) {
  */
 export function once(fn, strategy = ONCE.ONLY) {
 
-    const cache = new Set();
+    const caches = new Map();
+    caches.set(fn, new Set());
+    const cache = caches.get(fn);
 
     /**
      * @method maybeInvoke
@@ -270,8 +272,8 @@ export function once(fn, strategy = ONCE.ONLY) {
      */
     function maybeInvoke(fn, props) {
 
-        return cache.has(fn) ? props : do {
-            cache.add(fn);
+        return cache.has(props.node) ? props : do {
+            cache.add(props.node);
             fn(props);
         };
 
@@ -280,13 +282,13 @@ export function once(fn, strategy = ONCE.ONLY) {
     return async props => {
 
         if (props.node.isConnected) {
-            const result = strategy !== ONCE.ON_UNMOUNT && maybeInvoke(fn, props);
-            strategy === ONCE.ON_UNMOUNT && cache.delete(fn);
+            const result = strategy !== ONCE.ON_UNMOUNT && await maybeInvoke(fn, props);
+            strategy === ONCE.ON_UNMOUNT && cache.delete(props.node);
             return { ...result, ...props };
         }
 
-        const result = maybeInvoke(fn, props);
-        strategy === ONCE.ON_MOUNT && cache.delete(fn);
+        const result = await maybeInvoke(fn, props);
+        strategy === ONCE.ON_MOUNT && cache.delete(props.node);
         return { ...result, ...props };
 
     };
