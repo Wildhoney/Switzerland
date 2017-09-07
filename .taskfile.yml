@@ -13,7 +13,7 @@
     - taskfile lint-fs
 
 - name: start
-  task: (cd tests/mocks && http-server -g)
+  task: (cd tests/mocks && http-server)
 
 - name: watch
   task: concurrently 'taskfile start' 'webpack --watch'
