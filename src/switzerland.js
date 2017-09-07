@@ -1,7 +1,6 @@
-import { errorHandlers } from './middleware';
-import { takePrevProps } from './helpers/registry';
+import { takePrevProps, errorHandlers } from './middleware';
 
-export { h } from 'picodom';
+export { h } from 'picodom/src/h';
 
 /**
  * @method message :: string -> string -> void

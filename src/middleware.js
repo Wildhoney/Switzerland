@@ -1,7 +1,6 @@
-import { patch } from 'picodom';
-import parseUrls from 'css-url-parser';
+import patch from 'picodom/src/patch';
+import parseUrls from 'css-url-parser/lib/css-parser';
 import { listeners } from './switzerland';
-import { takeVDomTree, putState } from './helpers/registry';
 
 /**
  * @constant errorHandlers :: WeakMap
@@ -20,6 +19,43 @@ export const ONCE = {
 };
 
 /**
+ * @constant registry :: WeakMap
+ * @type {WeakMap}
+ */
+const registry = new WeakMap();
+
+/**
+ * @method putState :: HTMLElement -> object -> HTMLElement -> object -> void
+ * @param {Object} tree
+ * @param {Object} root
+ * @param {Object} prevProps
+ * @return {void}
+ */
+function putState(node, tree, root, prevProps) {
+    registry.set(node, { prevProps, vDomTree: { tree, root } });
+}
+
+/**
+ * @method takeVDomTree :: HTMLElement -> object | null
+ * @param {HTMLElement} node
+ * @return {Object|null}
+ */
+function takeVDomTree(node) {
+    const state = Object(registry.get(node));
+    return state.vDomTree || null;
+}
+
+/**
+ * @method takePrevProps :: HTMLElement -> object | null
+ * @param {HTMLElement} node
+ * @return {Object|null}
+ */
+export function takePrevProps(node) {
+    const state = Object(registry.get(node));
+    return state.prevProps || null;
+}
+
+/**
  * @method kebabToCamel :: string -> string
  * @param {String} value
  * @return {String}
@@ -34,7 +70,7 @@ function kebabToCamel(value) {
  * @return {String}
  */
 function escapeRegExp(value) {
-    return value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+    return value.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
 }
 
 /**
@@ -50,7 +86,7 @@ const path = do {
  * @method attrs :: array string -> function
  * @param {Array<String>} [exclude = ['class', 'id']]
  * @return {Function}
- * 
+ *
  * Takes an optional list of excluded attributes that will be ignored when their values are mutated, such as you
  * may not want the component to re-render when class names are modified, such as the "resolved" class name that
  * Switzerland adds when a component has been resolved.
@@ -68,10 +104,16 @@ export function attrs(exclude = ['class', 'id']) {
         if (!observers.has(props.node)) {
 
             const observer = new MutationObserver(mutations => {
-                !mutations.every(mutation => exclude.includes(mutation.attributeName)) && props.render();
+
+                mutations.some(mutation => {
+                    const isObserved = !exclude.includes(mutation.attributeName);
+                    const isModified = mutation.oldValue !== props.node.getAttribute(mutation.attributeName);
+                    return isObserved && isModified;
+                }) && props.render();
+
             });
 
-            observer.observe(props.node, { attributes: true });
+            observer.observe(props.node, { attributes: true, attributeOldValue: true });
             observers.set(props.node, observer);
 
         }
@@ -92,7 +134,7 @@ export function attrs(exclude = ['class', 'id']) {
  * @param {Function} getTree
  * @return {Function}
  * @see https://github.com/picodom/picodom
- * 
+ *
  * Takes a virtual DOM representation that will render to the node's shadow boundary. For size reasons, Switzerland
  * uses Picodom over VirtualDOM, and as such you can use the Picodom documentation for reference.
  */
@@ -271,11 +313,11 @@ export function rescue(getTree) {
 
 }
 
-/** 
+/**
  * @method wait :: array string -> function
  * @param {Array<String>} names
  * @return {Function}
- * 
+ *
  * Takes a list of node names that correspond to Switzerland defined custom elements. Awaits for them to
  * be mounted in the DOM, including running all of their associated middleware, before resolving the custom element
  * that the 'wait' middleware was defined on.
