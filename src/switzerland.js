@@ -8,7 +8,7 @@ export { h } from 'picodom';
  * @param {String} message
  * @param {String} type
  * @return {void}
- * 
+ *
  * Takes a message and an optional console type for output. During minification this function will be removed
  * from the generated output if 'NODE_ENV' is defined as 'production', as it will be unused due to 'process.env'
  * checks later on in the code.
@@ -20,7 +20,7 @@ function message(message, type = 'error') {
 /**
  * @constant listeners
  * @type {Map}
- * 
+ *
  * Responsible for listening for the resolution of specified DOM nodes.
  */
 export const listeners = new Set();
@@ -30,11 +30,11 @@ export const listeners = new Set();
  * @param {String} name
  * @param {Array} middlewares
  * @return {Promise}
- * 
+ *
  * Takes a valid name for the custom element, as well as a list of the middleware. In the future when browsers
  * support extended native elements, the 'name' argument will allowed to be passed in a slightly different format
  * to indicate its intention to extend a native element.
- * 
+ *
  * This function yields a promise that is resolved when the first instance of the node has been resolved, which
  * includes the processing of its associated middleware.
  */
