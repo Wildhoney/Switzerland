@@ -245,9 +245,9 @@ export function methods(fns) {
  * @param {Symbol} [strategy = ONCE.ONLY]
  * @return {Function}
  *
- * Takes a function and an optional strategy that allows for the passed function to be invoked only once, which
- * is useful for one-off functionality, such as being used as a constructor or initialiser, or cleaning up when the
- * node is removed from DOM.
+ * Takes a function and an optional strategy that allows for the passed function to be invoked only once per instance
+ * of the component, which is useful for one-off functionality, such as being used as a constructor or initialiser, or
+ * cleaning up when the node is removed from DOM.
  *
  * With the optional second parameter you can specify the strategy:
  *
