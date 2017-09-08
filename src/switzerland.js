@@ -46,7 +46,7 @@ export function create(name, ...middlewares) {
          * @class SwitzerlandElement
          * @extends {HTMLElement}
          */
-        customElements.define(name, class SwissElement extends HTMLElement {
+        customElements.define(name, class extends HTMLElement {
 
             /**
              * @method connectedCallback :: void -> Promise
@@ -68,13 +68,24 @@ export function create(name, ...middlewares) {
 
             /**
              * @method render :: object -> Promise
-             * @param {Object} [mergeProps = {}]
+             * @param {Object} [state = {}]
              * @return {Promise}
              */
-            async render(mergeProps = {}) {
+            async render(state = {}) {
 
                 const prevProps = takePrevProps(this);
-                const initialProps = { prevProps, ...mergeProps, node: this, render: this.render.bind(this) };
+
+                /**
+                 * @constant initialProps :: object
+                 * @type {Object}
+                 */
+                const initialProps = {
+                    prevProps,
+                    state: prevProps ?  { ...prevProps.state, ...state } : null,
+                    node: this,
+                    render: this.render.bind(this),
+                    cancel: () => { throw 'cancel' }
+                };
 
                 try {
 
@@ -87,31 +98,34 @@ export function create(name, ...middlewares) {
 
                 } catch (err) {
 
-                    const getTree = errorHandlers.get(this);
-                    const prevProps = takePrevProps(this);
-                    const consoleError = !getTree || !this.isConnected;
-
-                    consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
-
-                        try {
-
-                            // Attempt to render the component using the error handling middleware.
-                            getTree({ node: this, render: this.render.bind(this), error: err, prevProps });
-
-                        } catch (err) {
-
-                            if (process.env.NODE_ENV !== 'production') {
-
-                                // When the error handling middleware throws an error we'll need to halt the execution
-                                // because the error handler should be recovering, not compounding the problem.
-                                message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
-                                console.error(err);
-
+                    if (err !== 'cancel') {
+                        
+                        const getTree = errorHandlers.get(this);
+                        const consoleError = !getTree || !this.isConnected;
+    
+                        consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+    
+                            try {
+    
+                                // Attempt to render the component using the error handling middleware.
+                                getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
+    
+                            } catch (err) {
+    
+                                if (process.env.NODE_ENV !== 'production') {
+    
+                                    // When the error handling middleware throws an error we'll need to halt the execution
+                                    // because the error handler should be recovering, not compounding the problem.
+                                    message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
+                                    console.error(err);
+    
+                                }
+    
                             }
+    
+                        };
 
-                        }
-
-                    };
+                    }
 
                 }
 

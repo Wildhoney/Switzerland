@@ -316,6 +316,22 @@ export function rescue(getTree) {
 }
 
 /**
+ * @method state :: object -> function
+ * @param {Object} initial
+ * @return {Function}
+ * 
+ * Takes an object that represents the initial state and augments the props. When your component invokes the
+ * render function from the props, the passed object will merged with the previous render's props.
+ */
+export function state(initial) {
+
+    return props => {
+        return { ...props, state: props.state || initial };
+    };
+
+}
+
+/**
  * @method wait :: array string -> function
  * @param {Array<String>} names
  * @return {Function}
