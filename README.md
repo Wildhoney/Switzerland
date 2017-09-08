@@ -152,9 +152,9 @@ create('cheese-card', html(props => {
 }));
 ```
 
-As you can see, our component doesn't really do a whole lot, however it is using a single `<slot />` that by default renders a placeholder image using the relative path to the component, and an em-dash for the cheese's name. We're essentially asking the development who uses the component to pass in some HTML to render in this slot.
+As you can see, our component doesn't really do a whole lot, however it is using a single `<slot />` that by default renders a placeholder image using the relative path to the component, and an em-dash for the cheese's name. We're essentially asking the developer who uses the component to pass in some HTML to render into the slot.
 
-In the HTML we would write the component as follows, passing in a single slot that holds both the `<img />` and `<h2 />` tags.
+In the HTML we'd pass in a single slot that holds both the `<img />` and `<h2 />` tags.
 
 ```html
 <cheese-card>
@@ -165,7 +165,7 @@ In the HTML we would write the component as follows, passing in a single slot th
 </cheese-card>
 ```
 
-We could alternatively have asked for two separated slots to be passed in: `image` and `name` which we'd have named `<slot name="image" />` and `<slot name="name" />`. Our HTML for the component would then have changed.
+Alternatively we could have asked for two separate slots to be passed in: `image` and `name` which we'd have named `<slot name="image" />` and `<slot name="name" />` from within the component. Our HTML for the component would then have changed to render two elements, each with a `slot` attribute that maps to one of two `<slot />` elements in the component.
 
 ```html
 <cheese-card>
@@ -174,6 +174,8 @@ We could alternatively have asked for two separated slots to be passed in: `imag
 </cheese-card>
 ```
 
-In that sense it depends how much freedom you'd like to bestow upon developers. Do you prefer them to choose the layout using the first approach, or the second approach which only allows the developers to place the items in a certain location within the component? Using the second approach you could have added a label to the slot with `Cheese: <slot="name" />`.
-
 One interesting aspect of the slot based approach is that you can easily update their values, and the component will reflect the change **without** actually re-rendering &mdash; this of course saves unnecessary CPU cycles, and is a whole lot more efficient.
+
+Whether you choose to allow a single slot or multple slots depends on the control you'd like over the data passed in. With our `cheese-card` component it makes to use one slot as both the image and the name are side-by-side, however if they were in two different locations then it makes perfect sense to ask two slots to be passed, where the component's creator would have control over the HTML in between the two slot regions.
+
+Naturally `<slot />` nodes can also contain other custom elements, which may themselves use slots.

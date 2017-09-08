@@ -106,9 +106,14 @@ export function attrs(exclude = ['class', 'id']) {
             const observer = new MutationObserver(mutations => {
 
                 mutations.some(mutation => {
+
+                    // Only cause a re-render if some of the mutated items have actually changed the attribute
+                    // when compared, and are not included in the `exclude` list specified in the function's
+                    // parameters.
                     const isObserved = !exclude.includes(mutation.attributeName);
                     const isModified = mutation.oldValue !== props.node.getAttribute(mutation.attributeName);
                     return isObserved && isModified;
+
                 }) && props.render();
 
             });
@@ -327,7 +332,7 @@ export function state(initial = {}) {
 
     return props => {
         const state = props.prevProps && { ...props[MERGE], ...props.prevProps[MERGE] };
-        return { ...props, state: props.prevProps ? state : initial };
+        return { ...props, state: state || initial };
     };
 
 }
