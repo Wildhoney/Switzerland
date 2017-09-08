@@ -1,6 +1,6 @@
 import patch from 'picodom/src/patch';
 import parseUrls from 'css-url-parser/lib/css-parser';
-import { listeners } from './switzerland';
+import { MERGE, listeners } from './switzerland';
 
 /**
  * @constant errorHandlers :: WeakMap
@@ -326,7 +326,8 @@ export function rescue(getTree) {
 export function state(initial = {}) {
 
     return props => {
-        return { ...props, state: props.state || initial };
+        const state = props.prevProps && { ...props[MERGE], ...props.prevProps[MERGE] };
+        return { ...props, state: props.prevProps ? state : initial };
     };
 
 }
