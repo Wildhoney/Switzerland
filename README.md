@@ -37,7 +37,7 @@ import { create, h } from 'switzerland';
 import { html } from 'switzerland/middleware';
 
 create('swiss-cheeseboard', html(() => {
-    return <ul class="cheeseboard" />;
+    return <section class="cheeseboard" />;
 }));
 ```
 
@@ -52,11 +52,15 @@ import { html, attrs } from 'switzerland/middleware';
 create('swiss-cheeseboard', attrs(), html(props => {
 
     return (
-        <ul class="cheeseboard">
-            {props.attrs.list.split(',').map(cheese => {
-                return <li>{cheese}</li>;
-            })}
-        </ul>
+        <section class="cheeseboard">
+
+            <ul>
+                {props.attrs.list.split(',').map(cheese => {
+                    return <li>{cheese}</li>;
+                })}
+            </ul>
+
+        </section>
     );
 
 }));
@@ -115,3 +119,61 @@ create('swiss-cheeseboard', state({ cheeses: [], value: '' }), html(props => {
 ```
 
 We can use the `state` middleware which simply takes an initial state when invoked, and uses that for the first render. Whenever you make subsequent calls of the `render` function, any passed state will be merged with the *current* state. In our case we're setting the value when it's typed, and then once the button's clicked we're augmenting the `cheeses` array.
+
+## Using Slots
+
+Slots are a [native implementation for Shadow DOM](https://developers.google.com/web/fundamentals/architecture/building-components/shadowdom#slots) that `Switzerland` supports. They allow for the passing of data into the shadow boundary &mdash; for example in React you have `this.props.children` which is akin to a default `<slot />`.
+
+We're going to create a profile card for the beautiful array of cheeses that exist in the world. However, we don't wish to create a profile card for *each* cheese, rather we'd like to pass in certain variables. For this we could pass the variables through DOM attributes, but in our case we're going to be passing an image as well as a name.
+
+We can setup our component in the usual fashion by using the `create` function coupled with the `html` middleware. The wonderful part about using `<slot />`s is that it doesn't require any additional middleware, and so doesn't take up extra bytes in your component.
+
+```javascript
+import { create, path, h } from 'switzerland';
+import { html } from 'switzerland/middleware';
+
+create('cheese-card', html(props => {
+
+    return (
+        <section class="cheese-card">
+
+            <h1>Cheese Profile</h1>
+
+            <slot>
+                <img src={`${path}/placeholder.png`} />
+                <h2>&mdash;</h2>
+            </slot>
+
+            <a href="#">Read more about cheeses on our website</a>.
+
+        </section>
+    );
+
+}));
+```
+
+As you can see, our component doesn't really do a whole lot, however it is using a single `<slot />` that by default renders a placeholder image using the relative path to the component, and an em-dash for the cheese's name. We're essentially asking the development who uses the component to pass in some HTML to render in this slot.
+
+In the HTML we would write the component as follows, passing in a single slot that holds both the `<img />` and `<h2 />` tags.
+
+```html
+<cheese-card>
+    <div>
+        <img src="images/cheddar.png" alt="Cheddar" />
+        <h2>Cheddar</h2>
+    </div>
+</cheese-card>
+```
+
+We could alternatively have asked for two separated slots to be passed in: `image` and `name` which we'd have named `<slot name="image" />` and `<slot name="name" />`. Our HTML for the component would then have changed.
+
+```html
+<cheese-card>
+    <img slot="image" src="images/cheddar.png" alt="Cheddar" />
+    <h2 slot="name">Cheddar</h2>
+</cheese-card>
+```
+
+In that sense it depends how much freedom you'd like to bestow upon developers. Do you prefer them to choose the layout using the first approach, or the second approach which only allows the developers to place the items in a certain location within the component? Using the second approach you could have added a label to the slot with `Cheese: <slot="name" />`.
+
+One interesting aspect of the slot based approach is that you can easily update their values, and the component will reflect the change **without** actually re-rendering &mdash; this of course saves unnecessary CPU cycles, and is a whole lot more efficient.
