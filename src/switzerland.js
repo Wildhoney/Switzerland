@@ -18,6 +18,12 @@ function message(message, type = 'error') {
 }
 
 /**
+ * @class CancelError
+ * @extends {Error}
+ */
+class CancelError extends Error {}
+
+/**
  * @constant listeners :: Set
  * @type {Set}
  *
@@ -81,10 +87,10 @@ export function create(name, ...middlewares) {
                  */
                 const initialProps = {
                     prevProps,
-                    state: prevProps ?  { ...prevProps.state, ...state } : null,
+                    state: prevProps ? { ...prevProps.state, ...state } : null,
                     node: this,
                     render: this.render.bind(this),
-                    cancel: () => { throw 'cancel' }
+                    cancel: () => { throw new CancelError(); }
                 };
 
                 try {
@@ -98,31 +104,31 @@ export function create(name, ...middlewares) {
 
                 } catch (err) {
 
-                    if (err !== 'cancel') {
-                        
+                    if (!(err instanceof CancelError)) {
+
                         const getTree = errorHandlers.get(this);
                         const consoleError = !getTree || !this.isConnected;
-    
+
                         consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
-    
+
                             try {
-    
+
                                 // Attempt to render the component using the error handling middleware.
                                 getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
-    
+
                             } catch (err) {
-    
+
                                 if (process.env.NODE_ENV !== 'production') {
-    
+
                                     // When the error handling middleware throws an error we'll need to halt the execution
                                     // because the error handler should be recovering, not compounding the problem.
                                     message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
                                     console.error(err);
-    
+
                                 }
-    
+
                             }
-    
+
                         };
 
                     }

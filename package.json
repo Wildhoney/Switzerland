@@ -99,6 +99,7 @@
         5
       ],
       "unicorn/filename-case": "off",
+      "unicorn/custom-error-definition": "off",
       "default-case": "off",
       "brace-style": "off",
       "no-constant-condition": "off",
