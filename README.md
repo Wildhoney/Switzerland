@@ -208,3 +208,34 @@ create('cheese-card', attrs(), include('../css/cheese-card.css'), html(props => 
 ```
 
 Helpfully the `include` middleware can take one or more CSS paths. Also when you create multiple instances of the `cheese-card` component above, only one AJAX request will be made for the CSS document.
+
+## Atomic Resolution
+
+When creating a component with asynchronous middleware, all middleware will need to have been run before the component is considered resolved &mdash; the `resolved` class name will be also added to the component's host element. However if a component hosts other `Switzerland` components then you *may* argue that the parent component is not considered resolved until its child components have been resolved. For such occasions `Switzerland` provides a `wait` middleware that takes a list of nodes to search for, and if found, awaits their resolution before considering the component resolved.
+
+```javascript
+import { create, path, h } from 'switzerland';
+import { html, attrs, include } from 'switzerland/middleware';
+
+create('cheese-card', attrs(), html(props => {
+
+    return (
+        <section class="cheeseboard">
+
+            <ul>
+                {props.attrs.list.split(',').map(cheese => {
+                    return <cheese-item model={cheese} />;
+                })}
+            </ul>
+
+        </section>
+    );
+
+}), wait('cheese-item'));
+```
+
+It's worth bearing in mind that if/when the `props.attrs.list.split.length` is zero, no `cheese-item` components are rendered to the DOM. Nevertheless, the `wait` middleware will only *attempt* to find `cheese-item` components, and if none are found, it will happily continue on its merry way to resolving the component.
+
+In most cases, the order of the middleware in `Switzerland` is important, and with the `wait` middleware it is no different. For instance, if we placed the `wait` middleware **before** the `html` middleware then we wouldn't stand a cat in hell's chance of hoping to find any `cheese-item` nodes, and thus its addition to the middleware chain would be entirely useless. By adding it after the `html` middleware we can be sure that **sometimes** one or more `cheese-item`s will be found.
+
+As you can specify multiple `html` middleware items in the middleware chain, likewise you can specify multiple `wait` middleware items. In that sense, the middleware chain acts like a long `Promise` chain &mdash; `.then(a).then(b).then(c)`.
