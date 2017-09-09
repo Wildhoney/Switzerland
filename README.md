@@ -179,3 +179,32 @@ One interesting aspect of the slot based approach is that you can easily update 
 Whether you choose to allow a single slot or multple slots depends on the control you'd like over the data passed in. With our `cheese-card` component it makes to use one slot as both the image and the name are side-by-side, however if they were in two different locations then it makes perfect sense to ask two slots to be passed, where the component's creator would have control over the HTML in between the two slot regions.
 
 Naturally `<slot />` nodes can also contain other custom elements, which may themselves use slots.
+
+## Styling Components
+
+One of the greatest benefits of the shadow boundary is style encapsulation &mdash; all styles apply to a particular component, and don't leak out into other areas without any quirky build techniques, such as [CSS Modules](https://github.com/css-modules/css-modules) which means developers can use `Switzerland` components irrespective of their build process.
+
+In styling components we use the `include` middleware &mdash; you specify the path to the CSS document relative to the component file. All paths specified within the CSS file are relative to the CSS document itself.
+
+```javascript
+import { create, path, h } from 'switzerland';
+import { html, attrs, include } from 'switzerland/middleware';
+
+create('cheese-card', attrs(), include('../css/cheese-card.css'), html(props => {
+
+    return (
+        <section class="cheeseboard">
+
+            <ul>
+                {props.attrs.list.split(',').map(cheese => {
+                    return <li>{cheese}</li>;
+                })}
+            </ul>
+
+        </section>
+    );
+
+}));
+```
+
+Helpfully the `include` middleware can take one or more CSS paths. Also when you create multiple instances of the `cheese-card` component above, only one AJAX request will be made for the CSS document.
