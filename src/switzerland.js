@@ -18,12 +18,6 @@ function message(message, type = 'error') {
 }
 
 /**
- * @constant MERGE
- * @type {Symbol}
- */
-export const MERGE = Symbol('merge');
-
-/**
  * @constant eventName
  * @type {String}
  */
@@ -78,20 +72,20 @@ export function create(name, ...middlewares) {
 
             /**
              * @method render :: object -> Promise
-             * @param {Object} [state = {}]
+             * @param {Object} [state = null]
              * @return {Promise}
              */
-            async render(state = {}) {
+            async render(state = null) {
 
                 /**
                  * @constant initialProps :: object
                  * @type {Object}
                  */
                 const initialProps = {
+                    ...state && { state },
                     prevProps: takePrevProps(this),
                     node: this,
                     render: this.render.bind(this),
-                    [MERGE]: state,
                     cancel: () => { throw new CancelError(); }
                 };
 

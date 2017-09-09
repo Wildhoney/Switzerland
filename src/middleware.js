@@ -1,6 +1,6 @@
 import patch from 'picodom/src/patch';
 import parseUrls from 'css-url-parser/lib/css-parser';
-import { MERGE, eventName } from './switzerland';
+import { eventName } from './switzerland';
 
 /**
  * @constant errorHandlers :: WeakMap
@@ -331,7 +331,7 @@ export function rescue(getTree) {
 export function state(initial = {}) {
 
     return props => {
-        const state = props.prevProps && { ...props[MERGE], ...props.prevProps[MERGE] };
+        const state = props.prevProps && { ...props.prevProps.state, ...props.state };
         return { ...props, state: state || initial };
     };
 
