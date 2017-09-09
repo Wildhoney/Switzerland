@@ -24,18 +24,16 @@ function message(message, type = 'error') {
 export const MERGE = Symbol('merge');
 
 /**
+ * @constant eventName
+ * @type {String}
+ */
+export const eventName = 'switzerland/resolved';
+
+/**
  * @class CancelError
  * @extends {Error}
  */
 class CancelError extends Error {}
-
-/**
- * @constant listeners :: Set
- * @type {Set}
- *
- * Responsible for listening for the resolution of specified DOM nodes.
- */
-export const listeners = new Set();
 
 /**
  * @method create :: string -> array function -> Promise
@@ -139,9 +137,17 @@ export function create(name, ...middlewares) {
 
                 }
 
-                // Finally add the "resolved" class name regardless of how the error's rendered.
+                // Add the "resolved" class name regardless of how the component's rendered.
                 setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
-                listeners.forEach(listener => listener(this));
+
+                // Dispatch the event for parent components to be able to resolve.
+                this.dispatchEvent(new CustomEvent(eventName, {
+                    detail: { node: this, version: 1 },
+                    bubbles: true,
+                    composed: true
+                }));
+
+                // Finally we'll resolve the promise that is yielded from the `render` method.
                 resolve();
 
             }

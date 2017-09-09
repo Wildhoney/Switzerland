@@ -1,6 +1,6 @@
 import patch from 'picodom/src/patch';
 import parseUrls from 'css-url-parser/lib/css-parser';
-import { MERGE, listeners } from './switzerland';
+import { MERGE, eventName } from './switzerland';
 
 /**
  * @constant errorHandlers :: WeakMap
@@ -361,21 +361,16 @@ export function wait(...names) {
 
         await new Promise(resolve => {
 
-            const nodes = names.reduce((accum, name) => {
+            const nodes = Array.from(names.reduce((accum, name) => {
                 return [...accum, ...Array.from(props.node.shadowRoot.querySelectorAll(name))];
-            }, []);
+            }, []));
 
             nodes.length === 0 ? resolve() : do {
 
-                /**
-                 * @method listener
-                 * @param {HTMLElement} node
-                 * @return {void}
-                 */
-                listeners.add(function listener(node) {
-                    resolved.add(node);
+                window.addEventListener(eventName, function listener(event) {
+                    nodes.includes(event.detail.node) && resolved.add(event.detail.node);
                     resolved.size === nodes.length && do {
-                        listeners.delete(listener);
+                        window.removeEventListener(eventName, listener);
                         resolve();
                         resolved.clear();
                     };

@@ -81,7 +81,8 @@
       "MutationObserver",
       "ShadowRoot",
       "HTMLElement",
-      "HTMLScriptElement"
+      "HTMLScriptElement",
+      "CustomEvent"
     ],
     "extends": "xo-react",
     "rules": {
