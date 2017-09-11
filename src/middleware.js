@@ -338,6 +338,21 @@ export function state(initial = {}) {
 }
 
 /**
+ * @method validate :: object -> function
+ * @param {Object} schema
+ * @return {Function{}}
+ */
+export function validate(schema) {
+
+    return process.env.NODE_ENV === 'production' ? props => props : async props => {
+        const PropTypes = require('prop-types');
+        PropTypes.checkPropTypes(schema, props, props.node.nodeName.toLowerCase());
+        return props;
+    };
+
+}
+
+/**
  * @method wait :: array string -> function
  * @param {Array<String>} names
  * @return {Function}

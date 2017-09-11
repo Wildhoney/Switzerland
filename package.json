@@ -36,7 +36,8 @@
   "homepage": "https://github.com/Wildhoney/Switzerland#readme",
   "dependencies": {
     "css-url-parser": "~1.1.2",
-    "picodom": "~0.1.0"
+    "picodom": "~0.1.0",
+    "prop-types": "~15.5.10"
   },
   "devDependencies": {
     "ava": "~0.19.1",
