@@ -342,10 +342,10 @@ export function state(initial = {}) {
  * @param {Object} schema
  * @return {Function}
  * @see https://github.com/facebook/prop-types
- * 
+ *
  * Takes a schema and validates the incoming props at the given point in the middleware chain. This is in addition
  * to static-type checking, as it validates props at runtime, which is useful for incoming data from APIs, etc...
- * 
+ *
  * When building the project using NODE_ENV as 'production', the `validate` middleware won't validate, and will
  * remove most of its code to save crucial bytes.
  */
