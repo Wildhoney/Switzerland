@@ -20,7 +20,7 @@
   
 - name: lint-fs
   tasks:
-    - NODE_ENV=production BABEL_ENV=build npm run build
+    - NODE_ENV=production npm run build
     - - gzip core.js -f
     - - - fslint --files=core.js.gz --limit=3072
     - - - - rm core.js.gz
@@ -29,4 +29,4 @@
   task: xo src/*.js
 
 - name: spec
-  task: BABEL_ENV=test ava
+  task: ava

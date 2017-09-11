@@ -1,17 +1,10 @@
 {
-    "env": {
-        "build": {
-            "plugins": [
-                "transform-class-properties",
-                "transform-object-rest-spread",
-                "transform-do-expressions",
-                ["transform-react-jsx", {
-                    "pragma": "h"
-                }]
-            ]
-        },
-        "test": {
-            "presets": ["es2015", "stage-0"]
-        }
-    }
+    "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread",
+        "transform-do-expressions",
+        ["transform-react-jsx", {
+            "pragma": "h"
+        }]
+    ]
   }
