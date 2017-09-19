@@ -37,7 +37,8 @@
   "dependencies": {
     "css-url-parser": "~1.1.2",
     "picodom": "~0.1.0",
-    "prop-types": "~15.5.10"
+    "prop-types": "~15.5.10",
+    "transform-runtime": "0.0.0"
   },
   "devDependencies": {
     "ava": "~0.19.1",
@@ -46,14 +47,17 @@
     "babel-loader": "~7.0.0",
     "babel-plugin-transform-class-properties": "~6.24.1",
     "babel-plugin-transform-do-expressions": "~6.22.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "~6.24.1",
     "babel-plugin-transform-object-rest-spread": "~6.23.0",
     "babel-plugin-transform-react-jsx": "~6.24.1",
+    "babel-preset-es2015": "~6.24.1",
+    "babel-preset-stage-2": "~6.24.1",
     "concurrently": "~3.5.0",
     "eslint": "~3.19.0",
     "eslint-config-xo-react": "~0.12.0",
     "eslint-plugin-react": "~7.1.0",
+    "express": "~4.15.3",
     "fslint": "~1.1.0",
-    "http-server": "~0.10.0",
     "puppeteer": "~0.9.0",
     "taskfile": "~0.5.11",
     "uglifyjs-webpack-plugin": "~1.0.0-beta.1",
