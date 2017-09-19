@@ -1,6 +1,8 @@
 import { create, h } from '../../../src/switzerland';
 import { html, include, rescue, attrs, wait } from '../../../src/middleware';
 
+window.test = 'Adam!';
+
 const person = props => {
 
     return new Promise(async resolve => {
@@ -37,7 +39,8 @@ create('welcome-cards', include('welcome-cards.css'), html(props => {
 
 }), wait('welcome-card'));
 
-create('welcome-card', attrs(), include('welcome-card.css'), person, html(props => {
+// create('welcome-card', attrs(), include('welcome-card.css'), person, html(props => {
+create('welcome-card', attrs(), person, html(props => {
 
     const name = props.attrs.capitalise === 'yes' ? props.person.name.toUpperCase() : props.person.name;
 
