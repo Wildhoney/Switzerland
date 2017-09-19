@@ -4,7 +4,7 @@ const Uglify = require('uglifyjs-webpack-plugin');
 module.exports = {
     entry: {
         'core.js': './src/switzerland.js',
-        './tests/mocks/welcome-card/build.js': './tests/mocks/welcome-card/index.js'
+        './example/js/welcome-card/build.js': './example/js/welcome-card/index.js'
     },
     output: {
         filename: '[name]',
