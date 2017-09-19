@@ -1,5 +1,5 @@
 - name: build
-  task: webpack
+  task: BABEL_ENV=build webpack
 
 - name: test
   tasks:
@@ -13,7 +13,7 @@
     - taskfile lint-fs
 
 - name: start
-  task: (cd tests/mocks && http-server)
+  task: (cd example/server/ && BABEL_ENV=server babel-node default.js)
 
 - name: watch
   task: concurrently 'taskfile start' 'webpack --watch'
