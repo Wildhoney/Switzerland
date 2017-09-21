@@ -33,7 +33,7 @@ class CancelError extends Error {}
  * @method create :: string -> array function -> Promise
  * @param {String} name
  * @param {Array<Function>} middlewares
- * @return {Promise}
+ * @return {void}
  *
  * Takes a valid name for the custom element, as well as a list of the middleware. In the future when browsers
  * support extended native elements, the 'name' argument will allowed to be passed in a slightly different format
@@ -44,109 +44,107 @@ class CancelError extends Error {}
  */
 export function create(name, ...middlewares) {
 
-    return new Promise(resolve => {
+    /**
+     * @class SwitzerlandElement
+     * @extends {HTMLElement}
+     */
+    customElements.define(name, class extends HTMLElement {
 
         /**
-         * @class SwitzerlandElement
-         * @extends {HTMLElement}
+         * @method connectedCallback :: void -> Promise
+         * @return {Promise}
          */
-        customElements.define(name, class extends HTMLElement {
+        connectedCallback() {
+            // !this.shadowRoot && this.attachShadow({ mode: 'open' });
+            return this.render();
+        }
+
+        /**
+         * @method disconnectedCallback :: void -> Promise
+         * @return {Promise}
+         */
+        disconnectedCallback() {
+            this.classList.remove('resolved');
+            return this.render();
+        }
+
+        /**
+         * @method render :: object -> Promise
+         * @param {Object} [state = null]
+         * @return {Promise}
+         */
+        async render(state = null) {
+
+            const boundary = this.shadowRoot || document.createDocumentFragment();
+            const isUniversal = !(boundary instanceof ShadowRoot);
 
             /**
-             * @method connectedCallback :: void -> Promise
-             * @return {Promise}
+             * @constant initialProps :: object
+             * @type {Object}
              */
-            connectedCallback() {
-                !this.shadowRoot && this.attachShadow({ mode: 'open' });
-                return this.render();
-            }
+            const initialProps = {
+                ...state && { state },
+                prevProps: takePrevProps(this),
+                node: this,
+                render: this.render.bind(this),
+                boundary,
+                isUniversal,
+                cancel: () => { throw new CancelError(); }
+            };
 
-            /**
-             * @method disconnectedCallback :: void -> Promise
-             * @return {Promise}
-             */
-            disconnectedCallback() {
-                this.classList.remove('resolved');
-                return this.render();
-            }
+            try {
 
-            /**
-             * @method render :: object -> Promise
-             * @param {Object} [state = null]
-             * @return {Promise}
-             */
-            async render(state = null) {
+                // Attempt to render the component, catching any errors that may be thrown in the middleware to
+                // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
+                await middlewares.reduce(async (accumP, _, index) => {
+                    const middleware = middlewares[index];
+                    return middleware(await accumP);
+                }, initialProps);
 
-                /**
-                 * @constant initialProps :: object
-                 * @type {Object}
-                 */
-                const initialProps = {
-                    ...state && { state },
-                    prevProps: takePrevProps(this),
-                    node: this,
-                    render: this.render.bind(this),
-                    cancel: () => { throw new CancelError(); }
-                };
+            } catch (err) {
 
-                try {
+                if (!(err instanceof CancelError)) {
 
-                    // Attempt to render the component, catching any errors that may be thrown in the middleware to
-                    // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
-                    await middlewares.reduce(async (accumP, _, index) => {
-                        const middleware = middlewares[index];
-                        return middleware(await accumP);
-                    }, initialProps);
+                    const getTree = errorHandlers.get(this);
+                    const consoleError = !getTree || !this.isConnected;
 
-                } catch (err) {
+                    consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
 
-                    if (!(err instanceof CancelError)) {
+                        try {
 
-                        const getTree = errorHandlers.get(this);
-                        const consoleError = !getTree || !this.isConnected;
+                            // Attempt to render the component using the error handling middleware.
+                            getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
 
-                        consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+                        } catch (err) {
 
-                            try {
+                            if (process.env.NODE_ENV !== 'production') {
 
-                                // Attempt to render the component using the error handling middleware.
-                                getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
-
-                            } catch (err) {
-
-                                if (process.env.NODE_ENV !== 'production') {
-
-                                    // When the error handling middleware throws an error we'll need to halt the execution
-                                    // because the error handler should be recovering, not compounding the problem.
-                                    message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
-                                    console.error(err);
-
-                                }
+                                // When the error handling middleware throws an error we'll need to halt the execution
+                                // because the error handler should be recovering, not compounding the problem.
+                                message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
+                                console.error(err);
 
                             }
 
-                        };
+                        }
 
-                    }
+                    };
 
                 }
 
-                // Add the "resolved" class name regardless of how the component's rendered.
-                setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
-
-                // Dispatch the event for parent components to be able to resolve.
-                this.dispatchEvent(new CustomEvent(eventName, {
-                    detail: { node: this, version: 1 },
-                    bubbles: true,
-                    composed: true
-                }));
-
-                // Finally we'll resolve the promise that is yielded from the `render` method.
-                resolve();
-
             }
 
-        });
+            // Add the "resolved" class name regardless of how the component's rendered.
+            setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
+
+            // Finally dispatch the event for parent components to be able to resolve.
+            this.dispatchEvent(new CustomEvent(eventName, {
+                detail: { node: this, version: 1 },
+                bubbles: true,
+                composed: true
+            }));
+
+        }
 
     });
 
