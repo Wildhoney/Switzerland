@@ -1,8 +1,6 @@
 import { create, h } from '../../../src/switzerland';
 import { html, include, rescue, attrs, wait } from '../../../src/middleware';
 
-window.test = 'Adam!';
-
 const person = props => {
 
     return new Promise(async resolve => {
