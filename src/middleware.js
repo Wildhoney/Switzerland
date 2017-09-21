@@ -95,7 +95,7 @@ export const path = do {
  * their values. It also observes the attributes using the 'MutationObserver' to re-render the component when any
  * of the non-excluded attributes are modified.
  */
-export function attrs(exclude = ['class', 'id']) {
+export function attrs(exclude = ['class', 'id', 'style']) {
 
     const observers = new Map();
 
@@ -152,10 +152,13 @@ export function html(getTree) {
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || {};
             const tree = await getTree({ ...props, render: props.render });
-            const root = patch(previous.tree, tree, previous.root, props.node.shadowRoot);
+            const root = patch(previous.tree, tree, previous.root, props.boundary);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
+
+            // Append the document fragment if we have one, as that's used with universal rendering.
+            !(props.boundary instanceof ShadowRoot) && props.node.appendChild(props.boundary);
 
         }
 
@@ -187,7 +190,7 @@ export function include(...files) {
 
     return async props => {
 
-        if (!props.node.shadowRoot.querySelector('style')) {
+        if (!props.boundary.querySelector('style')) {
 
             const content = cache.has(key) ? cache.get(key) : do {
 
@@ -211,7 +214,7 @@ export function include(...files) {
             const style = document.createElement('style');
             style.setAttribute('type', 'text/css');
             style.innerHTML = await content;
-            props.node.shadowRoot.appendChild(style);
+            props.boundary.appendChild(style);
 
         }
 
@@ -384,7 +387,7 @@ export function wait(...names) {
         await new Promise(resolve => {
 
             const nodes = Array.from(names.reduce((accum, name) => {
-                return [...accum, ...Array.from(props.node.shadowRoot.querySelectorAll(name))];
+                return [...accum, ...Array.from(props.boundary.querySelectorAll(name))];
             }, []));
 
             nodes.length === 0 ? resolve() : do {
