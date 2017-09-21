@@ -87,6 +87,7 @@
       "document",
       "customElements",
       "fetch",
+      "navigator",
       "MutationObserver",
       "ShadowRoot",
       "HTMLElement",

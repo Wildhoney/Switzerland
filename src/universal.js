@@ -21,7 +21,7 @@ const defaultOptions = {
  * @method createServer :: string -> number
  * @param {String} rootPath
  * @return {Number}
- * 
+ *
  * Creates the Express server once and once only, with a random port being assigned that the function yields.
  */
 const createServer = once(rootPath => {
@@ -43,9 +43,9 @@ const openBrowser = once(opts => {
  * @method elementsDidResolve :: object -> Promise
  * @param {Object} page
  * @return {Promise}
- * 
+ *
  * Filters out elements that are controlled by Switzerland, and waits them to be resolved. Puppeteer invokes the
- * passed function continuously until it yields a truthy value. 
+ * passed function continuously until it yields a truthy value.
  */
 function elementsDidResolve(page) {
 
@@ -92,7 +92,7 @@ function removeSlots(content) {
  * @param {String} rootPath
  * @param {Boolean} [options = defaultOptions]
  * @return {String}
- * 
+ *
  * Takes the path to the HTML document and any options and gives back a string representation of the DOM
  * with all styles inlined, and <slot /> elements removed.
  */
@@ -104,7 +104,7 @@ export default async function renderToString(rootPath, options = defaultOptions)
 
     const browser = await openBrowser(opts);
     const page = await browser.newPage();
-    
+
     await page.setUserAgent('Switzerland');
     await page.goto(url);
     await elementsDidResolve(page);
