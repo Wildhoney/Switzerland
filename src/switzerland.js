@@ -51,11 +51,17 @@ export function create(name, ...middlewares) {
     customElements.define(name, class extends HTMLElement {
 
         /**
+         * @constant isSwitzerland
+         * @type {Boolean}
+         */
+        isSwitzerland = true;
+
+        /**
          * @method connectedCallback :: void -> Promise
          * @return {Promise}
          */
         connectedCallback() {
-            // !this.shadowRoot && this.attachShadow({ mode: 'open' });
+            navigator.userAgent !== 'Switzerland' && !this.shadowRoot && this.attachShadow({ mode: 'open' });
             return this.render();
         }
 
