@@ -1,8 +1,8 @@
+import { basename, dirname } from 'path';
+import { hostname } from 'os';
 import puppeteer from 'puppeteer';
 import express from 'express';
 import cors from 'cors';
-import { basename, dirname } from 'path';
-import { hostname } from 'os';
 import { once } from 'ramda';
 
 /**
@@ -21,10 +21,10 @@ const defaultOptions = {
  * @return {Number}
  */
 const createServer = once(rootPath => {
-    
+
     const app = express();
     app.options('*', cors());
-    
+
     app.use(express.static(dirname(rootPath)));
     return app.listen().address().port;
 
