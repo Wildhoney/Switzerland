@@ -5,7 +5,7 @@
   tasks:
     - taskfile lint-js
     - taskfile lint-fs
-    - taskfile spec
+    # - taskfile spec
 
 - name: lint
   tasks:
