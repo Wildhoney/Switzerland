@@ -66,7 +66,7 @@ function elementsDidResolve(page) {
  * @return {String}
  *
  * Takes the string representation of the DOM and takes out any text nodes that is the first child in the
- * component, as it's assumed they're being used as the default <slot />. It also removes any <slot /> elements
+ * component, as it's assumed they're being used as the default `slot`. It also removes any `slot` elements
  * as they don't function without a shadow boundary.
  */
 function removeSlots(content) {
@@ -76,7 +76,7 @@ function removeSlots(content) {
 
     nodes.forEach(node => {
 
-        // Remove every element except the last one, as additional elements implies the component is using <slot />
+        // Remove every element except the last one, as additional elements implies the component is using `slot`
         // elements as a component can only yield one child, be it a DOM element a text element.
         const childrenExceptLast = Array.from(node.childNodes).slice(0, -1);
         childrenExceptLast.forEach(node => node.remove());
@@ -94,7 +94,7 @@ function removeSlots(content) {
  * @return {String}
  *
  * Takes the path to the HTML document and any options and gives back a string representation of the DOM
- * with all styles inlined, and <slot /> elements removed.
+ * with all styles inlined, and `slot` elements removed.
  */
 export default async function renderToString(rootPath, options = defaultOptions) {
 
