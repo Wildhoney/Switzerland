@@ -3,8 +3,6 @@ import { hostname } from 'os';
 import puppeteer from 'puppeteer';
 import express from 'express';
 import { once } from 'ramda';
-import { JSDOM } from 'jsdom';
-import { generate } from 'shortid';
 
 /**
  * @constant defaultOptions
@@ -61,18 +59,6 @@ function elementsDidResolve(page) {
 }
 
 /**
- * @method removeSlots :: string -> string
- * @param {String} content
- * @return {String}
- *
- * Takes the string representation of the DOM and migrates the slot content into their respective slot nodes.
- */
-function handleSlots(content) {
-    const dom = new JSDOM(content);
-    return dom.serialize();
-}
-
-/**
  * @method renderToString :: string -> object -> Promise
  * @param {String} rootPath
  * @param {Boolean} [options = defaultOptions]
@@ -96,6 +82,6 @@ export default async function renderToString(rootPath, options = defaultOptions)
 
     const content = await page.content();
     await page.close();
-    return handleSlots(content);
+    return content;
 
 };
