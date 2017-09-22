@@ -2,9 +2,9 @@ import { basename, dirname } from 'path';
 import { hostname } from 'os';
 import puppeteer from 'puppeteer';
 import express from 'express';
-import inlineCss from 'inline-css';
 import { once } from 'ramda';
 import { JSDOM } from 'jsdom';
+import { generate } from 'shortid';
 
 /**
  * @constant defaultOptions
@@ -65,26 +65,11 @@ function elementsDidResolve(page) {
  * @param {String} content
  * @return {String}
  *
- * Takes the string representation of the DOM and takes out any text nodes that is the first child in the
- * component, as it's assumed they're being used as the default `slot`. It also removes any `slot` elements
- * as they don't function without a shadow boundary.
+ * Takes the string representation of the DOM and migrates the slot content into their respective slot nodes.
  */
-function removeSlots(content) {
-
+function handleSlots(content) {
     const dom = new JSDOM(content);
-    const nodes = dom.window.document.querySelectorAll('*[data-switzerland].resolved');
-
-    nodes.forEach(node => {
-
-        // Remove every element except the last one, as additional elements implies the component is using `slot`
-        // elements as a component can only yield one child, be it a DOM element a text element.
-        const childrenExceptLast = Array.from(node.childNodes).slice(0, -1);
-        childrenExceptLast.forEach(node => node.remove());
-
-    });
-
     return dom.serialize();
-
 }
 
 /**
@@ -109,8 +94,8 @@ export default async function renderToString(rootPath, options = defaultOptions)
     await page.goto(url);
     await elementsDidResolve(page);
 
-    const content = await page.evaluate(() => document.body.outerHTML);
+    const content = await page.content();
     await page.close();
-    return removeSlots(await inlineCss(content, { url: '/' }));
+    return handleSlots(content);
 
 };
