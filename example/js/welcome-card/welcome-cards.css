@@ -1,4 +1,5 @@
 section.welcome-cards {
+    all: initial;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;

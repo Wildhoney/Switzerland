@@ -1,5 +1,6 @@
 :host,
 welcome-card {
+    all: initial;
     border: 2px solid var(--welcome-card-theme, transparent);
     display: inline-block;
     padding: 15px;
