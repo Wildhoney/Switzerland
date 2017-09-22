@@ -5,7 +5,7 @@ import renderToString from '../../src/universal';
 const app = express();
 const rootPath = __dirname + '/../index.html';
 
-app.get('/', async (request, response) => {
+app.get('/universal.html', async (request, response) => {
     const markup = await renderToString(rootPath);
     response.send(markup);
 });
