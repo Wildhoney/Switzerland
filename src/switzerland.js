@@ -17,6 +17,13 @@ function message(message, type = 'error') {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
 }
 
+// Remove all fake shadow boundaries that are generated from the server-side when we encounter them.
+const fakeShadowBoundaries = document.querySelectorAll('shadow-boundary');
+fakeShadowBoundaries.forEach(boundary => {
+    boundary.parentNode.removeAttribute('style');
+    boundary.remove();
+});
+
 /**
  * @constant eventName
  * @type {String}
@@ -81,8 +88,12 @@ export function create(name, ...middlewares) {
          */
         async render(state = null) {
 
-            const boundary = this.shadowRoot || document.createDocumentFragment();
-            const isUniversal = !(boundary instanceof ShadowRoot);
+            const isUniversal = !this.shadowRoot;
+            const boundary = this.shadowRoot || do {
+                const shadowBoundary = document.createElement('shadow-boundary');
+                shadowBoundary.style.all = 'initial';
+                shadowBoundary;
+            };
 
             /**
              * @constant initialProps :: object

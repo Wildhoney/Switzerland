@@ -3,6 +3,7 @@ import { hostname } from 'os';
 import puppeteer from 'puppeteer';
 import express from 'express';
 import { once } from 'ramda';
+import inlineCss from 'inline-css';
 
 /**
  * @constant defaultOptions
@@ -82,6 +83,6 @@ export default async function renderToString(rootPath, options = defaultOptions)
 
     const content = await page.content();
     await page.close();
-    return content;
+    return inlineCss(content, { url: '/' });
 
 };
