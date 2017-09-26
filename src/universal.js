@@ -31,7 +31,7 @@ const createServer = once(rootPath => {
 });
 
 /**
- * @method openBrowser
+ * @method openBrowser :: object -> object
  * @param {Object} opts
  * @return {Object}
  */
@@ -61,9 +61,31 @@ function elementsDidResolve(page) {
 }
 
 /**
- * @method handleSlots
+ * @method replaceSlot :: HTMLElement -> HTMLSlotElement -> HTMLSlotElement
+ * @param {HTMLElement} childNode
+ * @param {HTMLSlotElement} slot
+ * @return {HTMLSlotElement}
+ * 
+ * Replaces the given slot with the passed child node, if the child node exists in the DOM.
+ */
+function replaceSlot(childNode, slot) {
+
+    if (childNode) {
+        slot.innerHTML = '';
+        slot.appendChild(childNode);
+    }
+
+    return slot;
+
+}
+
+/**
+ * @method handleSlots :: string -> string
  * @param {String} content
  * @return {String}
+ * 
+ * Takes the HTML string representation of the DOM and fills in the `slot` nodes using either the default slot
+ * approach, or by using named slots.
  */
 async function handleSlots(content) {
 
@@ -74,7 +96,7 @@ async function handleSlots(content) {
     Array.from(dom.window.document.querySelectorAll('*[data-switzerland].resolved')).sort((a, b) => {
 
         // Order by the parent count so we handle the deepest components first, which prevents components less
-        // further down from dealing with `slot`s from a nested component. 
+        // further down from dealing with `slot`s from a nested component.
         const parentCountA = dom.window.document.evaluate('ancestor::*', a, ...args);
         const parentCountB = dom.window.document.evaluate('ancestor::*', b, ...args);
         return parentCountA.snapshotLength < parentCountB.snapshotLength;
@@ -88,13 +110,12 @@ async function handleSlots(content) {
             // Memorise the slot so we don't handle it again.
             seenSlots.add(slot);
 
-            const childNodes = Array.from(node.childNodes).filter(node => node.nodeName.toLowerCase() !== 'shadow-boundary');
             const isDefaultSlot = !slot.hasAttribute('name');
+            const childNodes = Array.from(node.childNodes).filter(node => node.nodeName.toLowerCase() !== 'shadow-boundary');
 
-            return isDefaultSlot && do {
-                const childNode = childNodes[0];
-                slot.innerHTML = '';
-                slot.appendChild(childNode);
+            return isDefaultSlot ? replaceSlot(childNodes[0], slot) : do {
+                const childNode = childNodes.find(node => node.getAttribute('slot') === slot.getAttribute('name'));
+                replaceSlot(childNode, slot);
             };
 
         });
