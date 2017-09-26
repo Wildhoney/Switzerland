@@ -1,8 +1,9 @@
 import { basename, dirname } from 'path';
 import { hostname } from 'os';
+import { JSDOM } from 'jsdom';
 import puppeteer from 'puppeteer';
 import express from 'express';
-import { once } from 'ramda';
+import { once, composeP } from 'ramda';
 import inlineCss from 'inline-css';
 
 /**
@@ -60,6 +61,51 @@ function elementsDidResolve(page) {
 }
 
 /**
+ * @method handleSlots
+ * @param {String} content
+ * @return {String}
+ */
+async function handleSlots(content) {
+
+    const dom = new JSDOM(content);
+    const args = [null, dom.window.XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null];
+    const seenSlots = new Set();
+
+    Array.from(dom.window.document.querySelectorAll('*[data-switzerland].resolved')).sort((a, b) => {
+
+        // Order by the parent count so we handle the deepest components first, which prevents components less
+        // further down from dealing with `slot`s from a nested component. 
+        const parentCountA = dom.window.document.evaluate('ancestor::*', a, ...args);
+        const parentCountB = dom.window.document.evaluate('ancestor::*', b, ...args);
+        return parentCountA.snapshotLength < parentCountB.snapshotLength;
+
+    }).forEach(node => {
+
+        const slots = Array.from(node.querySelectorAll('slot'));
+
+        slots.filter(slot => !seenSlots.has(slot)).forEach(slot => {
+
+            // Memorise the slot so we don't handle it again.
+            seenSlots.add(slot);
+
+            const childNodes = Array.from(node.childNodes).filter(node => node.nodeName.toLowerCase() !== 'shadow-boundary');
+            const isDefaultSlot = !slot.hasAttribute('name');
+
+            return isDefaultSlot && do {
+                const childNode = childNodes[0];
+                slot.innerHTML = '';
+                slot.appendChild(childNode);
+            };
+
+        });
+
+    });
+
+    return dom.serialize();
+
+}
+
+/**
  * @method renderToString :: string -> object -> Promise
  * @param {String} rootPath
  * @param {Boolean} [options = defaultOptions]
@@ -83,6 +129,12 @@ export default async function renderToString(rootPath, options = defaultOptions)
 
     const content = await page.content();
     await page.close();
-    return inlineCss(content, { url: '/' });
+
+    const transform = composeP(
+        handleSlots,
+        content => inlineCss(content, { url: '/' }),
+    );
+
+    return transform(content);
 
 };

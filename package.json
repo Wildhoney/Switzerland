@@ -59,6 +59,7 @@
     "express": "~4.15.3",
     "fslint": "~1.1.0",
     "inline-css": "~2.2.2",
+    "jsdom": "~11.2.0",
     "puppeteer": "git+https://github.com/GoogleChrome/puppeteer.git",
     "ramda": "~0.23.0",
     "taskfile": "~0.5.11",
