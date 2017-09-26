@@ -66,7 +66,7 @@ function elementsDidResolve(page) {
  * @param {HTMLElement} childNode
  * @param {HTMLSlotElement} slot
  * @return {HTMLSlotElement}
- * 
+ *
  * Replaces the given slot with the passed child node, if the child node exists in the DOM.
  */
 function replaceSlot(childNode, slot) {
@@ -84,7 +84,7 @@ function replaceSlot(childNode, slot) {
  * @method handleSlots :: string -> string
  * @param {String} content
  * @return {String}
- * 
+ *
  * Takes the HTML string representation of the DOM and fills in the `slot` nodes using either the default slot
  * approach, or by using named slots.
  */
@@ -131,19 +131,20 @@ async function handleSlots(content) {
  * @method removeResolved
  * @param {String} content
  * @return {String}
- * 
+ *
  * Takes the DOM string and removes the "resolved" class name, as the component should be re-rendered if/when it's
  * renderered using true shadow boundaries.
  */
 function removeResolved(content) {
 
     const dom = new JSDOM(content);
-    
+
     dom.window.document.querySelectorAll('*[data-switzerland].resolved').forEach(node => {
         node.classList.remove('resolved');
     });
 
     return dom.serialize();
+
 }
 
 /**
