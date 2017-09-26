@@ -20,7 +20,9 @@ function message(message, type = 'error') {
 // Remove all fake shadow boundaries that are generated from the server-side when we encounter them.
 const fakeShadowBoundaries = document.querySelectorAll('shadow-boundary');
 fakeShadowBoundaries.forEach(boundary => {
-    boundary.parentNode.removeAttribute('style');
+    const parent = boundary.parentNode;
+    parent.removeAttribute('style');
+    parent.removeAttribute('data-switzerland');
     boundary.remove();
 });
 

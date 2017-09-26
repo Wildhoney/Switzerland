@@ -3,7 +3,7 @@ import { hostname } from 'os';
 import { JSDOM } from 'jsdom';
 import puppeteer from 'puppeteer';
 import express from 'express';
-import { once, composeP } from 'ramda';
+import { once, composeP, identity } from 'ramda';
 import inlineCss from 'inline-css';
 
 /**
@@ -14,7 +14,8 @@ const defaultOptions = {
     debug: false,
     hostname: hostname(),
     protocol: 'http',
-    persistent: true
+    persistent: true,
+    keepResolvedClass: false
 };
 
 /**
@@ -127,6 +128,25 @@ async function handleSlots(content) {
 }
 
 /**
+ * @method removeResolved
+ * @param {String} content
+ * @return {String}
+ * 
+ * Takes the DOM string and removes the "resolved" class name, as the component should be re-rendered if/when it's
+ * renderered using true shadow boundaries.
+ */
+function removeResolved(content) {
+
+    const dom = new JSDOM(content);
+    
+    dom.window.document.querySelectorAll('*[data-switzerland].resolved').forEach(node => {
+        node.classList.remove('resolved');
+    });
+
+    return dom.serialize();
+}
+
+/**
  * @method renderToString :: string -> object -> Promise
  * @param {String} rootPath
  * @param {Boolean} [options = defaultOptions]
@@ -152,8 +172,9 @@ export default async function renderToString(rootPath, options = defaultOptions)
     await page.close();
 
     const transform = composeP(
+        opts.keepResolvedClass ? identity : removeResolved,
         handleSlots,
-        content => inlineCss(content, { url: '/' }),
+        content => inlineCss(content, { url: '/', removeLinkTags: false, applyLinkTags: false })
     );
 
     return transform(content);
