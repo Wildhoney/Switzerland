@@ -4,6 +4,7 @@ welcome-cards {
     display: block;
 }
 
-welcome-cards.resolved {
+welcome-cards.resolved,
+welcome-cards[data-switzerland] {
     opacity: 1;
 }

@@ -1,0 +1,10 @@
+language: node_js
+node_js: stable
+
+after_success:
+  - ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
+
+script:
+  - npm install
+  - npm test
+  - npm run build
