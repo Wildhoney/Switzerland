@@ -1,3 +1,4 @@
+import by from 'sort-by';
 import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
 import db from './db';
 import { create, h } from '../../../src/switzerland';
@@ -75,7 +76,7 @@ create('todo-list', include('../../css/todo-app/todo-list.css'), redux, html(pro
     return (
         <ul>
 
-            {props.store.todos.map(model => {
+            {[...props.store.todos.sort(by('created'))].map(model => {
 
                 return (
                     <li class={model.done ? 'done' : ''}>

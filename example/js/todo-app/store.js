@@ -22,7 +22,7 @@ export const addTodo = text => {
 
     return async dispatch => {
         const db = await indexedDb();
-        const model = { id: generate(), text, done: false };
+        const model = { id: generate(), text, done: false, created: Date.now() };
         db.add(model);
         return dispatch({ type: actionTypes.ADD_TODO, result: model });
     };
