@@ -187,7 +187,7 @@ One of the greatest benefits of the shadow boundary is style encapsulation &mdas
 In styling components we use the `include` middleware &mdash; you specify the path to the CSS document relative to the component file. All paths specified within the CSS file are relative to the CSS document itself.
 
 ```javascript
-import { create, path, h } from 'switzerland';
+import { create, h } from 'switzerland';
 import { html, attrs, include } from 'switzerland/middleware';
 
 create('cheese-card', attrs(), include('../css/cheese-card.css'), html(props => {
@@ -214,8 +214,8 @@ Helpfully the `include` middleware can take one or more CSS paths. Also when you
 When creating a component with asynchronous middleware, all middleware will need to have been run before the component is considered resolved &mdash; the `resolved` class name will be also added to the component's host element. However if a component hosts other `Switzerland` components then you *may* argue that the parent component is not considered resolved until its child components have been resolved. For such occasions `Switzerland` provides a `wait` middleware that takes a list of nodes to search for, and if found, awaits their resolution before considering the component resolved.
 
 ```javascript
-import { create, path, h } from 'switzerland';
-import { html, attrs, include, wait } from 'switzerland/middleware';
+import { create, h } from 'switzerland';
+import { html, attrs, wait } from 'switzerland/middleware';
 
 create('cheese-card', attrs(), html(props => {
 
