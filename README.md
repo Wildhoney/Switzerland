@@ -215,7 +215,7 @@ When creating a component with asynchronous middleware, all middleware will need
 
 ```javascript
 import { create, path, h } from 'switzerland';
-import { html, attrs, include } from 'switzerland/middleware';
+import { html, attrs, include, wait } from 'switzerland/middleware';
 
 create('cheese-card', attrs(), html(props => {
 
