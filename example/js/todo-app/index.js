@@ -1,16 +1,30 @@
-import { createStore } from 'redux';
-import { reducer, addTodo, removeTodo, markTodo } from './store';
+import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
+import db from './db';
 import { create, h } from '../../../src/switzerland';
-import { html, include, wait, state } from '../../../src/middleware';
+import { html, include, wait, state, once } from '../../../src/middleware';
 
-const store = createStore(reducer);
+/**
+ * @method init
+ * @param {Object} props
+ * @return {Promise}
+ */
+const init = once(async props => {
+    const { todos } = await db();
+    await Promise.all(todos.map(todo => props.dispatch(putTodo(todo))));
+    return props;
+});
 
+/**
+ * @method redux
+ * @param {Object} props
+ * @return {Object}
+ */
 const redux = props => {
     !props.prevProps && store.subscribe(() => props.render({ ...props, store: store.getState() }));
     return { ...props, store: store.getState(), dispatch: store.dispatch };
 };
 
-create('todo-app', include('../../css/todo-app/todo-app.css'), redux, html(props => {
+create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), html(props => {
 
     return (
         <section class="todo-app">
@@ -28,9 +42,14 @@ create('todo-app', include('../../css/todo-app/todo-app.css'), redux, html(props
 
 create('todo-input', include('../../css/todo-app/todo-input.css'), redux, state({ value: '' }), html(props => {
 
-    const add = event => {
+    /**
+     * @method add
+     * @param {Object} event
+     * @return {Promise}
+     */
+    const add = async event => {
         event.preventDefault();
-        props.dispatch(addTodo(props.state.value));
+        await props.dispatch(addTodo(props.state.value));
         props.render({ value: '' });
     };
 
