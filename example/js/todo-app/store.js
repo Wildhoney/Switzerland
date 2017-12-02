@@ -1,4 +1,7 @@
 import { generate } from 'shortid';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import indexedDb from './db';
 
 /**
  * @constant actionTypes
@@ -12,11 +15,27 @@ const actionTypes = {
 
 /**
  * @method addTodo
- * @param {String} value
+ * @param {String} text
+ * @return {Function}
+ */
+export const addTodo = text => {
+
+    return async dispatch => {
+        const db = await indexedDb();
+        const model = { id: generate(), text, done: false };
+        db.add(model);
+        return dispatch({ type: actionTypes.ADD_TODO, result: model });
+    };
+
+};
+
+/**
+ * @method putTodo
+ * @param {Object} model
  * @return {Object}
  */
-export const addTodo = value => {
-    return { type: actionTypes.ADD_TODO, result: value };
+export const putTodo = model => {
+    return { type: actionTypes.ADD_TODO, result: model };
 };
 
 /**
@@ -25,16 +44,30 @@ export const addTodo = value => {
  * @return {Object}
  */
 export const markTodo = id => {
-    return { type: actionTypes.MARK_TODO, result: id };
+
+    return async (dispatch, getState) => {
+        const db = await indexedDb();
+        const model = getState().todos.find(model => model.id === id);
+        db.edit({ ...model, done: !model.done });
+        return dispatch({ type: actionTypes.MARK_TODO, result: id });
+    };
+
 };
 
 /**
  * @method removeTodo
  * @param {String} id
- * @return {Object}
+ * @return {Function}
  */
 export const removeTodo = id => {
-    return { type: actionTypes.REMOVE_TODO, result: id };
+
+    return async (dispatch, getState) => {
+        const db = await indexedDb();
+        const model = getState().todos.find(model => model.id === id);
+        db.remove(model);
+        return dispatch({ type: actionTypes.REMOVE_TODO, result: id });
+    };
+
 };
 
 /**
@@ -45,13 +78,18 @@ const INITIAL_STATE = {
     todos: []
 };
 
-export const reducer = (state = INITIAL_STATE, action) => {
+/**
+ * @method reducer
+ * @param {Object} state 
+ * @param {Object} action
+ * @return {Object}
+ */
+function reducer(state = INITIAL_STATE, action) {
 
     switch (action.type) {
 
         case actionTypes.ADD_TODO:
-            const model = { id: generate(), text: action.result, done: false };
-            return { ...state, todos: [...state.todos, model] };
+            return { ...state, todos: [...state.todos, action.result] };
             
         case actionTypes.REMOVE_TODO:
             return { ...state, todos: state.todos.filter(model => model.id !== action.result) };
@@ -66,4 +104,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
 
     return state;
 
-};
+}
+
+const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
+export const store = createStoreWithMiddleware(reducer);
