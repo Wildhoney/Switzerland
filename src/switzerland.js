@@ -66,6 +66,12 @@ export function create(name, ...middlewares) {
         isSwitzerland = true;
 
         /**
+         * @constant queue
+         * @type {Set}
+         */
+        queue = new Set();
+
+        /**
          * @method connectedCallback :: void -> Promise
          * @return {Promise}
          */
@@ -90,78 +96,92 @@ export function create(name, ...middlewares) {
          */
         async render(state = null) {
 
-            const isUniversal = !this.shadowRoot;
-            const boundary = this.shadowRoot || do {
-                const shadowBoundary = document.createElement('shadow-boundary');
-                shadowBoundary.style.all = 'initial';
-                shadowBoundary;
-            };
+            // When the queue size is greater than 0 it means there's a current task being
+            // processed that we'll need to wait to complete before continuing.
+            this.queue.size > 0 && await Array.from(this.queue)[0];
 
-            /**
-             * @constant initialProps :: object
-             * @type {Object}
-             */
-            const initialProps = {
-                ...state && { state },
-                prevProps: takePrevProps(this),
-                node: this,
-                render: this.render.bind(this),
-                boundary,
-                isUniversal,
-                cancel: () => { throw new CancelError(); }
-            };
+            const task = new Promise(async resolve => {
 
-            try {
+                const isUniversal = !this.shadowRoot;
+                const boundary = this.shadowRoot || do {
+                    const shadowBoundary = document.createElement('shadow-boundary');
+                    shadowBoundary.style.all = 'initial';
+                    shadowBoundary;
+                };
 
-                // Attempt to render the component, catching any errors that may be thrown in the middleware to
-                // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
-                await middlewares.reduce(async (accumP, _, index) => {
-                    const middleware = middlewares[index];
-                    return middleware(await accumP);
-                }, initialProps);
+                /**
+                 * @constant initialProps :: object
+                 * @type {Object}
+                 */
+                const initialProps = {
+                    ...state && { state },
+                    prevProps: takePrevProps(this),
+                    node: this,
+                    render: this.render.bind(this),
+                    boundary,
+                    isUniversal,
+                    cancel: () => { throw new CancelError(); }
+                };
 
-            } catch (err) {
+                try {
 
-                if (!(err instanceof CancelError)) {
+                    // Attempt to render the component, catching any errors that may be thrown in the middleware to
+                    // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
+                    await middlewares.reduce(async (accumP, _, index) => {
+                        const middleware = middlewares[index];
+                        return middleware(await accumP);
+                    }, initialProps);
 
-                    const getTree = errorHandlers.get(this);
-                    const consoleError = !getTree || !this.isConnected;
+                } catch (err) {
 
-                    consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+                    if (!(err instanceof CancelError)) {
 
-                        try {
+                        const getTree = errorHandlers.get(this);
+                        const consoleError = !getTree || !this.isConnected;
 
-                            // Attempt to render the component using the error handling middleware.
-                            getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
+                        consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
 
-                        } catch (err) {
+                            try {
 
-                            if (process.env.NODE_ENV !== 'production') {
+                                // Attempt to render the component using the error handling middleware.
+                                getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
 
-                                // When the error handling middleware throws an error we'll need to halt the execution
-                                // because the error handler should be recovering, not compounding the problem.
-                                message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
-                                console.error(err);
+                            } catch (err) {
+
+                                if (process.env.NODE_ENV !== 'production') {
+
+                                    // When the error handling middleware throws an error we'll need to halt the execution
+                                    // because the error handler should be recovering, not compounding the problem.
+                                    message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
+                                    console.error(err);
+
+                                }
 
                             }
 
-                        }
+                        };
 
-                    };
+                    }
 
                 }
 
-            }
+                // Add the "resolved" class name regardless of how the component's rendered.
+                setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
 
-            // Add the "resolved" class name regardless of how the component's rendered.
-            setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
+                // Finally dispatch the event for parent components to be able to resolve.
+                this.dispatchEvent(new CustomEvent(eventName, {
+                    detail: { node: this, version: 1 },
+                    bubbles: true,
+                    composed: true
+                }));
 
-            // Finally dispatch the event for parent components to be able to resolve.
-            this.dispatchEvent(new CustomEvent(eventName, {
-                detail: { node: this, version: 1 },
-                bubbles: true,
-                composed: true
-            }));
+                // Task has been completed which means other tasks can now begin processing!
+                resolve();
+
+            });
+
+            this.queue.add(task);
+            return task;
 
         }
 
