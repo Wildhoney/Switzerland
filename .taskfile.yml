@@ -16,7 +16,7 @@
   task: (cd example/server/ && BABEL_ENV=server babel-node default.js)
 
 - name: watch
-  task: BABEL_ENV=build webpack --watch
+  task: concurrently 'BABEL_ENV=build webpack --watch' 'npm run start'
   
 - name: lint-fs
   tasks:
