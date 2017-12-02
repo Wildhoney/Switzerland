@@ -176,7 +176,7 @@ export function create(name, ...middlewares) {
                 }));
 
                 // Task has been completed which means other tasks can now begin processing!
-                this.queue.remove(task);
+                this.queue.delete(task);
                 resolve();
 
             });
