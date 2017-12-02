@@ -5,6 +5,13 @@
     height: 50px;
 }
 
+todo-input {
+    all: initial;
+    display: block;
+    font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+    height: 50px;
+}
+
 * {
     margin: 0;
     padding: 0;

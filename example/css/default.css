@@ -16,7 +16,7 @@ body {
     justify-content: center;
 }
 
-todo-app {
+todo-app:not([data-switzerland]) {
     opacity: 0;
     transition: transform .55s, opacity .55s;
     transform: scale(0.75);
