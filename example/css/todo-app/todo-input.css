@@ -34,6 +34,15 @@ input[type="text"] {
     text-overflow: ellipsis;
 }
 
+
+@media (max-width: 768px) {
+
+    input[type="text"] {
+        font-size: 16px;
+    }
+
+}
+
 button.add {
     padding: 0 20px;
     width: 120px;
