@@ -6,5 +6,5 @@ node_modules
 
 # tests
 core.js
-example/js/welcome-card/build.js
-example/js/welcome-card/build.js.gz
+example/js/todo-app/build.js
+example/js/todo-app/build.js.gz
