@@ -11,4 +11,4 @@ app.get('/universal.html', async (request, response) => {
 });
 
 app.use(express.static(dirname(rootPath)));
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
