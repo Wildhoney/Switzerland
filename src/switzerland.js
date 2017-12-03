@@ -66,10 +66,10 @@ export function create(name, ...middlewares) {
         isSwitzerland = true;
 
         /**
-         * @constant queue
-         * @type {Set}
+         * @constant activeTask
+         * @type {Symbol|null}
          */
-        queue = new Set();
+        activeTask = null;
 
         /**
          * @method connectedCallback :: void -> Promise
@@ -96,78 +96,81 @@ export function create(name, ...middlewares) {
          */
         async render(state = null) {
 
-            // When the queue size is greater than 0 it means there's a current task being
-            // processed that we'll need to wait to complete before continuing.
-            this.queue.size > 0 && await Array.from(this.queue)[0];
+            // Set the latest task to be the active task, preventing the other running tasks
+            // from continuing any further.
+            const task = Symbol('task');
+            this.activeTask = task;
+            const isActive = () => this.activeTask === task;
 
-            const task = new Promise(async resolve => {
+            const isUniversal = !this.shadowRoot;
+            const boundary = this.shadowRoot || do {
+                const shadowBoundary = document.createElement('shadow-boundary');
+                shadowBoundary.style.all = 'initial';
+                shadowBoundary;
+            };
 
-                const isUniversal = !this.shadowRoot;
-                const boundary = this.shadowRoot || do {
-                    const shadowBoundary = document.createElement('shadow-boundary');
-                    shadowBoundary.style.all = 'initial';
-                    shadowBoundary;
-                };
+            /**
+             * @constant initialProps :: object
+             * @type {Object}
+             */
+            const initialProps = {
+                ...state && { state },
+                prevProps: takePrevProps(this),
+                node: this,
+                render: this.render.bind(this),
+                boundary,
+                isUniversal,
+                cancel: () => { throw new CancelError(); }
+            };
 
-                /**
-                 * @constant initialProps :: object
-                 * @type {Object}
-                 */
-                const initialProps = {
-                    ...state && { state },
-                    prevProps: takePrevProps(this),
-                    node: this,
-                    render: this.render.bind(this),
-                    boundary,
-                    isUniversal,
-                    cancel: () => { throw new CancelError(); }
-                };
+            try {
 
-                try {
+                // Attempt to render the component, catching any errors that may be thrown in the middleware to
+                // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
+                await middlewares.reduce(async (accumP, _, index) => {
+                    const middleware = middlewares[index];
+                    const props = isActive() && await accumP;
+                    return isActive() && middleware(props);
+                }, initialProps);
 
-                    // Attempt to render the component, catching any errors that may be thrown in the middleware to
-                    // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
-                    await middlewares.reduce(async (accumP, _, index) => {
-                        const middleware = middlewares[index];
-                        return middleware(await accumP);
-                    }, initialProps);
+            } catch (err) {
 
-                } catch (err) {
+                if (!(err instanceof CancelError)) {
 
-                    if (!(err instanceof CancelError)) {
+                    const getTree = errorHandlers.get(this);
+                    const consoleError = !getTree || !this.isConnected;
 
-                        const getTree = errorHandlers.get(this);
-                        const consoleError = !getTree || !this.isConnected;
+                    consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
 
-                        consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+                        try {
 
-                            try {
+                            // Attempt to render the component using the error handling middleware.
+                            getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
 
-                                // Attempt to render the component using the error handling middleware.
-                                getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
+                        } catch (err) {
 
-                            } catch (err) {
+                            if (process.env.NODE_ENV !== 'production') {
 
-                                if (process.env.NODE_ENV !== 'production') {
-
-                                    // When the error handling middleware throws an error we'll need to halt the execution
-                                    // because the error handler should be recovering, not compounding the problem.
-                                    message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
-                                    console.error(err);
-
-                                }
+                                // When the error handling middleware throws an error we'll need to halt the execution
+                                // because the error handler should be recovering, not compounding the problem.
+                                message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
+                                console.error(err);
 
                             }
 
-                        };
+                        }
 
-                    }
+                    };
 
                 }
 
+            }
+
+            isActive() && do {
+
                 // Add the "resolved" class name regardless of how the component's rendered.
                 setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
-
+                
                 // Finally dispatch the event for parent components to be able to resolve.
                 this.dispatchEvent(new CustomEvent(eventName, {
                     detail: { node: this, version: 1 },
@@ -175,14 +178,10 @@ export function create(name, ...middlewares) {
                     composed: true
                 }));
 
-                // Task has been completed which means other tasks can now begin processing!
-                this.queue.delete(task);
-                resolve();
+                // Task has been successfullu processed.
+                this.activeTask = null;
 
-            });
-
-            this.queue.add(task);
-            return task;
+            };
 
         }
 
