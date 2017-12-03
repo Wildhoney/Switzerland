@@ -386,9 +386,10 @@ export function wait(...names) {
 
         await new Promise(resolve => {
 
+            // Find all of the nodes to wait upon, minus those that have already been resolved.
             const nodes = Array.from(names.reduce((accum, name) => {
                 return [...accum, ...Array.from(props.boundary.querySelectorAll(name))];
-            }, []));
+            }, [])).filter(node => !node.classList.contains('resolved'));
 
             nodes.length === 0 ? resolve() : do {
 
