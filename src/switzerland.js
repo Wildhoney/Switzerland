@@ -178,7 +178,7 @@ export function create(name, ...middlewares) {
                     composed: true
                 }));
 
-                // Task has been successfullu processed.
+                // Task has been successfully processed.
                 this.activeTask = null;
 
             };
