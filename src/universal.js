@@ -52,7 +52,7 @@ function elementsDidResolve(page) {
 
     return page.waitFor(() => {
 
-        return Array.from(document.querySelectorAll('*')).filter(node => node.isSwitzerland).every(node => {
+        return Array.from(document.querySelectorAll('*')).filter(node => node.switzerland).every(node => {
             node.setAttribute('data-switzerland', '');
             return node.classList.contains('resolved');
         });

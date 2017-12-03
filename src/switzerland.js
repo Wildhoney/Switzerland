@@ -60,16 +60,12 @@ export function create(name, ...middlewares) {
     customElements.define(name, class extends HTMLElement {
 
         /**
-         * @constant isSwitzerland
-         * @type {Boolean}
+         * @constant switzerland
+         * @type {Object}
          */
-        isSwitzerland = true;
-
-        /**
-         * @constant activeTask
-         * @type {Symbol|null}
-         */
-        activeTask = null;
+        switzerland = {
+            task: null
+        };
 
         /**
          * @method connectedCallback :: void -> Promise
@@ -99,8 +95,8 @@ export function create(name, ...middlewares) {
             // Set the latest task to be the active task, preventing the other running tasks
             // from continuing any further.
             const task = Symbol('task');
-            this.activeTask = task;
-            const isActive = () => this.activeTask === task;
+            this.switzerland.task = task;
+            const isActive = () => this.switzerland.task === task;
 
             const isUniversal = !this.shadowRoot;
             const boundary = this.shadowRoot || do {
@@ -179,7 +175,7 @@ export function create(name, ...middlewares) {
                 }));
 
                 // Task has been successfully processed.
-                this.activeTask = null;
+                this.switzerland.task = null;
 
             };
 
