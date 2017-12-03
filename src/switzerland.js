@@ -170,7 +170,7 @@ export function create(name, ...middlewares) {
 
                 // Add the "resolved" class name regardless of how the component's rendered.
                 setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
-                
+
                 // Finally dispatch the event for parent components to be able to resolve.
                 this.dispatchEvent(new CustomEvent(eventName, {
                     detail: { node: this, version: 1 },
