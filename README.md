@@ -239,3 +239,35 @@ It's worth bearing in mind that if/when the `props.attrs.list.split.length` is z
 In most cases, the order of the middleware in `Switzerland` is important, and with the `wait` middleware it is no different. For instance, if we placed the `wait` middleware **before** the `html` middleware then we wouldn't stand a cat in hell's chance of hoping to find any `cheese-item` nodes, and thus its addition to the middleware chain would be entirely useless. By adding it after the `html` middleware we can be sure that **sometimes** one or more `cheese-item`s will be found.
 
 As you can specify multiple `html` middleware items in the middleware chain, likewise you can specify multiple `wait` middleware items. In that sense, the middleware chain acts like a long `Promise` chain &mdash; `.then(a).then(b).then(c)`.
+
+## Interspersed Rendering
+
+As the `html` middleware is responsible for **all** of the rendering of Switzerland components, you can place as many as you wish in the chain. For example, you may have a chain that is `fetch -> render` where if `fetch` takes a while to complete, the component will have a noticeable lag when it comes to re-rendering. Instead you can prepend `html` which will display a loading screen upon each re-render &ndash; although it won't show up on the first render if you're using the `resolved` class name to toggle its visibility as that technique awaits the completion of **all** middleware before attaching the class name. Now you have a slightly longer chain with: `loading -> fetch -> render`.
+
+```javascript
+import { create, h } from 'switzerland';
+import { html, attrs, wait } from 'switzerland/middleware';
+import { fetch } from './the-cheese-api';
+
+const loading = props => {
+    return <p>Loading...</p>;
+};
+
+create('cheese-card', html(loading), fetch, html(props => {
+
+    return (
+        <section class="cheeseboard">
+
+            <ul>
+                {props.cheeses.map(cheese => {
+                    return <cheese-item model={cheese} />;
+                })}
+            </ul>
+
+        </section>
+    );
+
+}), wait('cheese-item'));
+```
+
+Upon each re-render the `loading` function will be invoked which will render the loading message, followed by the `fetch` function which performs an asynchronous request to fetch cheeses, finally followed by the second `html` middleware which renders the list of cheeses.
