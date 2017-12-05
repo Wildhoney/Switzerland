@@ -224,7 +224,7 @@ create('cheese-card', attrs(), html(props => {
 
             <ul>
                 {props.attrs.list.split(',').map(cheese => {
-                    return <cheese-item model={cheese} />;
+                    return <cheese-item name={cheese} />;
                 })}
             </ul>
 
@@ -260,7 +260,7 @@ create('cheese-card', html(loading), fetch, html(props => {
 
             <ul>
                 {props.cheeses.map(cheese => {
-                    return <cheese-item model={cheese} />;
+                    return <cheese-item name={cheese} />;
                 })}
             </ul>
 
