@@ -246,7 +246,7 @@ As the `html` middleware is responsible for **all** of the rendering of Switzerl
 
 ```javascript
 import { create, h } from 'switzerland';
-import { html, attrs, wait } from 'switzerland/middleware';
+import { html, wait } from 'switzerland/middleware';
 import { fetch } from './the-cheese-api';
 
 const loading = props => {
@@ -271,3 +271,42 @@ create('cheese-card', html(loading), fetch, html(props => {
 ```
 
 Upon each re-render the `loading` function will be invoked which will render the loading message, followed by the `fetch` function which performs an asynchronous request to fetch cheeses, finally followed by the second `html` middleware which renders the list of cheeses.
+
+## Catching Errors
+
+You can think of the `rescue` middleware as React's `componentDidCatch`, although the `rescue` middleware accepts a JSX tree that will be rendered into the component's host node whenever an uncaught error is thrown. Recovery is possible from the `rescue` middleware by invoking the `render` method again &ndash; optionally passing in props that describe the error and/or recovery. This allows for techniques such as a `<button />` to retry the action.
+
+In our case perhaps the cheese API sporadically fails, in which case we can load an alternate view and offer the user to retry by clicking the button.
+
+```javascript
+import { create, h } from 'switzerland';
+import { html, wait, rescue } from 'switzerland/middleware';
+import { fetch } from './the-cheese-api';
+
+const error = props => {
+    return (
+        <span>
+            <p>Error: {props.error.message}</p>
+            <button onclick={props.render}>Retry</button>
+        </span>
+    );
+};
+
+create('cheese-card', rescue(error), fetch, html(props => {
+
+    return (
+        <section class="cheeseboard">
+
+            <ul>
+                {props.cheeses.map(cheese => {
+                    return <cheese-item name={cheese} />;
+                })}
+            </ul>
+
+        </section>
+    );
+
+}), wait('cheese-item'));
+```
+
+In the event that the `fetch` middleware fails, the `rescue` will already have registered an error handler because it appears **before** `fetch` in the chain &ndash; offering to retry by clicking on the button. It's worth noting that even if the first render of the component results in an error, the component will **still** be considered resolved.
