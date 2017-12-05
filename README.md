@@ -274,7 +274,7 @@ Upon each re-render the `loading` function will be invoked which will render the
 
 ## Catching Errors
 
-You can think of the `rescue` middleware as React's `componentDidCatch`, although the `rescue` middleware accepts a JSX tree that will be rendered into the component's host node whenever an uncaught error is thrown. Recovery is possible from the `rescue` middleware by invoking the `render` method again &ndash; optionally passing in props that describe the error and/or recovery. This allows for techniques such as a `<button />` to retry the action.
+You can think of the `rescue` middleware as React's [`componentDidCatch`](https://reactjs.org/blog/2017/07/26/error-handling-in-react-16.html), although the `rescue` middleware accepts a JSX tree that will be rendered into the component's host node whenever an uncaught error is thrown. Recovery is possible from the `rescue` middleware by invoking the `render` method again &ndash; optionally passing in props that describe the error and/or recovery. This allows for techniques such as a `<button />` to retry the action.
 
 In our case perhaps the cheese API sporadically fails, in which case we can load an alternate view and offer the user to retry by clicking the button.
 
