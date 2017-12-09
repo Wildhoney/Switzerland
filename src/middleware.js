@@ -181,7 +181,7 @@ export function events(options = { namespace: null }) {
          */
         function send(name, data) {
             const eventName = `${options.namespace || props.node.nodeName.toLowerCase()}/${name}`;
-            sendEvent(eventName, { node: props.node, data });
+            sendEvent(eventName, { node: props.node, data, version: 1 });
         }
 
         /**
