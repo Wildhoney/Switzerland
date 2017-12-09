@@ -310,3 +310,37 @@ create('cheese-card', rescue(error), fetch, html(props => {
 ```
 
 In the event that the `fetch` middleware fails, the `rescue` will already have registered an error handler because it appears **before** `fetch` in the chain &ndash; offering to retry by clicking on the button. It's worth noting that even if the first render of the component results in an error, the component will **still** be considered resolved.
+
+## Event Handling
+
+Switzerland uses an event-driven approach for passing data, rather than passing event handler functions such as in React &mdash; although you can still use `onclick` and `oninput` for elements. Using the same approach for non-standard events is unsupported because it's non-native &mdash; if you use the `cheese-card` in plain HTML, you cannot bind a function as part of the attributes.
+
+With this in mind, Switzerland comes bundled with the `events` middleware which provides three functions: `send`, `listen` and `unlisten`. For example, in the aforementioned `cheese-card` component you may want to pass data to a parent component upon each render with a list of the cheeses. You may also want to listen for the same event at a much higher-level above any Switzerland components &mdash; with custom events, both of these scenarios are possible. Helpfully events dispatched using the middleware bypass **all*** shadow boundaries thanks to the `{ composed: true }` option.
+
+```javascript
+import { create, h } from 'switzerland';
+import { html, wait, events } from 'switzerland/middleware';
+import { fetch } from './the-cheese-api';
+
+create('cheese-card', events(), fetch, html(props => {
+
+    props.send('cheeses', props.cheeses);
+
+    return (
+        <section class="cheeseboard">
+
+            <ul>
+                {props.cheeses.map(cheese => {
+                    return <cheese-item name={cheese} />;
+                })}
+            </ul>
+
+        </section>
+    );
+
+}), wait('cheese-item'));
+```
+
+> By passing the `namespace` option to `events` you can modify the namespace the events are dispatched as. Passing `null` removes any namespacing.
+
+In the example above each time the `cheese-card` is re-rendered, the list of cheeses are dispatched as a custom event named `cheese-card/cheeses` which you can listen for using the native `addEventListener` function &ndash; although Switzerland provides a convenience function for that called `listen` which listens only once irrespective of the amount of times it's invoked. Remove a listener at any time by using the `unlisten` function which takes the name of the event to unregister.
