@@ -1,4 +1,4 @@
-import { takePrevProps, errorHandlers } from './middleware';
+import { takePrevProps, errorHandlers, sendEvent } from './middleware';
 
 export { h } from 'picodom/src/h';
 export { path } from './middleware';
@@ -168,11 +168,7 @@ export function create(name, ...middlewares) {
                 setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
 
                 // Finally dispatch the event for parent components to be able to resolve.
-                this.dispatchEvent(new CustomEvent(eventName, {
-                    detail: { node: this, version: 1 },
-                    bubbles: true,
-                    composed: true
-                }));
+                sendEvent(eventName, { node: this, version: 1 });
 
                 // Task has been successfully processed.
                 this.switzerland.task = null;
