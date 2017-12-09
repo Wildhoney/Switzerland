@@ -25,6 +25,22 @@ export const ONCE = {
 const registry = new WeakMap();
 
 /**
+ * @method sendEvent
+ * @param {String} name
+ * @param {Object} payload
+ * @return {void}
+ */
+export function sendEvent(name, payload) {
+
+    payload.node.dispatchEvent(new CustomEvent(name, {
+        detail: payload,
+        bubbles: true,
+        composed: true
+    }));
+
+}
+
+/**
  * @method putState :: HTMLElement -> object -> HTMLElement -> object -> void
  * @param {Object} tree
  * @param {Object} root
@@ -129,6 +145,53 @@ export function attrs(exclude = ['class', 'id', 'style']) {
         }, {});
 
         return { ...props, attrs };
+
+    };
+
+}
+
+/**
+ * @method events :: object -> function
+ * @param {Object} options
+ * @return {Function}
+ */
+export function events(options = { namespace: null }) {
+
+    /**
+     * @constant events
+     * @type {Set}
+     */
+    const events = new Set();
+
+    return props => {
+
+        /**
+         * @method send
+         * @param {String} name
+         * @param {*} data
+         * @return {void}
+         */
+        function send(name, data) {
+            const eventName = `${options.namespace || props.node.nodeName.toLowerCase()}/${name}`;
+            sendEvent(eventName, { node: props.node, data });
+        }
+
+        /**
+         * @method listen
+         * @param {String} name
+         * @param {Function} fn
+         * @return {void}
+         */
+        function listen(name, fn) {
+
+            !events.has(name) && do {
+                events.add(name);
+                props.node.addEventListener(name, fn);
+            };
+
+        }
+
+        return { ...props, send, listen };
 
     };
 
