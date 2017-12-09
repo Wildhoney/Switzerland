@@ -154,12 +154,12 @@ export function attrs(exclude = ['class', 'id', 'style']) {
  * @method events :: object -> function
  * @param {Object} options
  * @return {Function}
- * 
+ *
  * Takes an optional namespace as part of the options, and augments the passed props with both `send` and `listen`
  * functions which make it a breeze to listen and dispatch events. The `listen` function is idempotent in that calling
  * it multiple times will not re-register the event. Events that are sent are prepended with a passed namespace, otherwise
  * the node name in its lowercased form is used.
- * 
+ *
  * As Switzerland does not support passing non-primitive data types in as props, because they are non-standard, events
  * are used to communicate between compoennt. Using a library such as React will allow the passing of non-primitives.
  */
