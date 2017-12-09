@@ -169,7 +169,7 @@ export function events(options = { namespace: null }) {
      * @constant events
      * @type {Set}
      */
-    const events = new Set();
+    const events = new Map();
 
     return props => {
 
@@ -181,7 +181,7 @@ export function events(options = { namespace: null }) {
          */
         function send(name, data) {
             const eventName = `${options.namespace || props.node.nodeName.toLowerCase()}/${name}`;
-            sendEvent(eventName, { node: props.node, data, version: 1 });
+            sendEvent(options.namespace === null ? name : eventName, { node: props.node, data, version: 1 });
         }
 
         /**
@@ -193,13 +193,29 @@ export function events(options = { namespace: null }) {
         function listen(name, fn) {
 
             !events.has(name) && do {
-                events.add(name);
+                events.set(name, fn);
                 props.node.addEventListener(name, fn);
             };
 
         }
 
-        return { ...props, send, listen };
+        /**
+         * @method unlisten
+         * @param {String} name
+         * @return {void}
+         */
+        function unlisten(name) {
+
+            const fn = events.get(name);
+
+            fn && do {
+                props.node.removeEventListener(name, fn);
+                events.delete(fn);
+            };
+
+        }
+
+        return { ...props, send, listen, unlisten };
 
     };
 
