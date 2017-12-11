@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const Uglify = require('uglifyjs-webpack-plugin');
+const UglifyPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -19,7 +19,7 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
             }
         }),
-        new Uglify({
+        new UglifyPlugin({
             uglifyOptions: {
                 ecma: 8
             }
