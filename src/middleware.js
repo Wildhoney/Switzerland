@@ -202,39 +202,43 @@ export function html(getTree) {
             const noop = { ...accum, [key]: value };
 
             /**
-             * @method oncreate
+             * @method isNative
+             * @param {String} tag
+             * @return {Boolean}
+             *
+             * Determine whether the registered event is a standard DOM event, such as onClick, onChange, etc...
+             * If it is then we'll ignore it and let the browser handle it natively.
+             */
+            function isNative(tag) {
+                return document.createElement(tag)[key] === null;
+            }
+
+            /**
+             * @method onCreate
              * @param {HTMLElement} node
              * @return {void}
              */
-            function oncreate(node) {
+            function onCreate(node) {
                 isFunction(data.oncreate) && data.oncreate(node);
                 events.forEach(({ key, value }) => node.addEventListener(key, value));
             }
 
             /**
-             * @method oncreate
+             * @method onRemove
              * @param {HTMLElement} node
              * @return {void}
              */
-            function onremove(node) {
+            function onRemove(node) {
                 isFunction(data.onremove) && data.onremove(node);
                 events.forEach(({ key, value }) => node.removeEventListener(key, value));
             }
 
-            return (key.startsWith('on') && isFunction(value)) ? do {
+            return (key.startsWith('on') && isFunction(value) && !isNative(tag)) ? do {
 
-                // Determine whether the registered event is a standard DOM event, such as onClick, onChange, etc...
-                // If it is then we'll ignore it and let the browser handle it natively.
-                const isNative = document.createElement(tag)[key] === null;
-
-                isNative ? noop : do {
-
-                    // Add the event to be invoked upon the creating of the DOM element, and then append the `oncreate`
-                    // and `onremove` hooks to the node's data.
-                    events.add({ key: key.replace(/^on/i, ''), value });
-                    ({ ...noop, oncreate, onremove });
-
-                };
+                // Add the event to be invoked upon the creating of the DOM element, and then append the `oncreate`
+                // and `onremove` hooks to the node's data.
+                events.add({ key: key.replace(/^on/i, ''), value });
+                ({ ...noop, oncreate: onCreate, onremove: onRemove });
 
             } : noop;
 
