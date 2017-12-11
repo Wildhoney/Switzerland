@@ -3,6 +3,7 @@
     display: block;
     font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
     height: 50px;
+    overflow: hidden;
 }
 
 todo-input {
@@ -10,6 +11,7 @@ todo-input {
     display: block;
     font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
     height: 50px;
+    overflow: hidden;
 }
 
 * {
@@ -33,7 +35,6 @@ input[type="text"] {
     font-size: 12px;
     text-overflow: ellipsis;
 }
-
 
 @media (max-width: 768px) {
 

@@ -35,14 +35,14 @@ h1 a img {
   max-width: 150px;
 }
 
-todo-input {
+/* todo-input {
   overflow: hidden;
-}
+} */
 
-todo-list {
+/* todo-list {
   overflow-x: hidden;
   overflow-y: auto;
-}
+} */
 
 section.todo-manager {
   display: flex;
