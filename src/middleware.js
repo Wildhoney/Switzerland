@@ -221,24 +221,22 @@ export function html(getTree) {
                 events.forEach(({ key, value }) => node.removeEventListener(key, value));
             }
 
-            if (key.startsWith('on') && isFunction(value)) {
+            return (key.startsWith('on') && isFunction(value)) ? do {
 
                 // Determine whether the registered event is a standard DOM event, such as onClick, onChange, etc...
                 // If it is then we'll ignore it and let the browser handle it natively.
                 const isNative = document.createElement(tag)[key] === null;
 
-                return isNative ? noop : do {
+                isNative ? noop : do {
 
-                    // Add the event to be invoked upon the creating of the DOM element.
+                    // Add the event to be invoked upon the creating of the DOM element, and then append the `oncreate`
+                    // and `onremove` hooks to the node's data.
                     events.add({ key: key.replace(/^on/i, ''), value });
-
                     ({ ...noop, oncreate, onremove });
 
                 };
 
-            }
-
-            return noop;
+            } : noop;
 
         }, {});
 
