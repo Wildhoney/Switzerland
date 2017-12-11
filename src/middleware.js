@@ -1,6 +1,6 @@
 import patch from 'picodom/src/patch';
 import parseUrls from 'css-url-parser/lib/css-parser';
-import { eventName } from './switzerland';
+import { eventName, translate } from './switzerland';
 
 /**
  * @constant errorHandlers :: WeakMap
@@ -180,7 +180,7 @@ export function events(options = { namespace: null }) {
          * @return {void}
          */
         function send(name, data) {
-            const eventName = `${options.namespace || props.node.nodeName.toLowerCase()}/${name}`;
+            const eventName = `${options.namespace || props.node.nodeName}/${name}`;
             sendEvent(options.namespace === null ? name : eventName, { node: props.node, data, version: 1 });
         }
 
@@ -232,13 +232,28 @@ export function events(options = { namespace: null }) {
  */
 export function html(getTree) {
 
+    /**
+     * @method transform
+     * @param {Object|String} tree
+     * @return {Object|String}
+     */
+    function transform(tree) {
+
+        return Array.isArray(tree) ? tree.map(transform) : do {
+            const isObject = 'tag' in Object(tree);
+            const newTree = (isObject && tree.tag.startsWith('_')) ? { ...tree, tag: translate(tree.tag) } : tree;
+            isObject ? { ...newTree, children: transform(tree.children) } : newTree;
+        };
+
+    }
+
     return async props => {
 
         if (props.node.isConnected) {
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || {};
-            const tree = await getTree({ ...props, render: props.render });
+            const tree = transform(await getTree({ ...props, render: props.render }));
             const root = patch(previous.tree, tree, previous.root, props.boundary);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
@@ -443,7 +458,7 @@ export function validate(schema) {
 
     return process.env.NODE_ENV === 'production' ? props => props : async props => {
         const PropTypes = require('prop-types');
-        PropTypes.checkPropTypes(schema, props, 'property', props.node.nodeName.toLowerCase());
+        PropTypes.checkPropTypes(schema, props, 'property', props.node.nodeName);
         return props;
     };
 
@@ -474,7 +489,7 @@ export function wait(...names) {
         await new Promise(resolve => {
 
             // Find all of the nodes to wait upon, minus those that have already been resolved.
-            const nodes = Array.from(names.reduce((accum, name) => {
+            const nodes = Array.from(names.map(translate).reduce((accum, name) => {
                 return [...accum, ...Array.from(props.boundary.querySelectorAll(name))];
             }, [])).filter(node => !node.classList.contains('resolved'));
 

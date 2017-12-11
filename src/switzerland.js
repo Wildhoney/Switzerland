@@ -33,6 +33,34 @@ fakeShadowBoundaries.forEach(boundary => {
 export const eventName = 'switzerland/resolved';
 
 /**
+ * @constant namespace
+ * @type {String|undefined}
+ */
+const namespace = document.currentScript.dataset.namespace;
+
+/**
+ * @constant separator
+ * @type {String}
+ */
+const separator = '_';
+
+/**
+ * @method translate
+ * @param {String} name
+ * @return {String}
+ */
+export const translate = name => {
+
+    try {
+        const tag = name.toLowerCase().match(/_(.+-.+)/i)[1];
+        return namespace ? `${namespace}${separator}${tag}` : tag;
+    } catch (err) {
+        return name;
+    }
+
+};
+
+/**
  * @class CancelError
  * @extends {Error}
  */
@@ -57,7 +85,7 @@ export function create(name, ...middlewares) {
      * @class SwitzerlandElement
      * @extends {HTMLElement}
      */
-    customElements.define(name, class extends HTMLElement {
+    customElements.define(namespace ? `${namespace}${separator}${name}` : name, class extends HTMLElement {
 
         /**
          * @constant switzerland
@@ -149,7 +177,7 @@ export function create(name, ...middlewares) {
 
                                 // When the error handling middleware throws an error we'll need to halt the execution
                                 // because the error handler should be recovering, not compounding the problem.
-                                message(`Throwing an error from the recovery middleware for <${this.nodeName.toLowerCase()} /> is forbidden`);
+                                message(`Throwing an error from the recovery middleware for <${this.nodeName} /> is forbidden`);
                                 console.error(err);
 
                             }
