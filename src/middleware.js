@@ -217,7 +217,7 @@ export function html(getTree) {
              * @return {void}
              */
             function onremove(node) {
-                isFunction(data.oncreate) && data.onremove(node);
+                isFunction(data.onremove) && data.onremove(node);
                 events.forEach(({ key, value }) => node.removeEventListener(key, value));
             }
 
