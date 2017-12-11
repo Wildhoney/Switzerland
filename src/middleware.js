@@ -156,77 +156,6 @@ export function attrs(exclude = ['class', 'id', 'style']) {
 }
 
 /**
- * @method events :: object -> function
- * @param {Object} options
- * @return {Function}
- *
- * Takes an optional namespace as part of the options, and augments the passed props with both `send` and `listen`
- * functions which make it a breeze to listen and dispatch events. The `listen` function is idempotent in that calling
- * it multiple times will not re-register the event. Events that are sent are prepended with a passed namespace, otherwise
- * the node name in its lowercased form is used.
- *
- * As Switzerland does not support passing non-primitive data types in as props, because they are non-standard, events
- * are used to communicate between compoennt. Using a library such as React will allow the passing of non-primitives.
- */
-export function events(options = { namespace: null }) {
-
-    /**
-     * @constant events
-     * @type {Set}
-     */
-    const events = new Map();
-
-    return props => {
-
-        /**
-         * @method send
-         * @param {String} name
-         * @param {*} data
-         * @return {void}
-         */
-        function send(name, data) {
-            const eventName = `${options.namespace || props.node.nodeName}/${name}`;
-            sendEvent(options.namespace === null ? name : eventName, { node: props.node, data, version: 1 });
-        }
-
-        /**
-         * @method listen
-         * @param {String} name
-         * @param {Function} fn
-         * @return {void}
-         */
-        function listen(name, fn) {
-
-            !events.has(name) && do {
-                events.set(name, fn);
-                props.node.addEventListener(name, fn);
-            };
-
-        }
-
-        /**
-         * @method unlisten
-         * @param {String} name
-         * @return {void}
-         */
-        function unlisten(name) {
-
-            const fn = events.get(name);
-
-            fn && do {
-                props.node.removeEventListener(name, fn);
-                events.delete(fn);
-            };
-
-        }
-
-        return { ...props, send, listen, unlisten };
-
-    };
-
-}
-
-/**
  * @method html :: function -> function
  * @param {Function} getTree
  * @return {Function}
@@ -247,8 +176,71 @@ export function html(getTree) {
         return Array.isArray(tree) ? tree.map(transform) : do {
             const isObject = 'tag' in Object(tree);
             const newTree = (isObject && tree.tag.startsWith('_')) ? { ...tree, tag: translate(tree.tag) } : tree;
-            isObject ? { ...newTree, children: transform(tree.children) } : newTree;
+            isObject ? { ...newTree, children: transform(tree.children), data: attributes(tree.tag, tree.data) } : newTree;
         };
+
+    }
+
+    /**
+     * @method attributes
+     * @param {String} tag
+     * @param {Object} data
+     * @return {Object}
+     */
+    function attributes(tag, data) {
+
+        /**
+         * @method isFunction
+         * @param {*} x
+         * @return {Boolean}
+         */
+        const isFunction = x => typeof x === 'function';
+
+        return Object.entries(data).reduce((accum, [key, value]) => {
+
+            const events = new Set();
+            const noop = { ...accum, [key]: value };
+
+            /**
+             * @method oncreate
+             * @param {HTMLElement} node
+             * @return {void}
+             */
+            function oncreate(node) {
+                isFunction(data.oncreate) && data.oncreate(node);
+                events.forEach(({ key, value }) => node.addEventListener(key, value));
+            }
+
+            /**
+             * @method oncreate
+             * @param {HTMLElement} node
+             * @return {void}
+             */
+            function onremove(node) {
+                isFunction(data.oncreate) && data.onremove(node);
+                events.forEach(({ key, value }) => node.removeEventListener(key, value));
+            }
+
+            if (key.startsWith('on') && isFunction(value)) {
+
+                // Determine whether the registered event is a standard DOM event, such as onClick, onChange, etc...
+                // If it is then we'll ignore it and let the browser handle it natively.
+                const isNative = document.createElement(tag)[key] === null;
+
+                return isNative ? noop : do {
+
+                    // Add the event to be invoked upon the creating of the DOM element.
+                    events.add({ key: key.replace(/^on/i, ''), value });
+
+                    ({ ...noop, oncreate, onremove });
+
+                };
+
+            }
+
+            return noop;
+
+        }, {});
 
     }
 
@@ -258,7 +250,8 @@ export function html(getTree) {
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || {};
-            const tree = transform(await getTree({ ...props, render: props.render }));
+            const apply = props.isUniverisal ? transform : x => x;
+            const tree = apply(await getTree({ ...props, render: props.render }));
             const root = patch(previous.tree, tree, previous.root, props.boundary);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
