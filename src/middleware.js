@@ -94,8 +94,13 @@ function escapeRegExp(value) {
  * @type {String}
  */
 export const path = do {
-    const parts = ((document.currentScript && document.currentScript.getAttribute('src')) || '').split('/');
-    parts.length === 1 ? '' : parts.slice(0, -1).join('/');
+
+    try {
+        document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
+    } catch (err) {
+        '';
+    }
+
 };
 
 /**
@@ -493,18 +498,14 @@ export function wait(...names) {
                 return [...accum, ...Array.from(props.boundary.querySelectorAll(name))];
             }, [])).filter(node => !node.classList.contains('resolved'));
 
-            nodes.length === 0 ? resolve() : do {
-
-                window.addEventListener(eventName, function listener(event) {
-                    nodes.includes(event.detail.node) && resolved.add(event.detail.node);
-                    resolved.size === nodes.length && do {
-                        window.removeEventListener(eventName, listener);
-                        resolve();
-                        resolved.clear();
-                    };
-                });
-
-            };
+            nodes.length === 0 ? resolve() : window.addEventListener(eventName, function listener(event) {
+                nodes.includes(event.detail.node) && resolved.add(event.detail.node);
+                resolved.size === nodes.length && do {
+                    window.removeEventListener(eventName, listener);
+                    resolve();
+                    resolved.clear();
+                };
+            });
 
         });
 
