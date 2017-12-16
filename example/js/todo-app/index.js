@@ -1,8 +1,20 @@
 import by from 'sort-by';
+import * as R from 'ramda';
 import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
 import db from './db';
 import { create, h } from '../../../src/switzerland';
 import { html, include, wait, state, once } from '../../../src/middleware';
+
+/**
+ * @constant populate
+ * @param {Object} props
+ * @return {Object}
+ */
+const populate = R.once(async props => {
+    const { todos } = await db();
+    await Promise.all(todos.map(todo => props.dispatch(putTodo(todo))));
+    return props;
+});
 
 /**
  * @method init
@@ -10,8 +22,7 @@ import { html, include, wait, state, once } from '../../../src/middleware';
  * @return {Promise}
  */
 const init = once(async props => {
-    const { todos } = await db();
-    await Promise.all(todos.map(todo => props.dispatch(putTodo(todo))));
+    await populate(props);
     return props;
 });
 
