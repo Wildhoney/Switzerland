@@ -252,8 +252,7 @@ export function html(getTree) {
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || {};
-            const apply = props.isUniverisal ? transform : x => x;
-            const tree = apply(await getTree({ ...props, render: props.render }));
+            const tree = transform(await getTree({ ...props, render: props.render }));
             const root = patch(previous.tree, tree, previous.root, props.boundary);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
