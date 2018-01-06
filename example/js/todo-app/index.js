@@ -40,8 +40,8 @@ create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), html
 
     return (
         <section class="todo-app">
-            <todo-input />
-            <todo-list />
+            <_todo-input />
+            <_todo-list />
             <h1>
                 <a href="https://github.com/Wildhoney/Switzerland">
                     <img src="/images/todo-app/logo.png" alt="Switzerland" />
@@ -50,7 +50,7 @@ create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), html
         </section>
     );
 
-}), wait('todo-input', 'todo-list'));
+}), wait('_todo-input', '_todo-list'));
 
 create('todo-input', include('../../css/todo-app/todo-input.css'), redux, state({ value: '' }), html(props => {
 
