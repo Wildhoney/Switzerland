@@ -313,9 +313,9 @@ In the event that the `fetch` middleware fails, the `rescue` will already have r
 
 ## Namespacing
 
-Namespaces for custom elements address the problem of having naming collisions. For example, if you have a specialised `<email-form />` component, but a generic third-party module also comes with a `<email-form />` component that you wish to extend, you'll run into a naming collision. Therefore Switzerland supports the idea of namespacing importing modules &ndash; so long as they're created with namespaces in mind, which isn't all that difficult to achieve.
+Namespaces for custom elements address the problem of having naming collisions. For example, if you have a specialised `<email-form />` component, but a generic third-party module also comes with a `<email-form />` component that you wish to extend, you'll run into a naming collision. Therefore Switzerland supports the idea of namespacing imported modules &ndash; so long as they're created with namespaces in mind, which isn't all that difficult to achieve.
 
-Let's take our `<cheese-card />` component that we may wish to publish &ndash; we're going to make it *namespace-able*. For that we need to modify the `cheese-card` component a little by prepending the custom element(s) with the underscore (`_`) character which lets Switzerland know it's a custom element and therefore may have a namespare prepended to its name depending on the choice of the developer(s) who are using it.
+Let's take our `<cheese-card />` component that we may wish to publish &ndash; we're going to make it *namespace-able*. For that we need to modify the `cheese-card` component a little by prepending the `cheese-item` with the underscore (`_`) character. By doing that it lets Switzerland know it's a custom element, and therefore may have a namespare prepended to its name depending on the choice of the developer(s) who are using it.
 
 ```javascript
 import { create, h } from 'switzerland';
@@ -351,4 +351,4 @@ Whenever a developer comes along and utilises our `cheese-card` component, they 
 
 The imported elements will then become `<x_cheese-card />` and `<x_cheese-item />` leaving the non-prefixed versions waiting to be created if necessary &ndash; components that are created for your project ideally should not be prefixed &ndash; only when they're shared to other developers.
 
-Another important aspect to remember when supporting namespaces is that the associated styles should **never** refer to the custom elements by their name, instead you should use `:host`, `:host-with-context` and other pseudo-selector such as `:first-child` if necessary, as you can never guanratee the name of the custom element(s) when used in projects you have zero control over.
+Another important aspect to remember when supporting namespaces is that the associated styles should **never** refer to the custom elements by their name, instead you should use `:host`, `:host-with-context` and other pseudo-selectors such as `:first-child` if necessary, as you can never guanratee the name of the custom element(s) when used in projects you have zero control over.
