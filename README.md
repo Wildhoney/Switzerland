@@ -310,3 +310,45 @@ create('cheese-card', rescue(error), fetch, html(props => {
 ```
 
 In the event that the `fetch` middleware fails, the `rescue` will already have registered an error handler because it appears **before** `fetch` in the chain &ndash; offering to retry by clicking on the button. It's worth noting that even if the first render of the component results in an error, the component will **still** be considered resolved.
+
+## Namespacing
+
+Namespaces for custom elements address the problem of having naming collisions. For example, if you have a specialised `<email-form />` component, but a generic third-party module also comes with a `<email-form />` component that you wish to extend, you'll run into a naming collision. Therefore Switzerland supports the idea of namespacing importing modules &ndash; so long as they're created with namespaces in mind, which isn't all that difficult to achieve.
+
+Let's take our `<cheese-card />` component that we may wish to publish &ndash; we're going to make it *namespace-able*. For that we need to modify the `cheese-card` component a little by prepending the custom element(s) with the underscore (`_`) character which lets Switzerland know it's a custom element and therefore may have a namespare prepended to its name depending on the choice of the developer(s) who are using it.
+
+```javascript
+import { create, h } from 'switzerland';
+import { html, wait } from 'switzerland/middleware';
+import { fetch } from './the-cheese-api';
+
+create('cheese-card', fetch, html(props => {
+
+    return (
+        <section class="cheeseboard">
+
+            <ul>
+                {props.cheeses.map(cheese => {
+                    return <_cheese-item name={cheese} />;
+                })}
+            </ul>
+
+        </section>
+    );
+
+}), wait('_cheese-item'));
+```
+
+As you can see, whenever we reference the `<cheese-item />` component we prepend the `_` which Switzerland will transform depending on whether a namespace is currently being used &ndash; otherwise the `_` will simply be stripped which will give us the original `<cheese-item />` element. If the namespace `x` was being used then `<cheese-item />` would become `<x_cheese-item />`.
+
+We also change the `wait` middleware to include the `_` which again will be transformed as aforementioned.
+
+Whenever a developer comes along and utilises our `cheese-card` component, they can optionally provide a `data-namespace` to the included `script` tag.
+
+```html
+<script type="text/javascript" src="js/cheese-card" data-namespace="x" async defer></script>
+```
+
+The imported elements will then become `<x_cheese-card />` and `<x_cheese-item />` leaving the non-prefixed versions waiting to be created if necessary &ndash; components that are created for your project ideally should not be prefixed &ndash; only when they're shared to other developers.
+
+Another important aspect to remember when supporting namespaces is that the associated styles should **never** refer to the custom elements by their name, instead you should use `:host`, `:host-with-context` and other pseudo-selector such as `:first-child` if necessary, as you can never guanratee the name of the custom element(s) when used in projects you have zero control over.
