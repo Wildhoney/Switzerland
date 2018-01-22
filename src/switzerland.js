@@ -144,7 +144,7 @@ export function create(name, ...middlewares) {
                 render: this.render.bind(this),
                 boundary,
                 isUniversal,
-                dispatch: (name, data) => sendEvent(name, { node: this.node, data, version: 1 }),
+                dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
                 cancel: () => { throw new CancelError(); }
             };
 
