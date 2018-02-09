@@ -1,4 +1,4 @@
-import patch from 'picodom/src/patch';
+import { patch } from 'picodom';
 import parseUrls from 'css-url-parser/lib/css-parser';
 import { eventName, translate } from './switzerland';
 
@@ -209,20 +209,20 @@ export function html(getTree) {
     function transform(tree) {
 
         return Array.isArray(tree) ? tree.map(transform) : do {
-            const isObject = 'tag' in Object(tree);
-            const newTree = (isObject && tree.tag.startsWith('_')) ? { ...tree, tag: translate(tree.tag) } : tree;
-            isObject ? { ...newTree, children: transform(tree.children), data: attributes(tree.tag, tree.data) } : newTree;
+            const isObject = 'type' in Object(tree);
+            const newTree = (isObject && tree.type.startsWith('_')) ? { ...tree, type: translate(tree.type) } : tree;
+            isObject ? { ...newTree, children: transform(tree.children), props: attributes(tree.type, tree.props) } : newTree;
         };
 
     }
 
     /**
      * @method attributes
-     * @param {String} tag
+     * @param {String} type
      * @param {Object} data
      * @return {Object}
      */
-    function attributes(tag, data) {
+    function attributes(type, data) {
 
         /**
          * @method isFunction
@@ -238,14 +238,14 @@ export function html(getTree) {
 
             /**
              * @method isNative
-             * @param {String} tag
+             * @param {String} type
              * @return {Boolean}
              *
              * Determine whether the registered event is a standard DOM event, such as onClick, onChange, etc...
              * If it is then we'll ignore it and let the browser handle it natively.
              */
-            function isNative(tag) {
-                return document.createElement(tag)[key] === null;
+            function isNative(type) {
+                return document.createElement(type)[key] === null;
             }
 
             /**
@@ -268,7 +268,7 @@ export function html(getTree) {
                 events.forEach(({ key, value }) => node.removeEventListener(key, value));
             }
 
-            return (key.startsWith('on') && isFunction(value) && !isNative(tag)) ? do {
+            return (key.startsWith('on') && isFunction(value) && !isNative(type)) ? do {
 
                 // Add the event to be invoked upon the creating of the DOM element, and then append the `oncreate`
                 // and `onremove` hooks to the node's data.
@@ -292,7 +292,7 @@ export function html(getTree) {
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || {};
             const tree = transform(await getTree({ ...updatedProps }));
-            const root = patch(previous.tree, tree, previous.root, props.boundary);
+            const root = patch(previous.tree, tree, props.boundary);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
