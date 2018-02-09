@@ -110,7 +110,7 @@ export function create(name, ...middlewares) {
         };
 
         /**
-         * @method connectedCallback :: void -> Promise
+         * @method connectedCallback :: Promise void
          * @return {Promise}
          */
         connectedCallback() {
@@ -119,7 +119,7 @@ export function create(name, ...middlewares) {
         }
 
         /**
-         * @method disconnectedCallback :: void -> Promise
+         * @method disconnectedCallback :: Promise void
          * @return {Promise}
          */
         disconnectedCallback() {
@@ -128,7 +128,7 @@ export function create(name, ...middlewares) {
         }
 
         /**
-         * @method render :: object -> Promise
+         * @method render :: Object String * -> Promise void
          * @param {Object} [state = null]
          * @return {Promise}
          */
@@ -136,7 +136,7 @@ export function create(name, ...middlewares) {
 
             // Set the latest task to be the active task, preventing the other running tasks
             // from continuing any further.
-            const task = Symbol('task');
+            const task = Symbol(name);
             this.switzerland.task = task;
             const isActive = () => this.switzerland.task === task;
 
@@ -148,7 +148,7 @@ export function create(name, ...middlewares) {
             };
 
             /**
-             * @constant initialProps :: object
+             * @constant Props p => initialProps :: p
              * @type {Object}
              */
             const initialProps = {
