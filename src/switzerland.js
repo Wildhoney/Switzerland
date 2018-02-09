@@ -67,6 +67,20 @@ export const translate = name => {
 class CancelError extends Error {}
 
 /**
+ * @class InteruptError :: InteruptError
+ * @extends {Error}
+ */
+class InteruptError extends Error {}
+
+/**
+ * @method throwInterrupt :: void
+ * @return {void}
+ */
+const throwInterrupt = () => {
+    throw new InteruptError();
+}; 
+
+/**
  * @method create :: Props p => String -> [(p -> p)] -> void
  * @param {String} name
  * @param {Array<Function>} middlewares
@@ -153,15 +167,26 @@ export function create(name, ...middlewares) {
                 // Attempt to render the component, catching any errors that may be thrown in the middleware to
                 // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
                 await middlewares.reduce(async (accumP, _, index) => {
+
                     const middleware = middlewares[index];
-                    const props = isActive() && await accumP;
-                    return isActive() && middleware(props);
+
+                    // We'll check if the task is still active before the middleware item is processed.
+                    !isActive() && throwInterrupt();
+
+                    // Process the middleware item.
+                    const props = await accumP;
+
+                    // ...And afterwards.
+                    return isActive() ? middleware(props) : throwInterrupt();
+
                 }, initialProps);
 
             } catch (err) {
 
-                if (!(err instanceof CancelError)) {
+                const isKnownException = err instanceof InteruptError || err instanceof CancelError;
 
+                if (!isKnownException) {
+    
                     const getTree = errorHandlers.get(this);
                     const consoleError = !getTree || !this.isConnected;
 
@@ -191,10 +216,13 @@ export function create(name, ...middlewares) {
 
             }
 
-            isActive() && do {
+            try {
+
+                // Ensure the task is still relevent before continuing.
+                !isActive() && throwInterrupt();
 
                 // Add the "resolved" class name regardless of how the component's rendered.
-                setTimeout(() => this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved'));
+                this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
 
                 // Finally dispatch the event for parent components to be able to resolve.
                 sendEvent(eventName, { node: this, version: 1 });
@@ -202,7 +230,7 @@ export function create(name, ...middlewares) {
                 // Task has been successfully processed.
                 this.switzerland.task = null;
 
-            };
+            } catch (err) {}
 
         }
 
