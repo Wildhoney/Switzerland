@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
 import db from './db';
 import { create, h } from '../../../src/switzerland';
-import { html, include, wait, state, once } from '../../../src/middleware';
+import { html, include, wait, state, once, adapt } from '../../../src/middleware';
 
 /**
  * @constant populate
@@ -36,7 +36,7 @@ const redux = props => {
     return { ...props, store: store.getState(), dispatch: store.dispatch };
 };
 
-create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), html(props => {
+create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), adapt(), html(props => {
 
     return (
         <section class="todo-app">
@@ -47,6 +47,9 @@ create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), html
                     <img src="/images/todo-app/logo.png" alt="Switzerland" />
                 </a>
             </h1>
+            <div class="dimensions">
+                {props.dimensions.width}px &times; {props.dimensions.height}px
+            </div>
         </section>
     );
 

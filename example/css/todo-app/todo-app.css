@@ -14,6 +14,7 @@ todo-app {
   box-shadow: 0 0 5px rgba(0, 0, 0, .055), 0 0 125px rgba(0, 0, 0, .1), 0 20px 20px -20px rgba(0, 0, 0, .075);
   border: 1px solid rgba(0, 0, 0, .1);
   background-color: white;
+  position: relative;
 }
 
 * {
@@ -35,18 +36,23 @@ h1 a img {
   max-width: 150px;
 }
 
-/* todo-input {
-  overflow: hidden;
-} */
-
-/* todo-list {
-  overflow-x: hidden;
-  overflow-y: auto;
-} */
-
 section.todo-manager {
   display: flex;
   flex-direction: column;
+}
+
+div.dimensions {
+  height: 20px;
+  line-height: 20px;
+  font-size: 10px;
+  display: inline-block;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-bottom: -21px;
+  right: 0;
+  bottom: 0;
+  color: rgba(0, 0, 0, 0.25);
+  padding: 0 8px;
 }
 
 @media (max-width: 768px) {
@@ -59,6 +65,10 @@ section.todo-manager {
   todo-list {
       max-height: initial;
       height: calc(100vh - 50px - 50px - 20px);
+  }
+
+  div.dimensions {
+    display: none;
   }
 
   h1 {
