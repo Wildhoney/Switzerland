@@ -63,8 +63,6 @@
     "eslint-plugin-react": "~7.6.1",
     "express": "~4.16.2",
     "fslint": "~1.1.0",
-    "inline-css": "~2.2.4",
-    "jsdom": "~11.2.0",
     "ramda": "~0.25.0",
     "taskfile": "~0.5.12",
     "uglifyjs-webpack-plugin": "~1.1.8",
