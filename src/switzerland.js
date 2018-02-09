@@ -4,6 +4,12 @@ export { h } from 'picodom';
 export { path } from './middleware';
 
 /**
+ * @constant member :: Symbol
+ * @type {Symbol}
+ */
+const member = Symbol('Switzerland');
+
+/**
  * @method message :: String -> String -> void
  * @param {String} message
  * @param {String} type
@@ -102,12 +108,13 @@ export function create(name, ...middlewares) {
     customElements.define(namespace ? `${namespace}${separator}${name}` : name, class extends HTMLElement {
 
         /**
-         * @constant switzerland
-         * @type {Object}
+         * @constructor :: void
+         * @return {void}
          */
-        switzerland = {
-            task: null
-        };
+        constructor() {
+            super();
+            this[member] = { task: null };
+        }
 
         /**
          * @method connectedCallback :: Promise void
@@ -137,8 +144,8 @@ export function create(name, ...middlewares) {
             // Set the latest task to be the active task, preventing the other running tasks
             // from continuing any further.
             const task = Symbol(name);
-            this.switzerland.task = task;
-            const isActive = () => this.switzerland.task === task;
+            this[member].task = task;
+            const isActive = () => this[member].task === task;
 
             const isUniversal = !this.shadowRoot;
             const boundary = this.shadowRoot || do {
@@ -228,7 +235,7 @@ export function create(name, ...middlewares) {
                 sendEvent(eventName, { node: this, version: 1 });
 
                 // Task has been successfully processed.
-                this.switzerland.task = null;
+                this[member].task = null;
 
             } catch (err) {}
 
