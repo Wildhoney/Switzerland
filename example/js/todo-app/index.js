@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
 import db from './db';
 import { create, h } from '../../../src/switzerland';
-import { html, include, wait, state, once, adapt } from '../../../src/middleware';
+import * as m from '../../../src/middleware';
 
 /**
  * @constant populate
@@ -21,7 +21,7 @@ const populate = R.once(async props => {
  * @param {Object} props
  * @return {Promise}
  */
-const init = once(async props => {
+const init = m.once(async props => {
     await populate(props);
     return props;
 });
@@ -36,7 +36,7 @@ const redux = props => {
     return { ...props, store: store.getState(), dispatch: store.dispatch };
 };
 
-create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), adapt(), html(props => {
+create('todo-app', redux, init, m.include('../../css/todo-app/todo-app.css'), m.adapt(), m.html(props => {
 
     return (
         <section class="todo-app">
@@ -53,9 +53,9 @@ create('todo-app', redux, init, include('../../css/todo-app/todo-app.css'), adap
         </section>
     );
 
-}), wait('_todo-input', '_todo-list'));
+}), m.wait('_todo-input', '_todo-list'));
 
-create('todo-input', include('../../css/todo-app/todo-input.css'), redux, state({ value: '' }), html(props => {
+create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.state({ value: '' }), m.html(props => {
 
     /**
      * @method add
@@ -76,16 +76,13 @@ create('todo-input', include('../../css/todo-app/todo-input.css'), redux, state(
                 value={props.state.value}
                 oninput={e => props.render({ value: e.target.value })}
                 />
-            <button
-                class="add"
-                disabled={!props.state.value}>
-            </button>
+            <button class="add" disabled={!props.state.value} />
         </form>
     );
 
 }));
 
-create('todo-list', include('../../css/todo-app/todo-list.css'), redux, html(props => {
+create('todo-list', m.include('../../css/todo-app/todo-list.css'), redux, m.html(props => {
 
     return (
         <ul>
