@@ -129,7 +129,7 @@ export function adapt() {
 
         !cache.has(props.node) && do {
             cache.add(props.node);
-            resizeObserver.observe(props.node);
+            resizeObserver && resizeObserver.observe(props.node);
         };
 
         return { ...props };
