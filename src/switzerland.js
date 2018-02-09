@@ -78,7 +78,7 @@ class InteruptError extends Error {}
  */
 const throwInterrupt = () => {
     throw new InteruptError();
-}; 
+};
 
 /**
  * @method create :: Props p => String -> [(p -> p)] -> void
@@ -186,7 +186,7 @@ export function create(name, ...middlewares) {
                 const isKnownException = err instanceof InteruptError || err instanceof CancelError;
 
                 if (!isKnownException) {
-    
+
                     const getTree = errorHandlers.get(this);
                     const consoleError = !getTree || !this.isConnected;
 
