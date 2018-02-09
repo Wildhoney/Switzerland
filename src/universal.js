@@ -180,4 +180,4 @@ export default async function renderToString(rootPath, options = defaultOptions)
 
     return transform(content);
 
-};
+}
