@@ -7,7 +7,7 @@ import { once, composeP, identity } from 'ramda';
 import inlineCss from 'inline-css';
 
 /**
- * @constant defaultOptions
+ * @constant defaultOptions :: Object String *
  * @type {Object}
  */
 const defaultOptions = {
@@ -19,7 +19,7 @@ const defaultOptions = {
 };
 
 /**
- * @method createServer :: string -> number
+ * @method createServer :: String -> Number
  * @param {String} rootPath
  * @return {Number}
  *
@@ -32,7 +32,7 @@ const createServer = once(rootPath => {
 });
 
 /**
- * @method openBrowser :: object -> object
+ * @method openBrowser :: PuppeteerInstance pi => Object String * -> pi
  * @param {Object} opts
  * @return {Object}
  */
@@ -41,7 +41,7 @@ const openBrowser = once(opts => {
 });
 
 /**
- * @method elementsDidResolve :: object -> Promise
+ * @method elementsDidResolve :: PuppeteerPage pp, PuppeteerWaitFor ppwf => pp -> ppwf
  * @param {Object} page
  * @return {Promise}
  *
@@ -81,7 +81,7 @@ function replaceSlot(childNode, slot) {
 }
 
 /**
- * @method handleSlots :: string -> string
+ * @method handleSlots :: String -> String
  * @param {String} content
  * @return {String}
  *
@@ -128,7 +128,7 @@ async function handleSlots(content) {
 }
 
 /**
- * @method removeResolved
+ * @method removeResolved :: String -> String
  * @param {String} content
  * @return {String}
  *
@@ -148,7 +148,7 @@ function removeResolved(content) {
 }
 
 /**
- * @method renderToString :: string -> object -> Promise
+ * @method renderToString :: String -> Object String * -> Promise String
  * @param {String} rootPath
  * @param {Boolean} [options = defaultOptions]
  * @return {String}

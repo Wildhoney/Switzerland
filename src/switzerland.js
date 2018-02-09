@@ -4,7 +4,7 @@ export { h } from 'picodom/src/h';
 export { path } from './middleware';
 
 /**
- * @method message :: string -> string -> void
+ * @method message :: String -> String -> void
  * @param {String} message
  * @param {String} type
  * @return {void}
@@ -27,25 +27,25 @@ fakeShadowBoundaries.forEach(boundary => {
 });
 
 /**
- * @constant eventName
+ * @constant eventName :: String
  * @type {String}
  */
 export const eventName = 'switzerland/resolved';
 
 /**
- * @constant namespace
+ * @constant namespace :: String|void
  * @type {String|undefined}
  */
 const namespace = document.currentScript.dataset.namespace;
 
 /**
- * @constant separator
+ * @constant separator :: String
  * @type {String}
  */
 const separator = '_';
 
 /**
- * @method translate
+ * @method translate :: String -> String
  * @param {String} name
  * @return {String}
  */
@@ -61,13 +61,13 @@ export const translate = name => {
 };
 
 /**
- * @class CancelError
+ * @class CancelError :: CancelError
  * @extends {Error}
  */
 class CancelError extends Error {}
 
 /**
- * @method create :: string -> array function -> Promise
+ * @method create :: Props p => String -> [(p -> p)] -> void
  * @param {String} name
  * @param {Array<Function>} middlewares
  * @return {void}
