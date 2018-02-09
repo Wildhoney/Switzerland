@@ -3,13 +3,21 @@ import parseUrls from 'css-url-parser/lib/css-parser';
 import { eventName, translate } from './switzerland';
 
 /**
- * @constant errorHandlers :: WeakMap
+ * @constant errorHandlers :: Props p => WeakMap (p -> p)
  * @type {WeakMap}
  */
 export const errorHandlers = new WeakMap();
 
 /**
- * @constant ONCE :: object
+ * @constant window.ResizeObserver :: ResizeObserver
+ * @type {ResizeObserver}
+ */
+const resizeObserver = window.ResizeObserver && new window.ResizeObserver(entries => {
+    entries.forEach(entry => entry.target.render());
+});
+
+/**
+ * @constant ONCE :: Object String
  * @type {Object}
  */
 export const ONCE = {
@@ -19,7 +27,7 @@ export const ONCE = {
 };
 
 /**
- * @constant registry :: WeakMap
+ * @constant registry :: WeakMap HTMLElement
  * @type {WeakMap}
  */
 const registry = new WeakMap();
@@ -41,7 +49,7 @@ export function sendEvent(name, payload) {
 }
 
 /**
- * @method putState :: HTMLElement -> object -> HTMLElement -> object -> void
+ * @method putState :: Tree t => Props p => HTMLElement -> t -> HTMLElement -> p -> void
  * @param {Object} tree
  * @param {Object} root
  * @param {Object} prevProps
@@ -52,7 +60,7 @@ function putState(node, tree, root, prevProps) {
 }
 
 /**
- * @method takeVDomTree :: HTMLElement -> object | null
+ * @method takeVDomTree :: Tree t => HTMLElement -> t|null
  * @param {HTMLElement} node
  * @return {Object|null}
  */
@@ -62,7 +70,7 @@ function takeVDomTree(node) {
 }
 
 /**
- * @method takePrevProps :: HTMLElement -> object | null
+ * @method takePrevProps :: Props p => HTMLElement -> p|null
  * @param {HTMLElement} node
  * @return {Object|null}
  */
@@ -72,7 +80,7 @@ export function takePrevProps(node) {
 }
 
 /**
- * @method kebabToCamel :: string -> string
+ * @method kebabToCamel :: String -> String
  * @param {String} value
  * @return {String}
  */
@@ -81,7 +89,7 @@ function kebabToCamel(value) {
 }
 
 /**
- * @method escapeRegExp :: string -> string
+ * @method escapeRegExp :: String -> String
  * @param {String} value
  * @return {String}
  */
@@ -90,7 +98,7 @@ function escapeRegExp(value) {
 }
 
 /**
- * @constant path :: string
+ * @constant path :: String
  * @type {String}
  */
 export const path = do {
@@ -104,7 +112,34 @@ export const path = do {
 };
 
 /**
- * @method attrs :: array string -> function
+ * @method adapt :: Props p => (p -> p)
+ * @return {Function}
+ * @see https://github.com/marcj/css-element-queries
+ *
+ * Hooks up the host node to the `ResizeObserver` observer which allows for element queries where components are
+ * re-rendered whenever their dimensions change, rather than when the page's dimension changes. This allows for
+ * responsiveness on a element-level, where for example an element is placed in a 200px space it can render
+ * differently than when it's placed in a 400px space.
+ */
+export function adapt() {
+
+    const cache = new WeakSet();
+
+    return props => {
+
+        !cache.has(props.node) && do {
+            cache.add(props.node);
+            resizeObserver.observe(props.node);
+        };
+
+        return { ...props };
+
+    };
+
+}
+
+/**
+ * @method attrs :: Props p => [String] -> (p -> p)
  * @param {Array<String>} [exclude = ['class', 'id']]
  * @return {Function}
  *
@@ -156,7 +191,7 @@ export function attrs(exclude = ['class', 'id', 'style']) {
 }
 
 /**
- * @method html :: function -> function
+ * @method html :: Tree t, Props p => (void -> t) -> (p -> p)
  * @param {Function} getTree
  * @return {Function}
  * @see https://github.com/picodom/picodom
@@ -250,9 +285,13 @@ export function html(getTree) {
 
         if (props.node.isConnected) {
 
+            // Compute the current dimensions of the host node.
+            const { offsetHeight, offsetWidth } = props.node;
+            const updatedProps = { ...props, dimensions: { height: offsetHeight, width: offsetWidth } };
+
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || {};
-            const tree = transform(await getTree({ ...props, render: props.render }));
+            const tree = transform(await getTree({ ...updatedProps }));
             const root = patch(previous.tree, tree, previous.root, props.boundary);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
@@ -270,7 +309,7 @@ export function html(getTree) {
 }
 
 /**
- * @method include :: array string -> function
+ * @method include :: Props p => [String] -> (p -> p)
  * @param {Array<String>} files
  * @return {Function}
  *
@@ -326,7 +365,7 @@ export function include(...files) {
 }
 
 /**
- * @method methods :: object -> function
+ * @method methods :: Props p => Object String (p -> *) -> (p -> p)
  * @param {Object} fns
  * @return {Function}
  *
@@ -349,7 +388,7 @@ export function methods(fns) {
 }
 
 /**
- * @method once :: function -> symbol -> function
+ * @method once :: Props p => (p -> p) -> Symbol -> (p -> p)
  * @param {Function} fn
  * @param {Symbol} [strategy = ONCE.ONLY]
  * @return {Function}
@@ -405,7 +444,7 @@ export function once(fn, strategy = ONCE.ONLY) {
 }
 
 /**
- * @method rescue :: function -> function
+ * @method rescue :: Tree t, Props p => t -> (p -> p)
  * @param {Function} getTree
  * @return {Function}
  *
@@ -425,7 +464,7 @@ export function rescue(getTree) {
 }
 
 /**
- * @method state :: object -> function
+ * @method state :: Props p => Object String * -> (p -> p)
  * @param {Object} [initial = {}]
  * @return {Function}
  *
@@ -442,7 +481,7 @@ export function state(initial = {}) {
 }
 
 /**
- * @method validate :: object -> function
+ * @method validate :: Props p => Object String * -> (p -> p)
  * @param {Object} schema
  * @return {Function}
  * @see https://github.com/facebook/prop-types
@@ -464,7 +503,7 @@ export function validate(schema) {
 }
 
 /**
- * @method wait :: array string -> function
+ * @method wait :: Props p => [String] -> (p -> p)
  * @param {Array<String>} names
  * @return {Function}
  *
