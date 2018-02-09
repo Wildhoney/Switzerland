@@ -23,15 +23,6 @@ function message(message, type = 'error') {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${message}.`);
 }
 
-// Remove all fake shadow boundaries that are generated from the server-side when we encounter them.
-const fakeShadowBoundaries = document.querySelectorAll('shadow-boundary');
-fakeShadowBoundaries.forEach(boundary => {
-    const parent = boundary.parentNode;
-    parent.removeAttribute('style');
-    parent.removeAttribute('data-switzerland');
-    boundary.remove();
-});
-
 /**
  * @constant eventName :: String
  * @type {String}
@@ -121,7 +112,7 @@ export function create(name, ...middlewares) {
          * @return {Promise}
          */
         connectedCallback() {
-            navigator.userAgent !== 'Switzerland' && !this.shadowRoot && this.attachShadow({ mode: 'open' });
+            !this.shadowRoot && this.attachShadow({ mode: 'open' });
             return this.render();
         }
 
@@ -147,13 +138,6 @@ export function create(name, ...middlewares) {
             this[member].task = task;
             const isActive = () => this[member].task === task;
 
-            const isUniversal = !this.shadowRoot;
-            const boundary = this.shadowRoot || do {
-                const shadowBoundary = document.createElement('shadow-boundary');
-                shadowBoundary.style.all = 'initial';
-                shadowBoundary;
-            };
-
             /**
              * @constant Props p => initialProps :: p
              * @type {Object}
@@ -162,9 +146,8 @@ export function create(name, ...middlewares) {
                 ...state && { state },
                 prevProps: takePrevProps(this),
                 node: this,
+                boundary: this.shadowRoot,
                 render: this.render.bind(this),
-                boundary,
-                isUniversal,
                 dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
                 cancel: () => { throw new CancelError(); }
             };

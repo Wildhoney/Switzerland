@@ -297,7 +297,7 @@ export function html(getTree) {
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
 
-            // Append the document fragment if we have one, as that's used with universal rendering.
+            // Append the document fragment to the shadow root if we have one.
             !(props.boundary instanceof ShadowRoot) && props.node.appendChild(props.boundary);
 
         }
