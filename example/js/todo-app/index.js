@@ -65,7 +65,7 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
     const add = async event => {
         event.preventDefault();
         await props.dispatch(addTodo(props.state.value));
-        props.render({ value: '' });
+        props.setState({ value: '' });
     };
 
     return (
@@ -74,7 +74,7 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
                 type="text"
                 placeholder="What do you need to do?"
                 value={props.state.value}
-                oninput={e => props.render({ value: e.target.value })}
+                oninput={e => props.setState({ value: e.target.value })}
                 />
             <button class="add" disabled={!props.state.value} />
         </form>
