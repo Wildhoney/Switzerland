@@ -3,6 +3,12 @@ import parseUrls from 'css-url-parser/lib/css-parser';
 import { eventName, translate } from './switzerland';
 
 /**
+ * @constant hasWindow
+ * @type {Boolean}
+ */
+export const hasWindow = typeof window !== 'undefined';
+
+/**
  * @constant errorHandlers ∷ Props p ⇒ WeakMap (p → p)
  * @type {WeakMap}
  */
@@ -12,7 +18,7 @@ export const errorHandlers = new WeakMap();
  * @constant resizeObserver ∷ ResizeObserver
  * @type {ResizeObserver}
  */
-const resizeObserver = global.window && window.ResizeObserver && new window.ResizeObserver(entries => {
+const resizeObserver = hasWindow && global.ResizeObserver && new global.ResizeObserver(entries => {
     entries.forEach(entry => entry.target.render({ adapt: entry }));
 });
 
@@ -20,7 +26,7 @@ const resizeObserver = global.window && window.ResizeObserver && new window.Resi
  * @constant intersectionObserver ∷ IntersectionObserver
  * @type {IntersectionObserver}
  */
-const intersectionObserver = global.window && window.IntersectionObserver && new window.IntersectionObserver(entries => {
+const intersectionObserver = hasWindow && global.IntersectionObserver && new global.IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.render({ intersection: entry }));
 });
 
@@ -130,7 +136,7 @@ function escapeRegExp(value) {
  * @constant path ∷ String|void
  * @type {String|void}
  */
-export const path = global.document && document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
+export const path = hasWindow && document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
 
 /**
  * @method adapt ∷ Props p ⇒ (p → p)
@@ -552,10 +558,10 @@ export function wait(...names) {
                 return [...accum, ...Array.from(props.boundary.querySelectorAll(name))];
             }, [])).filter(node => !node.classList.contains('resolved'));
 
-            nodes.length === 0 ? resolve() : window.addEventListener(eventName, function listener(event) {
+            nodes.length === 0 ? resolve() : global.addEventListener(eventName, function listener(event) {
                 nodes.includes(event.detail.node) && resolved.add(event.detail.node);
                 resolved.size === nodes.length && do {
-                    window.removeEventListener(eventName, listener);
+                    global.removeEventListener(eventName, listener);
                     resolve();
                     resolved.clear();
                 };
