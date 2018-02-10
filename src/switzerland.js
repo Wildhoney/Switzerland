@@ -33,7 +33,7 @@ export const eventName = 'switzerland/resolved';
  * @constant namespace ∷ String|void
  * @type {String|undefined}
  */
-const namespace = document.currentScript.dataset.namespace;
+const namespace = global.document && document.currentScript.dataset.namespace;
 
 /**
  * @constant separator ∷ String

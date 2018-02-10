@@ -12,7 +12,7 @@ export const errorHandlers = new WeakMap();
  * @constant resizeObserver ∷ ResizeObserver
  * @type {ResizeObserver}
  */
-const resizeObserver = window.ResizeObserver && new window.ResizeObserver(entries => {
+const resizeObserver = global.window && window.ResizeObserver && new window.ResizeObserver(entries => {
     entries.forEach(entry => entry.target.render({ adapt: entry }));
 });
 
@@ -20,7 +20,7 @@ const resizeObserver = window.ResizeObserver && new window.ResizeObserver(entrie
  * @constant intersectionObserver ∷ IntersectionObserver
  * @type {IntersectionObserver}
  */
-const intersectionObserver = window.IntersectionObserver && new window.IntersectionObserver(entries => {
+const intersectionObserver = global.window && window.IntersectionObserver && new window.IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.render({ intersection: entry }));
 });
 
@@ -127,10 +127,10 @@ function escapeRegExp(value) {
 }
 
 /**
- * @constant path ∷ String
- * @type {String}
+ * @constant path ∷ String|void
+ * @type {String|void}
  */
-export const path = document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
+export const path = global.document && document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
 
 /**
  * @method adapt ∷ Props p ⇒ (p → p)
