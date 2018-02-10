@@ -127,10 +127,10 @@ export function create(name, ...middlewares) {
 
         /**
          * @method render :: Object String * -> Promise void
-         * @param {Object} [state = null]
+         * @param {Object} [props = {}]
          * @return {Promise}
          */
-        async render(state = null) {
+        async render(props = {}) {
 
             // Set the latest task to be the active task, preventing the other running tasks
             // from continuing any further.
@@ -138,13 +138,18 @@ export function create(name, ...middlewares) {
             this[member].task = task;
             const isActive = () => this[member].task === task;
 
+            // Setup the props for the `initialProps`.
+            const prevProps = takePrevProps(this);
+
             /**
              * @constant Props p => initialProps :: p
              * @type {Object}
              */
             const initialProps = {
-                ...state && { state },
-                prevProps: takePrevProps(this),
+                ...prevProps,
+                ...props,
+                prevProps,
+                state: { ...(prevProps || {}).state, ...props.state },
                 node: this,
                 boundary: this.shadowRoot,
                 render: this.render.bind(this),

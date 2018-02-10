@@ -9,11 +9,19 @@ import { eventName, translate } from './switzerland';
 export const errorHandlers = new WeakMap();
 
 /**
- * @constant window.ResizeObserver :: ResizeObserver
+ * @constant resizeObserver :: ResizeObserver
  * @type {ResizeObserver}
  */
 const resizeObserver = window.ResizeObserver && new window.ResizeObserver(entries => {
-    entries.forEach(entry => entry.target.render());
+    entries.forEach(entry => entry.target.render({ adapt: entry }));
+});
+
+/**
+ * @constant intersectionObserver :: IntersectionObserver
+ * @type {IntersectionObserver}
+ */
+const intersectionObserver = window.IntersectionObserver && new window.IntersectionObserver(entries => {
+    entries.forEach(entry => entry.target.render({ intersection: entry }));
 });
 
 /**
@@ -101,15 +109,28 @@ function escapeRegExp(value) {
  * @constant path :: String
  * @type {String}
  */
-export const path = do {
+export const path = document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
 
-    try {
-        document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
-    } catch (err) {
-        '';
-    }
+/**
+ * @method intersect :: Props p => (p -> p)
+ * @return {Function}
+ */
+export function intersect() {
 
-};
+    const cache = new WeakSet();
+
+    return props => {
+
+        !cache.has(props.node) && do {
+            cache.add(props.node);
+            intersectionObserver && intersectionObserver.observe(props.node);
+        };
+
+        return props;
+
+    };
+
+}
 
 /**
  * @method adapt :: Props p => (p -> p)
@@ -475,7 +496,7 @@ export function state(initial = {}) {
 
     return props => {
         const state = props.prevProps && { ...props.prevProps.state, ...props.state };
-        return { ...props, state: state || initial };
+        return { ...props, state: state || initial, setState: state => props.render({ state }) };
     };
 
 }
