@@ -1,6 +1,18 @@
 const webpack = require('webpack');
 const UglifyPlugin = require('uglifyjs-webpack-plugin');
 
+const definePlugin = new webpack.DefinePlugin({
+    'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+    }
+});
+
+const uglifyPlugin = new UglifyPlugin({
+    uglifyOptions: {
+        ecma: 8
+    }
+});
+
 module.exports = {
     entry: {
         'core.js': ['./src/switzerland.js', './src/middleware.js'],
@@ -13,18 +25,7 @@ module.exports = {
     node: {
         fs: 'empty'
     },
-    plugins: [
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-            }
-        }),
-        new UglifyPlugin({
-            uglifyOptions: {
-                ecma: 8
-            }
-        })
-    ],
+    plugins: process.env.NODE_ENV === 'production' ? [definePlugin, uglifyPlugin] : [definePlugin],
     module: {
         loaders: [
             {
