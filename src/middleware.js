@@ -6,7 +6,7 @@ import { eventName, translate } from './switzerland';
  * @constant hasWindow
  * @type {Boolean}
  */
-export const hasWindow = typeof window !== 'undefined';
+const hasWindow = typeof window !== 'undefined';
 
 /**
  * @constant errorHandlers ∷ Props p ⇒ WeakMap (p → p)
