@@ -16,7 +16,8 @@ const uglifyPlugin = new UglifyPlugin({
 module.exports = {
     entry: {
         'core.js': ['./src/switzerland.js', './src/middleware.js'],
-        './example/js/todo-app/build.js': './example/js/todo-app/index.js'
+        './example/js/todo-app/build.js': './example/js/todo-app/index.js',
+        './example/js/todo-app/build-worker.js': './example/js/todo-app/worker.js',
     },
     output: {
         filename: '[name]',
