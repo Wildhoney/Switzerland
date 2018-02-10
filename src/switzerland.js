@@ -4,13 +4,13 @@ export { h } from 'picodom';
 export { path } from './middleware';
 
 /**
- * @constant member :: Symbol
+ * @constant member ∷ Symbol
  * @type {Symbol}
  */
 const member = Symbol('Switzerland');
 
 /**
- * @method message :: String -> String -> void
+ * @method message ∷ String → String → void
  * @param {String} message
  * @param {String} type
  * @return {void}
@@ -24,25 +24,25 @@ function message(message, type = 'error') {
 }
 
 /**
- * @constant eventName :: String
+ * @constant eventName ∷ String
  * @type {String}
  */
 export const eventName = 'switzerland/resolved';
 
 /**
- * @constant namespace :: String|void
+ * @constant namespace ∷ String|void
  * @type {String|undefined}
  */
 const namespace = document.currentScript.dataset.namespace;
 
 /**
- * @constant separator :: String
+ * @constant separator ∷ String
  * @type {String}
  */
 const separator = '_';
 
 /**
- * @method translate :: String -> String
+ * @method translate ∷ String → String
  * @param {String} name
  * @return {String}
  */
@@ -58,19 +58,19 @@ export const translate = name => {
 };
 
 /**
- * @class CancelError :: CancelError
+ * @class CancelError ∷ CancelError
  * @extends {Error}
  */
 class CancelError extends Error {}
 
 /**
- * @class InteruptError :: InteruptError
+ * @class InteruptError ∷ InteruptError
  * @extends {Error}
  */
 class InteruptError extends Error {}
 
 /**
- * @method throwInterrupt :: void
+ * @method throwInterrupt ∷ void
  * @return {void}
  */
 const throwInterrupt = () => {
@@ -78,7 +78,7 @@ const throwInterrupt = () => {
 };
 
 /**
- * @method create :: Props p => String -> [(p -> p)] -> void
+ * @method create ∷ Props p ⇒ String → [(p → p)] → void
  * @param {String} name
  * @param {Array<Function>} middlewares
  * @return {void}
@@ -99,7 +99,7 @@ export function create(name, ...middlewares) {
     customElements.define(namespace ? `${namespace}${separator}${name}` : name, class extends HTMLElement {
 
         /**
-         * @constructor :: void
+         * @constructor ∷ void
          * @return {void}
          */
         constructor() {
@@ -108,7 +108,7 @@ export function create(name, ...middlewares) {
         }
 
         /**
-         * @method connectedCallback :: Promise void
+         * @method connectedCallback ∷ Promise void
          * @return {Promise}
          */
         connectedCallback() {
@@ -117,7 +117,7 @@ export function create(name, ...middlewares) {
         }
 
         /**
-         * @method disconnectedCallback :: Promise void
+         * @method disconnectedCallback ∷ Promise void
          * @return {Promise}
          */
         disconnectedCallback() {
@@ -126,7 +126,7 @@ export function create(name, ...middlewares) {
         }
 
         /**
-         * @method render :: Object String * -> Promise void
+         * @method render ∷ ∀ a. Object String a → Promise void
          * @param {Object} [props = {}]
          * @return {Promise}
          */
@@ -142,7 +142,7 @@ export function create(name, ...middlewares) {
             const prevProps = takePrevProps(this);
 
             /**
-             * @constant Props p => initialProps :: p
+             * @constant Props p ⇒ initialProps ∷ p
              * @type {Object}
              */
             const initialProps = {
