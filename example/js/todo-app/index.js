@@ -17,6 +17,19 @@ const populate = R.once(async props => {
 });
 
 /**
+ * @method worker
+ * @param {Object} props
+ * @return {Promise}
+ */
+const worker = async props => {
+
+    // Register the service worker to allow the app to work offline.
+    await navigator.serviceWorker.register(`${m.path}/build-worker.js`, { scope: '/' });
+    return props;
+
+};
+
+/**
  * @method init
  * @param {Object} props
  * @return {Promise}
@@ -36,7 +49,7 @@ const redux = props => {
     return { ...props, store: store.getState(), dispatch: store.dispatch };
 };
 
-create('todo-app', redux, init, m.include('../../css/todo-app/todo-app.css'), m.adapt(), m.html(props => {
+create('todo-app', worker, redux, init, m.include('../../css/todo-app/todo-app.css'), m.adapt(), m.html(props => {
 
     return (
         <section class="todo-app">
