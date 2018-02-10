@@ -14,8 +14,7 @@
     "lint-fs": "taskfile lint-fs",
     "test": "taskfile test",
     "start": "taskfile start",
-    "watch": "taskfile watch",
-    "webpack-defaults": "webpack-defaults"
+    "watch": "taskfile watch"
   },
   "repository": {
     "type": "git",
