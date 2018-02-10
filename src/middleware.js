@@ -49,7 +49,7 @@ export function sendEvent(name, payload) {
 }
 
 /**
- * @method putState :: Tree t => Props p => HTMLElement -> t -> HTMLElement -> p -> void
+ * @method putState :: Tree t, Props p => HTMLElement -> t -> HTMLElement -> p -> void
  * @param {Object} tree
  * @param {Object} root
  * @param {Object} prevProps
@@ -118,7 +118,7 @@ export const path = do {
  *
  * Hooks up the host node to the `ResizeObserver` observer which allows for element queries where components are
  * re-rendered whenever their dimensions change, rather than when the page's dimension changes. This allows for
- * responsiveness on a element-level, where for example an element is placed in a 200px space it can render
+ * responsiveness on an element-level, where for example an element is placed in a 200px space it can render
  * differently than when it's placed in a 400px space.
  */
 export function adapt() {
@@ -132,7 +132,7 @@ export function adapt() {
             resizeObserver && resizeObserver.observe(props.node);
         };
 
-        return { ...props };
+        return props;
 
     };
 
