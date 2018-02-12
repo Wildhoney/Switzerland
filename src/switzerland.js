@@ -168,13 +168,13 @@ export function create(name, ...middlewares) {
                         try {
 
                             const middleware = middlewares[index];
-        
+
                             // We'll check if the task is still active before the middleware item is processed.
                             !isActive() && throwInterrupt();
-        
+
                             // Process the middleware item.
                             const props = await accumP;
-        
+
                             // ...And afterwards.
                             return isActive() ? middleware(props) : throwInterrupt();
 
