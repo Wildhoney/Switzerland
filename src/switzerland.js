@@ -64,17 +64,17 @@ export const translate = name => {
 class CancelError extends Error {}
 
 /**
- * @class InteruptError ∷ InteruptError
+ * @class InterruptError ∷ InterruptError
  * @extends {Error}
  */
-class InteruptError extends Error {}
+class InterruptError extends Error {}
 
 /**
  * @method throwInterrupt ∷ void
  * @return {void}
  */
 const throwInterrupt = () => {
-    throw new InteruptError();
+    throw new InterruptError();
 };
 
 /**
@@ -130,102 +130,119 @@ export function create(name, ...middlewares) {
          * @param {Object} [props = {}]
          * @return {Promise}
          */
-        async render(props = {}) {
+        render(props = {}) {
 
-            // Set the latest task to be the active task, preventing the other running tasks
-            // from continuing any further.
-            const task = Symbol(name);
-            this[member].task = task;
-            const isActive = () => this[member].task === task;
+            return new Promise(async (resolve, reject) => {
 
-            // Setup the props for the `initialProps`.
-            const prevProps = takePrevProps(this);
+                // Set the latest task to be the active task, preventing the other running tasks
+                // from continuing any further.
+                const task = Symbol(name);
+                this[member].task = task;
+                const isActive = () => this[member].task === task;
 
-            /**
-             * @constant Props p ⇒ initialProps ∷ p
-             * @type {Object}
-             */
-            const initialProps = {
-                ...prevProps,
-                ...props,
-                prevProps,
-                state: { ...(prevProps || {}).state, ...props.state },
-                node: this,
-                boundary: this.shadowRoot,
-                render: this.render.bind(this),
-                dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
-                cancel: () => { throw new CancelError(); }
-            };
+                // Setup the props for the `initialProps`.
+                const prevProps = takePrevProps(this);
 
-            try {
+                /**
+                 * @constant Props p ⇒ initialProps ∷ p
+                 * @type {Object}
+                 */
+                const initialProps = {
+                    ...prevProps,
+                    ...props,
+                    prevProps,
+                    state: { ...(prevProps || {}).state, ...props.state },
+                    node: this,
+                    boundary: this.shadowRoot,
+                    render: this.render.bind(this),
+                    dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
+                    cancel: () => { throw new CancelError(); }
+                };
 
-                // Attempt to render the component, catching any errors that may be thrown in the middleware to
-                // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
-                await middlewares.reduce(async (accumP, _, index) => {
+                try {
 
-                    const middleware = middlewares[index];
-
-                    // We'll check if the task is still active before the middleware item is processed.
-                    !isActive() && throwInterrupt();
-
-                    // Process the middleware item.
-                    const props = await accumP;
-
-                    // ...And afterwards.
-                    return isActive() ? middleware(props) : throwInterrupt();
-
-                }, initialProps);
-
-            } catch (err) {
-
-                const isKnownException = err instanceof InteruptError || err instanceof CancelError;
-
-                if (!isKnownException) {
-
-                    const getTree = errorHandlers.get(this);
-                    const consoleError = !getTree || !this.isConnected;
-
-                    consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+                    // Attempt to render the component, catching any errors that may be thrown in the middleware to
+                    // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
+                    await middlewares.reduce(async (accumP, _, index) => {
 
                         try {
 
-                            // Attempt to render the component using the error handling middleware.
-                            getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
+                            const middleware = middlewares[index];
+        
+                            // We'll check if the task is still active before the middleware item is processed.
+                            !isActive() && throwInterrupt();
+        
+                            // Process the middleware item.
+                            const props = await accumP;
+        
+                            // ...And afterwards.
+                            return isActive() ? middleware(props) : throwInterrupt();
 
-                        } catch (err) {
+                        } catch (err) { }
 
-                            if (process.env.NODE_ENV !== 'production') {
+                    }, initialProps);
 
-                                // When the error handling middleware throws an error we'll need to halt the execution
-                                // because the error handler should be recovering, not compounding the problem.
-                                message(`Throwing an error from the recovery middleware for <${this.nodeName} /> is forbidden`);
-                                console.error(err);
+                } catch (err) {
+
+                    const isKnownException = err instanceof InterruptError || err instanceof CancelError;
+
+                    if (!isKnownException) {
+
+                        const getTree = errorHandlers.get(this);
+                        const consoleError = !getTree || !this.isConnected;
+
+                        consoleError ? (process.env.NODE_ENV !== 'production' && message(err)) : do {
+
+                            try {
+
+                                // Attempt to render the component using the error handling middleware.
+                                getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
+
+                            } catch (err) {
+
+                                if (process.env.NODE_ENV !== 'production') {
+
+                                    // When the error handling middleware throws an error we'll need to halt the execution
+                                    // because the error handler should be recovering, not compounding the problem.
+                                    message(`Throwing an error from the recovery middleware for <${this.nodeName} /> is forbidden`);
+                                    console.error(err);
+
+                                }
 
                             }
 
-                        }
+                        };
 
-                    };
+                    }
+
+                    // All unknown exceptions are considered a failure.
+                    isKnownException ? resolve(initialProps) : reject(initialProps);
 
                 }
 
-            }
+                try {
 
-            try {
+                    // Ensure the task is still relevent before continuing.
+                    !isActive() && throwInterrupt();
 
-                // Ensure the task is still relevent before continuing.
-                !isActive() && throwInterrupt();
+                    // Add the "resolved" class name regardless of how the component's rendered.
+                    this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
 
-                // Add the "resolved" class name regardless of how the component's rendered.
-                this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
+                    // Finally dispatch the event for parent components to be able to resolve.
+                    sendEvent(eventName, { node: this, version: 1 });
 
-                // Finally dispatch the event for parent components to be able to resolve.
-                sendEvent(eventName, { node: this, version: 1 });
+                    // Task has been successfully processed.
+                    this[member].task = null;
+                    resolve(initialProps);
 
-                // Task has been successfully processed.
-                this[member].task = null;
+                } catch (err) {
 
-            } catch (err) {}
+                    // Any non-interrupt errors are considered a failure.
+                    err instanceof InterruptError ? resolve(initialProps) : reject(initialProps);
+
+                }
+
+            });
 
         }
 

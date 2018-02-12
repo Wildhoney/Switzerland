@@ -31,7 +31,7 @@ const intersectionObserver = hasWindow && global.IntersectionObserver && new glo
 });
 
 /**
- * @constant ONCE ∷ Object String
+ * @constant ONCE ∷ Object String Symbol
  * @type {Object}
  */
 export const ONCE = {
@@ -41,7 +41,7 @@ export const ONCE = {
 };
 
 /**
- * @constant registry ∷ WeakMap HTMLElement
+ * @constant registry ∷  Tree t, Props p ⇒ WeakMap HTMLElement p t HTMLElement
  * @type {WeakMap}
  */
 const registry = new WeakMap();
