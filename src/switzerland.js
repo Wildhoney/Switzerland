@@ -104,7 +104,14 @@ export function create(name, ...middlewares) {
          */
         constructor() {
             super();
-            this[member] = { task: null };
+            this[member] = {
+                task: null,
+                actions: {
+                    render: this.render.bind(this),
+                    dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
+                    cancel: () => { throw new CancelError(); }
+                }
+            };
         }
 
         /**
@@ -154,9 +161,7 @@ export function create(name, ...middlewares) {
                     state: { ...(prevProps || {}).state, ...props.state },
                     node: this,
                     boundary: this.shadowRoot,
-                    render: this.render.bind(this),
-                    dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
-                    cancel: () => { throw new CancelError(); }
+                    ...this[member].actions
                 };
 
                 try {
