@@ -124,12 +124,45 @@ function kebabToCamel(value) {
 }
 
 /**
+ * @method camelToKebab ∷ String → String
+ * @param {String} value
+ * @return {String}
+ */
+function camelToKebab(value) {
+    return value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+/**
+ * @method appendStyle ∷ ShadowRoot → String → String
+ * @param {HTMLElement} boundary
+ * @param {String} content
+ * @param {String} position
+ * @return {void}
+ */
+function appendStyle(boundary, content, position) {
+    const node = boundary.querySelector('style');
+    const style = node || document.createElement('style');
+    !node && style.setAttribute('type', 'text/css');
+    style.innerHTML = position === 'before' ? `${content}${style.innerHTML}` : `${style.innerHTML}${content}`;
+    !node && boundary.appendChild(style);
+}
+
+/**
  * @method escapeRegExp ∷ String → String
  * @param {String} value
  * @return {String}
  */
 function escapeRegExp(value) {
     return value.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+}
+
+/**
+ * @method isFunction ∷ * → Boolean
+ * @param {*} x
+ * @return {Boolean}
+ */
+function isFunction(x) {
+    return typeof x === 'function';
 }
 
 /**
@@ -238,13 +271,6 @@ export function html(getTree) {
      */
     function attributes(type, data) {
 
-        /**
-         * @method isFunction
-         * @param {*} x
-         * @return {Boolean}
-         */
-        const isFunction = x => typeof x === 'function';
-
         return Object.entries(data).reduce((accum, [key, value]) => {
 
             const events = new Set();
@@ -342,39 +368,31 @@ export function include(...files) {
     const key = files.join('');
     const cache = new Map();
 
-    return async props => {
+    return once(async props => {
 
-        if (!props.boundary.querySelector('style')) {
+        const content = cache.has(key) ? cache.get(key) : do {
 
-            const content = cache.has(key) ? cache.get(key) : do {
+            const content = files.reduce(async (accumP, _, index) => {
 
-                const content = files.reduce(async (accumP, _, index) => {
+                const result = await fetch(`${path}/${files[index]}`).then(r => r.text());
+                const urls = parseUrls(result);
+                const css = urls.length ? urls.map(url => {
+                    return result.replace(new RegExp(escapeRegExp(url), 'ig'), `${path}/${url}`);
+                }).join() : result;
 
-                    const result = await fetch(`${path}/${files[index]}`).then(r => r.text());
-                    const urls = parseUrls(result);
-                    const css = urls.length ? urls.map(url => {
-                        return result.replace(new RegExp(escapeRegExp(url), 'ig'), `${path}/${url}`);
-                    }).join() : result;
+                return `${css} ${await accumP}`;
 
-                    return `${css} ${await accumP}`;
+            }, '');
 
-                }, '');
+            cache.set(key, content);
+            content;
 
-                cache.set(key, content);
-                content;
+        };
 
-            };
-
-            const style = document.createElement('style');
-            style.setAttribute('type', 'text/css');
-            style.innerHTML = await content;
-            props.boundary.appendChild(style);
-
-        }
-
+        appendStyle(props.boundary, await content, 'after');
         return props;
 
-    };
+    }, ONCE.ON_MOUNT);
 
 }
 
@@ -525,6 +543,31 @@ export function validate(schema) {
         const PropTypes = require('prop-types');
         PropTypes.checkPropTypes(schema, props, 'property', props.node.nodeName);
         return props;
+    };
+
+}
+
+/**
+ * @method vars ∷ Props p ⇒ Object String String|(p → Object String String) → (p → p)
+ * @param {Object} x
+ * @return {Function}
+ *
+ * Takes an object or function that is transformed into CSS variables and injected into the top of the <style /> tag,
+ * if it exists. If the <style /> doesn't exist then this middleware goes ahead and creates it. When you pass a function
+ * into the parameter, it is invoked with the current set of props used to render the component.
+ */
+export function vars(x) {
+
+    return props => {
+
+        const model = isFunction(x) ? x(props) : x;
+        const content = Object.entries(model).reduce((accum, [key, value]) => {
+            return `${accum} --${camelToKebab(key)}: ${value};`;
+        }, '');
+
+        appendStyle(props.boundary, `:host { ${content} }`, 'after');
+        return props;
+
     };
 
 }
