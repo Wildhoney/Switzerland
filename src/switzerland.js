@@ -64,20 +64,6 @@ export const translate = name => {
 class CancelError extends Error {}
 
 /**
- * @class InterruptError ∷ InterruptError
- * @extends {Error}
- */
-class InterruptError extends Error {}
-
-/**
- * @method throwInterrupt ∷ void
- * @return {void}
- */
-const throwInterrupt = () => {
-    throw new InterruptError();
-};
-
-/**
  * @method create ∷ Props p ⇒ String → [(p → p)] → void
  * @param {String} name
  * @param {Array<Function>} middlewares
@@ -105,7 +91,7 @@ export function create(name, ...middlewares) {
         constructor() {
             super();
             this[member] = {
-                task: null,
+                queue: new Set(),
                 actions: {
                     render: this.render.bind(this),
                     dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
@@ -139,13 +125,11 @@ export function create(name, ...middlewares) {
          */
         render(props = {}) {
 
-            return new Promise(async (resolve, reject) => {
+            const task = new Promise(async (resolve, reject) => {
 
-                // Set the latest task to be the active task, preventing the other running tasks
-                // from continuing any further.
-                const task = Symbol(name);
-                this[member].task = task;
-                const isActive = () => this[member].task === task;
+                // Await the completion of the penultimate task.
+                const tasks = Array.from(this[member].queue);
+                const task = await tasks[tasks.length - 1];
 
                 // Setup the props for the `initialProps`.
                 const prevProps = takePrevProps(this);
@@ -171,25 +155,15 @@ export function create(name, ...middlewares) {
                     await middlewares.reduce(async (accumP, _, index) => {
 
                         try {
-
                             const middleware = middlewares[index];
-
-                            // We'll check if the task is still active before the middleware item is processed.
-                            !isActive() && throwInterrupt();
-
-                            // Process the middleware item.
-                            const props = await accumP;
-
-                            // ...And afterwards.
-                            return isActive() ? middleware(props) : throwInterrupt();
-
+                            return middleware(await accumP);
                         } catch (err) { }
 
                     }, initialProps);
 
                 } catch (err) {
 
-                    const isKnownException = err instanceof InterruptError || err instanceof CancelError;
+                    const isKnownException = err instanceof CancelError;
 
                     if (!isKnownException) {
 
@@ -220,34 +194,26 @@ export function create(name, ...middlewares) {
 
                     }
 
-                    // All unknown exceptions are considered a failure.
-                    isKnownException ? resolve(initialProps) : reject(initialProps);
+                    // All exceptions are considered a failure.
+                    reject(initialProps);
 
                 }
 
-                try {
+                // Add the "resolved" class name regardless of how the component's rendered.
+                this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
 
-                    // Ensure the task is still relevent before continuing.
-                    !isActive() && throwInterrupt();
+                // Finally dispatch the event for parent components to be able to resolve.
+                sendEvent(eventName, { node: this, version: 1 });
 
-                    // Add the "resolved" class name regardless of how the component's rendered.
-                    this.isConnected && !this.classList.contains('resolved') && this.classList.add('resolved');
-
-                    // Finally dispatch the event for parent components to be able to resolve.
-                    sendEvent(eventName, { node: this, version: 1 });
-
-                    // Task has been successfully processed.
-                    this[member].task = null;
-                    resolve(initialProps);
-
-                } catch (err) {
-
-                    // Any non-interrupt errors are considered a failure.
-                    err instanceof InterruptError ? resolve(initialProps) : reject(initialProps);
-
-                }
+                // Task has been completed successfully.
+                this[member].queue.delete(task);
+                resolve(initialProps);
 
             });
+
+            // Add task to the queue.
+            this[member].queue.add(task);
+            return task;
 
         }
 
