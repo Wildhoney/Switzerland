@@ -78,7 +78,7 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
     const add = async event => {
         event.preventDefault();
         await props.dispatch(addTodo(props.state.value));
-        props.setState({ value: '' });
+        return props.setState({ value: '' });
     };
 
     return (
