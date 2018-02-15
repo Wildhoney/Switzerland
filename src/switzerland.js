@@ -120,10 +120,10 @@ export function create(name, ...middlewares) {
 
         /**
          * @method render ∷ ∀ a. Object String a → Promise void
-         * @param {Object} [props = {}]
+         * @param {Object} [mergeProps = {}]
          * @return {Promise}
          */
-        render(props = {}) {
+        render(mergeProps = {}) {
 
             const task = new Promise(async resolve => {
 
@@ -132,18 +132,18 @@ export function create(name, ...middlewares) {
                 const thunk = tasks[tasks.length - 1];
                 const task = await thunk;
 
-                // Setup the props for the `initialProps`.
+                // Setup the props for the `props`.
                 const prevProps = takePrevProps(this);
 
                 /**
-                 * @constant Props p ⇒ initialProps ∷ p
+                 * @constant Props p ⇒ props ∷ p
                  * @type {Object}
                  */
-                const initialProps = {
+                const props = {
                     ...prevProps,
-                    ...props,
+                    ...mergeProps,
                     prevProps,
-                    state: { ...(prevProps || {}).state, ...props.state },
+                    state: { ...(prevProps || {}).state, ...mergeProps.state },
                     node: this,
                     boundary: this.shadowRoot,
                     ...this[member].actions
@@ -152,7 +152,7 @@ export function create(name, ...middlewares) {
                 if (thunk && !this[member].queue.has(thunk)) {
 
                     // If a caught error has removed it from the queue, then we don't go any further.
-                    return void resolve(initialProps);
+                    return void resolve(props);
 
                 }
 
@@ -167,14 +167,14 @@ export function create(name, ...middlewares) {
                             return middleware(await accumP);
                         } catch (err) { }
 
-                    }, initialProps);
+                    }, props);
 
                 } catch (err) {
 
                     const isCancel = err instanceof CancelError;
 
                     // All non-cancel exceptions are considered a failure.
-                    isCancel ? resolve(initialProps) : do {
+                    isCancel ? resolve(props) : do {
 
                         const getTree = errorHandlers.get(this);
                         const consoleError = !getTree || !this.isConnected;
@@ -184,7 +184,7 @@ export function create(name, ...middlewares) {
                             try {
 
                                 // Attempt to render the component using the error handling middleware.
-                                getTree({ ...initialProps, error: err });
+                                getTree({ ...props, error: err });
 
                             } catch (err) {
 
@@ -201,7 +201,7 @@ export function create(name, ...middlewares) {
 
                                 // Errors should cancel any enqueued middleware.
                                 this[member].queue.clear();
-                                resolve(initialProps);
+                                resolve(props);
 
                             }
 
@@ -219,7 +219,7 @@ export function create(name, ...middlewares) {
 
                 // Task has been completed successfully.
                 this[member].queue.delete(task);
-                resolve(initialProps);
+                resolve(props);
 
             });
 
