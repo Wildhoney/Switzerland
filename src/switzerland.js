@@ -125,11 +125,12 @@ export function create(name, ...middlewares) {
          */
         render(props = {}) {
 
-            const task = new Promise(async (resolve, reject) => {
+            const task = new Promise(async resolve => {
 
                 // Await the completion of the penultimate task.
                 const tasks = Array.from(this[member].queue);
-                const task = await tasks[tasks.length - 1];
+                const thunk = tasks[tasks.length - 1];
+                const task = await thunk;
 
                 // Setup the props for the `initialProps`.
                 const prevProps = takePrevProps(this);
@@ -148,6 +149,13 @@ export function create(name, ...middlewares) {
                     ...this[member].actions
                 };
 
+                if (thunk && !this[member].queue.has(thunk)) {
+
+                    // If a caught error has removed it from the queue, then we don't go any further.
+                    return void resolve(initialProps);
+
+                }
+
                 try {
 
                     // Attempt to render the component, catching any errors that may be thrown in the middleware to
@@ -163,9 +171,10 @@ export function create(name, ...middlewares) {
 
                 } catch (err) {
 
-                    const isKnownException = err instanceof CancelError;
+                    const isCancel = err instanceof CancelError;
 
-                    if (!isKnownException) {
+                    // All non-cancel exceptions are considered a failure.
+                    isCancel ? resolve(initialProps) : do {
 
                         const getTree = errorHandlers.get(this);
                         const consoleError = !getTree || !this.isConnected;
@@ -175,7 +184,7 @@ export function create(name, ...middlewares) {
                             try {
 
                                 // Attempt to render the component using the error handling middleware.
-                                getTree({ node: this, render: this.render.bind(this), error: err, prevProps: takePrevProps(this) });
+                                getTree({ ...initialProps, error: err });
 
                             } catch (err) {
 
@@ -188,14 +197,17 @@ export function create(name, ...middlewares) {
 
                                 }
 
+                            } finally {
+
+                                // Errors should cancel any enqueued middleware.
+                                this[member].queue.clear();
+                                resolve(initialProps);
+
                             }
 
-                        };
+                        }
 
-                    }
-
-                    // All exceptions are considered a failure.
-                    reject(initialProps);
+                    };
 
                 }
 
