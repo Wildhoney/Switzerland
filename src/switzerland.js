@@ -205,7 +205,7 @@ export function create(name, ...middlewares) {
 
                             }
 
-                        }
+                        };
 
                     };
 
