@@ -238,6 +238,25 @@ export function attrs(exclude = ['class', 'id', 'style']) {
 }
 
 /**
+ * @method html ∷ Props p ⇒ Number → (p → p)
+ * @param {Number} milliseconds
+ * @return {Function}
+ * @see https://github.com/picodom/picodom
+ *
+ * Pauses the middleware processing for the supplied milliseconds.
+ */
+export function delay(milliseconds) {
+
+    return props => {
+
+        // Use the `setTimeout` to pause the middleware by the given milliseconds.
+        return new Promise(resolve => setTimeout(() => resolve(props), milliseconds));
+
+    };
+
+}
+
+/**
  * @method html ∷ Tree t, Props p ⇒ (void → t) → (p → p)
  * @param {Function} getTree
  * @return {Function}
