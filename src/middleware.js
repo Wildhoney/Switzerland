@@ -238,7 +238,7 @@ export function attrs(exclude = ['class', 'id', 'style']) {
 }
 
 /**
- * @method html ∷ Props p ⇒ Number → (p → p)
+ * @method delay ∷ Props p ⇒ Number → (p → p)
  * @param {Number} milliseconds
  * @return {Function}
  * @see https://github.com/picodom/picodom
