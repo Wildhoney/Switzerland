@@ -47,7 +47,7 @@ export const ONCE = {
 const registry = new WeakMap();
 
 /**
- * @method sendEvent
+ * @method sendEvent ∷ String → Object String * → void
  * @param {String} name
  * @param {Object} payload
  * @return {void}
@@ -238,7 +238,7 @@ export function attrs(exclude = ['class', 'id', 'style']) {
 }
 
 /**
- * @method delay ∷ Props p ⇒ Number → (p → p)
+ * @method delay ∷ Props p ⇒ Number → (p → Promise p)
  * @param {Number} milliseconds
  * @return {Function}
  * @see https://github.com/picodom/picodom
@@ -368,7 +368,7 @@ export function html(getTree) {
 }
 
 /**
- * @method include ∷ Props p ⇒ [String] → (p → p)
+ * @method include ∷ Props p ⇒ [String] → (p → Promise p)
  * @param {Array<String>} files
  * @return {Function}
  *
@@ -452,7 +452,7 @@ export function methods(fns) {
 }
 
 /**
- * @method once ∷ Props p ⇒ (p → p) → Symbol → (p → p)
+ * @method once ∷ Props p ⇒ (p → p) → Symbol → (p → Promise p)
  * @param {Function} fn
  * @param {Symbol} [strategy = ONCE.ONLY]
  * @return {Function}
@@ -592,7 +592,7 @@ export function vars(x) {
 }
 
 /**
- * @method wait ∷ Props p ⇒ [String] → (p → p)
+ * @method wait ∷ Props p ⇒ [String] → (p → Promise p)
  * @param {Array<String>} names
  * @return {Function}
  *
