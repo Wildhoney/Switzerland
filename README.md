@@ -86,7 +86,7 @@ const cheeses = cheeseboard.getAttribute('list');
 cheeseboard.setAttribute('list', `${cheeses},Stilton`);
 ```
 
-Nevertheless we may decide that our cheeseboard should be able to manage its own list of cheeses internally, and supply a form for allowing the addition of further cheeses. `Switzerland` doesn't support React-esque `state/setState` out-of-the-box because it's unnecessary, as a component can re-render by passing in subsequent `props`.
+Nevertheless we may decide that our cheeseboard should be able to manage its own list of cheeses internally, and supply a form for allowing the addition of further cheeses. `Switzerland` supports React-esque `state/setState` out-of-the-box.
 
 ```javascript
 import { create, h } from 'switzerland';
@@ -105,10 +105,10 @@ create('swiss-cheeseboard', state({ cheeses: [], value: '' }), html(props => {
 
             <input
                 type="text"
-                oninput={event => props.render({ value: event.target.value })}
+                oninput={event => props.setState({ value: event.target.value })}
                 />
 
-            <button onsubmit={() => props.render({ cheeses: props.value })}>
+            <button onsubmit={() => props.setState({ cheeses: props.value })}>
                 Add Cheese
             </button>
 
