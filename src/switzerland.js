@@ -127,7 +127,7 @@ export function create(name, ...middlewares) {
 
             const task = new Promise(async resolve => {
 
-                // Await the completion of the penultimate task.
+                // Await the completion of the task last added to the stack.
                 const tasks = Array.from(this[member].queue);
                 const thunk = tasks[tasks.length - 1];
                 const task = await thunk;
