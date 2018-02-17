@@ -18,7 +18,7 @@ export const errorHandlers = new WeakMap();
  * @constant resizeObserver ∷ ResizeObserver
  * @type {ResizeObserver}
  */
-const resizeObserver = hasWindow && global.ResizeObserver && new global.ResizeObserver(entries => {
+const resizeObserver = hasWindow && ResizeObserver && new ResizeObserver(entries => {
     entries.forEach(entry => entry.target.render({ adapt: entry }));
 });
 
@@ -26,7 +26,7 @@ const resizeObserver = hasWindow && global.ResizeObserver && new global.ResizeOb
  * @constant intersectionObserver ∷ IntersectionObserver
  * @type {IntersectionObserver}
  */
-const intersectionObserver = hasWindow && global.IntersectionObserver && new global.IntersectionObserver(entries => {
+const intersectionObserver = hasWindow && IntersectionObserver && new IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.render({ intersection: entry }));
 });
 
@@ -241,7 +241,6 @@ export function attrs(exclude = ['class', 'id', 'style']) {
  * @method delay ∷ Props p ⇒ Number → (p → Promise p)
  * @param {Number} milliseconds
  * @return {Function}
- * @see https://github.com/picodom/picodom
  *
  * Pauses the middleware processing for the supplied milliseconds.
  */
@@ -448,6 +447,36 @@ export function methods(fns) {
         return props;
 
     };
+
+}
+
+/**
+ * @method interval ∷ Props p ⇒ Number → [(p → p)]
+ * @param {Number} milliseconds
+ * @return {Array<Function>}
+ *
+ * Re-renders the component specified by the milliseconds. As this middleware uses both mount and unmount
+ * parts, it yields an array which should be spread (...) when using as a middleware item.
+ */
+export function interval(milliseconds) {
+
+    const interval = new WeakMap();
+
+    const mount = once(props => {
+
+        // Use the `setInterval` to re-render the component every X milliseconds.
+        interval.set(props.node, setInterval(props.render, milliseconds));
+
+    }, ONCE.ON_MOUNT);
+
+    const unmount = once(props => {
+
+        // Stop the interval when the node is unmounted from the DOM.
+        clearInterval(interval.get(props.node));
+
+    }, ONCE.ON_UNMOUNT);
+
+    return [mount, unmount];
 
 }
 

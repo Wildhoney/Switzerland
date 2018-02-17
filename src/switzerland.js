@@ -161,12 +161,8 @@ export function create(name, ...middlewares) {
                     // Attempt to render the component, catching any errors that may be thrown in the middleware to
                     // prevent the component from being in an invalid state. Recovery should ALWAYS be possible!
                     await middlewares.reduce(async (accumP, _, index) => {
-
-                        try {
-                            const middleware = middlewares[index];
-                            return middleware(await accumP);
-                        } catch (err) { }
-
+                        const middleware = middlewares[index];
+                        return middleware(await accumP);
                     }, props);
 
                 } catch (err) {

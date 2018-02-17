@@ -93,7 +93,9 @@
       "ShadowRoot",
       "HTMLElement",
       "HTMLScriptElement",
-      "CustomEvent"
+      "CustomEvent",
+      "ResizeObserver",
+      "IntersectionObserver"
     ],
     "extends": "xo-react",
     "rules": {
