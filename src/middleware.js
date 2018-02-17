@@ -18,7 +18,7 @@ export const errorHandlers = new WeakMap();
  * @constant resizeObserver ∷ ResizeObserver
  * @type {ResizeObserver}
  */
-const resizeObserver = hasWindow && ResizeObserver && new ResizeObserver(entries => {
+const resizeObserver = hasWindow && global.ResizeObserver && new ResizeObserver(entries => {
     entries.forEach(entry => entry.target.render({ adapt: entry }));
 });
 
@@ -26,7 +26,7 @@ const resizeObserver = hasWindow && ResizeObserver && new ResizeObserver(entries
  * @constant intersectionObserver ∷ IntersectionObserver
  * @type {IntersectionObserver}
  */
-const intersectionObserver = hasWindow && IntersectionObserver && new IntersectionObserver(entries => {
+const intersectionObserver = hasWindow && global.IntersectionObserver && new IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.render({ intersection: entry }));
 });
 
