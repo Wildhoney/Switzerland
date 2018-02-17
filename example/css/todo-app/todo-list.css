@@ -9,17 +9,6 @@
     overflow-y: auto;
 }
 
-todo-list {
-    all: initial;
-    display: block;
-    overflow-x: hidden;
-    overflow-y: auto;
-    font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
-    max-height: calc(65vh - 50px);
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
 * {
     margin: 0;
     padding: 0;
