@@ -41,7 +41,7 @@ export const ONCE = {
 };
 
 /**
- * @constant registry ∷  Tree t, Props p ⇒ WeakMap HTMLElement p t HTMLElement
+ * @constant registry ∷ Tree t, Props p ⇒ WeakMap HTMLElement p t HTMLElement
  * @type {WeakMap}
  */
 const registry = new WeakMap();
