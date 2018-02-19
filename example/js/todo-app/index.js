@@ -21,13 +21,13 @@ const populate = R.once(async props => {
  * @param {Object} props
  * @return {Promise}
  */
-const worker = async props => {
+const worker = m.once(async props => {
 
     // Register the service worker to allow the app to work offline.
     navigator.serviceWorker && await navigator.serviceWorker.register(`${m.path}/build-worker.js`, { scope: '/' });
     return props;
 
-};
+});
 
 /**
  * @method init
