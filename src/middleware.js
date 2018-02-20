@@ -144,7 +144,7 @@ function appendStyle(type, boundary, content) {
     const node = boundary.querySelector(`style.${type}`);
     const style = node || document.createElement('style');
     style.innerHTML = content;
-    
+
     !node && do {
         !node && style.classList.add(type);
         !node && style.setAttribute('type', 'text/css');
