@@ -44,6 +44,7 @@ ul {
   height: 20px;
   line-height: 20px;
   font-size: 10px;
+  user-select: none;
   display: inline-block;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.05);
@@ -65,13 +66,13 @@ ul li a {
   transition: color 0.35s;
 }
 
-ul li a:hover {
+ul li a:not(.active):hover {
   color: black;
 }
 
 ul li a.active {
   color: #ff3232;
-  pointer-events: none;
+  cursor: not-allowed;
 }
 
 ul li em {
