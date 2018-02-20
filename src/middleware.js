@@ -449,10 +449,10 @@ export function include(...files) {
 
                 const node = document.createElement(options.tag);
                 Object.entries(options.attrs).forEach(([key, value]) => node.setAttribute(key, value));
-    
+
                 // Listen for when the third-party file has been loaded.
                 node.addEventListener('load', resolve);
-    
+
                 // Append the source to the node, and then append it to the component.
                 node.setAttribute(options.src, url);
                 props.boundary.appendChild(node);
