@@ -134,17 +134,23 @@ function camelToKebab(value) {
 
 /**
  * @method appendStyle ∷ ShadowRoot → String → String
+ * @param {String} type
  * @param {HTMLElement} boundary
  * @param {String} content
- * @param {String} position
  * @return {void}
  */
-function appendStyle(boundary, content, position) {
-    const node = boundary.querySelector('style');
+function appendStyle(type, boundary, content) {
+
+    const node = boundary.querySelector(`style.${type}`);
     const style = node || document.createElement('style');
-    !node && style.setAttribute('type', 'text/css');
-    style.innerHTML = position === 'before' ? `${content}${style.innerHTML}` : `${style.innerHTML}${content}`;
-    !node && boundary.appendChild(style);
+    style.innerHTML = content;
+    
+    !node && do {
+        !node && style.classList.add(type);
+        !node && style.setAttribute('type', 'text/css');
+        !node && boundary.appendChild(style);
+    };
+
 }
 
 /**
@@ -407,7 +413,7 @@ export function include(...files) {
 
         };
 
-        appendStyle(props.boundary, await content, 'after');
+        appendStyle('stylesheet', props.boundary, await content);
         return props;
 
     }, ONCE.ON_MOUNT);
@@ -613,7 +619,7 @@ export function vars(x) {
             return `${accum} --${camelToKebab(key)}: ${value};`;
         }, '');
 
-        appendStyle(props.boundary, `:host { ${content} }`, 'after');
+        appendStyle('variables', props.boundary, `:host { ${content} }`);
         return props;
 
     };
