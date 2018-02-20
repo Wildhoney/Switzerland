@@ -49,7 +49,20 @@ const redux = props => {
     return { ...props, store: store.getState(), dispatch: store.dispatch };
 };
 
-create('todo-app', worker, redux, init, m.include('../../css/todo-app/todo-app.css'), m.adapt(), m.html(props => {
+const position = props => {
+
+    const isBottom = props.attrs.logo === 'bottom';
+
+    return {
+        orderPosition: isBottom ? 1 : -1,
+        borderColour: isBottom ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
+    };
+
+};
+
+create('todo-app', worker, redux, init, m.attrs(), m.vars(position), m.include('../../css/todo-app/todo-app.css'), m.adapt(), m.html(props => {
+
+    const isBottom = props.attrs.logo === 'bottom';
 
     return (
         <section class="todo-app">
@@ -60,9 +73,15 @@ create('todo-app', worker, redux, init, m.include('../../css/todo-app/todo-app.c
                     <img src="/images/todo-app/logo.png" alt="Switzerland" />
                 </a>
             </h1>
-            <div class="dimensions">
-                {props.dimensions.width}px &times; {props.dimensions.height}px
-            </div>
+            <ul class="dimensions">
+                <li>
+                    <em>Logo: </em>
+                    <a class={isBottom ? 'active': ''} onclick={() => props.node.setAttribute('logo', 'bottom')}>Bottom</a>
+                    /
+                    <a class={!isBottom ? 'active': ''} onclick={() => props.node.setAttribute('logo', 'top')}>Top</a>
+                </li>
+                <li><em>Dimensions:</em> {props.dimensions.width}px &times; {props.dimensions.height}px</li>
+            </ul>
         </section>
     );
 

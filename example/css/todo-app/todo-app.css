@@ -15,12 +15,19 @@
   box-sizing: border-box;
 }
 
+section.todo-app {
+  display: flex;
+  flex-direction: column;
+}
+
 h1 {
   padding: calc(2vmin + 3px) 2vmin 2vmin 2vmin;
   border-top: 1px solid rgba(0, 0, 0, .1);
   display: flex;
   align-items: center;
   max-height: 70px;
+  order: var(--order-position, 1);
+  border-bottom: 1px solid var(--border-colour, transparent);
 }
 
 h1 a img {
@@ -33,7 +40,7 @@ section.todo-manager {
   flex-direction: column;
 }
 
-div.dimensions {
+ul {
   height: 20px;
   line-height: 20px;
   font-size: 10px;
@@ -44,7 +51,36 @@ div.dimensions {
   right: 0;
   bottom: 0;
   color: rgba(0, 0, 0, 0.25);
+  display: flex;
+  list-style-type: none;
+}
+
+ul li {
   padding: 0 8px;
+}
+
+ul li a {
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.35s;
+}
+
+ul li a:hover {
+  color: black;
+}
+
+ul li a.active {
+  color: #ff3232;
+  pointer-events: none;
+}
+
+ul li em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+ul li:not(:last-of-type) {
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 @media (max-width: 768px) {
