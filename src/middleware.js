@@ -151,27 +151,6 @@ function camelToKebab(value) {
 }
 
 /**
- * @method appendStyle ∷ ShadowRoot → String → String
- * @param {String} type
- * @param {HTMLElement} boundary
- * @param {String} content
- * @return {void}
- */
-function appendStyle(type, boundary, content) {
-
-    const node = boundary.querySelector(`style.${type}`);
-    const style = node || document.createElement('style');
-    style.innerHTML = content;
-
-    !node && do {
-        !node && style.classList.add(type);
-        !node && style.setAttribute('type', 'text/css');
-        !node && boundary.appendChild(style);
-    };
-
-}
-
-/**
  * @method escapeRegExp ∷ String → String
  * @param {String} value
  * @return {String}
@@ -666,7 +645,17 @@ export function vars(x) {
             return `${accum} --${camelToKebab(key)}: ${value};`;
         }, '');
 
-        appendStyle('variables', props.boundary, `:host { ${content} }`);
+        const type = 'vars';
+        const node = props.boundary.querySelector(`style.${type}`);
+        const style = node || document.createElement('style');
+        style.innerHTML = `:host { ${content} }`;
+
+        !node && do {
+            style.classList.add(type);
+            style.setAttribute('type', 'text/css');
+            props.boundary.appendChild(style);
+        };
+
         return props;
 
     };
