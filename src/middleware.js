@@ -31,6 +31,15 @@ const intersectionObserver = hasWindow && global.IntersectionObserver && new Int
 });
 
 /**
+ * @constant includeTypes ∷ Object String a ⇒ [String String|a]
+ * @type {Array}
+ */
+const includeTypes = [
+    { ext: 'js', tag: 'script', src: 'src', attrs: { type: 'text/javascript' } },
+    { ext: 'css', tag: 'link', src: 'href', attrs: { rel: 'stylesheet', type: 'text/css' } }
+];
+
+/**
  * @constant ONCE ∷ Object String Symbol
  * @type {Object}
  */
@@ -60,6 +69,15 @@ export function sendEvent(name, payload) {
         composed: true
     }));
 
+}
+
+/**
+ * @method isRemove ∷ String → Boolean
+ * @param {String} path
+ * @return {void}
+ */
+function isRemote(path) {
+    return path.startsWith('http://') || path.startsWith('https://') || path.startsWith('://');
 }
 
 /**
@@ -389,34 +407,63 @@ export function html(getTree) {
  */
 export function include(...files) {
 
-    const key = files.join('');
     const cache = new Map();
 
     return once(async props => {
 
-        const content = cache.has(key) ? cache.get(key) : do {
+        await Promise.all(files.map(file => new Promise(async resolve => {
 
-            const content = files.reduce(async (accumP, _, index) => {
+            const extension = file.split('.').pop();
+            const isLocalStylesheet = !isRemote(file) && extension === 'css';
+            const url = isRemote(file) ? file : `${path}/${file}`;
 
-                const result = await fetch(`${path}/${files[index]}`).then(r => r.text());
-                const urls = parseUrls(result);
-                const css = urls.length ? urls.map(url => {
-                    return result.replace(new RegExp(escapeRegExp(url), 'ig'), `${path}/${url}`);
-                }).join() : result;
+            if (isLocalStylesheet) {
 
-                return `${css} ${await accumP}`;
+                // Create the node.
+                const node = document.createElement('style');
+                node.setAttribute('type', 'text/css');
 
-            }, '');
+                // Fetch the data from either the cache, or fetch the CSS and alter its paths.
+                const content = cache.get(file) || await (async () => {
+                    const data = await fetch(url).then(r => r.text());
+                    const urls = parseUrls(data);
+                    return urls.length ? urls.map(url => {
+                        return data.replace(new RegExp(escapeRegExp(url), 'ig'), `${path}/${url}`);
+                    }).join() : data;
+                })();
 
-            cache.set(key, content);
-            content;
+                // Store the data in the cache for other components that may be using the same file.
+                cache.set(file, content);
 
-        };
+                // Append the CSS document to the component.
+                node.innerHTML = content;
+                props.boundary.appendChild(node);
+                return void resolve();
 
-        appendStyle('stylesheet', props.boundary, await content);
+            }
+
+            // Create the element based on the options.
+            const options = includeTypes.find(({ ext }) => ext === extension);
+
+            options && do {
+
+                const node = document.createElement(options.tag);
+                Object.entries(options.attrs).forEach(([key, value]) => node.setAttribute(key, value));
+    
+                // Listen for when the third-party file has been loaded.
+                node.addEventListener('load', resolve);
+    
+                // Append the source to the node, and then append it to the component.
+                node.setAttribute(options.src, url);
+                props.boundary.appendChild(node);
+
+            };
+
+        })));
+
         return props;
 
-    }, ONCE.ON_MOUNT);
+    });
 
 }
 
