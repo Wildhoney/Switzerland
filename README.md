@@ -18,7 +18,7 @@
 
 ## Motivation
 
-One of the largest downsides to creating components in React, Vue, Ember, etc... is that we re-invent the wheel time-and-time again with every new framework that comes about. Although their components *may* rely on more generic modules, we are still writing components specific to a certain framework, and typically within a certain version range &mdash; if our setup lies otuside of those contraints then we need to continue our search.
+One of the largest downsides to creating components in React, Vue, Ember, etc... is that we re-invent the wheel time-and-time again with every new framework that comes about. Although their components *may* rely on more generic modules, we are still writing components specific to a certain framework, and typically within a certain version range &mdash; if our setup lies outside of those constraints then we need to continue our search.
 
 For example, if somebody writes a `<mayan-calendar />` component that works nicely with Mayan dates, wouldn't it be nice if we could use that component wherever, irrespective of our chosen framework and version? If there was a `ReactMayanCalendar` that works with React `15.x` then we'd be out of luck if our setup was Ember based &mdash; or React `16.x` based.
 
@@ -66,7 +66,7 @@ create('swiss-cheeseboard', attrs(), html(props => {
 }));
 ```
 
-> It's worth noting that middleware is compose left-to-right, similar to Ramda's `pipe` function.
+> It's worth noting that middleware is composed left-to-right, similar to Ramda's `pipe` function.
 
 Each middleware should take `props` and return `props` that it may or may not augment. Middleware can also be asynchronous, cancel the processing of the middleware, and throw errors. With the `attrs` middleware, it augments the `props` object with the node's attributes which we need to supply when mounting it to the DOM:
 
@@ -176,7 +176,7 @@ Alternatively we could have asked for two separate slots to be passed in: `image
 
 One interesting aspect of the slot based approach is that you can easily update their values, and the component will reflect the change **without** actually re-rendering &mdash; this of course saves unnecessary CPU cycles, and is a whole lot more efficient.
 
-Whether you choose to allow a single slot or multple slots depends on the control you'd like over the data passed in. With our `cheese-card` component it makes to use one slot as both the image and the name are side-by-side, however if they were in two different locations then it makes perfect sense to ask two slots to be passed, where the component's creator would have control over the HTML in between the two slot regions.
+Whether you choose to allow a single slot or multiple slots depends on the control you'd like over the data passed in. With our `cheese-card` component it makes to use one slot as both the image and the name are side-by-side, however if they were in two different locations then it makes perfect sense to ask two slots to be passed, where the component's creator would have control over the HTML in between the two slot regions.
 
 Naturally `<slot />` nodes can also contain other custom elements, which may themselves use slots.
 
@@ -351,4 +351,4 @@ Whenever a developer comes along and utilises our `cheese-card` component, they 
 
 The imported elements will then become `<x_cheese-card />` and `<x_cheese-item />` leaving the non-prefixed versions waiting to be created if necessary &ndash; components that are created for your project ideally should not be prefixed &ndash; only when they're shared to other developers.
 
-Another important aspect to remember when supporting namespaces is that the associated styles should **never** refer to the custom elements by their name, instead you should use `:host`, `:host-with-context` and other pseudo-selectors such as `:first-child` if necessary, as you can never guanratee the name of the custom element(s) when used in projects you have zero control over.
+Another important aspect to remember when supporting namespaces is that the associated styles should **never** refer to the custom elements by their name, instead you should use `:host`, `:host-with-context` and other pseudo-selectors such as `:first-child` if necessary, as you can never guarantee the name of the custom element(s) when used in projects you have zero control over.
