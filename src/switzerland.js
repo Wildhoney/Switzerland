@@ -1,6 +1,6 @@
 import { takePrevProps, errorHandlers, sendEvent } from './middleware';
 
-export { h } from 'picodom';
+export { h } from 'ultradom';
 export { path } from './middleware';
 
 /**

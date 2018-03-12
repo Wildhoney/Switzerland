@@ -1,4 +1,4 @@
-import { patch } from 'picodom';
+import { patch } from 'ultradom';
 import parseUrls from 'css-url-parser/lib/css-parser';
 import { eventName, translate } from './switzerland';
 
@@ -277,9 +277,9 @@ export function html(getTree) {
     function transform(tree) {
 
         return Array.isArray(tree) ? tree.map(transform) : do {
-            const isObject = 'type' in Object(tree);
-            const newTree = (isObject && tree.type.startsWith('_')) ? { ...tree, type: translate(tree.type) } : tree;
-            isObject ? { ...newTree, children: transform(tree.children), props: attributes(tree.type, tree.props) } : newTree;
+            const isObject = 'nodeName' in Object(tree);
+            const newTree = (isObject && tree.nodeName.startsWith('_')) ? { ...tree, nodeName: translate(tree.nodeName) } : tree;
+            isObject ? { ...newTree, children: transform(tree.children), attributes: attributes(tree.nodeName, tree.attributes) } : newTree;
         };
 
     }
@@ -351,9 +351,12 @@ export function html(getTree) {
             const updatedProps = { ...props, dimensions: { height: offsetHeight, width: offsetWidth } };
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
-            const previous = takeVDomTree(props.node) || {};
+            const previous = takeVDomTree(props.node) || null;
             const tree = transform(await getTree({ ...updatedProps }));
-            const root = patch(previous.tree, tree, props.boundary);
+            const root = patch(tree, previous && previous.root);
+
+            // Append the root to the shadow boundary when there isn't a previous child.
+            !previous && props.boundary.appendChild(root);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
