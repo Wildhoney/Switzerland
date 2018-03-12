@@ -56,7 +56,7 @@ export const ONCE = {
 const registry = new WeakMap();
 
 /**
- * @method sendEvent ∷ String → Object String * → void
+ * @method sendEvent ∷ ∀ a. String → Object String a → void
  * @param {String} name
  * @param {Object} payload
  * @return {void}
@@ -160,7 +160,7 @@ function escapeRegExp(value) {
 }
 
 /**
- * @method isFunction ∷ * → Boolean
+ * @method isFunction ∷ ∀ a. a → Boolean
  * @param {*} x
  * @return {Boolean}
  */
