@@ -320,21 +320,21 @@ export function html(getTree) {
             }
 
             /**
-             * @method onRemove
+             * @method onDestroy
              * @param {HTMLElement} node
              * @return {void}
              */
-            function onRemove(node) {
-                isFunction(data.onremove) && data.onremove(node);
+            function onDestroy(node) {
+                isFunction(data.ondestroy) && data.ondestroy(node);
                 events.forEach(({ key, value }) => node.removeEventListener(key, value));
             }
 
             return (key.startsWith('on') && isFunction(value) && !isNative(type)) ? do {
 
                 // Add the event to be invoked upon the creating of the DOM element, and then append the `oncreate`
-                // and `onremove` hooks to the node's data.
+                // and `ondestroy` hooks to the node's data.
                 events.add({ key: key.replace(/^on/i, ''), value });
-                ({ ...noop, oncreate: onCreate, onremove: onRemove });
+                ({ ...noop, oncreate: onCreate, ondestroy: onDestroy });
 
             } : noop;
 
