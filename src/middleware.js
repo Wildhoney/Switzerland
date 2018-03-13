@@ -72,7 +72,7 @@ export function sendEvent(name, payload) {
 }
 
 /**
- * @method isRemove ∷ String → Boolean
+ * @method isRemote ∷ String → Boolean
  * @param {String} path
  * @return {void}
  */
