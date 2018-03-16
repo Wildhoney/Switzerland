@@ -76,9 +76,13 @@ create('todo-app', worker, redux, init, m.attrs(), m.vars(position), m.include('
             <ul class="dimensions">
                 <li>
                     <em>Logo: </em>
-                    <a class={isBottom ? 'active': ''} onclick={() => props.node.setAttribute('logo', 'bottom')}>Bottom</a>
+                    <a class={isBottom ? 'active': ''} onclick={() => props.node.setAttribute('logo', 'bottom')}>
+                        Bottom
+                    </a>
                     /
-                    <a class={!isBottom ? 'active': ''} onclick={() => props.node.setAttribute('logo', 'top')}>Top</a>
+                    <a class={!isBottom ? 'active': ''} onclick={() => props.node.setAttribute('logo', 'top')}>
+                        Top
+                    </a>
                 </li>
                 <li><em>Dimensions:</em> {props.dimensions.width}px &times; {props.dimensions.height}px</li>
             </ul>
