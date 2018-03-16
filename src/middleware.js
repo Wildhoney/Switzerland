@@ -463,29 +463,6 @@ export function intersect() {
 }
 
 /**
- * @method methods ∷ ∀ a. Props p ⇒ Object String (p → a) → (p → p)
- * @param {Object} fns
- * @return {Function}
- *
- * Takes a map of function names to functions, and attaches them to the node, which allows you to directly
- * invoke the functions once you have a reference to the node. Using the 'methods' middleware passes the arguments
- * as-is, but also passes the current set of props as the final argument.
- */
-export function methods(fns) {
-
-    return props => {
-
-        Object.entries(fns).forEach(([name, fn]) => {
-            props.node[name] = (...args) => (fn.call(props.node, ...args, props));
-        });
-
-        return props;
-
-    };
-
-}
-
-/**
  * @method interval ∷ Props p ⇒ Number → [(p → p)]
  * @param {Number} milliseconds
  * @return {Array<Function>}
@@ -512,6 +489,58 @@ export function interval(milliseconds) {
     }, ONCE.ON_UNMOUNT);
 
     return [mount, unmount];
+
+}
+
+/**
+ * @method loader ∷ Props p ⇒ Object String String → (p → Promise p)
+ * @param {Array<String>} sources
+ * @return {Function}
+ *
+ * Takes an object of image paths and waits for them to be fully downloaded into the browser's cache before
+ * handing over to the subsequent middleware. Appends the "src" object to the props for consumption by the component.
+ */
+export function loader(sources) {
+
+    return async props => {
+
+        await Promise.all(Object.values(sources).map(src => {
+
+            return new Promise(resolve => {
+                const img = new Image();
+                img.addEventListener('load', resolve);
+                img.addEventListener('error', resolve);
+                img.setAttribute('src', src);
+            });
+
+        }));
+
+        return { ...props, src: sources };
+
+    };
+
+}
+
+/**
+ * @method methods ∷ ∀ a. Props p ⇒ Object String (p → a) → (p → p)
+ * @param {Object} fns
+ * @return {Function}
+ *
+ * Takes a map of function names to functions, and attaches them to the node, which allows you to directly
+ * invoke the functions once you have a reference to the node. Using the 'methods' middleware passes the arguments
+ * as-is, but also passes the current set of props as the final argument.
+ */
+export function methods(fns) {
+
+    return props => {
+
+        Object.entries(fns).forEach(([name, fn]) => {
+            props.node[name] = (...args) => (fn.call(props.node, ...args, props));
+        });
+
+        return props;
+
+    };
 
 }
 
