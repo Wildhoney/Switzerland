@@ -89,6 +89,7 @@
       "customElements",
       "fetch",
       "navigator",
+      "Image",
       "MutationObserver",
       "ShadowRoot",
       "HTMLElement",
