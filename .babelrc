@@ -10,6 +10,17 @@
                 }]
             ]
         },
+        "e2e": {
+            "plugins": [
+                "transform-class-properties",
+                "transform-object-rest-spread",
+                "transform-do-expressions",
+                "transform-async-to-generator",
+                ["transform-react-jsx", {
+                    "pragma": "h"
+                }]
+            ]
+        },
         "server": {
             "plugins": [
                 "transform-es2015-modules-commonjs",
