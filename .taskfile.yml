@@ -5,6 +5,7 @@
   tasks:
     - taskfile lint-js
     - taskfile lint-fs
+    - taskfile test-e2e
     # - taskfile spec
 
 - name: lint
@@ -13,7 +14,7 @@
     - taskfile lint-fs
 
 - name: start
-  task: (cd example/server/ && BABEL_ENV=server babel-node default.js)
+  task: (cd example/server && BABEL_ENV=server babel-node default.js)
 
 - name: watch
   task: concurrently 'BABEL_ENV=build webpack --watch' 'npm run start'
@@ -27,6 +28,12 @@
 
 - name: lint-js
   task: xo src/*.js
+
+- name: test-e2e
+  tasks:
+    - BABEL_ENV=e2e webpack
+    - - concurrently -k -s first 'npm run start' 'testcafe chrome:headless ./tests/integration/*.test.js'
+    - - - BABEL_ENV=e2e webpack
 
 - name: spec
   task: ava
