@@ -23,9 +23,19 @@ const populate = R.once(async props => {
  */
 const worker = m.once(async props => {
 
-    // Register the service worker to allow the app to work offline.
-    navigator.serviceWorker && await navigator.serviceWorker.register(`${m.path}/build-worker.js`, { scope: '/' });
-    return props;
+    try {
+
+        // Register the service worker to allow the app to work offline.
+        navigator.serviceWorker && await navigator.serviceWorker.register(`${m.path}/build-worker.js`, { scope: '/' });
+        return props;
+
+    } catch (err) {
+
+        // Continue even if the service worker fails to load.
+        return props;
+
+    }
+
 
 });
 
@@ -112,7 +122,7 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
                 value={props.state.value}
                 oninput={e => props.setState({ value: e.target.value })}
                 />
-            <button class="add" disabled={!props.state.value} />
+            <button type="submit" class="add" disabled={!props.state.value} />
         </form>
     );
 
