@@ -32,7 +32,7 @@
 - name: test-e2e
   tasks:
     - BABEL_ENV=test-e2e webpack
-    - - concurrently -k -s first 'npm run start' 'testcafe chrome:headless ./tests/integration/*.test.js'
+    - - concurrently -k -s first 'npm run start' 'testcafe chrome ./tests/integration/*.test.js'
     - - - BABEL_ENV=build webpack
 
 - name: spec
