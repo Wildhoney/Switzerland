@@ -91,6 +91,7 @@
       "document",
       "customElements",
       "fetch",
+      "requestAnimationFrame",
       "navigator",
       "Image",
       "MutationObserver",

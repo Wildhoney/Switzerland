@@ -4,13 +4,13 @@ import { once, identity } from 'ramda';
  * @constant NAME
  * @type {String}
  */
-const NAME = 'todos';
+export const NAME = 'todos';
 
 /**
  * @constant VERSION
  * @type {Number}
  */
-const VERSION = 1;
+export const VERSION = 1;
 
 /**
  * @constant MODE
