@@ -346,23 +346,28 @@ export function html(getTree) {
 
         if (props.node.isConnected) {
 
-            // Compute the current dimensions of the host node.
-            const { offsetHeight, offsetWidth } = props.node;
-            const updatedProps = { ...props, dimensions: { height: offsetHeight, width: offsetWidth } };
-
-            // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
-            const previous = takeVDomTree(props.node) || null;
-            const tree = transform(await getTree({ ...updatedProps }));
-            const root = patch(tree, previous && previous.root);
-
-            // Append the root to the shadow boundary when there isn't a previous child.
-            !previous && props.boundary.appendChild(root);
-
-            // Save the virtual DOM state for cases where an error short-circuits the chain.
-            putState(props.node, tree, root, props);
-
-            // Append the document fragment to the shadow root if we have one.
-            !(props.boundary instanceof ShadowRoot) && props.node.appendChild(props.boundary);
+            await new Promise(resolve => requestAnimationFrame(async () => {
+                    
+                // Compute the current dimensions of the host node.
+                const { offsetHeight, offsetWidth } = props.node;
+                const updatedProps = { ...props, dimensions: { height: offsetHeight, width: offsetWidth } };
+                
+                // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
+                const previous = takeVDomTree(props.node) || null;
+                const tree = transform(await getTree({ ...updatedProps }));
+                const root = patch(tree, previous && previous.root);
+                
+                // Append the root to the shadow boundary when there isn't a previous child.
+                !previous && props.boundary.appendChild(root);
+                
+                // Save the virtual DOM state for cases where an error short-circuits the chain.
+                putState(props.node, tree, root, props);
+                
+                // Append the document fragment to the shadow root if we have one, and then resolve.
+                !(props.boundary instanceof ShadowRoot) && props.node.appendChild(props.boundary);
+                resolve();
+                
+            }));
 
         }
 
