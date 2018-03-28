@@ -10,7 +10,7 @@
                 }]
             ]
         },
-        "e2e": {
+        "test-e2e": {
             "plugins": [
                 "transform-class-properties",
                 "transform-object-rest-spread",
