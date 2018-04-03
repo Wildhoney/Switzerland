@@ -3,10 +3,10 @@ import parseUrls from 'css-url-parser/lib/css-parser';
 import { eventName, translate } from './switzerland';
 
 /**
- * @constant hasWindow
+ * @constant hasDOM
  * @type {Boolean}
  */
-const hasWindow = typeof window !== 'undefined';
+const hasDOM = typeof window !== 'undefined';
 
 /**
  * @constant errorHandlers ∷ Props p ⇒ WeakMap (p → p)
@@ -18,7 +18,7 @@ export const errorHandlers = new WeakMap();
  * @constant resizeObserver ∷ ResizeObserver
  * @type {ResizeObserver}
  */
-const resizeObserver = hasWindow && global.ResizeObserver && new ResizeObserver(entries => {
+const resizeObserver = hasDOM && global.ResizeObserver && new ResizeObserver(entries => {
     entries.forEach(entry => entry.target.render({ adapt: entry }));
 });
 
@@ -26,7 +26,7 @@ const resizeObserver = hasWindow && global.ResizeObserver && new ResizeObserver(
  * @constant intersectionObserver ∷ IntersectionObserver
  * @type {IntersectionObserver}
  */
-const intersectionObserver = hasWindow && global.IntersectionObserver && new IntersectionObserver(entries => {
+const intersectionObserver = hasDOM && global.IntersectionObserver && new IntersectionObserver(entries => {
     entries.forEach(entry => entry.target.render({ intersection: entry }));
 });
 
@@ -172,7 +172,7 @@ function isFunction(x) {
  * @constant path ∷ String|void
  * @type {String|void}
  */
-export const path = hasWindow && document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
+export const path = hasDOM && document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
 
 /**
  * @method adapt ∷ Props p ⇒ (p → p)
