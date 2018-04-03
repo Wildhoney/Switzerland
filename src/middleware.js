@@ -31,7 +31,7 @@ const intersectionObserver = hasWindow && global.IntersectionObserver && new Int
 });
 
 /**
- * @constant includeTypes ∷ Object String a ⇒ [String String|a]
+ * @constant includeTypes ∷ ∀ a. Object String a ⇒ [String String|a]
  * @type {Array}
  */
 const includeTypes = [
