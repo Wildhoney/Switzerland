@@ -1,3 +1,4 @@
+.history/
 cli/
 example/
 media/
@@ -11,5 +12,4 @@ tests/
 .travis.yml
 core.js
 package-lock.json
-README.md
 webpack.config.js
