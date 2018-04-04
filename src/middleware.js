@@ -357,6 +357,7 @@ export function html(getTree) {
 
             // Append the root to the shadow boundary when there isn't a previous child.
             !previous && props.boundary.appendChild(root);
+            // console.log(props.boundary.querySelector('dialog').isConnected);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
@@ -393,8 +394,9 @@ export function include(...files) {
 
     return once(async props => {
 
-        await Promise.all(files.map(file => new Promise(async resolve => {
+        await Promise.all(files.map(x => new Promise(async resolve => {
 
+            const file = isFunction(x) ? x(props) : x;
             const extension = file.split('.').pop();
             const isLocalStylesheet = !isRemote(file) && extension === 'css';
             const url = isRemote(file) ? file : `${path}/${file}`;
