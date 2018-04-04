@@ -2,7 +2,7 @@
  * @method validate ∷ ∀ a. Object String a → [String] → Object String a
  * @param {String} event
  * @param {String} [nodeNames = ['input', 'textarea', 'select']]
- * @return {void}
+ * @return {Object}
  *
  * Takes a message and an optional console type for output. During minification this function will be removed
  * from the generated output if 'NODE_ENV' is defined as 'production', as it will be unused due to 'process.env'
@@ -21,9 +21,10 @@ export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => 
         const form = event.path.find(node => node instanceof HTMLFormElement);
         const fields = Array.from(form.querySelectorAll(selector));
 
-        // Map each of the validity reports into an object where the key is the name of the element.
+        // Map each of the validity reports into an object where the key is the name of the element. We then perform
+        // an `every` operation on the validity reports to see if each element in the form is valid.
         const validityAnalysis = fields.reduce((xs, node) => ({ ...xs, [node.getAttribute('name')]: node.validity }), {});
-        const isFormValid = Object.values(results).some(({ valid }) => valid);
+        const isFormValid = Object.values(results).every(({ valid }) => valid);
 
         return { results: validityAnalysis, valid: isFormValid };
 
