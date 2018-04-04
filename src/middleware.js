@@ -653,7 +653,7 @@ export function validate(schema) {
 
     return process.env.NODE_ENV === 'production' ? props => props : props => {
         const PropTypes = require('prop-types');
-        PropTypes.checkPropTypes(schema, props, 'property', props.node.nodeName);
+        PropTypes.checkPropTypes(schema, props, 'property', props.node.nodeName.toLowerCase());
         return props;
     };
 
