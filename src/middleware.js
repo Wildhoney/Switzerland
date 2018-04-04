@@ -357,7 +357,6 @@ export function html(getTree) {
 
             // Append the root to the shadow boundary when there isn't a previous child.
             !previous && props.boundary.appendChild(root);
-            // console.log(props.boundary.querySelector('dialog').isConnected);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
