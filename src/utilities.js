@@ -23,15 +23,15 @@ export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => 
 
         // Map each of the validity reports into an object where the key is the name of the element. We then perform
         // an `every` operation on the validity reports to see if each element in the form is valid.
-        const validityAnalysis = fields.reduce((xs, node) => ({ ...xs, [node.getAttribute('name')]: node.validity }), {});
-        const isFormValid = Object.values(results).every(({ valid }) => valid);
+        const validityReport = fields.reduce((xs, node) => ({ ...xs, [node.getAttribute('name')]: node.validity }), {});
+        const isFormValid = Object.values(validityReport).every(({ valid }) => valid);
 
-        return { results: validityAnalysis, valid: isFormValid };
+        return { results: validityReport, valid: isFormValid, error: null };
 
     } catch (err) {
 
         // Yield an indeterminate result as an error was raised in the above code.
-        return { results: [], valid: null };
+        return { results: [], valid: null, error: err };
 
     }
 
