@@ -10,10 +10,19 @@
  */
 export const validate = (event, elements = ['input', 'textarea', 'select']) => {
 
-    const form = event.path.find(node => node instanceof HTMLFormElement);
-    const fields = Array.from(form.querySelectorAll(elements.map(name => `${name}[name]:not(:disabled)`).join(', ')));
-    const results = fields.reduce((xs, node) => ({ ...xs, [node.getAttribute('name')]: node.validity }), {});
+    try {
 
-    return { results, valid: Object.values(results).some(({ valid }) => valid) };
+        const form = event.path.find(node => node instanceof HTMLFormElement);
+        const fields = Array.from(form.querySelectorAll(elements.map(name => `${name}[name]:not(:disabled)`).join(', ')));
+        const results = fields.reduce((xs, node) => ({ ...xs, [node.getAttribute('name')]: node.validity }), {});
+
+        return { results, valid: Object.values(results).some(({ valid }) => valid) };
+
+    } catch (err) {
+
+        // Yield an indeterminate result as an error was raised in the above code.
+        return { results: [], valid: null };
+
+    }
 
 };
