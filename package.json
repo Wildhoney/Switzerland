@@ -14,7 +14,9 @@
     "lint-fs": "taskfile lint-fs",
     "test": "taskfile test",
     "start": "taskfile start",
-    "watch": "taskfile watch"
+    "watch": "taskfile watch",
+    "prepublish": "taskfile prepublish",
+    "postpublish": "taskfile postpublish"
   },
   "repository": {
     "type": "git",
@@ -62,6 +64,7 @@
     "eslint-plugin-react": "~7.6.1",
     "express": "~4.16.3",
     "fslint": "~1.1.0",
+    "ncp": "~2.0.0",
     "ramda": "~0.25.0",
     "starwars": "~1.0.0",
     "taskfile": "~0.5.12",

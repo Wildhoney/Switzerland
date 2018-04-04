@@ -37,3 +37,13 @@
 
 - name: spec
   task: ava
+
+- name: prepublish
+  tasks:
+    - ncp src/ .
+
+- name: postpublish
+  tasks:
+    - rm ./switzerland.js
+    - rm ./middleware.js
+    - rm ./utilities.js

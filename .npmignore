@@ -1,0 +1,15 @@
+cli/
+example/
+media/
+src/
+tests/
+
+.babelrc
+.gitignore
+.npmignore
+.taskfile.yml
+.travis.yml
+core.js
+package-lock.json
+README.md
+webpack.config.js
