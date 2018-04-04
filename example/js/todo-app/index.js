@@ -4,6 +4,7 @@ import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
 import db from './db';
 import { create, h } from '../../../src/switzerland';
 import * as m from '../../../src/middleware';
+import { validate } from '../../../src/utilities';
 
 /**
  * @constant populate
@@ -101,7 +102,7 @@ create('todo-app', worker, redux, init, m.attrs(), m.vars(position), m.include('
 
 }), m.wait('_todo-input', '_todo-list'));
 
-create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.state({ value: '' }), m.html(props => {
+create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.state({ value: '', isValid: false }), m.html(props => {
 
     /**
      * @method add
@@ -111,18 +112,21 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
     const add = async event => {
         event.preventDefault();
         await props.dispatch(addTodo(props.state.value));
-        return props.setState({ value: '' });
+        return props.setState({ value: '', isValid: false });
     };
 
     return (
-        <form onsubmit={add}>
+        <form onsubmit={add} novalidate>
             <input
+                required
                 type="text"
+                name="todo"
+                autoComplete="off"
                 placeholder="What do you need to do?"
                 value={props.state.value}
-                oninput={e => props.setState({ value: e.target.value })}
+                oninput={e => props.setState({ value: e.target.value, isValid: validate(e).valid })}
                 />
-            <button type="submit" class="add" disabled={!props.state.value} />
+            <button type="submit" class="add" disabled={!props.state.isValid} />
         </form>
     );
 
