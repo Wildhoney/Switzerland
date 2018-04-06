@@ -356,7 +356,7 @@ export function html(getTree) {
 
             // Create the initial empty element to be rendered into if we don't have a previous root.
             const initialRoot = !previous && document.createElement(tree.nodeName);
-            initialRoot && props.node.shadowRoot.appendChild(initialRoot);
+            initialRoot && props.boundary.appendChild(initialRoot);
 
             // subsequent rendering of the current component.
             const root = patch(tree, previous ? previous.root : initialRoot);
