@@ -353,7 +353,13 @@ export function html(getTree) {
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || null;
             const tree = transform(await getTree({ ...updatedProps }));
-            const root = patch(tree, previous && previous.root);
+
+            // Create the initial empty element to be rendered into if we don't have a previous root.
+            const initialRoot = !previous && document.createElement(tree.nodeName);
+            initialRoot && props.node.shadowRoot.appendChild(initialRoot);
+
+            // subsequent rendering of the current component.
+            const root = patch(tree, previous ? previous.root : initialRoot);
 
             // Append the root to the shadow boundary when there isn't a previous child.
             !previous && props.boundary.appendChild(root);
