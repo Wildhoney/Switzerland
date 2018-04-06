@@ -1,10 +1,11 @@
 import by from 'sort-by';
 import * as R from 'ramda';
 import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
+import plural from 'pluralize';
 import db from './db';
 import { create, h } from '../../../src/switzerland';
 import * as m from '../../../src/middleware';
-import { validate } from '../../../src/utilities';
+import { validate, once } from '../../../src/utilities';
 
 /**
  * @constant populate
@@ -74,6 +75,7 @@ const position = props => {
 create('todo-app', worker, redux, init, m.attrs(), m.vars(position), m.include('../../css/todo-app/todo-app.css'), m.adapt(), m.html(props => {
 
     const isBottom = props.attrs.logo === 'bottom';
+    const { todos } = props.store;
 
     return (
         <section class="todo-app">
@@ -85,6 +87,7 @@ create('todo-app', worker, redux, init, m.attrs(), m.vars(position), m.include('
                 </a>
             </h1>
             <ul class="dimensions">
+                <li><em>Completed:</em> {todos.filter(x => x.done).length} of {todos.length} {plural('task', todos.length)}</li>
                 <li>
                     <em>Logo: </em>
                     <a class={isBottom ? 'active': ''} onclick={() => props.node.setAttribute('logo', 'bottom')}>
@@ -95,7 +98,7 @@ create('todo-app', worker, redux, init, m.attrs(), m.vars(position), m.include('
                         Top
                     </a>
                 </li>
-                <li><em>Dimensions:</em> {props.dimensions.width}px &times; {props.dimensions.height}px</li>
+                <li><em>Dimensions:</em> {props.dimensions.width}&times;{props.dimensions.height}</li>
             </ul>
         </section>
     );
@@ -116,7 +119,7 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
     };
 
     return (
-        <form onsubmit={add} novalidate>
+        <form onsubmit={once(add)} novalidate>
             <input
                 required
                 type="text"
@@ -146,7 +149,7 @@ create('todo-list', m.include('../../css/todo-app/todo-list.css'), redux, m.html
                         </p>
                         <button
                             class="delete"
-                            onclick={() => props.dispatch(removeTodo(model.id))}
+                            onclick={once(() => props.dispatch(removeTodo(model.id)))}
                             >
                             Delete
                         </button>
