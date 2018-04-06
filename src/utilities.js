@@ -1,3 +1,5 @@
+import * as R from 'ramda';
+
 /**
  * @method validate ∷ ∀ a. Object String a → [String] → Object String a
  * @param {String} event
@@ -9,7 +11,7 @@
  * elment, otherwise you'll simply get the default behaviour for form validation, including the built-in
  * validation popups.
  */
-export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => {
+export const validate = R.curry((event, nodeNames = ['input', 'textarea', 'select']) => {
 
     try {
 
@@ -36,7 +38,7 @@ export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => 
 
     }
 
-};
+});
 
 /**
  * @method slots ∷ HTMLElement → String → [HTMLElement]
@@ -44,8 +46,29 @@ export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => 
  * @param {String} name
  * @return {Array}
  *
- * Utility method for retrieving slot element(s) by a given slot name.
+ * Retrieves a list of `HTMLSlotElement`s by the given name.
  */
-export const slots = (node, name) => {
+export const slots = R.curry((node, name) => {
     return Array.from(node.querySelectorAll(`*[slot="${name}"]`));
+});
+
+/**
+ * @method once ∷ ∀ a b c. (a → b) → (Object String c → b)
+ * @param {Function} fn
+ * @return {Function}
+ *
+ * Prevents double-submitting a form as the wrapped function will only be invoked once. On subsequent renders of the
+ * components the `once` function will be invoked again, allowing the `fn` to also be invoked again. Instead of
+ * `onsubmit={submit}` you would use `onsubmit={once(submit)}` which won't allow `submit` to be invoked again until
+ * the next render. Invokes `event.preventDefault` automatically for you.
+ */
+export const once = fn => {
+
+    const onceFn = R.once(fn); 
+
+    return event => {
+        'preventDefault' in Object(event) && event.preventDefault();
+        return onceFn(event);
+    };
+
 };
