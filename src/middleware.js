@@ -379,7 +379,7 @@ export function html(getTree) {
 }
 
 /**
- * @method include ∷ Props p ⇒ [String] → (p → Promise p)
+ * @method include ∷ Props p ⇒ [String|(void → String)] → (p → Promise p)
  * @param {Array<String>} files
  * @return {Function}
  *
