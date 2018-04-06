@@ -15,7 +15,7 @@
     "test": "taskfile test",
     "start": "taskfile start",
     "watch": "taskfile watch",
-    "prepublish": "taskfile prepublish",
+    "prepublishOnly": "taskfile prepublish",
     "postpublish": "taskfile postpublish"
   },
   "repository": {
