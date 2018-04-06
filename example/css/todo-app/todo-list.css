@@ -41,13 +41,16 @@ ul li p {
     padding: 15px 20px;
     font-size: 12px;
     width: calc(100% - 120px);
-    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
 }
 
 ul li button.delete {
     background: linear-gradient(180deg, rgba(0, 0, 0, .075), rgba(0, 0, 0, .125));
     margin: 10px;
     width: 100px;
+    align-self: flex-start;
+    padding: 6px 0;
     border: 0;
     border-bottom: 1px solid rgba(0, 0, 0, .1);
     border-left: 1px solid rgba(0, 0, 0, .025);

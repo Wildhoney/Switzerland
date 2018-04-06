@@ -109,11 +109,9 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
 
     /**
      * @method add
-     * @param {Object} event
      * @return {Promise}
      */
-    const add = async event => {
-        event.preventDefault();
+    const add = async () => {
         await props.dispatch(addTodo(props.state.value));
         return props.setState({ value: '', isValid: false });
     };
@@ -140,7 +138,7 @@ create('todo-list', m.include('../../css/todo-app/todo-list.css'), redux, m.html
     return (
         <ul>
 
-            {[...props.store.todos.sort(by('created'))].map(model => {
+            {R.sort(by('created'), props.store.todos).map(model => {
 
                 return (
                     <li class={model.done ? 'done' : ''}>
