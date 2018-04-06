@@ -65,6 +65,7 @@
     "express": "~4.16.3",
     "fslint": "~1.1.0",
     "ncp": "~2.0.0",
+    "pluralize": "~7.0.0",
     "ramda": "~0.25.0",
     "starwars": "~1.0.0",
     "taskfile": "~0.5.12",
