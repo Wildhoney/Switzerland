@@ -4,9 +4,10 @@
  * @param {String} [nodeNames = ['input', 'textarea', 'select']]
  * @return {Object}
  *
- * Takes a message and an optional console type for output. During minification this function will be removed
- * from the generated output if 'NODE_ENV' is defined as 'production', as it will be unused due to 'process.env'
- * checks later on in the code.
+ * Uses the built-in HTML validation rules for validating a given form based on the requirements specified
+ * on the fields. To use the `validate` utility function it's important to set `novalidate` on the <form />
+ * elment, otherwise you'll simply get the default behaviour for form validation, including the built-in
+ * validation popups.
  */
 export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => {
 
@@ -41,7 +42,7 @@ export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => 
  * @method slots ∷ HTMLElement → String → [HTMLElement]
  * @param {HTMLElement} node
  * @param {String} name
- * @return {Object}
+ * @return {Array}
  *
  * Utility method for retrieving slot element(s) by a given slot name.
  */
