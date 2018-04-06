@@ -358,7 +358,7 @@ export function html(getTree) {
             const initialRoot = !previous && document.createElement(tree.nodeName);
             initialRoot && props.boundary.appendChild(initialRoot);
 
-            // subsequent rendering of the current component.
+            // Uses the initial root for the first render, and then the previous root for subsequent renders.
             const root = patch(tree, previous ? previous.root : initialRoot);
 
             // Append the root to the shadow boundary when there isn't a previous child.

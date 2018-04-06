@@ -64,7 +64,7 @@ export const slots = R.curry((node, name) => {
  */
 export const once = fn => {
 
-    const onceFn = R.once(fn); 
+    const onceFn = R.once(fn);
 
     return event => {
         'preventDefault' in Object(event) && event.preventDefault();
