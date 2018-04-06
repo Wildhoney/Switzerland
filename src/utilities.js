@@ -36,3 +36,15 @@ export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => 
     }
 
 };
+
+/**
+ * @method slots ∷ HTMLElement → String → [HTMLElement]
+ * @param {HTMLElement} node
+ * @param {String} name
+ * @return {Object}
+ *
+ * Utility method for retrieving slot element(s) by a given slot name.
+ */
+export const slots = (node, name) => {
+    return Array.from(node.querySelectorAll(`*[slot="${name}"]`));
+};
