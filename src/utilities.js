@@ -24,17 +24,18 @@ export const once = R.curry((onceFn, alwaysFn = e => e.preventDefault()) => {
 });
 
 /**
- * @method slots ∷ HTMLElement → String → [HTMLElement]
+ * @method slots ∷ HTMLElement → [String] → [HTMLElement]
  * @param {HTMLElement} node
- * @param {String} name
+ * @param {Array<String>} names
  * @return {Array}
  *
  * A short and snappy function for retrieving a list of `HTMLSlotElement`s by the supplied name. Prevents excessive
  * boilerplate code using `querySelector`/`querySelectorAll` all of the time. Also unwraps the `NodeList` into a
  * standard JavaScript array.
  */
-export const slots = R.curry((node, name) => {
-    return Array.from(node.querySelectorAll(`*[slot="${name}"]`));
+export const slots = R.curry((node, ...names) => {
+    const selectors = R.flatten(names).map(name => `*[slot="${name}"]`);
+    return Array.from(node.querySelectorAll(selectors));
 });
 
 /**
