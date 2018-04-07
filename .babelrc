@@ -5,6 +5,7 @@
                 "transform-class-properties",
                 "transform-object-rest-spread",
                 "transform-do-expressions",
+                "transform-async-to-generator",
                 ["transform-react-jsx", {
                     "pragma": "h"
                 }]
