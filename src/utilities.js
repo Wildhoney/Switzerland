@@ -1,6 +1,43 @@
 import * as R from 'ramda';
 
 /**
+ * @method once ∷ ∀ a b c. Event e => (e → a) → (e → b) → (Object String c → a)
+ * @param {Function} onceFn
+ * @param {Function} [alwaysFn = e => e.preventDefault()]
+ * @return {Function}
+ *
+ * Prevents double-submitting of a form by wrapping the `fn` with Ramda's `once` function. The slight difference
+ * between this method and Ramda's, is that Switzerland's `once` allows passing a second function that is always
+ * invoked, which allows for techniques such as invoking `e.preventDefault` each and every time to stop the form
+ * being submitted with its default behaviour, instead allowing the component to dictact how a form is submitted.
+ */
+export const once = R.curry((onceFn, alwaysFn = e => e.preventDefault()) => {
+
+    const wrappedOnceFn = R.once(onceFn);
+
+    return event => {
+        const hasEvent = 'preventDefault' in Object(event);
+        hasEvent && alwaysFn(event);
+        return wrappedOnceFn(event);
+    };
+
+});
+
+/**
+ * @method slots ∷ HTMLElement → String → [HTMLElement]
+ * @param {HTMLElement} node
+ * @param {String} name
+ * @return {Array}
+ *
+ * A short and snappy function for retrieving a list of `HTMLSlotElement`s by the supplied name. Prevents excessive
+ * boilerplate code using `querySelector`/`querySelectorAll` all of the time. Also unwraps the `NodeList` into a
+ * standard JavaScript array.
+ */
+export const slots = R.curry((node, name) => {
+    return Array.from(node.querySelectorAll(`*[slot="${name}"]`));
+});
+
+/**
  * @method validate ∷ ∀ a. Object String a → [String] → Object String a
  * @param {String} event
  * @param {String} [nodeNames = ['input', 'textarea', 'select']]
@@ -39,36 +76,3 @@ export const validate = R.curry((event, nodeNames = ['input', 'textarea', 'selec
     }
 
 });
-
-/**
- * @method slots ∷ HTMLElement → String → [HTMLElement]
- * @param {HTMLElement} node
- * @param {String} name
- * @return {Array}
- *
- * Retrieves a list of `HTMLSlotElement`s by the given name.
- */
-export const slots = R.curry((node, name) => {
-    return Array.from(node.querySelectorAll(`*[slot="${name}"]`));
-});
-
-/**
- * @method once ∷ ∀ a b c. (a → b) → (Object String c → b)
- * @param {Function} fn
- * @return {Function}
- *
- * Prevents double-submitting a form as the wrapped function will only be invoked once. On subsequent renders of the
- * components the `once` function will be invoked again, allowing the `fn` to also be invoked again. Instead of
- * `onsubmit={submit}` you would use `onsubmit={once(submit)}` which won't allow `submit` to be invoked again until
- * the next render. Invokes `event.preventDefault` automatically for you.
- */
-export const once = fn => {
-
-    const onceFn = R.once(fn);
-
-    return event => {
-        'preventDefault' in Object(event) && event.preventDefault();
-        return onceFn(event);
-    };
-
-};
