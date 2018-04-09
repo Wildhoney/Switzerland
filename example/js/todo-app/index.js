@@ -1,6 +1,5 @@
 import by from 'sort-by';
 import * as R from 'ramda';
-import moment from 'moment';
 import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
 import plural from 'pluralize';
 import db from './db';
@@ -147,7 +146,6 @@ create('todo-list', m.include('../../css/todo-app/todo-list.css'), redux, m.html
                         <p onclick={() => props.dispatch(markTodo(model.id))}>
                             {model.text}
                         </p>
-                        <time>Added {moment(model.created).fromNow()}</time>
                         <button
                             class="delete"
                             onclick={once(() => props.dispatch(removeTodo(model.id)))}
