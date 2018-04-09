@@ -45,6 +45,13 @@ ul li p {
     overflow: hidden;
 }
 
+ul li time {
+    color: lightgrey;
+    font-size: 11px;
+    padding: 15px 0;
+    white-space: nowrap;
+}
+
 ul li button.delete {
     background: linear-gradient(180deg, rgba(0, 0, 0, .075), rgba(0, 0, 0, .125));
     margin: 10px;

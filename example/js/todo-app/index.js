@@ -1,5 +1,6 @@
 import by from 'sort-by';
 import * as R from 'ramda';
+import moment from 'moment';
 import { store, addTodo, putTodo, removeTodo, markTodo } from './store';
 import plural from 'pluralize';
 import db from './db';
@@ -122,10 +123,10 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
                 required
                 type="text"
                 name="todo"
+                autoFocus="on"
                 autoComplete="off"
                 placeholder="What do you need to do?"
                 value={props.state.value}
-                oncreate={e => e.focus()}
                 oninput={e => props.setState({ value: e.target.value, isValid: validate(e).valid })}
                 />
             <button type="submit" class="add" disabled={!props.state.isValid} />
@@ -146,6 +147,7 @@ create('todo-list', m.include('../../css/todo-app/todo-list.css'), redux, m.html
                         <p onclick={() => props.dispatch(markTodo(model.id))}>
                             {model.text}
                         </p>
+                        <time>Added {moment(model.created).fromNow()}</time>
                         <button
                             class="delete"
                             onclick={once(() => props.dispatch(removeTodo(model.id)))}
