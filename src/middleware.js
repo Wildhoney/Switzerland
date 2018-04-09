@@ -15,6 +15,27 @@ const hasDOM = typeof window !== 'undefined';
 export const errorHandlers = new WeakMap();
 
 /**
+ * @constant defaultOptions ∷ ∀ a. Object String a
+ * @type {Object}
+ */
+const defaultOptions = { delegatesFocus: false, mode: 'open' };
+
+/**
+ * @constant shadowOptions ∷ Symbol
+ * @type {Symbol}
+ */
+const shadowOptions = Symbol('Shadow-Options');
+
+/**
+ * @method createBoundary ∷ HTMLElement → ShadowRoot
+ * @return {ShadowRoot}
+ */
+const createBoundary = props => {
+    !props.node.shadowRoot && props.node.attachShadow(props[shadowOptions] || { mode: 'open' });
+    return props.node.shadowRoot;
+};
+
+/**
  * @constant resizeObserver ∷ ResizeObserver
  * @type {ResizeObserver}
  */
@@ -356,16 +377,13 @@ export function html(getTree) {
 
             // Create the initial empty element to be rendered into if we don't have a previous root.
             const initialRoot = !previous && document.createElement(tree.nodeName);
-            initialRoot && props.boundary.appendChild(initialRoot);
+            initialRoot && createBoundary(props).appendChild(initialRoot);
 
             // Uses the initial root for the first render, and then the previous root for subsequent renders.
             const root = patch(tree, previous ? previous.root : initialRoot);
 
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
-
-            // Append the document fragment to the shadow root if we have one, and then resolve.
-            !(props.boundary instanceof ShadowRoot) && props.node.appendChild(props.boundary);
 
         }
 
@@ -423,7 +441,7 @@ export function include(...files) {
 
                 // Append the CSS document to the component.
                 node.innerHTML = content;
-                props.boundary.appendChild(node);
+                createBoundary(props).appendChild(node);
                 return void resolve();
 
             }
@@ -441,7 +459,7 @@ export function include(...files) {
 
                 // Append the source to the node, and then append it to the component.
                 node.setAttribute(options.src, url);
-                props.boundary.appendChild(node);
+                createBoundary(props).appendChild(node);
 
             };
 
@@ -605,6 +623,18 @@ export function once(fn, strategy = ONCE.ONLY) {
 }
 
 /**
+ * @method options ∷ ∀ a. Object String a → (p → p)
+ * @param {Object} opts
+ * @return {Function}
+ *
+ * Allows the passing of options to use for the component's shadow boundary.
+ */
+export function options(opts = defaultOptions) {
+    const options = { ...defaultOptions, ...opts };
+    return props => ({ ...props, [shadowOptions]: options });
+}
+
+/**
  * @method rescue ∷ Tree t, Props p ⇒ t → (p → p)
  * @param {Function} getTree
  * @return {Function}
@@ -682,14 +712,14 @@ export function vars(x) {
         }, '');
 
         const type = 'vars';
-        const node = props.boundary.querySelector(`style.${type}`);
+        const node = createBoundary(props).querySelector(`style.${type}`);
         const style = node || document.createElement('style');
         style.innerHTML = `:host { ${content} }`;
 
         !node && do {
             style.classList.add(type);
             style.setAttribute('type', 'text/css');
-            props.boundary.appendChild(style);
+            createBoundary(props).appendChild(style);
         };
 
         return props;
@@ -724,7 +754,7 @@ export function wait(...names) {
 
             // Find all of the nodes to wait upon, minus those that have already been resolved.
             const nodes = Array.from(names.map(translate).reduce((accum, name) => {
-                return [...accum, ...Array.from(props.boundary.querySelectorAll(name))];
+                return [...accum, ...Array.from(createBoundary(props).querySelectorAll(name))];
             }, [])).filter(node => !node.classList.contains('resolved'));
 
             nodes.length === 0 ? resolve() : global.addEventListener(eventName, function listener(event) {
