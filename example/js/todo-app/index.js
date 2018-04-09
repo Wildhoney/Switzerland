@@ -125,6 +125,7 @@ create('todo-input', m.include('../../css/todo-app/todo-input.css'), redux, m.st
                 autoComplete="off"
                 placeholder="What do you need to do?"
                 value={props.state.value}
+                oncreate={e => e.focus()}
                 oninput={e => props.setState({ value: e.target.value, isValid: validate(e).valid })}
                 />
             <button type="submit" class="add" disabled={!props.state.isValid} />
