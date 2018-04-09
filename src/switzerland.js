@@ -64,6 +64,26 @@ export const translate = name => {
 class CancelError extends Error {}
 
 /**
+ * @constant defaultOptions ∷ ∀ a. Object String a
+ * @type {Object} 
+ */
+const defaultOptions = { delegatesFocus: false, mode: 'closed' };
+
+/**
+ * @method define ∷ ∀ a. String → Object String a → String
+ * @param {String} name
+ * @param {Object} options
+ * @return {String}
+ *
+ * Allows the setting of additional options for the shadow boundary.
+ */
+export function define(name, opts = defaultOptions) {
+    const nameExtended = new String(name);
+    nameExtended[member] = { ...defaultOptions, ...opts };
+    return nameExtended;
+}
+
+/**
  * @method create ∷ Props p ⇒ String → [(p → p)] → void
  * @param {String} name
  * @param {Array<Function>} middlewares
@@ -105,7 +125,8 @@ export function create(name, ...middlewares) {
          * @return {Promise}
          */
         connectedCallback() {
-            !this.shadowRoot && this.attachShadow({ mode: 'open' });
+            const options = member in Object(name) && name[member];
+            !this.shadowRoot && this.attachShadow(options || { mode: 'open' });
             return this.render();
         }
 
