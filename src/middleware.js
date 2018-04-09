@@ -361,9 +361,6 @@ export function html(getTree) {
             // Uses the initial root for the first render, and then the previous root for subsequent renders.
             const root = patch(tree, previous ? previous.root : initialRoot);
 
-            // Append the root to the shadow boundary when there isn't a previous child.
-            !previous && props.boundary.appendChild(root);
-
             // Save the virtual DOM state for cases where an error short-circuits the chain.
             putState(props.node, tree, root, props);
 
