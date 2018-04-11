@@ -1,7 +1,7 @@
 import * as R from 'ramda';
 
 /**
- * @method once ∷ ∀ a b c. Event e => (e → a) → (e → b) → (Object String c → a)
+ * @method once ∷ Event e ⇒ e → void
  * @param {Function} onceFn
  * @param {Function} [alwaysFn = e => e.preventDefault()]
  * @return {Function}
@@ -11,13 +11,28 @@ import * as R from 'ramda';
  * invoked, which allows for techniques such as invoking `e.preventDefault` each and every time to stop the form
  * being submitted with its default behaviour, instead allowing the component to dictact how a form is submitted.
  */
-export const once = R.curry((onceFn, alwaysFn = e => e.preventDefault()) => {
+const preventDefault = event => {
+    const hasEvent = 'preventDefault' in Object(event);
+    hasEvent && event.preventDefault();
+};
+
+/**
+ * @method once ∷ ∀ a b c. Event e ⇒ (e → a) → (e → b) → (Object String c → a)
+ * @param {Function} onceFn
+ * @param {Function} [alwaysFn = e => e.preventDefault()]
+ * @return {Function}
+ *
+ * Prevents double-submitting of a form by wrapping the `fn` with Ramda's `once` function. The slight difference
+ * between this method and Ramda's, is that Switzerland's `once` allows passing a second function that is always
+ * invoked, which allows for techniques such as invoking `e.preventDefault` each and every time to stop the form
+ * being submitted with its default behaviour, instead allowing the component to dictact how a form is submitted.
+ */
+export const once = R.curry((onceFn, alwaysFn = preventDefault) => {
 
     const wrappedOnceFn = R.once(onceFn);
 
     return event => {
-        const hasEvent = 'preventDefault' in Object(event);
-        hasEvent && alwaysFn(event);
+        alwaysFn();
         return wrappedOnceFn(event);
     };
 
