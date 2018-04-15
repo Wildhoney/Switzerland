@@ -32,7 +32,7 @@ export const once = R.curry((onceFn, alwaysFn = preventDefault) => {
     const wrappedOnceFn = R.once(onceFn);
 
     return event => {
-        alwaysFn();
+        alwaysFn(event);
         return wrappedOnceFn(event);
     };
 
