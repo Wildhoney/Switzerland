@@ -74,7 +74,7 @@ export const validate = R.curry((event, nodeNames = ['input', 'textarea', 'selec
 
         // Find the first form that we encounter from the event, and then find all of the related fields using
         // the above selector.
-        const form = event.path.find(node => node instanceof HTMLFormElement);
+        const form = event.composedPath().find(node => node instanceof HTMLFormElement);
         const fields = Array.from(form.querySelectorAll(selector));
 
         // Map each of the validity reports into an object where the key is the name of the element. We then perform
