@@ -43,9 +43,9 @@ create('swiss-cheeseboard', html(() => {
 }));
 ```
 
-> We need to import [`h`](https://github.com/picodom/picodom/blob/master/src/h.js) because that's what the virtual DOM transpiles to: `h.div`, `h.time`, etc...
+> We need to import [`h`](https://github.com/jorgebucaran/ultradom/blob/master/src/h.js) because that's what the virtual DOM transpiles to: `h.div`, `h.time`, etc...
 
-Although any respectable cheeseboard is decorated with delicious cheese, which we would supply via the attributes of the `<swiss-cheeseboard />` element. We need to apply the `attrs` middleware which reads the node's attributes, and watches for any mutations, causing an efficient re-render of the component [using DOM diffing](https://github.com/picodom/picodom).
+Although any respectable cheeseboard is decorated with delicious cheese, which we would supply via the attributes of the `<swiss-cheeseboard />` element. We need to apply the `attrs` middleware which reads the node's attributes, and watches for any mutations, causing an efficient re-render of the component [using DOM diffing](https://github.com/jorgebucaran/ultradom).
 
 ```javascript
 import { create, h } from 'switzerland';
