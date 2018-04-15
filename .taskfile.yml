@@ -1,5 +1,7 @@
 - name: build
-  task: BABEL_ENV=build webpack
+  tasks:
+    - BABEL_ENV=build webpack
+    - - rm core.js
 
 - name: test
   tasks:

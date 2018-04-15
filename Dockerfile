@@ -1,5 +1,8 @@
 FROM node:latest
 
+RUN mkdir ~/service
+WORKDIR ~/service
+
 COPY package.json package-lock.json .taskfile.yml ./
 RUN npm install --production=false
 
