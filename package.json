@@ -7,12 +7,13 @@
     "test": "tests"
   },
   "scripts": {
-    "spec": "taskfile spec",
     "build": "taskfile build",
     "lint": "taskfile lint",
     "lint-js": "taskfile lint-js",
     "lint-fs": "taskfile lint-fs",
     "test": "taskfile test",
+    "test-unit": "taskfile test-unit",
+    "test-e2e": "taskfile test-e2e",
     "start": "taskfile start",
     "watch": "taskfile watch",
     "prepublishOnly": "taskfile prepublish",
@@ -56,8 +57,11 @@
     "babel-plugin-transform-es2015-modules-commonjs": "~6.26.0",
     "babel-plugin-transform-object-rest-spread": "~6.26.0",
     "babel-plugin-transform-react-jsx": "~6.24.1",
+    "babel-polyfill": "~6.26.0",
     "babel-preset-es2015": "~6.24.1",
     "babel-preset-stage-2": "~6.24.1",
+    "babel-register": "~6.26.0",
+    "browser-env": "~3.2.5",
     "concurrently": "~3.5.1",
     "eslint": "~4.17.0",
     "eslint-config-xo-react": "~0.16.0",
@@ -67,6 +71,7 @@
     "ncp": "~2.0.0",
     "pluralize": "~7.0.0",
     "ramda": "~0.25.0",
+    "sinon": "~4.3.0",
     "starwars": "~1.0.0",
     "taskfile": "~0.5.12",
     "testcafe": "~0.19.1",
@@ -77,13 +82,14 @@
   },
   "ava": {
     "files": [
-      "tests/*.test.js",
-      "tests/**/*.test.js"
+      "tests/unit/*.test.js",
+      "tests/unit/**/*.test.js"
     ],
     "babel": "inherit",
     "require": [
       "babel-register",
-      "babel-polyfill"
+      "babel-polyfill",
+      "./tests/unit/helpers/browser-env.js"
     ]
   },
   "xo": {

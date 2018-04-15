@@ -193,7 +193,7 @@ function isFunction(x) {
  * @constant path ∷ String|void
  * @type {String|void}
  */
-export const path = hasDOM && document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
+export const path = hasDOM && document.currentScript && document.currentScript.getAttribute('src').split('/').slice(0, -1).join('/');
 
 /**
  * @method adapt ∷ Props p ⇒ (p → p)

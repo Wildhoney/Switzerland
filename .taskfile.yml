@@ -6,7 +6,7 @@
     - taskfile lint-js
     - taskfile lint-fs
     - - taskfile test-e2e
-    # - taskfile spec
+    - - - taskfile test-unit
 
 - name: lint
   tasks:
@@ -32,12 +32,12 @@
 - name: test-e2e
   tasks:
     - BABEL_ENV=test-e2e webpack
-    - - concurrently -k -s first 'npm run start' 'testcafe chrome:headless ./tests/integration/*.test.js'
+    - - concurrently -k -s first 'npm run start' 'testcafe chrome:headless ./tests/e2e/*.test.js'
     - - - BABEL_ENV=build webpack
     - - - - rm core.js
 
-- name: spec
-  task: ava
+- name: test-unit
+  task: BABEL_ENV=test-unit ava
 
 - name: prepublish
   tasks:
