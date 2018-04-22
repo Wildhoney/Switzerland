@@ -85,20 +85,17 @@ export function create(name, ...middlewares) {
     customElements.define(namespace ? `${namespace}${separator}${name}` : name, class extends HTMLElement {
 
         /**
-         * @constructor ∷ void
-         * @return {void}
+         * @property ∷ Symbol
+         * @type {Symbol}
          */
-        constructor() {
-            super();
-            this[member] = {
-                queue: new Set(),
-                actions: {
-                    render: this.render.bind(this),
-                    dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
-                    cancel: () => { throw new CancelError(); }
-                }
-            };
-        }
+        [member] = {
+            queue: new Set(),
+            actions: {
+                render: this.render.bind(this),
+                dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
+                cancel: () => { throw new CancelError(); }
+            }
+        };
 
         /**
          * @method connectedCallback ∷ Promise void
