@@ -7,7 +7,7 @@ export { path } from './middleware';
  * @constant member ∷ Symbol
  * @type {Symbol}
  */
-const member = Symbol('Switzerland');
+export const member = Symbol('Switzerland');
 
 /**
  * @method message ∷ String → String → void
@@ -90,6 +90,7 @@ export function create(name, ...middlewares) {
          */
         [member] = {
             queue: new Set(),
+            boundary: null,
             actions: {
                 render: this.render.bind(this),
                 dispatch: (name, data) => sendEvent(name, { node: this, data, version: 1 }),
@@ -141,7 +142,7 @@ export function create(name, ...middlewares) {
                     prevProps,
                     state: { ...(prevProps || {}).state, ...mergeProps.state },
                     node: this,
-                    boundary: this.shadowRoot,
+                    boundary: this[member].boundary,
                     ...this[member].actions
                 };
 

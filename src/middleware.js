@@ -1,6 +1,6 @@
 import { patch } from 'ultradom';
 import parseUrls from 'css-url-parser/lib/css-parser';
-import { eventName, translate } from './switzerland';
+import { eventName, translate, member } from './switzerland';
 
 /**
  * @constant hasDOM
@@ -31,8 +31,9 @@ const shadowOptions = Symbol('Shadow-Options');
  * @return {ShadowRoot}
  */
 const createBoundary = props => {
-    !props.node.shadowRoot && props.node.attachShadow(props[shadowOptions] || { mode: 'open' });
-    return props.node.shadowRoot;
+    const boundary = props.node[member].boundary || props.node.attachShadow(props[shadowOptions] || { mode: 'open' });
+    props.node[member].boundary = boundary;
+    return boundary;
 };
 
 /**
