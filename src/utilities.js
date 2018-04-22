@@ -27,7 +27,7 @@ const preventDefault = event => {
  * invoked, which allows for techniques such as invoking `e.preventDefault` each and every time to stop the form
  * being submitted with its default behaviour, instead allowing the component to dictact how a form is submitted.
  */
-export const once = R.curry((onceFn, alwaysFn = preventDefault) => {
+export const once = (onceFn, alwaysFn = preventDefault) => {
 
     const wrappedOnceFn = R.once(onceFn);
 
@@ -36,7 +36,7 @@ export const once = R.curry((onceFn, alwaysFn = preventDefault) => {
         return wrappedOnceFn(event);
     };
 
-});
+};
 
 /**
  * @method slots ∷ HTMLElement → [String] → [HTMLElement]
@@ -48,10 +48,10 @@ export const once = R.curry((onceFn, alwaysFn = preventDefault) => {
  * boilerplate code using `querySelector`/`querySelectorAll` all of the time. Also unwraps the `NodeList` into a
  * standard JavaScript array.
  */
-export const slots = R.curry((node, ...names) => {
+export const slots = (node, ...names) => {
     const selectors = R.flatten(names).map(name => `*[slot="${name}"]`);
     return Array.from(node.querySelectorAll(selectors));
-});
+};
 
 /**
  * @method validate ∷ ∀ a. Object String a → [String] → Object String a
@@ -64,7 +64,7 @@ export const slots = R.curry((node, ...names) => {
  * elment, otherwise you'll simply get the default behaviour for form validation, including the built-in
  * validation popups.
  */
-export const validate = R.curry((event, nodeNames = ['input', 'textarea', 'select']) => {
+export const validate = (event, nodeNames = ['input', 'textarea', 'select']) => {
 
     try {
 
@@ -91,4 +91,4 @@ export const validate = R.curry((event, nodeNames = ['input', 'textarea', 'selec
 
     }
 
-});
+};
