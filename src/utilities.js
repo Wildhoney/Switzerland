@@ -4,7 +4,7 @@ import * as R from 'ramda';
  * @method once ∷ Event e ⇒ e → void
  * @param {Function} onceFn
  * @param {Function} [alwaysFn = e => e.preventDefault()]
- * @return {Function}
+ * @return {void}
  *
  * Prevents double-submitting of a form by wrapping the `fn` with Ramda's `once` function. The slight difference
  * between this method and Ramda's, is that Switzerland's `once` allows passing a second function that is always
@@ -18,8 +18,8 @@ const preventDefault = event => {
 
 /**
  * @method once ∷ ∀ a b c. Event e ⇒ (e → a) → (e → b) → (Object String c → a)
- * @param {Function} onceFn
- * @param {Function} [alwaysFn = e => e.preventDefault()]
+ * @param {Function} fn
+ * @param {Function} [alwaysFn = preventDefault]
  * @return {Function}
  *
  * Prevents double-submitting of a form by wrapping the `fn` with Ramda's `once` function. The slight difference
@@ -27,13 +27,13 @@ const preventDefault = event => {
  * invoked, which allows for techniques such as invoking `e.preventDefault` each and every time to stop the form
  * being submitted with its default behaviour, instead allowing the component to dictact how a form is submitted.
  */
-export const once = (onceFn, alwaysFn = preventDefault) => {
+export const once = (fn, alwaysFn = preventDefault) => {
 
-    const wrappedOnceFn = R.once(onceFn);
+    const onceFn = R.once(fn);
 
     return event => {
         alwaysFn(event);
-        return wrappedOnceFn(event);
+        return onceFn(event);
     };
 
 };
@@ -44,7 +44,7 @@ export const once = (onceFn, alwaysFn = preventDefault) => {
  * @param {Array<String>} names
  * @return {Array}
  *
- * A short and snappy function for retrieving a list of `HTMLSlotElement`s by the supplied name. Prevents excessive
+ * A short and snappy function for retrieving a list of `HTMLSlotElement`s by the supplied name(s). Prevents excessive
  * boilerplate code using `querySelector`/`querySelectorAll` all of the time. Also unwraps the `NodeList` into a
  * standard JavaScript array.
  */
