@@ -45,6 +45,11 @@
 
 - name: postpublish
   tasks:
-    - rm ./switzerland.js
-    - rm ./middleware.js
-    - rm ./utilities.js
+    - rm ./{switzerland,middleware,utilities,core}.js
+    - - taskfile docker
+
+- name: docker
+  tasks:
+    - docker build -t wildhoney/switzerland:latest .
+    - - docker tag wildhoney/switzerland wildhoney/switzerland:$npm_package_version
+    - - - docker push wildhoney/switzerland
