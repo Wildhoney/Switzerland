@@ -61,6 +61,11 @@ const redux = props => {
     return { ...props, store: store.getState(), dispatch: store.dispatch };
 };
 
+/**
+ * @method position
+ * @param {Object} props
+ * @return {Object}
+ */
 const position = props => {
 
     const isBottom = props.attrs.logo === 'bottom';
