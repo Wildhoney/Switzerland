@@ -263,6 +263,26 @@ export function attrs(exclude = ['class', 'id', 'style']) {
 }
 
 /**
+ * @method delay ∷ Props p ⇒ (p → p) → Number → (p → p)
+ * @param {Number} milliseconds
+ * @return {Function}
+ *
+ * Invokes the function (likely a middleware function) after X milliseconds, unless the current render cycle
+ * has been completed. It's useful for such things as only rendering a "Loading" message if the component is
+ * taking a while to load for improved perception of speed.
+ */
+export function defer(fn, milliseconds) {
+
+    return props => {
+        setTimeout(async () => {
+            !await props.isResolved() && fn(props);
+        }, milliseconds);
+        return props;
+    };
+
+}
+
+/**
  * @method delay ∷ Props p ⇒ Number → (p → Promise p)
  * @param {Number} milliseconds
  * @return {Function}
@@ -381,10 +401,10 @@ export function html(getTree) {
                 // Create the initial empty element to be rendered into if we don't have a previous root.
                 const initialRoot = !previous && document.createElement(tree.nodeName);
                 initialRoot && createBoundary(props).appendChild(initialRoot);
-    
+
                 // Uses the initial root for the first render, and then the previous root for subsequent renders.
                 const root = patch(tree, previous ? previous.root : initialRoot);
-    
+
                 // Save the virtual DOM state for cases where an error short-circuits the chain.
                 putState(props.node, tree, root, props);
 
