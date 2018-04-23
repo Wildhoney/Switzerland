@@ -126,11 +126,15 @@ export function create(name, ...middlewares) {
 
                 // Await the completion of the task last added to the stack.
                 const tasks = Array.from(this[member].queue);
-                const thunk = tasks[tasks.length - 1];
-                const task = await thunk;
+                const prevScheduledTask = tasks[tasks.length - 1];
+                await prevScheduledTask;
 
-                // Setup the props for the `props`.
+                // Setup the props for the `props`, and setup the async `isResolved` function.
                 const prevProps = takePrevProps(this);
+                const isResolved = async () => {
+                    const resolution = await Promise.race([scheduledTask, Promise.resolve(false)]);
+                    return resolution !== false;
+                };
 
                 /**
                  * @constant Props p ⇒ props ∷ p
@@ -143,11 +147,11 @@ export function create(name, ...middlewares) {
                     state: { ...(prevProps || {}).state, ...mergeProps.state },
                     node: this,
                     boundary: this[member].boundary,
-                    resolved: () => !this[member].queue.has(scheduledTask),
+                    isResolved,
                     ...this[member].actions
                 };
 
-                if (thunk && !this[member].queue.has(thunk)) {
+                if (prevScheduledTask && !this[member].queue.has(prevScheduledTask)) {
 
                     // If a caught error has removed it from the queue, then we don't go any further.
                     return void resolve(props);
@@ -212,7 +216,7 @@ export function create(name, ...middlewares) {
                 sendEvent(eventName, { node: this, version: 1 });
 
                 // Task has been completed successfully.
-                this[member].queue.delete(scheduledTask);
+                this[member].queue.delete(prevScheduledTask);
                 resolve(props);
 
             });
