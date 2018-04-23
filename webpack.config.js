@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const UglifyPlugin = require('uglifyjs-webpack-plugin');
 
@@ -14,13 +15,15 @@ const uglifyPlugin = new UglifyPlugin({
 });
 
 module.exports = {
+    mode: process.env.NODE_ENV || 'production',
     entry: {
-        'core.js': ['./src/switzerland.js', './src/middleware.js'],
+        './core.js': ['./src/switzerland.js', './src/middleware.js'],
         './example/js/todo-app/build.js': './example/js/todo-app/index.js',
         './example/js/todo-app/build-worker.js': './example/js/todo-app/worker.js',
     },
     output: {
         filename: '[name]',
+        path: path.resolve('./'),
         libraryTarget: 'var'
     },
     node: {
@@ -28,7 +31,7 @@ module.exports = {
     },
     plugins: process.env.NODE_ENV === 'production' ? [definePlugin, uglifyPlugin] : [definePlugin],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
                 loaders: ['babel-loader'],

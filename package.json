@@ -40,11 +40,12 @@
   "dependencies": {
     "css-url-parser": "~1.1.3",
     "prop-types": "~15.6.1",
-    "redux": "~3.7.2",
+    "redux": "^4.0.0",
     "redux-thunk": "~2.2.0",
     "shortid": "~2.2.8",
     "sort-by": "~1.2.0",
-    "ultradom": "~2.3.4"
+    "ultradom": "~2.3.4",
+    "webpack": "^4.6.0"
   },
   "devDependencies": {
     "ava": "~0.25.0",
@@ -64,22 +65,22 @@
     "babel-register": "~6.26.0",
     "browser-env": "~3.2.5",
     "concurrently": "~3.5.1",
-    "eslint": "~4.17.0",
+    "eslint": "^4.19.1",
     "eslint-config-xo-react": "~0.16.0",
-    "eslint-plugin-react": "~7.6.1",
+    "eslint-plugin-react": "^7.7.0",
     "express": "~4.16.3",
     "fslint": "~1.1.0",
     "ncp": "~2.0.0",
     "pluralize": "~7.0.0",
     "ramda": "~0.25.0",
-    "sinon": "~4.3.0",
+    "sinon": "^4.5.0",
     "starwars": "~1.0.0",
     "taskfile": "~0.5.16",
     "testcafe": "~0.19.2",
     "transform-runtime": "0.0.0",
     "uglifyjs-webpack-plugin": "~1.2.5",
-    "webpack": "~3.10.0",
-    "xo": "~0.18.2"
+    "webpack-cli": "^2.0.15",
+    "xo": "^0.20.3"
   },
   "ava": {
     "files": [
