@@ -3,7 +3,7 @@ FROM node:latest
 RUN mkdir ~/service
 WORKDIR ~/service
 
-COPY package.json package-lock.json .taskfile.yml ./
+COPY package.json yarn.lock .taskfile.yml ./
 RUN npm i yarn && yarn --production
 
 ENV PORT=3000
