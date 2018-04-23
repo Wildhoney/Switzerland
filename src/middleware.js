@@ -135,22 +135,22 @@ function putState(node, tree, root, prevProps) {
 }
 
 /**
- * @method takeVDomTree ∷ Tree t ⇒ HTMLElement → t|null
+ * @method takeVDomTree ∷ Tree t ⇒ HTMLElement → t|void
  * @param {HTMLElement} node
  * @return {Object|null}
  */
 function takeVDomTree(node) {
-    const state = Object(registry.get(node));
+    const state = toObject(registry.get(node));
     return state.vDomTree || null;
 }
 
 /**
- * @method takePrevProps ∷ Props p ⇒ HTMLElement → p|null
+ * @method takePrevProps ∷ Props p ⇒ HTMLElement → p|void
  * @param {HTMLElement} node
  * @return {Object|null}
  */
 export function takePrevProps(node) {
-    const state = Object(registry.get(node));
+    const state = toObject(registry.get(node));
     return state.prevProps || null;
 }
 
@@ -188,6 +188,15 @@ function escapeRegExp(value) {
  */
 function isFunction(x) {
     return typeof x === 'function';
+}
+
+/**
+ * @method toObject ∷ ∀ a. a → Object a
+ * @param {*} x
+ * @return {Boolean}
+ */
+export function toObject(x) {
+    return typeof x === 'object' ? x : {};
 }
 
 /**
@@ -317,7 +326,7 @@ export function html(getTree) {
     function transform(tree) {
 
         return Array.isArray(tree) ? tree.map(transform) : do {
-            const isObject = 'nodeName' in Object(tree);
+            const isObject = 'nodeName' in toObject(tree);
             const newTree = (isObject && tree.nodeName.startsWith('_')) ? { ...tree, nodeName: translate(tree.nodeName) } : tree;
             isObject ? { ...newTree, children: transform(tree.children), attributes: attributes(tree.nodeName, tree.attributes) } : newTree;
         };

@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { toObject } from './middleware';
 
 /**
  * @method once ∷ Event e ⇒ e → void
@@ -12,7 +13,7 @@ import * as R from 'ramda';
  * being submitted with its default behaviour, instead allowing the component to dictact how a form is submitted.
  */
 const preventDefault = event => {
-    const hasEvent = 'preventDefault' in Object(event);
+    const hasEvent = 'preventDefault' in toObject(event);
     hasEvent && event.preventDefault();
 };
 
