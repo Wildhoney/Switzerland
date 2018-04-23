@@ -4,7 +4,7 @@ RUN mkdir ~/service
 WORKDIR ~/service
 
 COPY package.json package-lock.json .taskfile.yml ./
-RUN npm install --production=false
+RUN npm i yarn && yarn --production
 
 ENV PORT=3000
 ENV NODE_ENV=production
