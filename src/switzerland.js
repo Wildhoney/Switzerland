@@ -122,7 +122,7 @@ export function create(name, ...middlewares) {
          */
         render(mergeProps = {}) {
 
-            const task = new Promise(async resolve => {
+            const scheduledTask = new Promise(async resolve => {
 
                 // Await the completion of the task last added to the stack.
                 const tasks = Array.from(this[member].queue);
@@ -143,6 +143,7 @@ export function create(name, ...middlewares) {
                     state: { ...(prevProps || {}).state, ...mergeProps.state },
                     node: this,
                     boundary: this[member].boundary,
+                    resolved: () => !this[member].queue.has(scheduledTask),
                     ...this[member].actions
                 };
 
@@ -211,14 +212,14 @@ export function create(name, ...middlewares) {
                 sendEvent(eventName, { node: this, version: 1 });
 
                 // Task has been completed successfully.
-                this[member].queue.delete(task);
+                this[member].queue.delete(scheduledTask);
                 resolve(props);
 
             });
 
             // Add task to the queue.
-            this[member].queue.add(task);
-            return task;
+            this[member].queue.add(scheduledTask);
+            return scheduledTask;
 
         }
 
