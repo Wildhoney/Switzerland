@@ -12,6 +12,9 @@ script:
   - npm test
   - npm run build
 
+before_deploy:
+  - rm package-lock.json
+
 deploy:
   provider: heroku
   skip_cleanup: true
