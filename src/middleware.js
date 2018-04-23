@@ -376,15 +376,19 @@ export function html(getTree) {
             const previous = takeVDomTree(props.node) || null;
             const tree = transform(await getTree({ ...updatedProps }));
 
-            // Create the initial empty element to be rendered into if we don't have a previous root.
-            const initialRoot = !previous && document.createElement(tree.nodeName);
-            initialRoot && createBoundary(props).appendChild(initialRoot);
+            tree !== null && do {
 
-            // Uses the initial root for the first render, and then the previous root for subsequent renders.
-            const root = patch(tree, previous ? previous.root : initialRoot);
+                // Create the initial empty element to be rendered into if we don't have a previous root.
+                const initialRoot = !previous && document.createElement(tree.nodeName);
+                initialRoot && createBoundary(props).appendChild(initialRoot);
+    
+                // Uses the initial root for the first render, and then the previous root for subsequent renders.
+                const root = patch(tree, previous ? previous.root : initialRoot);
+    
+                // Save the virtual DOM state for cases where an error short-circuits the chain.
+                putState(props.node, tree, root, props);
 
-            // Save the virtual DOM state for cases where an error short-circuits the chain.
-            putState(props.node, tree, root, props);
+            };
 
         }
 
