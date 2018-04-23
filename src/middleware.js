@@ -274,9 +274,7 @@ export function attrs(exclude = ['class', 'id', 'style']) {
 export function defer(fn, milliseconds) {
 
     return props => {
-        setTimeout(async () => {
-            !await props.isResolved() && fn(props);
-        }, milliseconds);
+        setTimeout(async () => !await props.isResolved() && fn(props), milliseconds);
         return props;
     };
 
