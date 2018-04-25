@@ -31,9 +31,25 @@ const shadowOptions = Symbol('Shadow-Options');
  * @return {ShadowRoot}
  */
 const createBoundary = props => {
-    const boundary = props.node[member].boundary || props.node.attachShadow(props[shadowOptions] || { mode: 'open' });
-    props.node[member].boundary = boundary;
-    return boundary;
+
+    try {
+
+        // Attempt to create the shadow root if it hasn't been set already.
+        const boundary = props.node[member].boundary || props.node.attachShadow(props[shadowOptions] || { mode: 'open' });
+        props.node[member].boundary = boundary;
+        return boundary;
+
+    }
+    catch (err) {
+
+        // Otherwise we'll create a document fragment, as some nodes when you're extending them do not
+        // support shadow boundaries.
+        const fragment = document.createDocumentFragment();
+        props.node[member].boundary = fragment;
+        return fragment;
+
+    }
+
 };
 
 /**
@@ -401,19 +417,26 @@ export function html(getTree) {
 
             // Patch the previous tree with the current tree, specifying the root element, which is the custom component.
             const previous = takeVDomTree(props.node) || null;
-            const tree = transform(await getTree({ ...updatedProps }));
+            const tree = await getTree({ ...updatedProps });
 
             tree !== null && do {
 
+                // Register `onX` events, and translate any underscored elements to their correct node names.
+                const parsedTree = transform(tree);
+
                 // Create the initial empty element to be rendered into if we don't have a previous root.
-                const initialRoot = !previous && document.createElement(tree.nodeName);
-                initialRoot && createBoundary(props).appendChild(initialRoot);
+                const initialRoot = !previous && document.createElement(parsedTree.nodeName);
+                const boundary = createBoundary(props);
+                initialRoot && boundary.appendChild(initialRoot);
+
+                // Append the `DocumentFragment` to the element if we have one.
+                initialRoot && (!boundary instanceof ShadowRoot) && props.node.appendChild(boundary);
 
                 // Uses the initial root for the first render, and then the previous root for subsequent renders.
-                const root = patch(tree, previous ? previous.root : initialRoot);
+                const root = patch(parsedTree, previous ? previous.root : initialRoot);
 
                 // Save the virtual DOM state for cases where an error short-circuits the chain.
-                putState(props.node, tree, root, props);
+                putState(props.node, parsedTree, root, props);
 
             };
 

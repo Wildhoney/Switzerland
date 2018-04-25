@@ -65,7 +65,7 @@ class CancelError extends Error {}
 
 /**
  * @method create ∷ Props p ⇒ String → [(p → p)] → void
- * @param {String} name
+ * @param {String} description
  * @param {Array<Function>} middlewares
  * @return {void}
  *
@@ -76,13 +76,16 @@ class CancelError extends Error {}
  * This function yields a promise that is resolved when the first instance of the node has been resolved, which
  * includes the processing of its associated middleware.
  */
-export function create(name, ...middlewares) {
+export function create(description, ...middlewares) {
 
-    /**
-     * @class SwitzerlandElement
-     * @extends {HTMLElement}
-     */
-    customElements.define(namespace ? `${namespace}${separator}${name}` : name, class extends HTMLElement {
+    const [name, inheritFrom] = description.split('/');
+
+    // When the user is extended a native element, we need to figure out which prototype to inherit from, such as
+    // extended from a <button /> element will inherit from `HTMLButtonElement`, rather than the base `HTMLElement`, which
+    // will allow <button /> to inherit some button-specific behaviours.
+    const extendPrototype = inheritFrom ? document.createElement(inheritFrom).constructor : HTMLElement;
+
+    customElements.define(namespace ? `${namespace}${separator}${name}` : name, class extends extendPrototype {
 
         /**
          * @property ∷ Symbol
@@ -227,6 +230,6 @@ export function create(name, ...middlewares) {
 
         }
 
-    });
+    }, { ...inheritFrom && { extends: inheritFrom } });
 
 }
