@@ -23,7 +23,7 @@
   tasks:
     - NODE_ENV=production npm run build
     - - gzip core.js -f
-    - - - fslint --files=core.js.gz --limit=5120
+    - - - fslint --files=core.js.gz --limit=5500
     - - - - rm core.js.gz
 
 - name: lint-js
