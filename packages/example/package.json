@@ -1,0 +1,34 @@
+{
+    "name": "@switzerland/example",
+    "version": "3.0.0",
+    "private": true,
+    "description": "",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "build": "webpack",
+        "watch": "webpack --watch"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Wildhoney/Switzerland.git"
+    },
+    "keywords": [
+        "web components",
+        "webcomponents",
+        "components",
+        "shadow dom",
+        "custom elements"
+    ],
+    "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Wildhoney/Switzerland/issues"
+    },
+    "homepage": "https://github.com/Wildhoney/Switzerland#readme",
+    "dependencies": {
+        "@switzerland/core": "3.0.0"
+    },
+    "devDependencies": {}
+}
