@@ -17,7 +17,7 @@ const uglifyPlugin = new UglifyPlugin({
 module.exports = {
     mode: 'production',
     entry: {
-        './src/js/build.js': ['./src/js/index.js']
+        './src/js/build.js': ['@babel/polyfill', './src/js/index.js']
     },
     output: {
         filename: '[name]',
@@ -31,6 +31,10 @@ module.exports = {
                 test: /\.js$/,
                 loaders: ['babel-loader'],
                 exclude: /node_modules/i
+            },
+            {
+                test: /\.css$/,
+                loaders: ['style-loader', 'css-loader'],
             }
         ]
     }

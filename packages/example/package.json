@@ -28,7 +28,9 @@
     },
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
-        "@switzerland/core": "3.0.0"
+        "@babel/plugin-transform-react-jsx": "7.0.0-rc.1",
+        "@switzerland/core": "3.0.0",
+        "@switzerland/vdom": "3.0.0"
     },
     "devDependencies": {}
 }
