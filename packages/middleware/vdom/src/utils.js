@@ -1,9 +1,9 @@
-const map = new WeakMap
+const map = new WeakMap();
 
 export const putTree = (node, tree) => {
-    map.set(node, tree)
+    map.set(node, tree);
 };
 
-export const takeTree = (node) => {
-    return map.get(node)
+export const takeTree = node => {
+    return map.get(node);
 };

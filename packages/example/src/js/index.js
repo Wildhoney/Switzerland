@@ -8,7 +8,8 @@ create(
             <section>
                 <h1>Hello Switzerland!</h1>
                 <time>Time: {Date.now()}</time>
-                <br /><br />
+                <br />
+                <br />
                 <button onclick={props.render}>Reload Component...</button>
             </section>
         );

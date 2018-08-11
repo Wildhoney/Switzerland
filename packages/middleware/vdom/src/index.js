@@ -1,5 +1,5 @@
-import { h, patch } from "superfine"
-import * as u from './utils'
+import { h, patch } from 'superfine';
+import * as u from './utils';
 
 export { h };
 
@@ -10,14 +10,12 @@ export { h };
  * uses Picodom over VirtualDOM, and as such you can use the Picodom documentation for reference.
  */
 export default function html(getView) {
-
     return async props => {
-          const view = await getView(props);
-          const tree = patch(u.takeTree(props.node), view, props.node)
+        const view = await getView(props);
+        const tree = patch(u.takeTree(props.node), view, props.node);
         u.putTree(props.node, tree);
         return props;
     };
-
 }
 
 // Convenience export to prevent an explicit import of `h` as well as the default import.
