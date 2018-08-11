@@ -11,10 +11,17 @@ export { h };
  */
 export default function html(getView) {
     return async props => {
-        const view = await getView(props);
-        const tree = patch(u.takeTree(props.node), view, props.node);
-        u.putTree(props.node, tree);
-        return props;
+
+        const root = u.createShadowRoot(props);
+
+        if (props.node.isConnected) {
+
+            const view = await getView(props);
+            const tree = patch(u.takeTree(props.node), view, root);
+
+            u.putTree(props.node, tree);
+            return props;
+        }
     };
 }
 
