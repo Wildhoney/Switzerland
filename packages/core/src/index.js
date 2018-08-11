@@ -1,6 +1,13 @@
-import * as u from './utils';
+// import * as u from './utils';
 
-export const create = (name, ...middleware) => {
+/**
+ * @function create ∷ Props p ⇒ String → [(p → Promise p)]
+ * ---
+ * Takes the name of the web component and an array of functions that represent the
+ * middleware. Each middleware item takes in the accumulated props, and yields props
+ * to pass to the next item in the list.
+ */
+export function create(name, ...middleware) {
     customElements.define(
         name,
         class extends HTMLElement {
@@ -29,12 +36,10 @@ export const create = (name, ...middleware) => {
                     render: this.render.bind(this)
                 };
 
-                const x = middleware.reduce((props, f) => {
+                return middleware.reduce((props, f) => {
                     return { ...props, ...f(props) };
                 }, initialProps);
-
-                console.log(x);
             }
         }
     );
-};
+}

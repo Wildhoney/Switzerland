@@ -11,17 +11,15 @@ export { h };
  */
 export default function html(getView) {
     return async props => {
-
-        const root = u.createShadowRoot(props);
+        const boundary = u.createShadowRoot(props);
 
         if (props.node.isConnected) {
-
             const view = await getView(props);
-            const tree = patch(u.takeTree(props.node), view, root);
-
+            const tree = patch(u.takeTree(props.node), view, boundary);
             u.putTree(props.node, tree);
-            return props;
         }
+
+        return boundary instanceof ShadowRoot ? { ...props, boundary } : props;
     };
 }
 
