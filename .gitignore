@@ -1,11 +1,11 @@
+# lerna
+lerna-debug.log
+
 # ide
 .history
 
 # npm
 node_modules
 
-# tests
-core.js
-example/js/todo-app/build.js
-example/js/todo-app/build.js.gz
-example/js/todo-app/build-worker.js
+# tmp
+__old
