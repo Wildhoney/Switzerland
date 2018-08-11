@@ -1,55 +1,8 @@
-- name: build
-  task: BABEL_ENV=build webpack
-
-- name: test
-  tasks:
-    - taskfile lint-js
-    - taskfile lint-fs
-    - - taskfile test-e2e
-    - - - taskfile test-unit
-
-- name: lint
-  tasks:
-    - taskfile lint-js
-    - taskfile lint-fs
-
 - name: start
-  task: (cd example/server && BABEL_ENV=server babel-node default.js)
+  task: concurrently 'lerna run watch' 'nodemon --experimental-modules ./packages/example/src/server/index.mjs'
 
-- name: watch
-  task: concurrently 'BABEL_ENV=build webpack --watch' 'npm run start'
-  
-- name: lint-fs
-  tasks:
-    - NODE_ENV=production npm run build
-    - - gzip core.js -f
-    - - - fslint --files=core.js.gz --limit=5500
-    - - - - rm core.js.gz
+- name: format
+  task: prettier --write 'packages/**/*.{js,json,yml}'
 
-- name: lint-js
-  task: xo src/*.js
-
-- name: test-e2e
-  tasks:
-    - BABEL_ENV=test-e2e webpack
-    - - concurrently -k -s first 'npm run start' 'testcafe chrome:headless ./tests/e2e/*.test.js'
-    - - - BABEL_ENV=build webpack
-    - - - - rm core.js
-
-- name: test-unit
-  task: BABEL_ENV=test-unit ava
-
-- name: prepublish
-  tasks:
-    - ncp src/ .
-
-- name: postpublish
-  tasks:
-    - rm ./{switzerland,middleware,utilities,core}.js
-    - - taskfile docker
-
-- name: docker
-  tasks:
-    - docker build -t wildhoney/switzerland:latest .
-    - - docker tag wildhoney/switzerland wildhoney/switzerland:$npm_package_version
-    - - - docker push wildhoney/switzerland
+- name: build
+  task: lerna run build
