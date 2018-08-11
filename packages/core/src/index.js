@@ -23,7 +23,7 @@ export const create = (name, ...middleware) => {
              * @method render ∷ ∀ a. Object String a → Promise void
              */
             render(mergeProps = {}) {
-                const initialProps = { ...mergeProps, node: this };
+                const initialProps = { ...mergeProps, node: this, render: this.render.bind(this) };
 
                 const x = middleware.reduce((props, f) => {
                     return { ...props, ...f(props) };
