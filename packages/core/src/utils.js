@@ -1,11 +1,11 @@
 /**
- * @function dispatchEvent ∷ ∀ a. String → Object String a → void
+ * @function dispatchEvent ∷ ∀ a. HTMLElement e ⇒ e → String → Object String a → void
  * ---
  * Dispatches an event, merging in the current package's version for handling legacy events
  * if/when the payloads differ from version-to-version.
  */
-export const dispatchEvent = (name, payload) => {
-    payload.node.dispatchEvent(
+export const dispatchEvent = node => (name, payload) => {
+    node.dispatchEvent(
         new CustomEvent(name, {
             detail: { ...payload, version: process.env.npm_config_version },
             bubbles: true,

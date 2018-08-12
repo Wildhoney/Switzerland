@@ -38,12 +38,14 @@ export function create(name, ...middleware) {
              */
             async render(mergeProps = {}) {
                 const prevProps = previous.get(this);
+                const dispatchEvent = u.dispatchEvent(this);
 
                 const initialProps = {
                     ...(prevProps || {}),
                     ...mergeProps,
                     node: this,
                     render: this.render.bind(this),
+                    dispatch: dispatchEvent,
                     prevProps: previous.get(this) || null
                 };
 
@@ -75,7 +77,7 @@ export function create(name, ...middleware) {
                     previous.set(this, { ...props, error });
                     props[handler]({ ...props, error });
                 } finally {
-                    u.dispatchEvent(u.getEventName('resolved'), { node: this });
+                    dispatchEvent(u.getEventName('resolved'), { node: this });
                     this.classList.add('resolved');
                 }
             }
