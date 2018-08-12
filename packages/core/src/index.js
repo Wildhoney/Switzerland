@@ -1,4 +1,8 @@
+import { handler } from '@switzerland/rescue';
 import * as u from './utils';
+
+const handlers = new WeakMap();
+const previous = new WeakMap();
 
 /**
  * @function create ∷ Props p ⇒ String → [(p → Promise p)]
@@ -34,19 +38,41 @@ export function create(name, ...middleware) {
                 const initialProps = {
                     ...mergeProps,
                     node: this,
-                    render: this.render.bind(this)
+                    render: this.render.bind(this),
+                    prevProps: previous.get(this) || null
                 };
 
-                const props = await middleware.reduce(
-                    async (accumP, middleware) => {
-                        return middleware(await accumP);
-                    },
-                    initialProps
-                );
+                try {
+                    const props = await middleware.reduce(
+                        async (accumP, middleware) => {
+                            const props = middleware(await accumP);
 
-                u.dispatchEvent(u.getEventName('resolved'), { node: this });
-                this.classList.add('resolved');
-                return props;
+                            // Determine if there's an error handler in the current set of props. If there is then
+                            // set the handler function as the default to be used if an error is subsequently thrown.
+                            handler in props && handlers.set(this, props);
+                            return props;
+                        },
+                        initialProps
+                    );
+
+                    u.dispatchEvent(u.getEventName('resolved'), { node: this });
+                    previous.set(this, props);
+                    return props;
+                } catch (error) {
+                    // Attempt to find an error handler for the current node which can handle the error gracefully.
+                    // Otherwise a simple yet abrasive `console.error` will be used with no recovery possible.
+                    const props = handlers.get(this);
+
+                    if (!props) {
+                        console.error(error);
+                        return;
+                    }
+
+                    previous.set(this, { ...props, error });
+                    props[handler]({ ...props, error });
+                } finally {
+                    this.classList.add('resolved');
+                }
             }
         }
     );

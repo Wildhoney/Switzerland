@@ -19,7 +19,7 @@ export default function html(getView, options = {}) {
             u.putTree(props.node, tree);
         }
 
-        return boundary instanceof ShadowRoot ? { ...props, boundary } : props;
+        return { ...props, boundary };
     };
 }
 
