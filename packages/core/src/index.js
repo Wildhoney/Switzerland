@@ -37,7 +37,10 @@ export function create(name, ...middleware) {
              * @method render ∷ ∀ a. Props p ⇒ Object String a → p
              */
             async render(mergeProps = {}) {
+                const prevProps = previous.get(this);
+
                 const initialProps = {
+                    ...(prevProps || {}),
                     ...mergeProps,
                     node: this,
                     render: this.render.bind(this),

@@ -8,10 +8,12 @@ create(
     store,
     html(({ value, redux, render }) => (
         <form
-            onsubmit={event => (
-                event.preventDefault(), redux.actions.add(value)
-            )}
             novalidate
+            onsubmit={async event => (
+                event.preventDefault(),
+                await render({ value: '' }),
+                redux.actions.add(value)
+            )}
         >
             <style type="text/css">{styles.toString()}</style>
             <input

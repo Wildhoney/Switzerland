@@ -13,7 +13,6 @@ create(
     store,
     html(({ redux, dimensions }) => (
         <section class="todo-app">
-            {console.log(dimensions)}
             <style type="text/css">{styles.toString()}</style>
             <_todo-input />
             <_todo-list />
