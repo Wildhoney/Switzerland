@@ -30,7 +30,9 @@ export const getEventName = label => {
  * will be `HTMLElement` unless the user is extending an existing element.
  */
 export const getPrototype = extendTag => {
-    return extendTag ? document.createElement(extendTag).constructor : HTMLElement;
+    return extendTag
+        ? document.createElement(extendTag).constructor
+        : HTMLElement;
 };
 
 /**
@@ -40,9 +42,11 @@ export const getPrototype = extendTag => {
  * attribute on the <script /> tag.
  */
 export const getNamespace = () => {
-    global.document &&
+    return (
+        global.document &&
         document.currentScript &&
-        document.currentScript.dataset.namespace;
+        document.currentScript.dataset.namespace
+    );
 };
 
 /**

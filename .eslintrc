@@ -1,0 +1,12 @@
+{
+    "parser": "babel-eslint",
+    "extends": ["standard", "prettier", "prettier/react", "prettier/standard"],
+    "plugins": ["react"],
+    "globals": {
+        "customElements": true,
+        "HTMLElement": true,
+        "CustomEvent": true,
+        "MutationObserver": true,
+        "ShadowRoot": true
+    }
+}

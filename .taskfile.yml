@@ -9,3 +9,10 @@
 
 - name: build
   task: lerna run build
+
+- name: lint
+  task: eslint "packages/**/**.js"
+
+- name: test
+  tasks:
+      - taskfile lint

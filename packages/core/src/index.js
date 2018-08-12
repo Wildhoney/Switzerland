@@ -7,13 +7,11 @@ import * as u from './utils';
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
 export function create(name, ...middleware) {
-
-    const [tag, extend] = name.split('/');
-    const prototype = u.getPrototype(extend);
+    const [tag] = name.split('/');
 
     customElements.define(
         tag,
-        class extends prototype {
+        class extends HTMLElement {
             /**
              * @method connectedCallback ∷ Props p ⇒ p
              */
@@ -30,7 +28,7 @@ export function create(name, ...middleware) {
             }
 
             /**
-             * @method render ∷ ∀ a. Props p ⇒ Object String a → p 
+             * @method render ∷ ∀ a. Props p ⇒ Object String a → p
              */
             async render(mergeProps = {}) {
                 const initialProps = {
@@ -39,12 +37,15 @@ export function create(name, ...middleware) {
                     render: this.render.bind(this)
                 };
 
-                const props = await middleware.reduce(async (props, f) => {
-                    return { ...props, ...(await f(props)) };
-                }, initialProps);
+                const props = await middleware.reduce(
+                    async (accumP, middleware) => {
+                        return middleware(await accumP);
+                    },
+                    initialProps
+                );
 
                 u.dispatchEvent(u.getEventName('resolved'), { node: this });
-                this.classList.add('resolve');
+                this.classList.add('resolved');
                 return props;
             }
         }
