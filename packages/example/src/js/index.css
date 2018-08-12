@@ -1,0 +1,11 @@
+section {
+    display: grid;
+    grid-template-columns: auto;
+    grid-row-gap: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

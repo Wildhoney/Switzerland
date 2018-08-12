@@ -1,7 +1,7 @@
 export const handler = Symbol('@switzerland/error-handler');
 
 /**
- * @function rescue ∷ Tree t, Props p ⇒ t → (p → p)
+ * @function rescue ∷ View v, Props p ⇒ v → (p → p)
  * ---
  * Takes a list of middleware which includes one or more 'html' middleware items, and renders into the component
  * whenever an exception is raised in the processing of the middleware. If the 'rescue' middleware has not been

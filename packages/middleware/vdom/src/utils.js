@@ -1,3 +1,5 @@
+import { u } from '@switzerland/core';
+
 const trees = new WeakMap();
 const roots = new WeakMap();
 
@@ -21,6 +23,40 @@ export const createShadowRoot = ({ node }, options = {}) => {
     } catch (err) {
         return node;
     }
+};
+
+/**
+ * @function getNodeName ∷ String → String
+ */
+const getNodeName = name => {
+    const tag = name.replace(/^_/, '');
+    const namespace = u.getNamespace();
+    return namespace ? `${namespace}_${tag}` : tag;
+};
+
+/**
+ * @function parseNodeName ∷ String → String
+ */
+const parseNodeName = name => {
+    const isSwissComponent = String(name).startsWith('_');
+    return isSwissComponent ? getNodeName(name) : name;
+};
+
+/**
+ * @function isElement ∷ Integer → Boolean
+ */
+const isElement = type => type === 0;
+
+/**
+ * @function parseView ∷ View v ⇒ v → v
+ */
+export const parseView = view => {
+    const hasChildren = view.children && view.children.length > 0;
+    return {
+        ...view,
+        name: isElement(view.type) ? parseNodeName(view.name) : view.name,
+        children: hasChildren ? view.children.map(parseView) : view.children
+    };
 };
 
 /**

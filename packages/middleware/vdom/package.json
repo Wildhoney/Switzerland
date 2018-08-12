@@ -20,6 +20,7 @@
     },
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
+        "@switzerland/core": "v3.0.0",
         "superfine": "6.0.1"
     }
 }

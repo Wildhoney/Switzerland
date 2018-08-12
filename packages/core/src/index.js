@@ -1,6 +1,8 @@
 import { handler } from '@switzerland/rescue';
 import * as u from './utils';
 
+export { u };
+
 const handlers = new WeakMap();
 const previous = new WeakMap();
 
@@ -55,7 +57,6 @@ export function create(name, ...middleware) {
                         initialProps
                     );
 
-                    u.dispatchEvent(u.getEventName('resolved'), { node: this });
                     previous.set(this, props);
                     return props;
                 } catch (error) {
@@ -72,6 +73,7 @@ export function create(name, ...middleware) {
                     props[handler]({ ...props, error });
                 } finally {
                     this.classList.add('resolved');
+                    u.dispatchEvent(u.getEventName('resolved'), { node: this });
                 }
             }
         }
