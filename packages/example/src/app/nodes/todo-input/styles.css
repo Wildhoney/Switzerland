@@ -1,0 +1,89 @@
+:host {
+    all: initial;
+    display: block;
+    font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+    height: 50px;
+    overflow: hidden;
+}
+
+todo-input {
+    all: initial;
+    display: block;
+    font-family: Lato, Arial, Tahoma, Helvetica, sans-serif;
+    height: 50px;
+    overflow: hidden;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+form {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+input[type="text"] {
+    border: 0;
+    outline: none;
+    flex: 1;
+    padding: 0 20px;
+    font-size: 12px;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+
+    input[type="text"] {
+        font-size: 16px;
+    }
+
+}
+
+button.add {
+    padding: 0 20px;
+    width: 120px;
+    border: 0;
+    white-space: nowrap;
+    background-color: white;
+    border-left: 1px solid rgba(0, 0, 0, .1);
+    color: black;
+    cursor: pointer;
+    outline: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 0;
+    transition: color .25s, background-color .25s;
+}
+
+button.add:disabled {
+    color: rgba(0, 0, 0, .25);
+    cursor: not-allowed;
+}
+
+button.add:active {
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, .05);
+}
+
+button.add:not(:disabled):hover {
+    background-color: rgba(0, 0, 0, .025);
+}
+
+button.add::after {
+    content: "Add Todo";
+}
+
+@media (max-width: 768px) {
+
+    button.add {
+        width: 85px;
+    }
+
+    button.add::after {
+        content: "Add";
+    }
+}

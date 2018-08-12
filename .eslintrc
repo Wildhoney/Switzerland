@@ -2,6 +2,9 @@
     "parser": "babel-eslint",
     "extends": ["standard", "prettier", "prettier/react", "prettier/standard"],
     "plugins": ["react"],
+    "rules": {
+        "no-sequences": "off"
+    },
     "globals": {
         "customElements": true,
         "HTMLElement": true,

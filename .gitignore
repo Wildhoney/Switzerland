@@ -11,4 +11,4 @@ node_modules
 __old
 
 # example
-packages/example/src/js/build.js
+packages/example/src/app/build.js

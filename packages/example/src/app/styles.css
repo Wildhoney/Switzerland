@@ -1,0 +1,61 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, .015);
+}
+
+body {
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+todo-app {
+    opacity: 0;
+    transition: transform .55s, opacity .55s;
+    transform: scale(0.75);
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+noscript.todo-app {
+    min-width: 65vw;
+    height: 250px;
+    background-color: rgba(0, 0, 0, 0.05);
+    font-family: Arial, Tahoma, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    border-radius: 3px;
+    color: rgba(0, 0, 0, 0.35);
+}
+
+noscript.todo-app > code {
+    display: inline-block;
+    padding: 0 5px;
+    color: green;
+}
+
+todo-app.resolved {
+    opacity: 1;
+    transform: scale(1);
+}
+
+@media (max-width: 768px) {
+
+    body {
+        align-items: initial;
+        flex-direction: row;
+        justify-content: initial;
+    }
+
+    todo-manager {
+        transform: scale(1);
+    }
+}

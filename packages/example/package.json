@@ -31,8 +31,10 @@
         "@babel/plugin-transform-react-jsx": "7.0.0-rc.1",
         "@switzerland/attrs": "3.0.0",
         "@switzerland/core": "3.0.0",
+        "@switzerland/redux": "3.0.0",
         "@switzerland/rescue": "3.0.0",
-        "@switzerland/vdom": "3.0.0"
+        "@switzerland/vdom": "3.0.0",
+        "shortid": "2.2.12"
     },
     "devDependencies": {}
 }

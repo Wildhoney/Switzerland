@@ -72,8 +72,8 @@ export function create(name, ...middleware) {
                     previous.set(this, { ...props, error });
                     props[handler]({ ...props, error });
                 } finally {
-                    this.classList.add('resolved');
                     u.dispatchEvent(u.getEventName('resolved'), { node: this });
+                    this.classList.add('resolved');
                 }
             }
         }

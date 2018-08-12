@@ -17,7 +17,7 @@ const uglifyPlugin = new UglifyPlugin({
 module.exports = {
     mode: 'production',
     entry: {
-        './src/js/build.js': ['@babel/polyfill', './src/js/index.js']
+        './src/app/build.js': ['@babel/polyfill', './src/app/index.js']
     },
     output: {
         filename: '[name]',

@@ -1,0 +1,130 @@
+:host {
+  all: initial;
+  display: block;
+  font-family: Arial, Tahoma, Helvetica, sans-serif;
+  width: 65vw;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .055), 0 0 125px rgba(0, 0, 0, .1), 0 20px 20px -20px rgba(0, 0, 0, .075);
+  border: 1px solid rgba(0, 0, 0, .1);
+  background-color: white;
+  position: relative;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+section.todo-app {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  padding: calc(2vmin + 3px) 2vmin 2vmin 2vmin;
+  border-top: 1px solid rgba(0, 0, 0, .1);
+  display: flex;
+  align-items: center;
+  max-height: 70px;
+  order: var(--order-position, 1);
+  border-bottom: 1px solid var(--border-colour, transparent);
+}
+
+h1 a img {
+  width: 35vw;
+  max-width: 150px;
+}
+
+section.todo-manager {
+  display: flex;
+  flex-direction: column;
+}
+
+ul {
+  height: 20px;
+  line-height: 20px;
+  font-size: 10px;
+  user-select: none;
+  display: inline-block;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-bottom: -21px;
+  right: 0;
+  bottom: 0;
+  color: rgba(0, 0, 0, 0.25);
+  display: flex;
+  list-style-type: none;
+}
+
+ul li {
+  padding: 0 8px;
+}
+
+ul li a {
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.35s;
+}
+
+ul li a:not(.active):hover {
+  color: black;
+}
+
+ul li a.active {
+  color: #ff3232;
+  cursor: not-allowed;
+}
+
+ul li em {
+  font-weight: bold;
+  font-style: normal;
+}
+
+ul li:not(:last-of-type) {
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+
+  :host {
+      box-shadow: 0 0 5px rgba(0, 0, 0, .05);
+      width: 100vw;
+  }
+
+  todo-list {
+      max-height: initial;
+      height: calc(100vh - 50px - 50px - 20px);
+  }
+
+  ul.dimensions {
+    display: none;
+  }
+
+  h1 {
+      order: 1;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 0, 0, .1);
+      border-top: 0;
+      padding: 2vmin 2vmin 2vmin 15px;
+  }
+
+  todo-input {
+      order: 2;
+  }
+
+  todo-list {
+      order: 3;
+  }
+
+  h1 a {
+      display: flex;
+  }
+
+  h1 a img {
+      width: auto;
+      max-width: 150px;
+      height: 20px;
+  }
+}
