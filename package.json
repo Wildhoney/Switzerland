@@ -12,7 +12,8 @@
     "scripts": {
         "build": "taskfile build",
         "format": "taskfile format",
-        "start": "taskfile start"
+        "start": "taskfile start",
+        "postinstall": "taskfile postinstall"
     },
     "repository": {
         "type": "git",

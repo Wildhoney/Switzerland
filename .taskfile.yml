@@ -4,5 +4,8 @@
 - name: format
   task: prettier --write 'packages/**/*.{js,json,yml}'
 
+- name: postinstall
+  task: lerna link
+
 - name: build
   task: lerna run build
