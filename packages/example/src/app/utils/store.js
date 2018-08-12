@@ -14,8 +14,8 @@ const actionTypes = {
 const createModel = text => ({
     id: generate(),
     text,
-    created: new Date(),
-    done: false
+    done: false,
+    created: new Date()
 });
 
 const reducer = (state = initialState, action) => {

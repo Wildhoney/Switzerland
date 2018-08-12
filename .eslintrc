@@ -7,9 +7,10 @@
     },
     "globals": {
         "customElements": true,
-        "HTMLElement": true,
         "CustomEvent": true,
+        "HTMLElement": true,
         "MutationObserver": true,
+        "ResizeObserver": true,
         "ShadowRoot": true
     }
 }
