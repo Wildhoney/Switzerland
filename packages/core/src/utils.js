@@ -24,7 +24,17 @@ export const getEventName = label => {
 };
 
 /**
- * @function namespace ∷ String|void
+ * @function getPrototype ∷ HTMLElement e ⇒ String → e
+ * ---
+ * Determines which constructor to extend from for the defining of the custom element. In most cases it
+ * will be `HTMLElement` unless the user is extending an existing element.
+ */
+export const getPrototype = extendTag => {
+    return extendTag ? document.createElement(extendTag).constructor : HTMLElement;
+};
+
+/**
+ * @function getNamespace ∷ String|void
  * ---
  * Attempts to locate whether the JS file was included using a namespace, denoted by the "data-namespace"
  * attribute on the <script /> tag.
