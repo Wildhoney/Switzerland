@@ -4,10 +4,10 @@ import styles from './index.css';
 
 create(
     'x-timedate',
-    html(props => {
+    html(async props => {
         return (
             <section>
-                <style type="text/css">{styles}</style>
+                <style type="text/css">{styles.toString()}</style>
                 <h1>Hello Switzerland!</h1>
                 <time>Time: {Date.now()}</time>
                 <br />
