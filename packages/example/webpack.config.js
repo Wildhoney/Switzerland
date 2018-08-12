@@ -29,12 +29,24 @@ module.exports = {
         rules: [
             {
                 test: /\.js$/,
-                loaders: ['babel-loader'],
-                exclude: /node_modules/i
+                loader: 'babel-loader',
+                exclude: /node_modules/i,
+                options: {
+                    presets: ['@babel/preset-env'],
+                    plugins: [
+                        require('@babel/plugin-proposal-object-rest-spread'),
+                        [
+                            require('@babel/plugin-transform-react-jsx'),
+                            {
+                                pragma: 'html.h'
+                            }
+                        ]
+                    ]
+                }
             },
             {
                 test: /\.css$/,
-                loaders: ['css-loader']
+                loader: 'css-loader'
             }
         ]
     }
