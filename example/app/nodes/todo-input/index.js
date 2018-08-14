@@ -3,42 +3,41 @@ import store from '../../utils/store.js';
 
 const f = init(import.meta);
 
-create(
-    'todo-input',
-    store,
-    m.html(async ({ value = '', redux, render }) =>
-        h(
-            'form',
-            {
-                novalidate: true,
-                onsubmit: async event => (
-                    event.preventDefault(),
-                    await render({ value: '' }),
-                    redux.actions.add(value)
-                )
-            },
-            [
-                h(
-                    'style',
-                    { type: 'text/css' },
-                    await f.stylesheet('styles.css')
-                ),
-                h('input', {
-                    value,
-                    type: 'text',
-                    required: true,
-                    name: 'todo',
-                    autoFocus: 'on',
-                    autoComplete: 'off',
-                    placeholder: 'What do you need to do?',
-                    oninput: ({ target }) => render({ value: target.value })
-                }),
-                h('button', {
-                    type: 'submit',
-                    class: 'add',
-                    disabled: !value && !value.trim()
-                })
-            ]
-        )
-    )
-);
+const container = async ({ value, render, redux, props }) =>
+    h(
+        'form',
+        {
+            novalidate: true,
+            onsubmit: async event => (
+                event.preventDefault(),
+                await render({ value: '' }),
+                redux.actions.add(value)
+            )
+        },
+        [
+            await f.stylesheet('styles.css'),
+            input(props),
+            button(props)
+        ]
+    );
+
+const input = ({ value = '', render }) =>
+    h('input', {
+        value,
+        type: 'text',
+        required: true,
+        name: 'todo',
+        autoFocus: 'on',
+        autoComplete: 'off',
+        placeholder: 'What do you need to do?',
+        oninput: ({ target }) => render({ value: target.value })
+    });
+
+const button = ({ value = '' }) =>
+    h('button', {
+        type: 'submit',
+        class: 'add',
+        disabled: !value && !value.trim()
+    });
+
+create('todo-input', store, m.html(container));

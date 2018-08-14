@@ -3,34 +3,31 @@ import store from '../../utils/store.js';
 
 const f = init(import.meta);
 
+const container = async ({ redux, props }) =>
+    h('ul', {}, [
+        await f.stylesheet('styles.css'),
+        list(props),
+        !redux.state.list.length && nothing(props)
+    ]);
 
-create(
-    'todo-list',
-    store,
-    m.html(async ({ redux }) =>
-        h('ul', {}, [
-            h('style', { type: 'text/css' }, await f.stylesheet('styles.css')),
-            redux.state.list.map(model =>
-                h('li', { class: model.done ? 'done' : '' }, [
-                    h(
-                        'p',
-                        { onclick: () => redux.actions.mark(model.id) },
-                        model.text
-                    ),
-                    h(
-                        'button',
-                        {
-                            class: 'delete',
-                            onclick: () => redux.actions.remove(model.id)
-                        },
-                        'Delete'
-                    )
-                ])
-            ),
-            !redux.state.list.length &&
-                h('li', { class: 'none' }, [
-                    h('p', {}, 'You have not added any todos yet.')
-                ])
+const list = ({ redux }) =>
+    redux.state.list.map(model =>
+        h('li', { class: model.done ? 'done' : '' }, [
+            h('p', { onclick: () => redux.actions.mark(model.id) }, model.text),
+            h(
+                'button',
+                {
+                    class: 'delete',
+                    onclick: () => redux.actions.remove(model.id)
+                },
+                'Delete'
+            )
         ])
-    )
-);
+    );
+
+const nothing = () =>
+    h('li', { class: 'none' }, [
+        h('p', {}, 'You have not added any todos yet.')
+    ]);
+
+create('todo-list', store, m.html(container));

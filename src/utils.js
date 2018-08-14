@@ -59,3 +59,44 @@ export const getNamespace = () => {
 export const consoleMessage = (text, type = 'error') => {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 };
+
+export const parseStylesheetPaths = data => {
+    const embeddedRegexp = /^data:(.*?),(.*?)/;
+    const commentRegexp = /\/\*([\s\S]*?)\*\//g;
+    const urlsRegexp = /(?:@import\s+)?url\s*\(\s*(("(.*?)")|('(.*?)')|(.*?))\s*\)|(?:@import\s+)(("(.*?)")|('(.*?)')|(.*?))[\s;]/gi;
+
+    const isEmbedded = src => embeddedRegexp.test(src.trim());
+
+    const getUrls = text => {
+        let url;
+        let urlMatch;
+        const urls = [];
+
+        text = text.replace(commentRegexp, '');
+
+        while ((urlMatch = urlsRegexp.exec(text))) {
+            url =
+                urlMatch[3] ||
+                urlMatch[5] ||
+                urlMatch[6] ||
+                urlMatch[9] ||
+                urlMatch[11] ||
+                urlMatch[12];
+
+            if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
+                urls.push(url);
+            }
+        }
+
+        return urls;
+    };
+
+    return getUrls(data);
+};
+
+/**
+ * @function escapeRegExp ∷ String → String
+ */
+export const escapeRegExp = value => {
+    return value.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+};

@@ -22,8 +22,21 @@ export const init = ({ url }) => {
 
     return {
         path: getPath,
-        stylesheet: path => {
-            return fetch(getPath(path)).then(r => r.text());
+        stylesheet: async path => {
+            const data = await fetch(getPath(path)).then(r => r.text());
+            const urls = u.parseStylesheetPaths(data);
+            const css = urls.length
+                ? urls
+                      .map(url => {
+                          return data.replace(
+                              new RegExp(u.escapeRegExp(url), 'ig'),
+                              getPath(url)
+                          );
+                      })
+                      .join()
+                : data;
+
+            return h('style', { type: 'text/css' }, css);
         }
     };
 };
@@ -74,7 +87,10 @@ export function create(name, ...middleware) {
                 try {
                     const props = await middleware.reduce(
                         async (accumP, middleware) => {
-                            const props = middleware(await accumP);
+                            const props = middleware({
+                                ...(await accumP),
+                                props: await accumP
+                            });
 
                             // Determine if there's an error handler in the current set of props. If there is then
                             // set the handler function as the default to be used if an error is subsequently thrown.
