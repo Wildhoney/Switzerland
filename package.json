@@ -3,9 +3,6 @@
     "version": "3.0.0",
     "description": "",
     "private": true,
-    "workspaces": [
-        "packages/**"
-    ],
     "directories": {
         "test": "tests"
     },
@@ -34,19 +31,11 @@
         "url": "https://github.com/Wildhoney/Switzerland/issues"
     },
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
-    "dependencies": {},
+    "dependencies": {
+        "superfine": "6.0.1"
+    },
     "devDependencies": {
-        "@babel/cli": "7.0.0-rc.1",
-        "@babel/core": "7.0.0-rc.1",
-        "@babel/plugin-proposal-object-rest-spread": "7.0.0-rc.1",
-        "@babel/polyfill": "7.0.0-rc.1",
-        "@babel/preset-env": "7.0.0-rc.1",
-        "babel-eslint": "^8.2.6",
-        "babel-loader": "8.0.0-beta.4",
         "compression": "1.7.3",
-        "concurrently": "3.6.1",
-        "css-loader": "1.0.0",
-        "eslint": "^5.3.0",
         "eslint-config-prettier": "^2.9.0",
         "eslint-config-standard": "^11.0.0",
         "eslint-plugin-import": "^2.13.0",
@@ -54,13 +43,10 @@
         "eslint-plugin-promise": "^3.8.0",
         "eslint-plugin-react": "^7.10.0",
         "eslint-plugin-standard": "^3.1.0",
+        "eslint": "^5.3.0",
         "express": "4.16.3",
-        "lerna": "^3.0.3",
         "nodemon": "1.18.3",
         "prettier": "1.14.2",
-        "taskfile": "0.8.5",
-        "uglifyjs-webpack-plugin": "1.2.7",
-        "webpack": "4.16.5",
-        "webpack-cli": "3.1.0"
+        "taskfile": "0.8.5"
     }
 }

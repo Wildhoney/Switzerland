@@ -8,6 +8,7 @@
     "globals": {
         "customElements": true,
         "CustomEvent": true,
+        "fetch": true,
         "HTMLElement": true,
         "MutationObserver": true,
         "ResizeObserver": true,

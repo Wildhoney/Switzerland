@@ -9,6 +9,4 @@ node_modules
 
 # tmp
 __old
-
-# example
-packages/example/src/app/build.js
+__oldish

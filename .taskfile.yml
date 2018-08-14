@@ -1,17 +1,11 @@
 - name: start
-  task: concurrently 'lerna run watch' 'nodemon --experimental-modules ./packages/example/src/server/index.mjs'
+  task: nodemon --experimental-modules ./example/server/index.mjs
 
 - name: format
-  task: prettier --write 'packages/**/*.{js,json,yml}'
-
-- name: postinstall
-  task: lerna link
-
-- name: build
-  task: lerna run build
+  task: prettier --write 'src/**/*.js'
 
 - name: lint
-  task: eslint "packages/**/**.js"
+  task: eslint "src/**/*.js"
 
 - name: test
   tasks:
