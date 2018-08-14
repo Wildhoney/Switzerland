@@ -1,12 +1,14 @@
 import { create, init, h, m } from '/vendor/index.js';
+import store from '../../utils/store.js';
+import * as u from './utils.js';
 
 const f = init(import.meta);
 
 create(
-    'todo-app',
+    'todo-app',store,
     m.attrs(),
     m.adapt(),
-    m.html(async ({ dimensions }) =>
+    m.html(async ({ dimensions, redux }) =>
         h('section', { class: 'todo-app' }, [
             h('style', { type: 'text/css' }, await f.stylesheet('styles.css')),
             h('_todo-input', {}),
@@ -19,7 +21,13 @@ create(
             h('ul', {}, [
                 h('li', {}, [
                     h('em', {}, 'Completed: '),
-                    h('span', {}, '5 of 10 tasks')
+                    h(
+                        'span',
+                        {},
+                        `${redux.state.list.filter(x => x.done).length} of ${
+                            redux.state.list.length
+                        } ${u.pluralise(redux.state.list.length, 'task')}`
+                    )
                 ]),
                 dimensions &&
                     h('li', {}, [
