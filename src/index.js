@@ -1,4 +1,3 @@
-// import * as r from 'https://cdn.jsdelivr.net/npm/@wildhoney/redux@4.0.1/es/redux.js';
 import * as u from './utils.js';
 import m from './middleware/index.js';
 import { h } from './middleware/html/index.js';
@@ -9,6 +8,12 @@ const previous = new WeakMap();
 
 export { u, m, h };
 
+/**
+ * @function init ∷ View v, String s ⇒ Object s s → Object { path: s → s, stylesheet: (s → s) → s → v }
+ * ---
+ * Initialisation function that takes the meta data of the component file (usually via `import.meta`) and
+ * returns a set of useful functions that require knowledge of the source URL for relative path resolution.
+ */
 export const init = ({ url }) => {
     const parts = url.split(/\//g);
     parts.pop();
@@ -16,29 +21,9 @@ export const init = ({ url }) => {
     /**
      * @function path ∷ String → String
      */
-    const getPath = path => {
-        return `${parts.join('/')}/${path}`;
-    };
+    const getPath = path => `${parts.join('/')}/${path}`;
 
-    return {
-        path: getPath,
-        stylesheet: async path => {
-            const data = await fetch(getPath(path)).then(r => r.text());
-            const urls = u.parseStylesheetPaths(data);
-            const css = urls.length
-                ? urls
-                      .map(url => {
-                          return data.replace(
-                              new RegExp(u.escapeRegExp(url), 'ig'),
-                              getPath(url)
-                          );
-                      })
-                      .join()
-                : data;
-
-            return h('style', { type: 'text/css' }, css);
-        }
-    };
+    return { path: getPath, stylesheet: u.getStylesheet(getPath) };
 };
 
 /**

@@ -60,10 +60,10 @@ export const parseView = view => {
 };
 
 /**
- * @function putTree ∷ HTMLElement e, Tree t ⇒ e → t → void
+ * @function putTree ∷ HTMLElement e, View v ⇒ e → v → void
  */
-export const putTree = (node, tree) => {
-    trees.set(node, tree);
+export const putTree = (node, view) => {
+    trees.set(node, view);
 };
 
 /**

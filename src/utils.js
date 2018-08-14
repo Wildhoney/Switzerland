@@ -1,3 +1,5 @@
+import { h } from './index.js';
+
 /**
  * @function dispatchEvent ∷ ∀ a. HTMLElement e ⇒ e → String → Object String a → void
  * ---
@@ -60,7 +62,23 @@ export const consoleMessage = (text, type = 'error') => {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 };
 
-export const parseStylesheetPaths = data => {
+/**
+ * @function isRemotePath ∷ String → Boolean
+ * ---
+ * Determines whether the passed paths are remote URLs.
+ */
+const isRemotePath = path =>
+    path.startsWith('http://') ||
+    path.startsWith('https://') ||
+    path.startsWith('://');
+
+/**
+ * @function parseStylesheetPaths ∷ String → String
+ * @see https://github.com/website-scraper/node-css-url-parser
+ * ---
+ * Parses all of the paths defined in the CSS and returns a unique list of the paths found.
+ */
+const parseStylesheetPaths = data => {
     const embeddedRegexp = /^data:(.*?),(.*?)/;
     const commentRegexp = /\/\*([\s\S]*?)\*\//g;
     const urlsRegexp = /(?:@import\s+)?url\s*\(\s*(("(.*?)")|('(.*?)')|(.*?))\s*\)|(?:@import\s+)(("(.*?)")|('(.*?)')|(.*?))[\s;]/gi;
@@ -91,12 +109,35 @@ export const parseStylesheetPaths = data => {
         return urls;
     };
 
-    return getUrls(data);
+    return getUrls(data).filter(path => !isRemotePath(path));
 };
 
 /**
  * @function escapeRegExp ∷ String → String
+ * @see https://github.com/sindresorhus/escape-string-regexp
  */
-export const escapeRegExp = value => {
-    return value.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+const escapeRegExp = value => value.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
+
+/**
+ * @function getStylesheet ∷ View v ⇒ (String → String) → String → v
+ * ---
+ * Takes the `getPath` function which allows for resolving the paths relative to the component. Also
+ * takes the path to the CSS document(s) that is fetched, its URLs parsed, and then modified to be
+ * relative to the CSS document. Yields the `style` ready for appending to the VDOM tree.
+ */
+export const getStylesheet = getPath => async path => {
+    const data = await fetch(getPath(path)).then(r => r.text());
+    const urls = parseStylesheetPaths(data);
+    const css = urls.length
+        ? urls
+              .map(url => {
+                  return data.replace(
+                      new RegExp(escapeRegExp(url), 'ig'),
+                      getPath(url)
+                  );
+              })
+              .join()
+        : data;
+
+    return h('style', { type: 'text/css' }, css);
 };
