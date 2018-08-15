@@ -11,7 +11,7 @@ const container = async ({ redux, props }) =>
     ]);
 
 const list = ({ redux }) =>
-    redux.state.list.map(model =>
+    redux.state.list.sort((a, b) => a.created - b.created).map(model =>
         h('li', { class: model.done ? 'done' : '' }, [
             h('p', { onclick: () => redux.actions.mark(model.id) }, model.text),
             h(
