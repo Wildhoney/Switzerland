@@ -15,13 +15,11 @@ export { u, m, h };
  * returns a set of useful functions that require knowledge of the source URL for relative path resolution.
  */
 export const init = ({ url }) => {
-    const parts = url.split(/\//g);
-    parts.pop();
 
     /**
      * @function path ∷ String → String
      */
-    const getPath = path => `${parts.join('/')}/${path}`;
+    const getPath = path => new URL(path, url).href;
 
     return { path: getPath, stylesheet: u.getStylesheet(getPath) };
 };
