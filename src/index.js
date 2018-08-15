@@ -15,7 +15,6 @@ export { u, m, h };
  * returns a set of useful functions that require knowledge of the source URL for relative path resolution.
  */
 export const init = ({ url }) => {
-
     /**
      * @function path ∷ String → String
      */

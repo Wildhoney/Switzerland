@@ -1,8 +1,20 @@
 import { create, init, h, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
+import db from '../../utils/db.js';
 import * as u from './utils.js';
 
 const f = init(import.meta);
+
+let called = false;
+
+const retrieve = async props => {
+    const { todos } = await db();
+    if (!called) {
+        await Promise.all(todos.map(props.redux.actions.put));
+        called = true;
+    }
+    return props;
+};
 
 const container = async props =>
     h('section', { class: 'todo-app' }, [
@@ -42,4 +54,4 @@ const dimensions = ({ dimensions }) =>
         )
     ]);
 
-create('todo-app', store, m.attrs(), m.adapt(), m.html(container));
+create('todo-app', store, retrieve, m.attrs(), m.adapt(), m.html(container));

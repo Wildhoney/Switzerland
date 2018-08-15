@@ -14,11 +14,7 @@ const container = async ({ value, render, redux, props }) =>
                 redux.actions.add(value)
             )
         },
-        [
-            await f.stylesheet('styles.css'),
-            input(props),
-            button(props)
-        ]
+        [await f.stylesheet('styles.css'), input(props), button(props)]
     );
 
 const input = ({ value = '', render }) =>

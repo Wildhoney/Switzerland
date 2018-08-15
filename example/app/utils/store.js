@@ -1,4 +1,5 @@
 import { m } from '/vendor/index.js';
+import indexedDb from './db.js';
 
 const initialState = {
     list: []
@@ -22,7 +23,7 @@ const createModel = text => ({
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ADD:
-            return { list: [...state.list, createModel(action.payload)] };
+            return { list: [...state.list, action.payload] };
 
         case actionTypes.REMOVE:
             return {
@@ -44,9 +45,25 @@ const reducer = (state = initialState, action) => {
 };
 
 const actions = {
-    add: text => ({ type: actionTypes.ADD, payload: text }),
-    remove: id => ({ type: actionTypes.REMOVE, payload: id }),
-    mark: id => ({ type: actionTypes.MARK, payload: id })
+    add: text => async dispatch => {
+        const db = await indexedDb();
+        const model = createModel(text);
+        db.add(model);
+        return dispatch({ type: actionTypes.ADD, payload: model });
+    },
+    put: model => ({ type: actionTypes.ADD, payload: model }),
+    remove: id => async (dispatch, getState) => {
+        const db = await indexedDb();
+        const model = getState().list.find(model => model.id === id);
+        db.remove(model);
+        return dispatch({ type: actionTypes.REMOVE, payload: id });
+    },
+    mark: id => async (dispatch, getState) => {
+        const db = await indexedDb();
+        const model = getState().list.find(model => model.id === id);
+        db.edit({ ...model, done: !model.done });
+        return dispatch({ type: actionTypes.MARK, payload: id });
+    }
 };
 
 export default m.redux({ reducer, actions });
