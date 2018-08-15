@@ -5,19 +5,23 @@ const initialState = {
     list: []
 };
 
-let id = 1;
-
 const actionTypes = {
     ADD: Symbol('todo/add'),
     REMOVE: Symbol('todo/remove'),
     MARK: Symbol('todo/mark')
 };
 
+const getId = () => {
+    const integers = new Uint32Array(2);
+    window.crypto.getRandomValues(integers);
+    return integers.toString();
+};
+
 const createModel = text => ({
-    id: ++id,
+    id: getId(),
     text,
     done: false,
-    created: new Date()
+    created: Date.now()
 });
 
 const reducer = (state = initialState, action) => {
