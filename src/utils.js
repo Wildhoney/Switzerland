@@ -38,20 +38,6 @@ export const getPrototype = extendTag => {
 };
 
 /**
- * @function getNamespace ∷ String|void
- * ---
- * Attempts to locate whether the JS file was included using a namespace, denoted by the "data-ns"
- * attribute on the <script /> tag.
- */
-export const getNamespace = () => {
-    try {
-        return document.currentScript.dataset.ns || '';
-    } catch (err) {
-        return '';
-    }
-};
-
-/**
  * @function consoleMessage ∷ String → String → void
  * ---
  * Takes a message and an optional console type for output. During minification this function will be removed
