@@ -1,4 +1,4 @@
-import { createShadowRoot} from '../html/utils.js';
+import { createShadowRoot } from '../html/utils.js';
 import { getEventName } from '../../utils.js';
 
 /**
@@ -15,32 +15,40 @@ import { getEventName } from '../../utils.js';
  * to list nodes that may or may not be in the DOM, depending on conditionals.
  */
 export default function wait(...names) {
-
     const eventName = getEventName('resolved');
 
     return async props => {
-
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 
         await new Promise(resolve => {
-
             // Find all of the nodes to wait upon, minus those that have already been resolved.
-            const nodes = Array.from(names.reduce((accum, name) => ([...accum, ...Array.from(createShadowRoot(props).querySelectorAll(name))]), [])).filter(node => !node.classList.contains('resolved'));
+            const nodes = [
+                ...names.reduce(
+                    (accum, name) => [
+                        ...accum,
+                        ...Array.from(
+                            createShadowRoot(props).querySelectorAll(name)
+                        )
+                    ],
+                    []
+                )
+            ].filter(node => !node.classList.contains('resolved'));
 
-            nodes.length === 0 ? resolve() : addEventListener(eventName, function listener(event) {
-                nodes.includes(event.detail.node) && resolved.add(event.detail.node);
-                if (resolved.size === nodes.length) {
-                    removeEventListener(eventName, listener);
-                    resolve();
-                    resolved.clear();
-                };
-            });
-
+            nodes.length === 0
+                ? resolve()
+                : document.addEventListener(eventName, function listener({
+                      detail: { node }
+                  }) {
+                      nodes.includes(node) && resolved.add(node);
+                      if (resolved.size === nodes.length) {
+                          document.removeEventListener(eventName, listener);
+                          resolve();
+                          resolved.clear();
+                      }
+                  });
         });
 
         return props;
-
     };
-
 }

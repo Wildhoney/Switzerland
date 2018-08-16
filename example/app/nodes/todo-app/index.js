@@ -56,4 +56,12 @@ const dimensions = ({ dimensions }) =>
         )
     ]);
 
-export default create('todo-app', store, retrieve, m.wait('todo-input', 'ul'), m.attrs(), m.adapt(), m.html(container));
+export default create(
+    'todo-app',
+    store,
+    retrieve,
+    m.attrs(),
+    m.adapt(),
+    m.html(container),
+    m.wait(todoInput, todoList)
+);
