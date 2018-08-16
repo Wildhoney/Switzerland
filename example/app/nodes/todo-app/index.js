@@ -2,6 +2,8 @@ import { create, init, h, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
 import db from '../../utils/db.js';
 import * as u from './utils.js';
+import todoInput from '../todo-input/index.js';
+import todoList from '../todo-list/index.js';
 
 const f = init(import.meta);
 
@@ -19,8 +21,8 @@ const retrieve = async props => {
 const container = async props =>
     h('section', { class: 'todo-app' }, [
         await f.stylesheet('styles.css'),
-        h('_todo-input', {}),
-        h('_todo-list', {}),
+        h(todoInput, {}),
+        h(todoList, {}),
         header(props),
         h('ul', {}, [completed(props), props.dimensions && dimensions(props)])
     ]);
@@ -54,4 +56,4 @@ const dimensions = ({ dimensions }) =>
         )
     ]);
 
-create('todo-app', store, retrieve, m.attrs(), m.adapt(), m.html(container));
+export default create('todo-app', store, retrieve, m.wait('todo-input', 'ul'), m.attrs(), m.adapt(), m.html(container));

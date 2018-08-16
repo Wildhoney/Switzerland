@@ -36,4 +36,4 @@ const button = ({ value = '' }) =>
         disabled: !value && !value.trim()
     });
 
-create('todo-input', store, m.html(container));
+export default create('todo-input', store, m.html(container));

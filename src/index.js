@@ -102,5 +102,9 @@ export function create(name, ...middleware) {
                 }
             }
         }
+
     );
+
+    return tag;
+    
 }
