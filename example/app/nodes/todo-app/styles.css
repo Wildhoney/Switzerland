@@ -96,7 +96,7 @@ ul li:not(:last-of-type) {
       height: calc(100vh - 50px - 50px - 20px);
   }
 
-  ul.dimensions {
+  ul {
     display: none;
   }
 

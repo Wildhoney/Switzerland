@@ -7,14 +7,9 @@ import todoList from '../todo-list/index.js';
 
 const f = init(import.meta);
 
-let called = false;
-
 const retrieve = async props => {
     const { todos } = await db();
-    if (!called) {
-        await Promise.all(todos.map(props.redux.actions.put));
-        called = true;
-    }
+    await Promise.all(todos.map(props.redux.actions.put));
     return props;
 };
 
@@ -59,7 +54,7 @@ const dimensions = ({ dimensions }) =>
 export default create(
     'todo-app',
     store,
-    retrieve,
+    m.once(retrieve),
     m.attrs(),
     m.adapt(),
     m.html(container),
