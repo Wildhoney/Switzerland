@@ -20,11 +20,7 @@ export default function html(getView, options = {}) {
             const view = await getView(props);
 
             if (view) {
-                const tree = patch(
-                    u.takeTree(props.node),
-                    u.parseView(view),
-                    boundary
-                );
+                const tree = patch(u.takeTree(props.node), view, boundary);
                 u.putTree(props.node, tree);
             }
         }
