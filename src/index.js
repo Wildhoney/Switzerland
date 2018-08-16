@@ -30,11 +30,15 @@ export const init = ({ url }) => {
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
 export function create(name, ...middleware) {
-    const [tag] = name.split('/');
+    const parts = name.split('/');
+    const [tag, prototype] = [
+        u.resolveTagName(parts[0]),
+        u.getPrototype(parts[1])
+    ];
 
     customElements.define(
         tag,
-        class extends HTMLElement {
+        class extends prototype {
             /**
              * @method connectedCallback ∷ Props p ⇒ p
              */
@@ -98,7 +102,7 @@ export function create(name, ...middleware) {
                     props[handler]({ ...props, error });
                 } finally {
                     dispatchEvent(u.getEventName('resolved'), { node: this });
-                    this.classList.add('resolved');
+                    this.isConnected && this.classList.add('resolved');
                 }
             }
         }

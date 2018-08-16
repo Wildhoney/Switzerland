@@ -127,3 +127,20 @@ export const getStylesheet = getPath => async path => {
 
     return h('style', { type: 'text/css' }, css);
 };
+
+/**
+ * @function getRandomId ∷ String
+ */
+export const getRandomId = () => {
+    const a = new Uint32Array(1);
+    window.crypto.getRandomValues(a);
+    return a.toString();
+};
+
+/**
+ * @function resolveTagName ∷ String → String
+ */
+export const resolveTagName = name =>
+    !customElements.get(name)
+        ? name
+        : resolveTagName(`${name}-${getRandomId()}`);
