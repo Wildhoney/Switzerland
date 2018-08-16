@@ -4,9 +4,14 @@
   "main": "index.html",
   "license": "MIT",
   "dependencies": {
+    "hyperhtml": "^2.13.0",
+    "lit-html": "^0.10.2",
+    "pluralize": "^7.0.0",
+    "ramda": "^0.25.0",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "shortid": "~2.2.8",
-    "sort-by": "~1.2.0"
+    "sort-by": "~1.2.0",
+    "tili": "^0.8.4"
   }
 }

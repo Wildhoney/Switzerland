@@ -323,6 +323,38 @@ export function delay(milliseconds) {
 
 }
 
+function defaultRenderer(root, result) {
+    root.innerHTML = result;
+}
+
+export function renderer(render = defaultRenderer, getTree) {
+
+    return async props => {
+
+        if (props.node.isConnected) {
+
+            // Compute the current dimensions of the host node.
+            const { offsetHeight, offsetWidth } = props.node;
+            const updatedProps = { ...props, dimensions: { height: offsetHeight, width: offsetWidth } };
+
+            const boundary = createBoundary(props);
+
+            // Append the `DocumentFragment` to the element if we have one.
+            if (!boundary instanceof ShadowRoot && !props.node.contains(boundary)) {
+                props.node.appendChild(boundary);
+            }
+
+            const parsedTree = render(boundary, getTree, updatedProps);
+
+            // Save the virtual DOM state for cases where an error short-circuits the chain.
+            putState(props.node, parsedTree, boundary, props);
+
+        }
+
+        return props;
+    };
+}
+
 /**
  * @method html ∷ Tree t, Props p ⇒ (void → t) → (p → p)
  * @param {Function} getTree
