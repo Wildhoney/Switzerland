@@ -134,13 +134,13 @@ export const getStylesheet = getPath => async path => {
 export const getRandomId = () => {
     const a = new Uint32Array(1);
     window.crypto.getRandomValues(a);
-    return a.toString();
+    return a[0].toString(16);
 };
 
 /**
- * @function resolveTagName ∷ String → String
+ * @function resolveTagName ∷ String → String → String
  */
-export const resolveTagName = name =>
-    !customElements.get(name)
-        ? name
-        : resolveTagName(`${name}-${getRandomId()}`);
+export const resolveTagName = (name, suffix = null) => {
+    const tag = suffix ? `${name}-${suffix}` : name;
+    return !customElements.get(tag) ? tag : resolveTagName(tag, getRandomId());
+};
