@@ -41,15 +41,11 @@ export function create(name, ...middleware) {
     customElements.define(
         tag,
         class extends prototype {
-            /**
-             * @constant ∷ Symbol
-             */
-            [queue] = new Set();
-
-            /**
-             * @constant ∷ Symbol
-             */
-            [state] = 'normal';
+            constructor() {
+                super();
+                this[queue] = new Set();
+                this[state] = 'normal';
+            }
 
             /**
              * @method connectedCallback ∷ Props p ⇒ p
