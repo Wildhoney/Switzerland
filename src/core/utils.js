@@ -214,7 +214,7 @@ export const handleError = (node, error) => {
         error,
         render: mergeProps => {
             node[state] = 'normal';
-            node.render(mergeProps);
+            return node.render(mergeProps);
         }
     });
 };

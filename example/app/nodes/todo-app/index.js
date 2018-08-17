@@ -16,8 +16,8 @@ const retrieve = async props => {
 const container = async props =>
     h('section', { class: 'todo-app' }, [
         await stylesheet('styles.css'),
-        h(todoInput, {}),
-        h(todoList, {}),
+        h(todoInput),
+        h(todoList),
         header(props),
         h('ul', {}, [completed(props), props.dimensions && dimensions(props)])
     ]);
@@ -51,10 +51,11 @@ const dimensions = ({ dimensions }) =>
         )
     ]);
 
-const retry = async ({ render }) =>
+const retry = async ({ render, props }) =>
     h('section', { class: 'todo-app' }, [
         await stylesheet('styles.css'),
-        h('button', { onclick: render }, 'Retry')
+        header(props),
+        h('button', { class: 'retry', onclick: render }, 'Retry')
     ]);
 
 export default create(
@@ -65,5 +66,6 @@ export default create(
     m.attrs(),
     m.adapt(),
     m.html(container),
-    m.wait(todoInput, todoList)
+    m.wait(todoInput, todoList),
+    m.methods({ insert: (value, { redux }) => redux.actions.add(value) })
 );
