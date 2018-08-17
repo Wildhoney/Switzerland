@@ -1,6 +1,7 @@
 import adapt from './adapt/index.js';
 import attrs from './attrs/index.js';
 import delay from './delay/index.js';
+import defer from './defer/index.js';
 import html from './html/index.js';
 import intersect from './intersect/index.js';
 import redux from './redux/index.js';
@@ -13,6 +14,7 @@ export default {
     attrs,
     once,
     delay,
+    defer,
     intersect,
     html,
     redux,

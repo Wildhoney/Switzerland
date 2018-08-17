@@ -156,7 +156,7 @@ export const getStylesheet = getPath => async path => {
 export const getInitialProps = (node, mergeProps, scheduledTask) => {
     const prevProps = previous.get(node);
 
-    const isResolved = async () => {
+    const resolved = async () => {
         const resolution = await Promise.race([
             scheduledTask,
             Promise.resolve(false)
@@ -166,7 +166,7 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => {
     return {
         ...(prevProps || {}),
         ...mergeProps,
-        isResolved,
+        resolved,
         node,
         render: node.render.bind(node),
         dispatch: dispatchEvent,
