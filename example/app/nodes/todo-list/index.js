@@ -1,11 +1,11 @@
 import { create, init, h, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
 
-const f = init(import.meta);
+const { stylesheet } = init(import.meta);
 
 const container = async ({ redux, props }) =>
     h('ul', {}, [
-        await f.stylesheet('styles.css'),
+        await stylesheet('styles.css'),
         list(props),
         !redux.state.list.length && nothing(props)
     ]);

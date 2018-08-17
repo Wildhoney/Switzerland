@@ -5,7 +5,7 @@ import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
 
-const f = init(import.meta);
+const { path, stylesheet } = init(import.meta);
 
 const retrieve = async props => {
     const { todos } = await db();
@@ -15,7 +15,7 @@ const retrieve = async props => {
 
 const container = async props =>
     h('section', { class: 'todo-app' }, [
-        await f.stylesheet('styles.css'),
+        await stylesheet('styles.css'),
         h(todoInput, {}),
         h(todoList, {}),
         header(props),
@@ -25,7 +25,7 @@ const container = async props =>
 const header = () =>
     h('h1', {}, [
         h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
-            h('img', { src: f.path('logo.png') })
+            h('img', { src: path('logo.png') })
         ])
     ]);
 
