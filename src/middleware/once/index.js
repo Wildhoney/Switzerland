@@ -29,18 +29,16 @@ export default function once(fn, strategy = types.ONLY) {
     const cache = caches.get(fn);
 
     /**
-     * @method maybeInvoke
-     * @param {Function} fn
-     * @param {Object} props
-     * @return {Object}
+     * @function maybeInvoke
      */
     function maybeInvoke(fn, props) {
         if (cache.has(props.node)) {
             return props;
         }
 
+        const result = fn(props);
         cache.add(props.node);
-        fn(props);
+        return result;
     }
 
     return async props => {
