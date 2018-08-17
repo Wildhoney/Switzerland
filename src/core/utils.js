@@ -1,4 +1,5 @@
-import { h } from './index.js';
+import { handler } from '../middleware/rescue/index.js';
+import { h, previous, handlers, state } from './index.js';
 
 /**
  * @function dispatchEvent ∷ ∀ a. HTMLElement e ⇒ e → String → Object String a → void
@@ -147,4 +148,73 @@ export const getStylesheet = getPath => async path => {
         : data;
 
     return h('style', { type: 'text/css' }, css);
+};
+
+/**
+ * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
+ */
+export const getInitialProps = (node, mergeProps, scheduledTask) => {
+    const prevProps = previous.get(node);
+
+    const isResolved = async () => {
+        const resolution = await Promise.race([
+            scheduledTask,
+            Promise.resolve(false)
+        ]);
+        return resolution !== false;
+    };
+    return {
+        ...(prevProps || {}),
+        ...mergeProps,
+        isResolved,
+        node,
+        render: node.render.bind(node),
+        dispatch: dispatchEvent,
+        prevProps: previous.get(node) || null
+    };
+};
+
+/**
+ * @function processMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
+ */
+export const processMiddleware = async (node, initialProps, middleware) => {
+    const props = await middleware.reduce(async (accumP, middleware) => {
+        const props = await accumP;
+        const newProps = middleware({
+            ...props,
+            props
+        });
+
+        // Determine if there's an error handler in the current set of props. If there is then
+        // set the handler function as the default to be used if an error is subsequently thrown.
+        handler in newProps && handlers.set(node, newProps);
+        return newProps;
+    }, initialProps);
+
+    previous.set(node, props);
+    return props;
+};
+
+/**
+ * @function handleError ∷ ∀ a. HTMLElement e ⇒ e → Error a → void
+ */
+export const handleError = (node, error) => {
+    // Attempt to find an error handler for the current node which can handle the error gracefully.
+    // Otherwise a simple yet abrasive `console.error` will be used with no recovery possible.
+    const props = handlers.get(node);
+
+    if (!props) {
+        consoleMessage(error);
+        return;
+    }
+
+    previous.set(node, { ...props, error });
+    props[handler]({
+        ...props,
+        error,
+        render: mergeProps => {
+            node[state] = 'normal';
+            node.render(mergeProps);
+        }
+    });
 };

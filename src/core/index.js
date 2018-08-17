@@ -1,16 +1,13 @@
 import * as u from './utils.js';
 import m from '../middleware/index.js';
 import { h } from '../middleware/html/index.js';
-import { handler } from '../middleware/rescue/index.js';
 
-const handlers = new WeakMap();
-const previous = new WeakMap();
+export const handlers = new WeakMap();
+export const previous = new WeakMap();
 
 export { m, h };
 
-/**
- * @constant queue ∷ Symbol
- */
+export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');
 
 /**
@@ -50,6 +47,11 @@ export function create(name, ...middleware) {
             [queue] = new Set();
 
             /**
+             * @constant ∷ Symbol
+             */
+            [state] = 'normal';
+
+            /**
              * @method connectedCallback ∷ Props p ⇒ p
              */
             connectedCallback() {
@@ -68,31 +70,23 @@ export function create(name, ...middleware) {
              * @method render ∷ ∀ a. Props p ⇒ Object String a → p
              */
             async render(mergeProps = {}) {
+                if (this[state] === 'error') {
+                    // Cannot process new render cycles until the error has been resolved.
+                    return;
+                }
+
                 const scheduledTask = new Promise(async resolve => {
                     // Await the completion of the task last added to the stack.
                     const tasks = Array.from(this[queue]);
                     const prevScheduledTask = tasks[tasks.length - 1];
                     await prevScheduledTask;
 
-                    const prevProps = previous.get(this);
                     const dispatchEvent = u.dispatchEvent(this);
-                    const isResolved = async () => {
-                        const resolution = await Promise.race([
-                            scheduledTask,
-                            Promise.resolve(false)
-                        ]);
-                        return resolution !== false;
-                    };
-
-                    const initialProps = {
-                        ...(prevProps || {}),
-                        ...mergeProps,
-                        isResolved,
-                        node: this,
-                        render: this.render.bind(this),
-                        dispatch: dispatchEvent,
-                        prevProps: previous.get(this) || null
-                    };
+                    const initialProps = u.getInitialProps(
+                        this,
+                        mergeProps,
+                        scheduledTask
+                    );
 
                     if (
                         prevScheduledTask &&
@@ -104,46 +98,26 @@ export function create(name, ...middleware) {
                     }
 
                     try {
-                        const props = await middleware.reduce(
-                            async (accumP, middleware) => {
-                                const props = await accumP;
-                                const newProps = middleware({
-                                    ...props,
-                                    props
-                                });
-
-                                // Determine if there's an error handler in the current set of props. If there is then
-                                // set the handler function as the default to be used if an error is subsequently thrown.
-                                handler in newProps &&
-                                    handlers.set(this, newProps);
-                                return newProps;
-                            },
-                            initialProps
+                        // Cycle through all of the middleware functions, updating the props as we go.
+                        return await u.processMiddleware(
+                            this,
+                            initialProps,
+                            middleware
                         );
-
-                        previous.set(this, props);
-                        return props;
                     } catch (error) {
-                        // Attempt to find an error handler for the current node which can handle the error gracefully.
-                        // Otherwise a simple yet abrasive `console.error` will be used with no recovery possible.
-                        const props = handlers.get(this);
+                        // Errors should cancel any enqueued middleware.
+                        this[queue].clear();
+                        this[state] = 'error';
 
-                        if (!props) {
-                            console.error(error);
-                            return;
-                        }
-
-                        previous.set(this, { ...props, error });
-                        props[handler]({ ...props, error });
+                        // Handle any errors that were thrown from the processing of the middleware functions.
+                        return u.handleError(this, error);
                     } finally {
-                        // Finally dispatch the event for parent components to be able to resolve, and add
-                        // the "resolved" class to the element.
+                        // Always dispatch the "resolved" event regardless of success or failure. We also apply
+                        // the "resolved" class name to the element.
                         dispatchEvent(u.getEventName('resolved'), {
                             node: this
                         });
                         this.isConnected && this.classList.add('resolved');
-
-                        // Task has been completed successfully.
                         this[queue].delete(prevScheduledTask);
                         resolve();
                     }
