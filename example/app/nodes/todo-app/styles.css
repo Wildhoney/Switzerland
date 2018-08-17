@@ -7,9 +7,12 @@
   border: 1px solid rgba(0, 0, 0, .1);
   background-color: white;
   position: relative;
-  border-radius: 3px;
-  overflow: hidden;
-  border-bottom: 5px solid rgba(0, 0, 0, 0.025);
+}
+
+@media (min-width: 769px) {
+  :host {
+    border-bottom: 5px solid rgba(0, 0, 0, 0.025);
+  }
 }
 
 * {
@@ -50,8 +53,8 @@ ul {
   user-select: none;
   display: inline-block;
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.05);
-  margin-bottom: -21px;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-bottom: -26px;
   right: 0;
   bottom: 0;
   color: rgba(0, 0, 0, 0.25);
