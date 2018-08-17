@@ -1,5 +1,3 @@
-
-
 /**
  * @function loader ∷ Props p ⇒ Object String String → (p → Promise p)
  * ---
@@ -7,22 +5,18 @@
  * handing over to the subsequent middleware. Appends the "src" object to the props for consumption by the component.
  */
 export default function loader(sources) {
-
     return async props => {
-
-        await Promise.all(Object.values(sources).map(src => {
-
-            return new Promise(resolve => {
-                const img = new Image();
-                img.addEventListener('load', resolve);
-                img.addEventListener('error', resolve);
-                img.setAttribute('src', src);
-            });
-
-        }));
+        await Promise.all(
+            Object.values(sources).map(src => {
+                return new Promise(resolve => {
+                    const img = new Image();
+                    img.addEventListener('load', resolve);
+                    img.addEventListener('error', resolve);
+                    img.setAttribute('src', src);
+                });
+            })
+        );
 
         return { ...props, src: sources };
-
     };
-
 }

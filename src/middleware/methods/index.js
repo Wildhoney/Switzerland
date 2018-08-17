@@ -1,5 +1,3 @@
-
-
 /**
  * @method function ∷ ∀ a. Props p ⇒ Object String (p → a) → (p → p)
  * ---
@@ -8,15 +6,11 @@
  * as-is, but also passes the current set of props as the final argument.
  */
 export default function methods(fns) {
-
     return props => {
-
         Object.entries(fns).forEach(([name, fn]) => {
-            props.node[name] = (...args) => (fn.call(props.node, ...args, props));
+            props.node[name] = (...args) => fn.call(props.node, ...args, props);
         });
 
         return props;
-
     };
-
 }

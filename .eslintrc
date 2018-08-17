@@ -9,8 +9,9 @@
         "customElements": true,
         "CustomEvent": true,
         "fetch": true,
-        "IntersectionObserver": true,
         "HTMLElement": true,
+        "Image": true,
+        "IntersectionObserver": true,
         "MutationObserver": true,
         "ResizeObserver": true,
         "ShadowRoot": true
