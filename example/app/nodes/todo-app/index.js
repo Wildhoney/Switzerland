@@ -9,18 +9,17 @@ const { path, stylesheet } = init(import.meta);
 
 const retrieve = async props => {
     const { todos } = await db();
-    await Promise.all(todos.map(props.redux.actions.put));
+    props.redux.actions.put(todos);
     return props;
 };
 
-const container = async props =>
-    h('section', { class: 'todo-app' }, [
-        await stylesheet('styles.css'),
-        h(todoInput, {}),
-        h(todoList, {}),
-        header(props),
-        h('ul', {}, [completed(props), props.dimensions && dimensions(props)])
-    ]);
+const container = async props =>h('section', { class: 'todo-app' }, [
+    await stylesheet('styles.css'),
+    h(todoInput, {}),
+    h(todoList, {}),
+    header(props),
+    h('ul', {}, [completed(props), props.dimensions && dimensions(props)])
+])
 
 const header = () =>
     h('h1', {}, [
@@ -51,9 +50,15 @@ const dimensions = ({ dimensions }) =>
         )
     ]);
 
+    const retry = async ({ render}) =>     h('section', { class: 'todo-app' }, [
+        await stylesheet('styles.css'),
+        h('button', { onclick: render }, 'Retry')
+    ]);
+
 export default create(
     'todo-app',
     store,
+    m.rescue(m.html(retry)),
     m.once(retrieve),
     m.attrs(),
     m.adapt(),

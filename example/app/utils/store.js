@@ -27,7 +27,8 @@ const createModel = text => ({
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case actionTypes.ADD:
-            return { list: [...state.list, action.payload] };
+            const models = [].concat(action.payload);
+            return { list: [...state.list, ...models] };
 
         case actionTypes.REMOVE:
             return {
@@ -55,7 +56,7 @@ const actions = {
         db.add(model);
         return dispatch({ type: actionTypes.ADD, payload: model });
     },
-    put: model => ({ type: actionTypes.ADD, payload: model }),
+    put: models => ({ type: actionTypes.ADD, payload: models }),
     remove: id => async (dispatch, getState) => {
         const db = await indexedDb();
         const model = getState().list.find(model => model.id === id);
