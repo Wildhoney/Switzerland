@@ -5,7 +5,7 @@
  * has been completed. It's useful for such things as only rendering a "Loading" message if the component is
  * taking a while to load for improved perception of speed.
  */
-export function defer(fn, milliseconds) {
+export default function defer(fn, milliseconds) {
     return props => {
         setTimeout(
             async () => !(await props.resolved()) && fn(props),
