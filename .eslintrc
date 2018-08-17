@@ -9,6 +9,7 @@
         "customElements": true,
         "CustomEvent": true,
         "fetch": true,
+        "IntersectionObserver": true,
         "HTMLElement": true,
         "MutationObserver": true,
         "ResizeObserver": true,
