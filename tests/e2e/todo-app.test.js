@@ -28,16 +28,16 @@ const addTodos = R.once(async t => {
     await t.click(await todoInput.find('button[type="submit"]'));
 
     return { first, second, third };
-    
+
 });
 
 test('It should be able to add todos to the list;', async t => {
 
     const { first, second, third } = await addTodos(t);
 
-    await t.expect(todoList.find('ul li:nth-of-type(1) p').textContent).eql(first);
-    await t.expect(todoList.find('ul li:nth-of-type(2) p').textContent).eql(second);
-    await t.expect(todoList.find('ul li:nth-of-type(3) p').textContent).eql(third);
+    await t.expect((await todoList.find('ul li:nth-of-type(1) p').textContent).trim()).eql(first);
+    await t.expect((await todoList.find('ul li:nth-of-type(2) p').textContent).trim()).eql(second);
+    await t.expect((await todoList.find('ul li:nth-of-type(3) p').textContent).trim()).eql(third);
 
 });
 
@@ -46,15 +46,15 @@ test('It should be able to remove todos from the list;', async t => {
     const { first, second, third } = await addTodos(t);
 
     await t.expect(todoList.find('ul li').count).eql(3);
-    await t.expect(todoList.find('ul li:nth-of-type(1) p').textContent).eql(first);
-    await t.expect(todoList.find('ul li:nth-of-type(2) p').textContent).eql(second);
-    await t.expect(todoList.find('ul li:nth-of-type(3) p').textContent).eql(third);
+    await t.expect((await todoList.find('ul li:nth-of-type(1) p').textContent).trim()).eql(first);
+    await t.expect((await todoList.find('ul li:nth-of-type(2) p').textContent).trim()).eql(second);
+    await t.expect((await todoList.find('ul li:nth-of-type(3) p').textContent).trim()).eql(third);
 
     await t.click(todoList.find('ul li:nth-of-type(3) button'));
 
     await t.expect(todoList.find('ul li').count).eql(2);
-    await t.expect(todoList.find('ul li:nth-of-type(1) p').textContent).eql(first);
-    await t.expect(todoList.find('ul li:nth-of-type(2) p').textContent).eql(second);
+    await t.expect((await todoList.find('ul li:nth-of-type(1) p').textContent).trim()).eql(first);
+    await t.expect((await todoList.find('ul li:nth-of-type(2) p').textContent).trim()).eql(second);
 
 });
 

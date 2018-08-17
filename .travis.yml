@@ -8,12 +8,13 @@ after_success:
   - ./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls
 
 script:
-  - npm install
-  - npm test
-  - npm run build
+  - yarn install
+  - (cd example && yarn install)
+  - yarn test
+  - yarn build
 
 before_deploy:
-  - rm package-lock.json
+  - rm yarn.lock
 
 deploy:
   provider: heroku
