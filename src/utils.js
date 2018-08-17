@@ -17,6 +17,27 @@ export const dispatchEvent = node => (name, payload) => {
 };
 
 /**
+ * @function getRandomId ∷ String
+ */
+export const getRandomId = () => {
+    const a = new Uint32Array(1);
+    window.crypto.getRandomValues(a);
+    return a[0].toString(16);
+};
+
+/**
+ * @function resolveTagName ∷ String → String → String
+ * ---
+ * Resolves the node name by first attempting to use the requested node name, unless it already exists as
+ * a custom component. If so, we recursively call the `resolveTagName` function to append a random suffix
+ * to the end of the node name until we find a node that isn't registered.
+ */
+export const resolveTagName = (name, suffix = null) => {
+    const tag = suffix ? `${name}-${suffix}` : name;
+    return !customElements.get(tag) ? tag : resolveTagName(tag, getRandomId());
+};
+
+/**
  * @function getEventName ∷ String → String
  * ---
  * Prepends all event names with the '@switzerland' scope.
@@ -31,10 +52,8 @@ export const getEventName = label => {
  * Determines which constructor to extend from for the defining of the custom element. In most cases it
  * will be `HTMLElement` unless the user is extending an existing element.
  */
-export const getPrototype = extendTag => {
-    return extendTag
-        ? document.createElement(extendTag).constructor
-        : HTMLElement;
+export const getPrototype = tag => {
+    return tag ? document.createElement(tag).constructor : HTMLElement;
 };
 
 /**
@@ -63,6 +82,7 @@ const isRemotePath = path =>
  * @see https://github.com/website-scraper/node-css-url-parser
  * ---
  * Parses all of the paths defined in the CSS and returns a unique list of the paths found.
+ * @TODO: Remove function when specs resolve the problem of loading relative to the module file.
  */
 const parseStylesheetPaths = data => {
     const embeddedRegexp = /^data:(.*?),(.*?)/;
@@ -114,6 +134,7 @@ const escapeRegExp = value => value.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
 export const getStylesheet = getPath => async path => {
     const data = await fetch(getPath(path)).then(r => r.text());
     const urls = parseStylesheetPaths(data);
+
     const css = urls.length
         ? urls
               .map(url => {
@@ -126,21 +147,4 @@ export const getStylesheet = getPath => async path => {
         : data;
 
     return h('style', { type: 'text/css' }, css);
-};
-
-/**
- * @function getRandomId ∷ String
- */
-export const getRandomId = () => {
-    const a = new Uint32Array(1);
-    window.crypto.getRandomValues(a);
-    return a[0].toString(16);
-};
-
-/**
- * @function resolveTagName ∷ String → String → String
- */
-export const resolveTagName = (name, suffix = null) => {
-    const tag = suffix ? `${name}-${suffix}` : name;
-    return !customElements.get(tag) ? tag : resolveTagName(tag, getRandomId());
 };
