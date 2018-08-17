@@ -1,5 +1,5 @@
 import { createShadowRoot } from '../html/utils.js';
-import { getEventName } from '../../utils.js';
+import { getEventName } from '../../core/utils.js';
 
 /**
  * @function wait ∷ Props p ⇒ [String] → (p → Promise p)
