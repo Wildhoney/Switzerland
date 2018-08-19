@@ -7,10 +7,8 @@
         "test": "tests"
     },
     "scripts": {
-        "build": "taskfile build",
         "format": "taskfile format",
         "lint": "taskfile lint",
-        "postinstall": "taskfile postinstall",
         "start": "taskfile start",
         "test": "taskfile test"
     },
@@ -32,19 +30,23 @@
     },
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
+        "@wildhoney/redux": "4.0.1",
+        "redux-thunk": "2.3.0",
         "superfine": "6.0.1"
     },
     "devDependencies": {
+        "babel-eslint": "8.2.6",
         "compression": "1.7.3",
-        "eslint-config-prettier": "^2.9.0",
+        "eslint-config-prettier": "^3.0.1",
         "eslint-config-standard": "^11.0.0",
-        "eslint-plugin-import": "^2.13.0",
+        "eslint-plugin-import": "^2.14.0",
         "eslint-plugin-node": "^7.0.1",
-        "eslint-plugin-promise": "^3.8.0",
-        "eslint-plugin-react": "^7.10.0",
+        "eslint-plugin-promise": "^4.0.0",
+        "eslint-plugin-react": "^7.11.1",
         "eslint-plugin-standard": "^3.1.0",
-        "eslint": "^5.3.0",
+        "eslint": "^5.4.0",
         "express": "4.16.3",
+        "jest": "23.5.0",
         "nodemon": "1.18.3",
         "prettier": "1.14.2",
         "taskfile": "0.8.5"
