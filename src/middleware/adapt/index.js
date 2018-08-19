@@ -6,6 +6,8 @@ const observer =
         );
     });
 
+export const observers = new WeakSet();
+
 /**
  * @function adapt ∷ Props p ⇒ (p → p)
  * ---
@@ -15,8 +17,6 @@ const observer =
  * differently than when it's placed in a 400px space.
  */
 export default function adapt() {
-    const observers = new WeakSet();
-
     return props => {
         if (!observers.has(props.node)) {
             observers.add(props.node);

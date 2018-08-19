@@ -2,11 +2,15 @@
   task: nodemon --experimental-modules ./example/server/index.mjs
 
 - name: format
-  task: prettier --write '{src,example}/**/*.js'
+  task: prettier --write '{src,test,example}/**/*.js'
 
-- name: lint
-  task: eslint "src/**/*.js"
+- name: test/lint
+  task: eslint "{src,test,example}/**/*.js"
+
+- name: test/spec
+  task: ava
 
 - name: test
   tasks:
-      - taskfile lint
+      - taskfile test/spec
+      - taskfile test/lint

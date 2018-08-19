@@ -6,7 +6,3 @@ lerna-debug.log
 
 # npm
 node_modules
-
-# tmp
-__old
-__oldish
