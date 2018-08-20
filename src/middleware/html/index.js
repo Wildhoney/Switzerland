@@ -2,6 +2,7 @@ import {
     patch,
     h
 } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { createShadowRoot } from '../../core/utils.js';
 import * as u from './utils.js';
 
 export { h };
@@ -14,7 +15,7 @@ export { h };
  */
 export default function html(getView, options = {}) {
     return async props => {
-        const boundary = u.createShadowRoot(props, options);
+        const boundary = createShadowRoot(props.node, options);
 
         if (props.node.isConnected) {
             const view = await getView(props);

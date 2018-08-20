@@ -1,13 +1,17 @@
 import { handler } from '../middleware/rescue/index.js';
 import { h, previous, handlers, state } from './index.js';
 
+const roots = new WeakMap();
+
+const defaultBoundaryOptions = { mode: 'open', delegatesFocus: false };
+
 /**
  * @function dispatchEvent ∷ ∀ a. HTMLElement e ⇒ e → String → Object String a → void
  * ---
  * Dispatches an event, merging in the current package's version for handling legacy events
  * if/when the payloads differ from version-to-version.
  */
-export const dispatchEvent = node => (name, payload) => {
+export const dispatchEvent = node => (name, payload) =>
     node.dispatchEvent(
         new CustomEvent(name, {
             detail: { ...payload, version: '3.0.0' },
@@ -15,6 +19,28 @@ export const dispatchEvent = node => (name, payload) => {
             composed: true
         })
     );
+
+/**
+ * @function createShadowRoot ∷ ∀ a. ShadowRoot s, HTMLElement e ⇒ e → Object String a → s|e
+ * ---
+ * Takes the node element and attaches the shadow boundary to it if it doesn't exist
+ * already. Returns the node if a shadow boundary cannot be attached to the element.
+ */
+export const createShadowRoot = (node, options = {}) => {
+    if (roots.has(node)) {
+        return roots.get(node);
+    }
+
+    try {
+        const root = node.attachShadow({
+            ...defaultBoundaryOptions,
+            ...options
+        });
+        roots.set(node, root);
+        return root;
+    } catch (err) {
+        return node;
+    }
 };
 
 /**
@@ -43,9 +69,7 @@ export const resolveTagName = (name, suffix = null) => {
  * ---
  * Prepends all event names with the '@switzerland' scope.
  */
-export const getEventName = label => {
-    return `@switzerland/${label}`;
-};
+export const getEventName = label => `@switzerland/${label}`;
 
 /**
  * @function getPrototype ∷ HTMLElement e ⇒ String → e
@@ -53,9 +77,8 @@ export const getEventName = label => {
  * Determines which constructor to extend from for the defining of the custom element. In most cases it
  * will be `HTMLElement` unless the user is extending an existing element.
  */
-export const getPrototype = tag => {
-    return tag ? document.createElement(tag).constructor : HTMLElement;
-};
+export const getPrototype = tag =>
+    tag ? document.createElement(tag).constructor : HTMLElement;
 
 /**
  * @function consoleMessage ∷ String → String → void
@@ -64,91 +87,22 @@ export const getPrototype = tag => {
  * from the generated output if 'NODE_ENV' is defined as 'production', as it will be unused due to 'process.env'
  * checks later on in the code.
  */
-export const consoleMessage = (text, type = 'error') => {
+export const consoleMessage = (text, type = 'error') =>
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
-};
 
 /**
- * @function isRemotePath ∷ String → Boolean
- * ---
- * Determines whether the passed paths are remote URLs.
- */
-const isRemotePath = path =>
-    path.startsWith('http://') ||
-    path.startsWith('https://') ||
-    path.startsWith('://');
-
-/**
- * @function parseStylesheetPaths ∷ String → String
- * @see https://github.com/website-scraper/node-css-url-parser
- * ---
- * Parses all of the paths defined in the CSS and returns a unique list of the paths found.
- * @TODO: Remove function when specs resolve the problem of loading relative to the module file.
- */
-const parseStylesheetPaths = data => {
-    const embeddedRegexp = /^data:(.*?),(.*?)/;
-    const commentRegexp = /\/\*([\s\S]*?)\*\//g;
-    const urlsRegexp = /(?:@import\s+)?url\s*\(\s*(("(.*?)")|('(.*?)')|(.*?))\s*\)|(?:@import\s+)(("(.*?)")|('(.*?)')|(.*?))[\s;]/gi;
-
-    const isEmbedded = src => embeddedRegexp.test(src.trim());
-
-    const getUrls = text => {
-        let url;
-        let urlMatch;
-        const urls = [];
-
-        text = text.replace(commentRegexp, '');
-
-        while ((urlMatch = urlsRegexp.exec(text))) {
-            url =
-                urlMatch[3] ||
-                urlMatch[5] ||
-                urlMatch[6] ||
-                urlMatch[9] ||
-                urlMatch[11] ||
-                urlMatch[12];
-
-            if (url && !isEmbedded(url) && urls.indexOf(url) === -1) {
-                urls.push(url);
-            }
-        }
-
-        return urls;
-    };
-
-    return getUrls(data).filter(path => !isRemotePath(path));
-};
-
-/**
- * @function escapeRegExp ∷ String → String
- * @see https://github.com/sindresorhus/escape-string-regexp
- */
-const escapeRegExp = value => value.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
-
-/**
- * @function getStylesheet ∷ View v ⇒ (String → String) → String → v
+ * @function getStylesheet ∷ View v ⇒ (String → String) → String → String → v
  * ---
  * Takes the `getPath` function which allows for resolving the paths relative to the component. Also
  * takes the path to the CSS document(s) that is fetched, its URLs parsed, and then modified to be
  * relative to the CSS document. Yields the `style` ready for appending to the VDOM tree.
  */
-export const getStylesheet = getPath => async path => {
-    const data = await fetch(getPath(path)).then(r => r.text());
-    const urls = parseStylesheetPaths(data);
-
-    const css = urls.length
-        ? urls
-              .map(url => {
-                  return data.replace(
-                      new RegExp(escapeRegExp(url), 'ig'),
-                      getPath(url)
-                  );
-              })
-              .join()
-        : data;
-
-    return h('style', { type: 'text/css' }, css);
-};
+export const getStylesheet = getPath => async (path, mediaQuery = '') =>
+    h(
+        'style',
+        { type: 'text/css' },
+        `@import "${getPath(path)}" ${mediaQuery}`.trim() + ';'
+    );
 
 /**
  * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
@@ -216,5 +170,28 @@ export const handleError = (node, error) => {
             node[state] = 'normal';
             return node.render(mergeProps);
         }
+    });
+};
+
+/**
+ * @function cssImportRulesResolved ∷ [HTMLStyleElement] s ⇒ s → Promise void
+ * ---
+ * Takes a list of `HTMLStyleElement` nodes and extracts all of the `CSSImportRule` rules, awaiting
+ * the resolution of each one before resolving the yielded promise.
+ */
+export const cssImportRulesResolved = styles => {
+    return new Promise(resolve => {
+        const isLoaded = rules =>
+            rules.every(a => a.styleSheet)
+                ? resolve()
+                : requestIdleCallback(() => isLoaded(rules));
+
+        const importRules = [...styles].flatMap(({ sheet }) =>
+            [...sheet.rules].filter(a => a instanceof CSSImportRule)
+        );
+
+        console.log(importRules);
+
+        return isLoaded(importRules);
     });
 };

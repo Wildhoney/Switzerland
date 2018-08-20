@@ -1,5 +1,4 @@
-import { createShadowRoot } from '../html/utils.js';
-import { getEventName } from '../../core/utils.js';
+import { getEventName, createShadowRoot } from '../../core/utils.js';
 
 /**
  * @function wait ∷ Props p ⇒ [String] → (p → Promise p)
@@ -28,7 +27,7 @@ export default function wait(...names) {
                     (accum, name) => [
                         ...accum,
                         ...Array.from(
-                            createShadowRoot(props).querySelectorAll(name)
+                            createShadowRoot(props.node).querySelectorAll(name)
                         )
                     ],
                     []

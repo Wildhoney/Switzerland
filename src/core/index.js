@@ -17,11 +17,7 @@ const queue = Symbol('@switzerland/queue');
  * returns a set of useful functions that require knowledge of the source URL for relative path resolution.
  */
 export const init = ({ url }) => {
-    /**
-     * @function path ∷ String → String
-     */
     const getPath = path => new URL(path, url).href;
-
     return { path: getPath, stylesheet: u.getStylesheet(getPath) };
 };
 
@@ -108,6 +104,14 @@ export function create(name, ...middleware) {
                         // Handle any errors that were thrown from the processing of the middleware functions.
                         return u.handleError(this, error);
                     } finally {
+                        // Await the resolution of all the CSS import rules.
+                        const stylesheets = u
+                            .createShadowRoot(this)
+                            .querySelectorAll('style');
+                        await u.cssImportRulesResolved(stylesheets);
+
+                        // sheet.cssRules[0].styleSheet.rules.length
+
                         // Always dispatch the "resolved" event regardless of success or failure. We also apply
                         // the "resolved" class name to the element.
                         dispatchEvent(u.getEventName('resolved'), {
