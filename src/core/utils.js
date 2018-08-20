@@ -190,8 +190,6 @@ export const cssImportRulesResolved = styles => {
             [...sheet.rules].filter(a => a instanceof CSSImportRule)
         );
 
-        console.log(importRules);
-
         return isLoaded(importRules);
     });
 };
