@@ -18,7 +18,11 @@ const queue = Symbol('@switzerland/queue');
  */
 export const init = ({ url }) => {
     const getPath = path => new URL(path, url).href;
-    return { path: getPath, stylesheet: u.getStylesheet(getPath) };
+    return {
+        path: getPath,
+        stylesheet: (path, mediaQuery) =>
+            u.getStylesheet(getPath(path), mediaQuery)
+    };
 };
 
 /**

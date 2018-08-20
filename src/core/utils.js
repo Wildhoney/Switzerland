@@ -91,17 +91,17 @@ export const consoleMessage = (text, type = 'error') =>
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 
 /**
- * @function getStylesheet ∷ View v ⇒ (String → String) → String → String → v
+ * @function getStylesheet ∷ View v ⇒ String → String → v
  * ---
  * Takes the `getPath` function which allows for resolving the paths relative to the component. Also
  * takes the path to the CSS document(s) that is fetched, its URLs parsed, and then modified to be
  * relative to the CSS document. Yields the `style` ready for appending to the VDOM tree.
  */
-export const getStylesheet = getPath => async (path, mediaQuery = '') =>
+export const getStylesheet = (path, mediaQuery = '') =>
     h(
         'style',
         { type: 'text/css' },
-        `@import "${getPath(path)}" ${mediaQuery}`.trim() + ';'
+        `@import "${path}" ${mediaQuery}`.trim() + ';'
     );
 
 /**
