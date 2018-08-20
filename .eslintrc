@@ -6,6 +6,7 @@
         "no-sequences": "off"
     },
     "globals": {
+        "CSSImportRule": true,
         "customElements": true,
         "CustomEvent": true,
         "fetch": true,
@@ -13,6 +14,7 @@
         "Image": true,
         "IntersectionObserver": true,
         "MutationObserver": true,
+        "requestIdleCallback": true,
         "ResizeObserver": true,
         "ShadowRoot": true
     }
