@@ -39,7 +39,8 @@ export default function html(getView, options = {}) {
 }
 
 // Extend the `h` object with useful functions.
-const h_ = { ...h, stylesheet };
+const h_ = h;
+h_.stylesheet = stylesheet;
 
 // Convenience appendage for VDOM transpilation so the pragma needs to be only `html.h` without any peculiar
 // import of `h` just for the transpilation process.
