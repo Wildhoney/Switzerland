@@ -18,6 +18,7 @@ body {
 
 todo-app {
     opacity: 0;
+    visibility: hidden;
     transition: transform .55s, opacity .55s;
     transform: scale(0.75);
     transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -44,6 +45,7 @@ noscript.todo-app > code {
 
 todo-app.resolved {
     opacity: 1;
+    visibility: visible;
     transform: scale(1);
 }
 
