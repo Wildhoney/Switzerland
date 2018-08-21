@@ -1,9 +1,11 @@
-import { create, h, m } from '/vendor/index.js';
+import { create, init, h, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
+
+const path = init(import.meta);
 
 const container = ({ redux, props }) =>
     h('ul', {}, [
-        h.stylesheet('styles.css'),
+        h.stylesheet(path('styles.css')),
         list(props),
         !redux.state.list.length && nothing(props)
     ]);

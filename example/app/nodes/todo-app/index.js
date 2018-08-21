@@ -15,7 +15,7 @@ const retrieve = async props => {
 
 const container = props =>
     h('section', { class: 'todo-app' }, [
-        h.stylesheet('styles.css'),
+        h.stylesheet(path('styles.css')),
         h(todoInput),
         h(todoList),
         header(props),
@@ -53,7 +53,7 @@ const dimensions = ({ dimensions }) =>
 
 const retry = ({ render, props }) =>
     h('section', { class: 'todo-app' }, [
-        h.stylesheet('styles.css'),
+        h.stylesheet(path('styles.css')),
         header(props),
         h('button', { class: 'retry', onclick: render }, 'Retry')
     ]);
