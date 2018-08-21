@@ -183,7 +183,7 @@ export const cssImportRulesResolved = styles => {
                 : requestIdleCallback(() => isLoaded(rules));
 
         const importRules = [...styles].flatMap(({ sheet }) =>
-            [...sheet.rules].filter(a => a instanceof CSSImportRule)
+            [...sheet.cssRules].filter(a => a instanceof CSSImportRule)
         );
 
         return isLoaded(importRules);
