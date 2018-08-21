@@ -1,9 +1,7 @@
-import { create, init, h, m } from '/vendor/index.js';
+import { create, h, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
 
-const { stylesheet } = init(import.meta);
-
-const container = async ({ value, render, redux, props }) =>
+const container = ({ value, render, redux, props }) =>
     h(
         'form',
         {
@@ -14,7 +12,7 @@ const container = async ({ value, render, redux, props }) =>
                 redux.actions.add(value)
             )
         },
-        [await stylesheet('styles.css'), input(props), button(props)]
+        [h.stylesheet('styles.css'), input(props), button(props)]
     );
 
 const input = ({ value = '', render }) =>

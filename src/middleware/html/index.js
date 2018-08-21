@@ -5,7 +5,15 @@ import {
 import { createShadowRoot } from '../../core/utils.js';
 import * as u from './utils.js';
 
-export { h };
+/**
+ * @function stylesheet ∷ View v ⇒ String → String → String → v
+ */
+const stylesheet = (path, mediaQuery = '') =>
+    h(
+        'style',
+        { type: 'text/css' },
+        `@import "${path}" ${mediaQuery}`.trim() + ';'
+    );
 
 /**
  * @function html ∷ View v, Props p ⇒ (void → v) → (p → p)
@@ -29,3 +37,12 @@ export default function html(getView, options = {}) {
         return { ...props, boundary };
     };
 }
+
+// Extend the `h` object with useful functions.
+const h_ = { ...h, stylesheet };
+
+// Convenience appendage for VDOM transpilation so the pragma needs to be only `html.h` without any peculiar
+// import of `h` just for the transpilation process.
+html.h = h_;
+
+export { h_ as h };

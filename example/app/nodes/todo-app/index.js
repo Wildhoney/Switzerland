@@ -5,7 +5,7 @@ import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
 
-const { path, stylesheet } = init(import.meta);
+const path = init(import.meta);
 
 const retrieve = async props => {
     const { todos } = await db();
@@ -13,9 +13,9 @@ const retrieve = async props => {
     return props;
 };
 
-const container = async props =>
+const container = props =>
     h('section', { class: 'todo-app' }, [
-        await stylesheet('styles.css'),
+        h.stylesheet('styles.css'),
         h(todoInput),
         h(todoList),
         header(props),
@@ -51,9 +51,9 @@ const dimensions = ({ dimensions }) =>
         )
     ]);
 
-const retry = async ({ render, props }) =>
+const retry = ({ render, props }) =>
     h('section', { class: 'todo-app' }, [
-        await stylesheet('styles.css'),
+        h.stylesheet('styles.css'),
         header(props),
         h('button', { class: 'retry', onclick: render }, 'Retry')
     ]);

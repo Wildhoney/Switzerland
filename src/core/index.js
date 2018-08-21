@@ -11,19 +11,9 @@ export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');
 
 /**
- * @function init ∷ View v, String s ⇒ Object s s → Object { path: s → s, stylesheet: (s → s) → s → v }
- * ---
- * Initialisation function that takes the meta data of the component file (usually via `import.meta`) and
- * returns a set of useful functions that require knowledge of the source URL for relative path resolution.
+ * @function init ∷ Object String String → (String → String)
  */
-export const init = ({ url }) => {
-    const getPath = path => new URL(path, url).href;
-    return {
-        path: getPath,
-        stylesheet: (path, mediaQuery) =>
-            u.getStylesheet(getPath(path), mediaQuery)
-    };
-};
+export const init = ({ url }) => path => new URL(path, url).href;
 
 /**
  * @function create ∷ Props p ⇒ String → [(p → Promise p)]
@@ -113,8 +103,6 @@ export function create(name, ...middleware) {
                             .createShadowRoot(this)
                             .querySelectorAll('style');
                         await u.cssImportRulesResolved(stylesheets);
-
-                        // sheet.cssRules[0].styleSheet.rules.length
 
                         // Always dispatch the "resolved" event regardless of success or failure. We also apply
                         // the "resolved" class name to the element.

@@ -92,10 +92,6 @@ export const consoleMessage = (text, type = 'error') =>
 
 /**
  * @function getStylesheet ∷ View v ⇒ String → String → v
- * ---
- * Takes the `getPath` function which allows for resolving the paths relative to the component. Also
- * takes the path to the CSS document(s) that is fetched, its URLs parsed, and then modified to be
- * relative to the CSS document. Yields the `style` ready for appending to the VDOM tree.
  */
 export const getStylesheet = (path, mediaQuery = '') =>
     h(
