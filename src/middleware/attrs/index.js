@@ -40,7 +40,6 @@ export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
 
         const attrs = Object.values(props.node.attributes).reduce(
             (acc, attr) => {
-
                 const name = u.kebabToCamel(attr.nodeName);
                 const f = types[name] || (a => a);
 

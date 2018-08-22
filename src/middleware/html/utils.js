@@ -13,3 +13,9 @@ export const putTree = (node, view) => {
 export const takeTree = node => {
     return trees.get(node);
 };
+
+/**
+ * @function camelToKebab ∷ String → String
+ */
+export const camelToKebab = value =>
+    value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

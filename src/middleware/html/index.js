@@ -16,6 +16,17 @@ const stylesheet = (path, mediaQuery = '') =>
     );
 
 /**
+ * @function variables ∷ ∀ a. Object a String → String
+ */
+const variables = model => {
+    const vars = Object.entries(model).reduce(
+        (accum, [key, value]) => `${accum} --${u.camelToKebab(key)}: ${value};`,
+        ''
+    );
+    return h('style', { type: 'text/css' }, `:host { ${vars} }`);
+};
+
+/**
  * @function html ∷ View v, Props p ⇒ (void → v) → (p → p)
  * ---
  * Takes a virtual DOM representation that will render to the node's shadow boundary. For size reasons, Switzerland
@@ -40,6 +51,7 @@ export default function html(getView, options = {}) {
 
 // Extend the `h` object with useful functions.
 const h_ = h;
+h_.variables = variables;
 h_.stylesheet = stylesheet;
 
 // Convenience appendage for VDOM transpilation so the pragma needs to be only `html.h` without any peculiar

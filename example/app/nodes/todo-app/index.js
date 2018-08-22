@@ -13,13 +13,23 @@ const retrieve = async props => {
     return props;
 };
 
+const isBottom = ({ attrs }) => attrs.logo === 'bottom';
+
 const container = props =>
     h('section', { class: 'todo-app' }, [
+        h.variables({
+            orderPosition: isBottom(props) ? 1 : -1,
+            borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
+        }),
         h.stylesheet(path('styles.css')),
         h(todoInput),
         h(todoList),
         header(props),
-        h('ul', {}, [completed(props), props.dimensions && dimensions(props)])
+        h('ul', {}, [
+            completed(props),
+            position(props),
+            props.dimensions && dimensions(props)
+        ])
     ]);
 
 const header = () =>
@@ -38,6 +48,28 @@ const completed = ({ redux }) =>
             `${redux.state.list.filter(x => x.done).length} of ${
                 redux.state.list.length
             } ${u.pluralise(redux.state.list.length, 'task')}`
+        )
+    ]);
+
+const position = ({ props }) =>
+    h('li', {}, [
+        h('em', {}, 'Logo: '),
+        h(
+            'a',
+            {
+                class: isBottom(props) ? 'active' : '',
+                onclick: () => props.node.setAttribute('logo', 'bottom')
+            },
+            'Bottom'
+        ),
+        h('span', {}, ' / '),
+        h(
+            'a',
+            {
+                class: !isBottom(props) ? 'active' : '',
+                onclick: () => props.node.setAttribute('logo', 'top')
+            },
+            'Top'
         )
     ]);
 
