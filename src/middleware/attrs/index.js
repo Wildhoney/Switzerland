@@ -1,8 +1,8 @@
 import * as u from './utils.js';
 
 /**
- * @function attrs ∷ Props p ⇒ [String] → (p → p)
- *
+ * @function attrs ∷ ∀ a b c. Props p ⇒ Object a (b → c) [String] → (p → p)
+ * ---
  * Takes an optional list of excluded attributes that will be ignored when their values are mutated, such as you
  * may not want the component to re-render when class names are modified, such as the "resolved" class name that
  * Switzerland adds when a component has been resolved.
@@ -11,7 +11,7 @@ import * as u from './utils.js';
  * their values. It also observes the attributes using the 'MutationObserver' to re-render the component when any
  * of the non-excluded attributes are modified.
  */
-export default function attrs(exclude = ['class', 'id', 'style']) {
+export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
     const observers = new Map();
 
     return props => {
@@ -40,9 +40,13 @@ export default function attrs(exclude = ['class', 'id', 'style']) {
 
         const attrs = Object.values(props.node.attributes).reduce(
             (acc, attr) => {
+
+                const name = u.kebabToCamel(attr.nodeName);
+                const f = types[name] || (a => a);
+
                 return {
                     ...acc,
-                    [u.kebabToCamel(attr.nodeName)]: attr.nodeValue
+                    [name]: f(attr.nodeValue)
                 };
             },
             {}
