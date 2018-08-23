@@ -13,7 +13,7 @@ const queue = Symbol('@switzerland/queue');
 /**
  * @function init ∷ String → String
  */
-export const init = url => path => new URL(path, url).href;
+export const init = url => path => new URL(path, url).pathname;
 
 /**
  * @function create ∷ Props p ⇒ String → [(p → Promise p)]
