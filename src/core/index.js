@@ -11,9 +11,9 @@ export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');
 
 /**
- * @function init ∷ Object String String → (String → String)
+ * @function init ∷ String → String
  */
-export const init = ({ url }) => path => new URL(path, url).href;
+export const init = url => path => new URL(path, url).href;
 
 /**
  * @function create ∷ Props p ⇒ String → [(p → Promise p)]

@@ -1,7 +1,7 @@
 import { create, init, h, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
 
-const path = init(import.meta);
+const path = init(import.meta.url);
 
 const container = ({ redux, props }) =>
     h('ul', {}, [

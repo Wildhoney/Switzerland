@@ -5,7 +5,7 @@ import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
 
-const path = init(import.meta);
+const path = init(import.meta.url);
 
 const retrieve = async props => {
     const { todos } = await db();
