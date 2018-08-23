@@ -17,6 +17,6 @@ export default function loader(sources) {
             })
         );
 
-        return { ...props, src: sources };
+        return { ...props, loader: sources };
     };
 }

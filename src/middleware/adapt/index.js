@@ -2,7 +2,7 @@ const observer =
     'ResizeObserver' in window &&
     new ResizeObserver(entries => {
         entries.forEach(entry =>
-            entry.target.render({ dimensions: entry.contentRect })
+            entry.target.render({ adapt: entry.contentRect })
         );
     });
 

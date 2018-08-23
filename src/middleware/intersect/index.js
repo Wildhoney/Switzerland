@@ -1,7 +1,7 @@
 const observer =
     'IntersectionObserver' in window &&
     new IntersectionObserver(entries => {
-        entries.forEach(entry => entry.target.render({ intersection: entry }));
+        entries.forEach(entry => entry.target.render({ intersect: entry }));
     });
 
 /**
