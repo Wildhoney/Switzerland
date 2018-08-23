@@ -2,7 +2,7 @@
   task: nodemon --experimental-modules ./example/server/index.mjs
 
 - name: format
-  task: prettier --write '{src,test,example}/**/*.js'
+  task: prettier --write '{src,test,example}/**/*.{js,css}'
 
 - name: test/lint
   task: eslint "{src,test,example}/**/*.js"
