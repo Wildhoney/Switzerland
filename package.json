@@ -8,7 +8,6 @@
     },
     "scripts": {
         "format": "taskfile format",
-        "lint": "taskfile lint",
         "start": "taskfile start",
         "test": "taskfile test"
     },
@@ -58,6 +57,8 @@
         "jest": "23.5.0",
         "nodemon": "1.18.3",
         "prettier": "1.14.2",
+        "stylelint": "^9.5.0",
+        "stylelint-config-prettier": "^4.0.0",
         "taskfile": "0.8.5"
     }
 }
