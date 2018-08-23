@@ -17,25 +17,26 @@ const isBottom = ({ attrs }) => attrs.logo === 'bottom';
 
 const container = props =>
     h('section', { class: 'todo-app' }, [
-        h.variables({
-            orderPosition: isBottom(props) ? 1 : -1,
-            borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
-        }),
-        h.stylesheet(path('styles.css')),
         h(todoInput),
         h(todoList),
         header(props),
         h('ul', {}, [
             completed(props),
             position(props),
-            props.dimensions && dimensions(props)
-        ])
+            props.adapt && dimensions(props)
+        ]),
+        h.variables({
+            orderPosition: isBottom(props) ? 1 : -1,
+            borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
+        }),
+        h.stylesheet(path('styles/index.css')),
+        h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)')
     ]);
 
 const header = () =>
     h('h1', {}, [
         h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
-            h('img', { src: path('logo.png') })
+            h('img', { src: path('images/logo.png') })
         ])
     ]);
 
@@ -73,14 +74,10 @@ const position = ({ props }) =>
         )
     ]);
 
-const dimensions = ({ dimensions }) =>
+const dimensions = ({ adapt }) =>
     h('li', {}, [
         h('em', {}, 'Dimensions: '),
-        h(
-            'span',
-            {},
-            `${Math.round(dimensions.width)}×${Math.round(dimensions.height)}`
-        )
+        h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)
     ]);
 
 const retry = ({ render, props }) =>

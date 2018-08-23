@@ -5,9 +5,10 @@ const path = init(import.meta);
 
 const container = ({ redux, props }) =>
     h('ul', {}, [
-        h.stylesheet(path('styles.css')),
         list(props),
-        !redux.state.list.length && nothing(props)
+        !redux.state.list.length && nothing(props),
+        h.stylesheet(path('styles/index.css')),
+        h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)')
     ]);
 
 const list = ({ redux }) =>

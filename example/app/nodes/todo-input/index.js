@@ -15,7 +15,12 @@ const container = ({ value, render, redux, props }) =>
                 redux.actions.add(value)
             )
         },
-        [h.stylesheet(path('styles.css')), input(props), button(props)]
+        [
+            h.stylesheet(path('styles/index.css')),
+            h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
+            input(props),
+            button(props)
+        ]
     );
 
 const input = ({ value = '', render }) =>
