@@ -177,15 +177,18 @@ export const handleError = (node, error) => {
  */
 export const cssImportRulesResolved = styles => {
     return new Promise(resolve => {
-        const isLoaded = rules =>
-            rules.every(a => a.styleSheet)
-                ? resolve()
-                : requestIdleCallback(() => isLoaded(rules));
+        try {
+            const isLoaded = rules =>
+                rules.every(a => a.styleSheet)
+                    ? resolve()
+                    : requestIdleCallback(() => isLoaded(rules));
 
-        const importRules = [...styles].flatMap(({ sheet }) =>
-            [...sheet.cssRules].filter(a => a instanceof CSSImportRule)
-        );
-
-        return isLoaded(importRules);
+            const importRules = [...styles].flatMap(({ sheet }) =>
+                [...sheet.cssRules].filter(a => a instanceof CSSImportRule)
+            );
+            return isLoaded(importRules);
+        } catch (error) {
+            resolve();
+        }
     });
 };
