@@ -6,6 +6,7 @@
         "no-sequences": "off"
     },
     "globals": {
+        "caches": true,
         "CSSImportRule": true,
         "customElements": true,
         "CustomEvent": true,
@@ -16,6 +17,8 @@
         "MutationObserver": true,
         "requestIdleCallback": true,
         "ResizeObserver": true,
+        "Response": true,
+        "self": true,
         "ShadowRoot": true
     }
 }

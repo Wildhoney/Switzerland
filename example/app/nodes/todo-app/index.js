@@ -13,6 +13,19 @@ const retrieve = async props => {
     return props;
 };
 
+const worker = m.once(async props => {
+    try {
+        navigator.serviceWorker &&
+            (await navigator.serviceWorker.register(
+                path('../../utils/worker.js'),
+                { scope: '/' }
+            ));
+        return props;
+    } catch (err) {
+        return props;
+    }
+});
+
 const isBottom = ({ attrs }) => attrs.logo === 'bottom';
 
 const container = props =>
@@ -89,6 +102,7 @@ const retry = ({ render, props }) =>
 
 export default create(
     'todo-app',
+    worker,
     store,
     m.rescue(m.html(retry)),
     m.once(retrieve),
