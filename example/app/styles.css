@@ -17,6 +17,18 @@ body {
     justify-content: center;
 }
 
+@media print {
+    html,
+    body {
+        background-color: white;
+    }
+
+    body {
+        align-items: initial;
+        justify-content: initial;
+    }
+}
+
 todo-app {
     opacity: 0;
     visibility: hidden;
