@@ -11,6 +11,7 @@
         "customElements": true,
         "CustomEvent": true,
         "fetch": true,
+        "fixture": true,
         "HTMLElement": true,
         "Image": true,
         "IntersectionObserver": true,
@@ -19,6 +20,7 @@
         "ResizeObserver": true,
         "Response": true,
         "self": true,
-        "ShadowRoot": true
+        "ShadowRoot": true,
+        "test": true
     }
 }

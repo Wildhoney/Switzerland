@@ -2,17 +2,21 @@
   task: nodemon --experimental-modules ./example/server/index.mjs
 
 - name: format
-  task: prettier --write '{src,test,example}/**/*.{js,css}'
+  task: prettier --write '{src,tests,example}/**/*.{js,css}'
 
 - name: test/lint
   tasks:
-    - eslint "{src,test,example}/**/**.js"
-    - stylelint "example/**/**.css"
+      - eslint "{src,tests,example}/**/**.js"
+      - stylelint "example/**/**.css"
 
 - name: test/spec
   task: ava
+
+- name: test/integration
+  task: concurrently -k -s first 'yarn start' 'testcafe chrome ./tests/integration/*.js'
 
 - name: test
   tasks:
       - taskfile test/lint
       - taskfile test/spec
+      # - taskfile test/integration

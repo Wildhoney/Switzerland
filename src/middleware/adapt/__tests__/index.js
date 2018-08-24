@@ -1,6 +1,6 @@
 import test from 'ava';
 import adapt, { observers } from '../index.js';
-import defaultProps from '../../../../test/helpers/default-props.js';
+import defaultProps from '../../../../tests/helpers/default-props.js';
 
 test('It should return the passed props;', t => {
     const m = adapt();
