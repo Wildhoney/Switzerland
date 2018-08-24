@@ -13,7 +13,7 @@
   task: ava
 
 - name: test/integration
-  task: concurrently -k -s first 'yarn start' 'testcafe chrome ./tests/integration/*.js'
+  task: concurrently -k -s first 'yarn start' 'testcafe chrome:headless ./tests/integration/*.js'
 
 - name: test
   tasks:
