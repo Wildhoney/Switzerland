@@ -1,6 +1,7 @@
 {
     "name": "switzerland",
     "version": "3.0.0",
+    "module": "./src/index.js",
     "description": "",
     "private": true,
     "directories": {
