@@ -1,0 +1,7 @@
+button.add {
+    width: 85px;
+}
+
+button.add::after {
+    content: 'Add';
+}

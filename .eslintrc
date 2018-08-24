@@ -1,0 +1,26 @@
+{
+    "parser": "babel-eslint",
+    "extends": ["standard", "prettier", "prettier/react", "prettier/standard"],
+    "plugins": ["react"],
+    "rules": {
+        "no-sequences": "off"
+    },
+    "globals": {
+        "caches": true,
+        "CSSImportRule": true,
+        "customElements": true,
+        "CustomEvent": true,
+        "fetch": true,
+        "fixture": true,
+        "HTMLElement": true,
+        "Image": true,
+        "IntersectionObserver": true,
+        "MutationObserver": true,
+        "requestIdleCallback": true,
+        "ResizeObserver": true,
+        "Response": true,
+        "self": true,
+        "ShadowRoot": true,
+        "test": true
+    }
+}

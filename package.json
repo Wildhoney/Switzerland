@@ -1,156 +1,68 @@
 {
-  "name": "switzerland",
-  "version": "2.10.0",
-  "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
-  "main": "switzerland.js",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "build": "taskfile build",
-    "lint": "taskfile lint",
-    "lint-js": "taskfile lint-js",
-    "lint-fs": "taskfile lint-fs",
-    "test": "taskfile test",
-    "test-unit": "taskfile test-unit",
-    "test-e2e": "taskfile test-e2e",
-    "docker": "taskfile docker",
-    "start": "taskfile start",
-    "watch": "taskfile watch",
-    "prepublishOnly": "taskfile prepublish",
-    "postpublish": "taskfile postpublish"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Wildhoney/Switzerland.git"
-  },
-  "keywords": [
-    "web components",
-    "webcomponents",
-    "components",
-    "shadow dom",
-    "custom elements"
-  ],
-  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Wildhoney/Switzerland/issues"
-  },
-  "homepage": "https://github.com/Wildhoney/Switzerland#readme",
-  "dependencies": {
-    "css-url-parser": "~1.1.3",
-    "prop-types": "~15.6.1",
-    "redux": "^4.0.0",
-    "redux-thunk": "~2.2.0",
-    "shortid": "~2.2.8",
-    "sort-by": "~1.2.0",
-    "ultradom": "~2.3.4",
-    "webpack": "^4.6.0"
-  },
-  "devDependencies": {
-    "ava": "~0.25.0",
-    "babel-cli": "~6.26.0",
-    "babel-core": "~6.26.0",
-    "babel-eslint": "~8.2.3",
-    "babel-loader": "~7.1.4",
-    "babel-plugin-transform-async-to-generator": "~6.24.1",
-    "babel-plugin-transform-class-properties": "~6.24.1",
-    "babel-plugin-transform-do-expressions": "~6.22.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "~6.26.0",
-    "babel-plugin-transform-object-rest-spread": "~6.26.0",
-    "babel-plugin-transform-react-jsx": "~6.24.1",
-    "babel-polyfill": "~6.26.0",
-    "babel-preset-es2015": "~6.24.1",
-    "babel-preset-stage-2": "~6.24.1",
-    "babel-register": "~6.26.0",
-    "browser-env": "~3.2.5",
-    "concurrently": "~3.5.1",
-    "eslint": "^4.19.1",
-    "eslint-config-xo-react": "~0.16.0",
-    "eslint-plugin-react": "^7.7.0",
-    "express": "~4.16.3",
-    "fslint": "~1.1.0",
-    "ncp": "~2.0.0",
-    "pluralize": "~7.0.0",
-    "ramda": "~0.25.0",
-    "sinon": "^4.5.0",
-    "starwars": "~1.0.0",
-    "taskfile": "~0.5.16",
-    "testcafe": "^0.20.0-alpha.1",
-    "transform-runtime": "0.0.0",
-    "uglifyjs-webpack-plugin": "~1.2.5",
-    "webpack-cli": "^2.0.15",
-    "xo": "^0.20.3"
-  },
-  "ava": {
-    "files": [
-      "tests/unit/*.test.js",
-      "tests/unit/**/*.test.js"
+    "name": "switzerland",
+    "version": "3.0.0",
+    "module": "./src/index.js",
+    "description": "",
+    "private": true,
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "format": "taskfile format",
+        "start": "taskfile start",
+        "test": "taskfile test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Wildhoney/Switzerland.git"
+    },
+    "keywords": [
+        "web components",
+        "webcomponents",
+        "components",
+        "shadow dom",
+        "custom elements"
     ],
-    "babel": "inherit",
-    "require": [
-      "babel-register",
-      "babel-polyfill",
-      "./tests/unit/helpers/browser-env.js"
-    ]
-  },
-  "xo": {
-    "space": 4,
-    "esnext": true,
-    "parser": "babel-eslint",
-    "globals": [
-      "window",
-      "document",
-      "customElements",
-      "fetch",
-      "requestAnimationFrame",
-      "navigator",
-      "Image",
-      "MutationObserver",
-      "ShadowRoot",
-      "HTMLElement",
-      "HTMLFormElement",
-      "HTMLScriptElement",
-      "CustomEvent",
-      "ResizeObserver",
-      "IntersectionObserver"
-    ],
-    "extends": "xo-react",
-    "rules": {
-      "curly": [
-        "error",
-        "multi-line"
-      ],
-      "padded-blocks": "off",
-      "object-curly-spacing": [
-        2,
-        "always"
-      ],
-      "max-params": [
-        1,
-        5
-      ],
-      "unicorn/filename-case": "off",
-      "unicorn/custom-error-definition": "off",
-      "default-case": "off",
-      "brace-style": "off",
-      "no-unsafe-negation": "off",
-      "no-constant-condition": "off",
-      "no-unused-expressions": "off",
-      "import/prefer-default-export": "off",
-      "react/jsx-space-before-closing": "off",
-      "react/jsx-tag-spacing": "off",
-      "react/jsx-no-bind": "off",
-      "no-void": "off",
-      "react/forbid-component-props": "off",
-      "import/extensions": [
-        1,
-        {
-          "js": "never",
-          "json": "always"
-        }
-      ]
+    "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Wildhoney/Switzerland/issues"
+    },
+    "ava": {
+        "require": [
+            "esm",
+            "./tests/helpers/browser-env.js"
+        ]
+    },
+    "homepage": "https://github.com/Wildhoney/Switzerland#readme",
+    "dependencies": {
+        "@wildhoney/redux": "4.0.1",
+        "redux-thunk": "2.3.0",
+        "superfine": "6.0.1"
+    },
+    "devDependencies": {
+        "ava": "^0.25.0",
+        "babel-eslint": "8.2.6",
+        "browser-env": "^3.2.5",
+        "compression": "1.7.3",
+        "concurrently": "^3.6.1",
+        "eslint": "^5.4.0",
+        "eslint-config-prettier": "^3.0.1",
+        "eslint-config-standard": "^11.0.0",
+        "eslint-plugin-import": "^2.14.0",
+        "eslint-plugin-node": "^7.0.1",
+        "eslint-plugin-promise": "^4.0.0",
+        "eslint-plugin-react": "^7.11.1",
+        "eslint-plugin-standard": "^3.1.0",
+        "esm": "3.0.77",
+        "express": "4.16.3",
+        "jest": "23.5.0",
+        "nodemon": "1.18.3",
+        "prettier": "1.14.2",
+        "starwars": "^1.0.0",
+        "stylelint": "^9.5.0",
+        "stylelint-config-prettier": "^4.0.0",
+        "taskfile": "0.8.5",
+        "testcafe": "^0.21.1"
     }
-  },
-  "pre-push": []
 }
