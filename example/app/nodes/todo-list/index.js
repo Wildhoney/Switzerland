@@ -5,11 +5,11 @@ const path = init(import.meta.url);
 
 const container = ({ redux, props }) =>
     h('ul', {}, [
-        list(props),
-        !redux.state.list.length && nothing(props),
         h.stylesheet(path('styles/index.css')),
         h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
-        h.stylesheet(path('styles/print.css'), 'print')
+        h.stylesheet(path('styles/print.css'), 'print'),
+        list(props),
+        !redux.state.list.length && nothing(props)
     ]);
 
 const list = ({ redux }) =>
