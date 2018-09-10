@@ -1,5 +1,5 @@
 import { handler } from '../middleware/rescue/index.js';
-import { h, previous, handlers, state } from './index.js';
+import { previous, handlers, state } from './index.js';
 
 const roots = new WeakMap();
 
@@ -89,16 +89,6 @@ export const getPrototype = tag =>
  */
 export const consoleMessage = (text, type = 'error') =>
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
-
-/**
- * @function getStylesheet ∷ View v ⇒ String → String → v
- */
-export const getStylesheet = (path, mediaQuery = '') =>
-    h(
-        'style',
-        { type: 'text/css' },
-        `@import "${path}" ${mediaQuery}`.trim() + ';'
-    );
 
 /**
  * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
