@@ -11,7 +11,7 @@ import * as u from './utils.js';
 const stylesheet = (path, mediaQuery = '') =>
     h(
         'style',
-        { type: 'text/css' },
+        { key: path, type: 'text/css' },
         `@import "${path}" ${mediaQuery}`.trim() + ';'
     );
 

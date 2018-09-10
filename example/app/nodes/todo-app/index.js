@@ -30,21 +30,17 @@ const isBottom = ({ attrs }) => attrs.logo === 'bottom';
 
 const container = props =>
     h('section', { class: 'todo-app' }, [
-        h.stylesheet(path('styles/index.css')),
-        h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
-        h.stylesheet(path('styles/print.css'), 'print'),
         h(todoInput),
         h(todoList),
         header(props),
-        h('ul', {}, [
-            completed(props),
-            position(props),
-            props.adapt && dimensions(props)
-        ]),
+        list(props),
         h.variables({
             orderPosition: isBottom(props) ? 1 : -1,
             borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
-        })
+        }),
+        h.stylesheet(path('styles/index.css')),
+        h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
+        h.stylesheet(path('styles/print.css'), 'print')
     ]);
 
 const header = () =>
@@ -52,6 +48,13 @@ const header = () =>
         h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
             h('img', { src: path('images/logo.png') })
         ])
+    ]);
+
+const list = props =>
+    h('ul', {}, [
+        completed(props),
+        position(props),
+        props.adapt && dimensions(props)
     ]);
 
 const completed = ({ redux }) =>
