@@ -108,11 +108,11 @@ export default create(
     'todo-app',
     worker,
     store,
-    m.rescue(m.html(retry)),
+    m.rescue(m.vdom(retry)),
     m.once(retrieve),
     m.attrs(),
     m.adapt(),
-    m.html(container),
+    m.vdom(container),
     m.wait(todoInput, todoList),
     m.methods({ insert: (value, { redux }) => redux.actions.add(value) })
 );

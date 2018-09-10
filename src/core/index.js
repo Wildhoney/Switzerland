@@ -1,6 +1,6 @@
 import * as u from './utils.js';
 import m from '../middleware/index.js';
-import { h } from '../middleware/html/index.js';
+import { h } from '../middleware/vdom/index.js';
 
 export const handlers = new WeakMap();
 export const previous = new WeakMap();

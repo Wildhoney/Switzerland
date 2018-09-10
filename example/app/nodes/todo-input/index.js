@@ -43,4 +43,4 @@ const button = ({ form }) =>
         disabled: !form || !form.checkValidity()
     });
 
-export default create('todo-input', store, m.html(container));
+export default create('todo-input', store, m.vdom(container));
