@@ -102,7 +102,7 @@ export function create(name, ...middleware) {
                         const stylesheets = u
                             .createShadowRoot(this)
                             .querySelectorAll('style');
-                        await u.cssImportRulesResolved(stylesheets);
+                        await u.hasLoadedCSSImports(stylesheets);
 
                         // Always dispatch the "resolved" event regardless of success or failure. We also apply
                         // the "resolved" class name to the element.

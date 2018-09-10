@@ -160,12 +160,12 @@ export const handleError = (node, error) => {
 };
 
 /**
- * @function cssImportRulesResolved ∷ [HTMLStyleElement] s ⇒ s → Promise void
+ * @function hasLoadedCSSImports ∷ [HTMLStyleElement] s ⇒ s → Promise void
  * ---
  * Takes a list of `HTMLStyleElement` nodes and extracts all of the `CSSImportRule` rules, awaiting
  * the resolution of each one before resolving the yielded promise.
  */
-export const cssImportRulesResolved = styles => {
+export const hasLoadedCSSImports = styles => {
     return new Promise(resolve => {
         try {
             const isLoaded = rules =>
@@ -174,7 +174,7 @@ export const cssImportRulesResolved = styles => {
                     : requestIdleCallback(() => isLoaded(rules));
 
             const importRules = [...styles].flatMap(({ sheet }) =>
-                [...sheet.cssRules].filter(a => a instanceof CSSImportRule)
+                [...sheet.rules].filter(a => a instanceof CSSImportRule)
             );
             return isLoaded(importRules);
         } catch (error) {
