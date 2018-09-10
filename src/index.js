@@ -1,1 +1,1 @@
-export { create, init, m, h } from './core/index.js';
+export { create, alias, init, m, h } from './core/index.js';
