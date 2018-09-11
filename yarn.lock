@@ -2643,9 +2643,9 @@ eslint@^5.4.0:
     table "^4.0.3"
     text-table "^0.2.0"
 
-esm@3.0.77:
-  version "3.0.77"
-  resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.77.tgz#9c81e3f4c8e422b86d525d0d365665825af8dfae"
+esm@3.0.80:
+  version "3.0.80"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.80.tgz#234c56d1509ff6246e26cd3aeccfa1d377517d6b"
 
 espower-location-detector@^1.0.0:
   version "1.0.0"
@@ -6681,10 +6681,6 @@ stack-utils@^1.0.1:
 stackframe@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-0.3.1.tgz#33aa84f1177a5548c8935533cbfeb3420975f5a4"
-
-starwars@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/starwars/-/starwars-1.0.0.tgz#33d4bb687e107d275292e447e5f5a03c633deddf"
 
 state-toggle@^1.0.0:
   version "1.0.1"
