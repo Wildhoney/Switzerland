@@ -1,12 +1,11 @@
 import * as u from './utils.js';
 import m from '../middleware/index.js';
-import { h } from '../middleware/vdom/index.js';
 import * as t from './types.js';
 
 export const handlers = new WeakMap();
 export const previous = new WeakMap();
 
-export { m, h, t };
+export { m, t };
 
 export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');

@@ -3,8 +3,6 @@ import { previous, handlers, state } from './index.js';
 
 const roots = new WeakMap();
 
-const defaultBoundaryOptions = { mode: 'open', delegatesFocus: false };
-
 /**
  * @function dispatchEvent ∷ ∀ a. HTMLElement e ⇒ e → String → Object String a → void
  * ---
@@ -13,7 +11,7 @@ const defaultBoundaryOptions = { mode: 'open', delegatesFocus: false };
  */
 export const dispatchEvent = node => (name, payload) =>
     node.dispatchEvent(
-        new CustomEvent(name, {
+        new window.CustomEvent(name, {
             detail: { ...payload, version: '3.0.0' },
             bubbles: true,
             composed: true
@@ -27,13 +25,16 @@ export const dispatchEvent = node => (name, payload) =>
  * already. Returns the node if a shadow boundary cannot be attached to the element.
  */
 export const createShadowRoot = (node, options = {}) => {
+
+    const defaultOptions = { mode: 'open', delegatesFocus: false };
+
     if (roots.has(node)) {
         return roots.get(node);
     }
 
     try {
         const root = node.attachShadow({
-            ...defaultBoundaryOptions,
+            ...defaultOptions,
             ...options
         });
         roots.set(node, root);
@@ -61,7 +62,7 @@ export const getRandomId = () => {
  */
 export const resolveTagName = (name, suffix = null) => {
     const tag = suffix ? `${name}-${suffix}` : name;
-    return !customElements.get(tag) ? tag : resolveTagName(tag, getRandomId());
+    return !window.customElements.get(tag) ? tag : resolveTagName(tag, getRandomId());
 };
 
 /**

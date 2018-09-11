@@ -59,6 +59,7 @@
         "jest": "23.6.0",
         "nodemon": "1.18.4",
         "prettier": "1.14.2",
+        "sinon": "^6.2.0",
         "stylelint": "^9.5.0",
         "stylelint-config-prettier": "^4.0.0",
         "taskfile": "0.8.5",
