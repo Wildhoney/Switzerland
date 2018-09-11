@@ -120,10 +120,8 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => {
 export const processMiddleware = async (node, initialProps, middleware) => {
     const props = await middleware.reduce(async (accumP, middleware) => {
         const props = await accumP;
-        const newProps = middleware({
-            ...props,
-            props
-        });
+        props.props = props;
+        const newProps = middleware({ ...props });
 
         // Determine if there's an error handler in the current set of props. If there is then
         // set the handler function as the default to be used if an error is subsequently thrown.
