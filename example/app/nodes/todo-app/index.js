@@ -1,32 +1,11 @@
-import { create, init, h, m } from '/vendor/index.js';
+import { create, init, h, m, t } from '/vendor/index.js';
 import store from '../../utils/store.js';
-import db from '../../utils/db.js';
+import { worker, retrieve } from './middleware.js';
 import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
 
 const path = init(import.meta.url);
-
-const retrieve = async props => {
-    const { todos } = await db();
-    props.redux.actions.put(todos);
-    return props;
-};
-
-const worker = m.once(async props => {
-    try {
-        navigator.serviceWorker &&
-            (await navigator.serviceWorker.register(
-                path('../../utils/worker.js'),
-                { scope: '/' }
-            ));
-        return props;
-    } catch (err) {
-        return props;
-    }
-});
-
-const isBottom = ({ attrs }) => attrs.logo === 'bottom';
 
 const container = props =>
     h('section', { class: 'todo-app' }, [
@@ -35,8 +14,8 @@ const container = props =>
         header(props),
         list(props),
         h.variables({
-            orderPosition: isBottom(props) ? 1 : -1,
-            borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
+            orderPosition: u.isBottom(props) ? 1 : -1,
+            borderColour: u.isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
         }),
         h.stylesheet(path('styles/index.css')),
         h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
@@ -52,12 +31,12 @@ const header = () =>
 
 const list = props =>
     h('ul', {}, [
-        completed(props),
-        position(props),
-        props.adapt && dimensions(props)
+        itemCompleted(props),
+        itemPosition(props),
+        props.adapt && itemDimensions(props)
     ]);
 
-const completed = ({ redux }) =>
+const itemCompleted = ({ redux }) =>
     h('li', {}, [
         h('em', {}, 'Completed: '),
         h(
@@ -69,13 +48,13 @@ const completed = ({ redux }) =>
         )
     ]);
 
-const position = ({ props }) =>
+const itemPosition = ({ props }) =>
     h('li', {}, [
         h('em', {}, 'Logo: '),
         h(
             'a',
             {
-                class: isBottom(props) ? 'active' : '',
+                class: u.isBottom(props) ? 'active' : '',
                 onclick: () => props.node.setAttribute('logo', 'bottom')
             },
             'Bottom'
@@ -84,14 +63,14 @@ const position = ({ props }) =>
         h(
             'a',
             {
-                class: !isBottom(props) ? 'active' : '',
+                class: !u.isBottom(props) ? 'active' : '',
                 onclick: () => props.node.setAttribute('logo', 'top')
             },
             'Top'
         )
     ]);
 
-const dimensions = ({ adapt }) =>
+const itemDimensions = ({ adapt }) =>
     h('li', {}, [
         h('em', {}, 'Dimensions: '),
         h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)
@@ -106,11 +85,11 @@ const retry = ({ render, props }) =>
 
 export default create(
     'todo-app',
-    worker,
     store,
+    m.once(worker),
     m.rescue(m.vdom(retry)),
     m.once(retrieve),
-    m.attrs(),
+    m.attrs({ logo: t.String }),
     m.adapt(),
     m.vdom(container),
     m.wait(todoInput, todoList),

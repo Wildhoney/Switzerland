@@ -6,3 +6,5 @@ export const pluralise = (count, word) => {
             return `${word}s`;
     }
 };
+
+export const isBottom = ({ attrs }) => attrs.logo === 'bottom';
