@@ -88,8 +88,8 @@ const retry = ({ render, h, props }) =>
 export default create(
     'todo-app',
     store,
-    m.once(worker),
     m.rescue(m.vdom(retry)),
+    m.once(worker),
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
