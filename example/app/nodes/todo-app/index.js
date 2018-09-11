@@ -15,7 +15,9 @@ const container = props =>
         list(props),
         h.variables({
             orderPosition: u.isBottom(props) ? 1 : -1,
-            borderColour: u.isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
+            borderColour: u.isBottom(props)
+                ? 'transparent'
+                : 'rgba(0, 0, 0, 0.1)'
         }),
         h.stylesheet(path('styles/index.css')),
         h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
