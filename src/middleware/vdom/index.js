@@ -32,12 +32,12 @@ extendedH.variables = variables;
 extendedH.stylesheet = stylesheet;
 
 /**
- * @function html ∷ View v, Props p ⇒ (void → v) → (p → p)
+ * @function vdom ∷ View v, Props p ⇒ (p → v) → (p → p)
  * ---
  * Takes a virtual DOM representation that will render to the node's shadow boundary. For size reasons, Switzerland
  * uses Picodom over VirtualDOM, and as such you can use the Picodom documentation for reference.
  */
-export default function html(getView, options = {}) {
+export default function vdom(getView, options = {}) {
     return async props => {
         const boundary = createShadowRoot(props.node, options);
 
