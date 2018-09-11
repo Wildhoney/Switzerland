@@ -3,7 +3,6 @@ import { createShadowRoot } from '../../core/utils.js';
 
 /**
  * @function template ∷ Template t, Props p ⇒ (p → t) → (p → p)
- * ---
  */
 export default function template(getView, options = {}) {
     return async props => {

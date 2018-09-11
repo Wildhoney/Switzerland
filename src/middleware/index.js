@@ -1,31 +1,27 @@
-import adapt from './adapt/index.js';
-import attrs from './attrs/index.js';
-import defer from './defer/index.js';
-import delay from './delay/index.js';
-import intersect from './intersect/index.js';
-import interval from './interval/index.js';
-import loader from './loader/index.js';
-import methods from './methods/index.js';
-import once from './once/index.js';
-import redux from './redux/index.js';
-import rescue from './rescue/index.js';
-import template from './template/index.js';
-import vdom from './vdom/index.js';
-import wait from './wait/index.js';
+/**
+ * @function load ∷ ∀ a. Props p ⇒ String → a|[a] → p → p
+ */
+const load = name => args => async props => {
+    const module = await import(`./${name}/index.js`);
+    const f = Array.isArray(args)
+        ? module.default(...args)
+        : module.default(args);
+    return f(props);
+};
 
 export default {
-    adapt,
-    attrs,
-    defer,
-    delay,
-    intersect,
-    interval,
-    loader,
-    methods,
-    once,
-    redux,
-    rescue,
-    template,
-    vdom,
-    wait
+    adapt: load('adapt'),
+    attrs: load('attrs'),
+    defer: load('defer'),
+    delay: load('delay'),
+    intersect: load('intersect'),
+    interval: load('interval'),
+    loader: load('loader'),
+    methods: load('methods'),
+    once: load('once'),
+    redux: load('redux'),
+    rescue: load('rescue'),
+    template: load('template'),
+    vdom: load('vdom'),
+    wait: load('wait')
 };
