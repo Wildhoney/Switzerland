@@ -1,9 +1,9 @@
-import { create, init, h, m } from '/vendor/index.js';
+import { create, init, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
 
 const path = init(import.meta.url);
 
-const container = ({ redux, props }) =>
+const container = ({ redux, h, props }) =>
     h('ul', {}, [
         list(props),
         !redux.state.list.length && nothing(props),
@@ -12,7 +12,7 @@ const container = ({ redux, props }) =>
         h.stylesheet(path('styles/print.css'), 'print')
     ]);
 
-const list = ({ redux }) =>
+const list = ({ redux, h }) =>
     redux.state.list.sort((a, b) => a.created - b.created).map(model =>
         h('li', { class: model.done ? 'done' : '' }, [
             h('p', { onclick: () => redux.actions.mark(model.id) }, model.text),
@@ -27,7 +27,7 @@ const list = ({ redux }) =>
         ])
     );
 
-const nothing = () =>
+const nothing = ({ h }) =>
     h('li', { class: 'none' }, [
         h('p', {}, 'You have not added any todos yet.')
     ]);

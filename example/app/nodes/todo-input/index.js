@@ -1,9 +1,9 @@
-import { create, init, h, m } from '/vendor/index.js';
+import { create, init, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
 
 const path = init(import.meta.url);
 
-const container = ({ value, render, redux, props }) =>
+const container = ({ value, render, redux, h, props }) =>
     h(
         'form',
         {
@@ -24,7 +24,7 @@ const container = ({ value, render, redux, props }) =>
         ]
     );
 
-const input = ({ value = '', render }) =>
+const input = ({ value = '', render, h }) =>
     h('input', {
         value,
         type: 'text',
@@ -36,7 +36,7 @@ const input = ({ value = '', render }) =>
         oninput: ({ target }) => render({ value: target.value })
     });
 
-const button = ({ form }) =>
+const button = ({ form, h }) =>
     h('button', {
         type: 'submit',
         class: 'add',

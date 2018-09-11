@@ -1,4 +1,4 @@
-import { create, init, h, m, t } from '/vendor/index.js';
+import { create, init, m, t } from '/vendor/index.js';
 import store from '../../utils/store.js';
 import { worker, retrieve } from './middleware.js';
 import * as u from './utils.js';
@@ -7,7 +7,7 @@ import todoList from '../todo-list/index.js';
 
 const path = init(import.meta.url);
 
-const container = props =>
+const container = ({ h, props }) =>
     h('section', { class: 'todo-app' }, [
         h(todoInput),
         h(todoList),
@@ -24,21 +24,21 @@ const container = props =>
         h.stylesheet(path('styles/print.css'), 'print')
     ]);
 
-const header = () =>
+const header = ({ h }) =>
     h('h1', {}, [
         h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
             h('img', { src: path('images/logo.png') })
         ])
     ]);
 
-const list = props =>
+const list = ({ h, props }) =>
     h('ul', {}, [
         itemCompleted(props),
         itemPosition(props),
         props.adapt && itemDimensions(props)
     ]);
 
-const itemCompleted = ({ redux }) =>
+const itemCompleted = ({ redux, h }) =>
     h('li', {}, [
         h('em', {}, 'Completed: '),
         h(
@@ -50,7 +50,7 @@ const itemCompleted = ({ redux }) =>
         )
     ]);
 
-const itemPosition = ({ props }) =>
+const itemPosition = ({ h, props }) =>
     h('li', {}, [
         h('em', {}, 'Logo: '),
         h(
@@ -72,13 +72,13 @@ const itemPosition = ({ props }) =>
         )
     ]);
 
-const itemDimensions = ({ adapt }) =>
+const itemDimensions = ({ h, adapt }) =>
     h('li', {}, [
         h('em', {}, 'Dimensions: '),
         h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)
     ]);
 
-const retry = ({ render, props }) =>
+const retry = ({ render, h, props }) =>
     h('section', { class: 'todo-app' }, [
         h.stylesheet(path('styles.css')),
         header(props),
