@@ -26,6 +26,11 @@ const variables = model => {
     return h('style', { type: 'text/css' }, `:host { ${vars} }`);
 };
 
+// Extend the `h` object with useful functions.
+const extendedH = h;
+extendedH.variables = variables;
+extendedH.stylesheet = stylesheet;
+
 /**
  * @function html ∷ View v, Props p ⇒ (void → v) → (p → p)
  * ---
@@ -37,6 +42,11 @@ export default function html(getView, options = {}) {
         const boundary = createShadowRoot(props.node, options);
 
         if (props.node.isConnected) {
+            // Attach `h` to the current set of props, and all of its infinitely nested `props` where
+            // the `props` haven't been shallowly copied.
+            props.h = extendedH;
+            props.props.h = extendedH;
+
             const view = await getView(props);
 
             if (view) {
@@ -49,13 +59,4 @@ export default function html(getView, options = {}) {
     };
 }
 
-// Extend the `h` object with useful functions.
-const h_ = h;
-h_.variables = variables;
-h_.stylesheet = stylesheet;
-
-// Convenience appendage for VDOM transpilation so the pragma needs to be only `html.h` without any peculiar
-// import of `h` just for the transpilation process.
-html.h = h_;
-
-export { h_ as h };
+export { extendedH as h };
