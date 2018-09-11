@@ -9,6 +9,7 @@ import methods from './methods/index.js';
 import once from './once/index.js';
 import redux from './redux/index.js';
 import rescue from './rescue/index.js';
+import template from './template/index.js';
 import vdom from './vdom/index.js';
 import wait from './wait/index.js';
 
@@ -24,6 +25,7 @@ export default {
     once,
     redux,
     rescue,
+    template,
     vdom,
     wait
 };
