@@ -31,9 +31,9 @@ test('It should be able to parse Bool types;', t => {
 
 test.skip('It should be able to parse Date types;', t => {
     const date = type.Date('10-10-1985');
-    t.is(date.getFullYear(), '1985');
-    t.is(date.getMonth() + 1, '10');
-    t.is(date.getDate(), '10');
+    t.is(date.getFullYear(), 1985);
+    t.is(date.getMonth() + 1, 10);
+    t.is(date.getDate(), 10);
 });
 
 test('It should be able to parse Array types;', t => {
