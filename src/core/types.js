@@ -26,7 +26,7 @@ export const Bool = a => a === '1' || a.toLowerCase() === 'true';
 /**
  * @function Date ∷ String → Date
  */
-export const Date = a => new Date(Date.parse(a));
+export const Date = a => new window.Date(window.Date.parse(a));
 
 /**
  * @function Array ∷ ∀ a b. (a → b) → String → [b]
@@ -38,6 +38,6 @@ export const Array = (f = String) => a => a.split(',').map(a => f(a));
  */
 export const Tuple = (...fs) => a =>
     a.split(',').map((a, index) => {
-        const f = fs[index];
+        const f = fs[index] || String;
         return f(a);
     });
