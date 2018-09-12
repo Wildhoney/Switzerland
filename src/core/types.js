@@ -11,7 +11,7 @@ export const Int = parseInt;
 /**
  * @function BigInt ∷ String → BigInt
  */
-export const BigInt = window.BigInt;
+export const BigInt = a => window.BigInt(a);
 
 /**
  * @function Float ∷ String → Float
