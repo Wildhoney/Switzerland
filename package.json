@@ -8,7 +8,9 @@
     },
     "scripts": {
         "coverage": "taskfile test/coverage",
+        "docker": "taskfile docker",
         "format": "taskfile format",
+        "postpublish": "taskfile docker",
         "start": "taskfile start",
         "test": "taskfile test"
     },

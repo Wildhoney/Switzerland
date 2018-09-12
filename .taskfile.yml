@@ -23,3 +23,9 @@
       - taskfile test/lint
       - taskfile test/spec
       # - taskfile test/integration
+
+- name: docker
+  tasks:
+    - docker build -t wildhoney/switzerland:latest .
+    - - docker tag wildhoney/switzerland wildhoney/switzerland:$npm_package_version
+    - - - docker push wildhoney/switzerland
