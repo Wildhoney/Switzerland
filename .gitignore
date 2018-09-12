@@ -6,3 +6,6 @@ lerna-debug.log
 
 # npm
 node_modules
+
+# nyc
+.nyc_output
