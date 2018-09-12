@@ -119,9 +119,10 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => {
  * @function processMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
  */
 export const processMiddleware = async (node, initialProps, middleware) => {
-    const props = await middleware.reduce(async (accumP, middleware) => {
+    const props = await middleware.reduce(async (accumP, middlewareP) => {
         const props = await accumP;
         props.props = props;
+        const middleware = await middlewareP;
         const newProps = middleware({ ...props });
 
         // Determine if there's an error handler in the current set of props. If there is then

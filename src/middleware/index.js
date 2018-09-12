@@ -1,12 +1,9 @@
 /**
  * @function load ∷ ∀ a. Props p ⇒ String → a|[a] → p → p
  */
-const load = name => args => async props => {
+const load = name => async args => {
     const module = await import(`./${name}/index.js`);
-    const f = Array.isArray(args)
-        ? module.default(...args)
-        : module.default(args);
-    return f(props);
+    return Array.isArray(args) ? module.default(...args) : module.default(args);
 };
 
 export default {
