@@ -1,5 +1,5 @@
 import test from 'ava';
-import * as type from '../types.js';
+import * as type from '../index.js';
 
 test.afterEach(() => {
     window.BigInt = undefined;

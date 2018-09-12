@@ -1,12 +1,7 @@
 import * as u from './utils.js';
-import m from '../middleware/index.js';
-import * as t from './types.js';
 
 export const handlers = new WeakMap();
 export const previous = new WeakMap();
-
-export { m, t };
-
 export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');
 
@@ -21,7 +16,7 @@ export const init = url => path => new URL(path, url).pathname;
  * Takes the name of the web component and an array of functions that represent the middleware. Each
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
-export function create(name, ...middleware) {
+export const create = (name, ...middleware) => {
     const parts = name.split('/');
     const [tag, Prototype] = [
         u.resolveTagName(parts[0]),
@@ -123,12 +118,12 @@ export function create(name, ...middleware) {
     );
 
     return tag;
-}
+};
 
 /**
  * @function alias ∷ String → String → String
  */
-export function alias(name, newName) {
+export const alias = (name, newName) => {
     const Constructor = customElements.get(name);
     const instance = new Constructor();
     const parts = newName.split('/');
@@ -158,4 +153,4 @@ export function alias(name, newName) {
     );
 
     return newName;
-}
+};

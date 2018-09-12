@@ -6,19 +6,17 @@ const load = name => async (...args) => {
     return module.default(...args);
 };
 
-export default {
-    adapt: load('adapt'),
-    attrs: load('attrs'),
-    defer: load('defer'),
-    delay: load('delay'),
-    intersect: load('intersect'),
-    interval: load('interval'),
-    loader: load('loader'),
-    methods: load('methods'),
-    once: load('once'),
-    redux: load('redux'),
-    rescue: load('rescue'),
-    template: load('template'),
-    vdom: load('vdom'),
-    wait: load('wait')
-};
+export const adapt = load('adapt');
+export const attrs = load('attrs');
+export const defer = load('defer');
+export const delay = load('delay');
+export const intersect = load('intersect');
+export const interval = load('interval');
+export const loader = load('loader');
+export const methods = load('methods');
+export const once = load('once');
+export const redux = load('redux');
+export const rescue = load('rescue');
+export const template = load('template');
+export const vdom = load('vdom');
+export const wait = load('wait');

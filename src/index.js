@@ -1,1 +1,5 @@
-export { create, alias, init, m, t } from './core/index.js';
+import * as t from './types/index.js';
+import * as m from './middleware/index.js';
+
+export { create, alias, init } from './core/index.js';
+export { t, m };
