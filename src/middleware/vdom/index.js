@@ -44,10 +44,9 @@ export default function vdom(getView, options = {}) {
         if (props.node.isConnected) {
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
             // the `props` haven't been shallowly copied.
-            props.h = extendedH;
             props.props.h = extendedH;
 
-            const view = await getView(props);
+            const view = await getView({ ...props, h:extendedH});
 
             if (view) {
                 const tree = patch(u.takeTree(props.node), view, boundary);

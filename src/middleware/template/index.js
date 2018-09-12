@@ -12,10 +12,8 @@ export default function template(getView, options = {}) {
         if (props.node.isConnected) {
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
             // the `props` haven't been shallowly copied.
-            props.h = h;
             props.props.h = h;
-
-            await getView(props);
+            await getView({...props, h});
         }
 
         return { ...props, boundary };
