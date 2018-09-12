@@ -30,7 +30,7 @@ const caches = new Map();
  */
 export default function once(fn, strategy = types.ONLY) {
 
-    !caches.has(fn) && caches.set(fn, new Set());
+    caches.set(fn, new Set());
     const cache = caches.get(fn);
     const maybeInvoke = (fn, props)=> {
         if (cache.has(props.node)) {
@@ -46,12 +46,12 @@ export default function once(fn, strategy = types.ONLY) {
         if (props.node.isConnected) {
             const result =
                 strategy !== types.ON_UNMOUNT && (await maybeInvoke(fn, props));
-            // strategy === types.ON_UNMOUNT && cache.delete(props.node);
+            strategy === types.ON_UNMOUNT && cache.delete(props.node);
             return { ...result, ...props };
         }
 
         const result = await maybeInvoke(fn, props);
-        // strategy === types.ON_MOUNT && cache.delete(props.node);
+        strategy === types.ON_MOUNT && cache.delete(props.node);
         return { ...result, ...props };
     };
 }
