@@ -6,6 +6,8 @@ script:
     - yarn
     - yarn test
 
+after_success: yarn run coverage
+
 deploy:
     provider: heroku
     skip_cleanup: true

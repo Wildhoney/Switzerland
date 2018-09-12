@@ -7,6 +7,7 @@
         "test": "tests"
     },
     "scripts": {
+        "coverage": "taskfile test/coverage",
         "format": "taskfile format",
         "start": "taskfile start",
         "test": "taskfile test"
@@ -33,6 +34,18 @@
             "./tests/helpers/browser-env.js"
         ]
     },
+    "babel": {
+        "presets": [
+            "@babel/env"
+        ],
+        "env": {
+            "test": {
+                "plugins": [
+                    "istanbul"
+                ]
+            }
+        }
+    },
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
         "@wildhoney/redux": "4.0.1",
@@ -46,6 +59,7 @@
         "browser-env": "^3.2.5",
         "compression": "1.7.3",
         "concurrently": "^4.0.1",
+        "coveralls": "^3.0.2",
         "eslint": "^5.5.0",
         "eslint-config-prettier": "^3.0.1",
         "eslint-config-standard": "^12.0.0",
@@ -58,6 +72,7 @@
         "express": "4.16.3",
         "jest": "23.6.0",
         "nodemon": "1.18.4",
+        "nyc": "^13.0.1",
         "prettier": "1.14.2",
         "sinon": "^6.2.0",
         "stylelint": "^9.5.0",

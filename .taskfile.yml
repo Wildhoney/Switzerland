@@ -10,7 +10,10 @@
       - stylelint "example/**/**.css"
 
 - name: test/spec
-  task: ava
+  task: NODE_ENV=test nyc ava
+
+- name: test/coverage
+  task: NODE_ENV=test nyc report --reporter=text-lcov | coveralls
 
 - name: test/integration
   task: concurrently -k -s first 'yarn start' 'testcafe chrome:headless ./tests/integration/*.js'
