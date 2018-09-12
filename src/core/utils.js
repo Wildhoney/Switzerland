@@ -25,7 +25,6 @@ export const dispatchEvent = node => (name, payload) =>
  * already. Returns the node if a shadow boundary cannot be attached to the element.
  */
 export const createShadowRoot = (node, options = {}) => {
-
     const defaultOptions = { mode: 'open', delegatesFocus: false };
 
     if (roots.has(node)) {
@@ -62,7 +61,9 @@ export const getRandomId = () => {
  */
 export const resolveTagName = (name, suffix = null) => {
     const tag = suffix ? `${name}-${suffix}` : name;
-    return !window.customElements.get(tag) ? tag : resolveTagName(tag, getRandomId());
+    return !window.customElements.get(tag)
+        ? tag
+        : resolveTagName(tag, getRandomId());
 };
 
 /**

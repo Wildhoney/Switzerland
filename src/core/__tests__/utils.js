@@ -26,7 +26,9 @@ test('It should be able to attach the shadow boundary to an element;', t => {
     const element = document.createElement('section');
     const sameElement = u.createShadowRoot(element);
     t.is(element, sameElement);
-    const attachShadow = spy(() => document.createElement('fake-shadow-boundary'));
+    const attachShadow = spy(() =>
+        document.createElement('fake-shadow-boundary')
+    );
     element.attachShadow = attachShadow;
     const shadowBoundary = u.createShadowRoot(element);
     t.is(attachShadow.callCount, 1);

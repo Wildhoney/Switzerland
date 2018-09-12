@@ -13,7 +13,7 @@ export default function template(getView, options = {}) {
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
             // the `props` haven't been shallowly copied.
             props.props.h = h;
-            await getView({...props, h});
+            await getView({ ...props, h });
         }
 
         return { ...props, boundary };

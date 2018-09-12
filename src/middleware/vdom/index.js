@@ -46,7 +46,7 @@ export default function vdom(getView, options = {}) {
             // the `props` haven't been shallowly copied.
             props.props.h = extendedH;
 
-            const view = await getView({ ...props, h:extendedH});
+            const view = await getView({ ...props, h: extendedH });
 
             if (view) {
                 const tree = patch(u.takeTree(props.node), view, boundary);

@@ -29,18 +29,17 @@ const caches = new Map();
  * to be invoked multiple times, but not on a simple refresh of the component's contents.
  */
 export default function once(fn, strategy = types.ONLY) {
-
     caches.set(fn, new Set());
     const cache = caches.get(fn);
-    const maybeInvoke = (fn, props)=> {
+    const maybeInvoke = (fn, props) => {
         if (cache.has(props.node)) {
             return props;
         }
-        
+
         const result = fn(props);
         cache.add(props.node);
         return result;
-    }
+    };
 
     return async props => {
         if (props.node.isConnected) {
