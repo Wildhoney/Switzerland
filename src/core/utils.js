@@ -172,11 +172,14 @@ export const hasLoadedCSSImports = styles => {
             const isLoaded = rules =>
                 rules.every(a => a.styleSheet)
                     ? resolve()
-                    : requestIdleCallback(() => isLoaded(rules));
+                    : 'requestIdleCallback' in window
+                        ? requestIdleCallback(() => isLoaded(rules))
+                        : setTimeout(() => isLoaded(rules), 10);
 
             const importRules = [...styles].flatMap(({ sheet }) =>
                 [...sheet.rules].filter(a => a instanceof CSSImportRule)
             );
+
             return isLoaded(importRules);
         } catch (error) {
             resolve();
