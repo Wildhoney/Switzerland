@@ -1,6 +1,10 @@
 import test from 'ava';
 import * as type from '../types.js';
 
+test.afterEach(() => {
+    window.BigInt = undefined;
+});
+
 test('It should be able to parse String types;', t => {
     t.is(type.String('dinosaurs'), 'dinosaurs');
 });
@@ -11,9 +15,10 @@ test('It should be able to parse Int types;', t => {
     t.is(type.Int('a'), NaN);
 });
 
-test.skip('It should be able to parse BigInt types;', t => {
-    // t.is(type.BigInt('5'), 5n);
-    // t.is(type.BigInt('a'), NaN);
+test('It should be able to parse BigInt types;', t => {
+    window.BigInt = Number;
+    t.is(type.BigInt('5'), 5);
+    t.is(type.BigInt('a'), NaN);
 });
 
 test('It should be able to parse Float types;', t => {
@@ -49,4 +54,5 @@ test('It should be able to parse Tuple types;', t => {
         32,
         5.1
     ]);
+    t.deepEqual(type.Tuple()('Adam,32'), ['Adam', '32']);
 });
