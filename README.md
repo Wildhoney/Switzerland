@@ -8,15 +8,15 @@
 <br />
 `docker pull wildhoney/switzerland`
 
-![Travis](http://img.shields.io/travis/Wildhoney/Switzerland.svg?style=flat-square)
+![Travis](http://img.shields.io/travis/Wildhoney/Switzerland.svg?style=for-the-badge)
 &nbsp;
-![npm](http://img.shields.io/npm/v/switzerland.svg?style=flat-square)
+![npm](http://img.shields.io/npm/v/switzerland.svg?style=for-the-badge)
 &nbsp;
-![License MIT](http://img.shields.io/badge/license-mit-lightgrey.svg?style=flat-square)
+![License MIT](http://img.shields.io/badge/license-mit-lightgrey.svg?style=for-the-badge)
 &nbsp;
-![Coveralls](https://img.shields.io/coveralls/Wildhoney/Switzerland.svg?style=flat-square)
+![Coveralls](https://img.shields.io/coveralls/Wildhoney/Switzerland.svg?style=for-the-badge)
 &nbsp;
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=for-the-badge)](https://github.com/prettier/prettier)
 
 ![Screenshot](media/screenshot.png)
 
