@@ -16,7 +16,7 @@ export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
 
     return props => {
         if (!observers.has(props.node)) {
-            const observer = new MutationObserver(mutations => {
+            const observer = new window.MutationObserver(mutations => {
                 mutations.some(mutation => {
                     // Only cause a re-render if some of the mutated items have actually changed the attribute
                     // when compared, and are not included in the `exclude` list specified in the function's

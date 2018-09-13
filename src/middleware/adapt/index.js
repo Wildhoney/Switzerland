@@ -1,11 +1,17 @@
-const observer =
+/**
+ * @function getObserver ∷ ResizeObserver|void
+ */
+const getObserver = () =>
     'ResizeObserver' in window &&
-    new ResizeObserver(entries => {
+    new window.ResizeObserver(entries => {
         entries.forEach(entry =>
             entry.target.render({ adapt: entry.contentRect })
         );
     });
 
+/**
+ * @constant observers ∷ WeakSet
+ */
 export const observers = new WeakSet();
 
 /**
@@ -17,6 +23,8 @@ export const observers = new WeakSet();
  * differently than when it's placed in a 400px space.
  */
 export default function adapt() {
+    const observer = getObserver();
+
     return props => {
         if (!observers.has(props.node)) {
             observers.add(props.node);

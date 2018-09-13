@@ -1,8 +1,16 @@
-const observer =
+/**
+ * @function getObserver ∷ IntersectionObserver|void
+ */
+const getObserver = () =>
     'IntersectionObserver' in window &&
-    new IntersectionObserver(entries => {
+    new window.IntersectionObserver(entries => {
         entries.forEach(entry => entry.target.render({ intersect: entry }));
     });
+
+/**
+ * @constant observers ∷ WeakSet
+ */
+export const observers = new WeakSet();
 
 /**
  * @function intersect ∷ Props p ⇒ (p → p)
@@ -13,7 +21,7 @@ const observer =
  * images based on the intersection details.
  */
 export default function intersect() {
-    const observers = new WeakSet();
+    const observer = getObserver();
 
     return props => {
         if (!observers.has(props.node)) {

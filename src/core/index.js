@@ -23,7 +23,7 @@ export const create = (name, ...middleware) => {
         u.getPrototype(parts[1])
     ];
 
-    customElements.define(
+    window.customElements.define(
         tag,
         class extends Prototype {
             constructor() {
@@ -124,12 +124,12 @@ export const create = (name, ...middleware) => {
  * @function alias ∷ String → String → String
  */
 export const alias = (name, newName) => {
-    const Constructor = customElements.get(name);
+    const Constructor = window.customElements.get(name);
     const instance = new Constructor();
     const parts = newName.split('/');
     const Prototype = u.getPrototype(parts[1]);
 
-    customElements.define(
+    window.customElements.define(
         newName,
         class extends Prototype {
             constructor() {

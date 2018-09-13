@@ -12,11 +12,13 @@ export default function interval(milliseconds) {
     const mount = once(props => {
         // Use the `setInterval` to re-render the component every X milliseconds.
         interval.set(props.node, setInterval(props.render, milliseconds));
+        return props;
     }, types.ON_MOUNT);
 
     const unmount = once(props => {
         // Stop the interval when the node is unmounted from the DOM.
         clearInterval(interval.get(props.node));
+        return props;
     }, types.ON_UNMOUNT);
 
     return [mount, unmount];

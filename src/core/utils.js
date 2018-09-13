@@ -80,7 +80,7 @@ export const getEventName = label => `@switzerland/${label}`;
  * will be `HTMLElement` unless the user is extending an existing element.
  */
 export const getPrototype = tag =>
-    tag ? document.createElement(tag).constructor : HTMLElement;
+    tag ? document.createElement(tag).constructor : window.HTMLElement;
 
 /**
  * @function consoleMessage ∷ String → String → void

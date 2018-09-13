@@ -9,7 +9,7 @@ export default function loader(sources) {
         await Promise.all(
             Object.values(sources).map(src => {
                 return new Promise(resolve => {
-                    const img = new Image();
+                    const img = new window.Image();
                     img.addEventListener('load', resolve);
                     img.addEventListener('error', resolve);
                     img.setAttribute('src', src);
