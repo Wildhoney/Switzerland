@@ -7,7 +7,7 @@ import defer from '../index.js';
 test('It should not invoke the function as the component is resolved;', async t => {
     const identity = spy();
     const resolved = () => Promise.resolve();
-    const m = defer(identity, 10);
+    const m = defer(identity, 100);
     m({ ...defaultProps, resolved });
     await delay(5);
     t.is(identity.callCount, 0);
