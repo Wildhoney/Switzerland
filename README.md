@@ -2,10 +2,6 @@
 
 > Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc&hellip; out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.
 
-`npm install switzerland --save`
-<br />
-`docker pull wildhoney/switzerland`
-
 ![Travis](http://img.shields.io/travis/Wildhoney/Switzerland.svg?style=for-the-badge)
 &nbsp;
 ![npm](http://img.shields.io/npm/v/switzerland.svg?style=for-the-badge)
@@ -15,6 +11,10 @@
 ![Coveralls](https://img.shields.io/coveralls/Wildhoney/Switzerland.svg?style=for-the-badge)
 &nbsp;
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=for-the-badge)](https://github.com/prettier/prettier)
+
+`npm install switzerland --save`
+<br />
+`docker pull wildhoney/switzerland`
 
 ![Screenshot](media/screenshot.png)
 
