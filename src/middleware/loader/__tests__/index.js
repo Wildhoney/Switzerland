@@ -1,6 +1,6 @@
 import test from 'ava';
-import loader from '../index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import loader from '../index.js';
 
 test.beforeEach(() => {
     window.Image = class {

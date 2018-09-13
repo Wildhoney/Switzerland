@@ -1,6 +1,6 @@
 import test from 'ava';
-import rescue, { handler } from '../index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import rescue, { handler } from '../index.js';
 
 test('It should be able to setup the rescue function for `catch`;', async t => {
     const f = () => {};

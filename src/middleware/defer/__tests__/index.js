@@ -1,8 +1,8 @@
 import test from 'ava';
 import { spy } from 'sinon';
 import delay from 'delay';
-import defer from '../index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import defer from '../index.js';
 
 test('It should not invoke the function as the component is resolved;', async t => {
     const identity = spy();

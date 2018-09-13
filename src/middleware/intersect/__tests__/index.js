@@ -1,7 +1,7 @@
 import test from 'ava';
 import { spy } from 'sinon';
-import intersect, { observers } from '../index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import intersect, { observers } from '../index.js';
 
 test.beforeEach(t => {
     observers.delete(defaultProps.node);

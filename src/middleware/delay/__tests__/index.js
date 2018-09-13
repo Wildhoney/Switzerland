@@ -1,6 +1,6 @@
 import test from 'ava';
-import delay from '../index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import delay from '../index.js';
 
 test('It should yield only after the specified milliseconds have passed;', async t => {
     const startTime = Date.now();

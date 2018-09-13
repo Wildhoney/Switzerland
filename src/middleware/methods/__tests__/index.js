@@ -1,7 +1,7 @@
 import test from 'ava';
 import { spy } from 'sinon';
-import methods from '../index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import methods from '../index.js';
 
 test('It should be able to wait for the images to load before continuing;', async t => {
     const add = spy();

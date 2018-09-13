@@ -1,8 +1,8 @@
 import test from 'ava';
 import { spy } from 'sinon';
+import defaultProps from '../../../../tests/helpers/default-props.js';
 import * as type from '../../../types/index.js';
 import attrs from '../index.js';
-import defaultProps from '../../../../tests/helpers/default-props.js';
 
 test.beforeEach(t => {
     const observe = (t.context.observer = spy());

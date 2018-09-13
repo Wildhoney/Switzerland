@@ -1,8 +1,8 @@
 import test from 'ava';
 import { spy } from 'sinon';
 import delay from 'delay';
-import interval from '../index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import interval from '../index.js';
 
 test('It should invoke `render` every 10 milliseconds until unmounted;', async t => {
     const render = spy();
