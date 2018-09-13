@@ -10,7 +10,7 @@
       - stylelint "example/**/**.css"
 
 - name: test/spec
-  task: NODE_ENV=test nyc ava
+  task: NODE_ENV=test nyc ava --verbose
 
 - name: test/coverage
   task: NODE_ENV=test nyc report --reporter=text-lcov | coveralls
