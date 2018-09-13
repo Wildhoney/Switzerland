@@ -1,10 +1,6 @@
 import test from 'ava';
 import * as type from '../index.js';
 
-test.afterEach(() => {
-    window.BigInt = undefined;
-});
-
 test('It should be able to parse String types;', t => {
     t.is(type.String('dinosaurs'), 'dinosaurs');
 });
@@ -19,6 +15,7 @@ test('It should be able to parse BigInt types;', t => {
     window.BigInt = Number;
     t.is(type.BigInt('5'), 5);
     t.is(type.BigInt('a'), NaN);
+    window.BigInt = undefined;
 });
 
 test('It should be able to parse Float types;', t => {
