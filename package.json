@@ -31,6 +31,7 @@
         "url": "https://github.com/Wildhoney/Switzerland/issues"
     },
     "ava": {
+        "failFast": true,
         "require": [
             "esm",
             "./tests/helpers/browser-env.js"
@@ -51,17 +52,18 @@
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
         "@wildhoney/redux": "4.0.1",
-        "hyperhtml": "2.13.2",
+        "hyperhtml": "2.14.0",
         "redux-thunk": "2.3.0",
         "superfine": "6.0.1"
     },
     "devDependencies": {
         "ava": "^0.25.0",
-        "babel-eslint": "9.0.0",
+        "babel-eslint": "^9.0.0",
         "browser-env": "^3.2.5",
-        "compression": "1.7.3",
+        "compression": "^1.7.3",
         "concurrently": "^4.0.1",
         "coveralls": "^3.0.2",
+        "delay": "^4.0.1",
         "eslint": "^5.5.0",
         "eslint-config-prettier": "^3.0.1",
         "eslint-config-standard": "^12.0.0",
@@ -70,16 +72,17 @@
         "eslint-plugin-promise": "^4.0.1",
         "eslint-plugin-react": "^7.11.1",
         "eslint-plugin-standard": "^4.0.0",
-        "esm": "3.0.82",
-        "express": "4.16.3",
-        "jest": "23.6.0",
-        "nodemon": "1.18.4",
+        "esm": "^3.0.82",
+        "express": "^4.16.3",
+        "jest": "^23.6.0",
+        "nodemon": "^1.18.4",
         "nyc": "^13.0.1",
-        "prettier": "1.14.2",
-        "sinon": "^6.2.0",
+        "prettier": "^1.14.2",
+        "sinon": "^6.3.1",
+        "starwars": "^1.0.0",
         "stylelint": "^9.5.0",
         "stylelint-config-prettier": "^4.0.0",
-        "taskfile": "0.8.5",
+        "taskfile": "^0.8.5",
         "testcafe": "^0.22.0"
     }
 }

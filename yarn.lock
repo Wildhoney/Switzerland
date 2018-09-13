@@ -856,7 +856,7 @@ babel-core@^6.0.0, babel-core@^6.17.0, babel-core@^6.22.1, babel-core@^6.26.0:
     slash "^1.0.0"
     source-map "^0.5.7"
 
-babel-eslint@9.0.0:
+babel-eslint@^9.0.0:
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-9.0.0.tgz#7d9445f81ed9f60aff38115f838970df9f2b6220"
   dependencies:
@@ -2039,7 +2039,7 @@ compressible@~2.0.14:
   dependencies:
     mime-db ">= 1.34.0 < 2"
 
-compression@1.7.3:
+compression@^1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/compression/-/compression-1.7.3.tgz#27e0e176aaf260f7f2c2813c3e440adb9f1993db"
   dependencies:
@@ -2429,6 +2429,10 @@ del@^3.0.0:
     pify "^3.0.0"
     rimraf "^2.2.8"
 
+delay@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/delay/-/delay-4.0.1.tgz#052120e49bc3617a92e9a6cd9556be2cf23397a0"
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -2806,7 +2810,7 @@ eslint@^5.5.0:
     table "^4.0.3"
     text-table "^0.2.0"
 
-esm@3.0.82:
+esm@^3.0.82:
   version "3.0.82"
   resolved "https://registry.yarnpkg.com/esm/-/esm-3.0.82.tgz#e8c4363a14e30936bedf49a44bf962e2c91866ff"
 
@@ -2963,9 +2967,9 @@ expect@^23.6.0:
     jest-message-util "^23.4.0"
     jest-regex-util "^23.3.0"
 
-express@4.16.3:
+express@^4.16.3:
   version "4.16.3"
-  resolved "https://registry.yarnpkg.com/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
+  resolved "http://registry.npmjs.org/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
   dependencies:
     accepts "~1.3.5"
     array-flatten "1.1.1"
@@ -3737,9 +3741,9 @@ hullabaloo-config-manager@^1.1.0:
     resolve-from "^3.0.0"
     safe-buffer "^5.0.1"
 
-hyperhtml@2.13.2:
-  version "2.13.2"
-  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.13.2.tgz#d1b80b9ea2515c3ddef7014cb1915c763815f267"
+hyperhtml@2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.14.0.tgz#a31879ba55c278b58c320dbb9ec08355a8c23df6"
   dependencies:
     lightercollective "^0.1.0"
 
@@ -4645,7 +4649,7 @@ jest-worker@^23.2.0:
   dependencies:
     merge-stream "^1.0.1"
 
-jest@23.6.0:
+jest@^23.6.0:
   version "23.6.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-23.6.0.tgz#ad5835e923ebf6e19e7a1d7529a432edfee7813d"
   dependencies:
@@ -5011,7 +5015,7 @@ log-update-async-hook@^2.0.2:
     onetime "^2.0.1"
     wrap-ansi "^2.1.0"
 
-lolex@^2.3.2, lolex@^2.7.2:
+lolex@^2.3.2, lolex@^2.7.4:
   version "2.7.4"
   resolved "https://registry.yarnpkg.com/lolex/-/lolex-2.7.4.tgz#6514de2c3291e9d6f09d49ddce4a95f7d4d5a93f"
 
@@ -5474,7 +5478,7 @@ node-version@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/node-version/-/node-version-1.2.0.tgz#34fde3ffa8e1149bd323983479dda620e1b5060d"
 
-nodemon@1.18.4:
+nodemon@^1.18.4:
   version "1.18.4"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.4.tgz#873f65fdb53220eb166180cf106b1354ac5d714d"
   dependencies:
@@ -6179,7 +6183,7 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-prettier@1.14.2:
+prettier@^1.14.2:
   version "1.14.2"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.14.2.tgz#0ac1c6e1a90baa22a62925f41963c841983282f9"
 
@@ -6935,16 +6939,16 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-sinon@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/sinon/-/sinon-6.2.0.tgz#ec95af3a88aeb451f0275f14213e6e9f066879e2"
+sinon@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-6.3.1.tgz#4b57a52d74d6cc2fb8db17cb3b23356becfa7c1b"
   dependencies:
     "@sinonjs/commons" "^1.0.2"
     "@sinonjs/formatio" "^2.0.0"
     "@sinonjs/samsam" "^2.0.0"
     diff "^3.5.0"
     lodash.get "^4.4.2"
-    lolex "^2.7.2"
+    lolex "^2.7.4"
     nise "^1.4.4"
     supports-color "^5.5.0"
     type-detect "^4.0.8"
@@ -7156,6 +7160,10 @@ stack-utils@^1.0.1:
 stackframe@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-0.3.1.tgz#33aa84f1177a5548c8935533cbfeb3420975f5a4"
+
+starwars@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/starwars/-/starwars-1.0.0.tgz#33d4bb687e107d275292e447e5f5a03c633deddf"
 
 state-toggle@^1.0.0:
   version "1.0.1"
@@ -7453,7 +7461,7 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-taskfile@0.8.5:
+taskfile@^0.8.5:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/taskfile/-/taskfile-0.8.5.tgz#5bb8d1ec9aacd9a70f53debc3803c77fe3787c43"
   dependencies:
