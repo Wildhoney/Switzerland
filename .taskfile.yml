@@ -4,7 +4,7 @@
 - name: format
   tasks: 
     - prettier --write '{src,tests,example}/**/*.{js,css}'
-    - prettier --write '*.{js,json}'
+    - prettier --write '*.{js,json,md}'
 
 - name: build
   task: rollup -c rollup.config.js

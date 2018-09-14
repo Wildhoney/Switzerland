@@ -1,6 +1,7 @@
+Dockerfile
 example/
 media/
+README
+rollup.config.js
 src/
 tests/
-Dockerfile
-rollup.config.js
