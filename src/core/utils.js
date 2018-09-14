@@ -12,7 +12,7 @@ const roots = new WeakMap();
 export const dispatchEvent = node => (name, payload) =>
     node.dispatchEvent(
         new window.CustomEvent(name, {
-            detail: { ...payload, version: '3.0.0' },
+            detail: { ...payload, version: 2 },
             bubbles: true,
             composed: true
         })
