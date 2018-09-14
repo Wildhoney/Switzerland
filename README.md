@@ -35,13 +35,13 @@ As Switzerland is functional its components simply take `props` and yield `props
 ```javascript
 import { create, m } from 'switzerland';
 
-create('x-countries', m.vdom({ h }) => (
+create('x-countries', m.vdom(({ h }) => (
     h('ul', {}, [
         h('li', {}, 'United Kingdom'),
         h('li', {}, 'Russian Federation'),
         h('li', {}, 'Indonesia')
-    ]);
-));
+    ])
+)));
 ```
 
 For the `x-countries` component we only have one middleware function &ndash; the `vdom` middleware which takes `props` and yields `props` but has a side-effect of writing to the DOM using [`superfine`](https://github.com/jorgebucaran/superfine)'s implementation of virtual DOM. It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity.
@@ -53,11 +53,11 @@ import { create, m, t } from 'switzerland';
 
 create('x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom({ attrs, h }) => (
+    m.vdom(({ attrs, h }) => (
     h('ul', {}, attrs.values.map(country => (
         h('li', {}, country)
-    )));
-));
+    )))
+)));
 ```
 
 Notice that we've now introduced the `attrs` middleware. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes mutate. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
@@ -89,12 +89,12 @@ const countries = ({ h, attrs }) => (
 create('x-countries-european',
     m.attrs({ values: t.Array(t.String) }),
     m.vdom(countries)
-));
+);
 
 create('x-countries-asian',
     m.attrs({ values: t.Array(t.String) }),
     m.vdom(countries)
-));
+);
 ```
 
 Now other components are freely able to use the `countries` function in their own components. To make it easier to pass down `props` to children, the `props` is recursively linked to itself, which means you can destructure `props` indefinitely.
@@ -108,15 +108,14 @@ const path = init(import.meta.url);
 
 create('x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom({ attrs, h }) => (
+    m.vdom(({ attrs, h }) => (
         h('section', {}, [
-            h.stylesheet(path('index.css)),
+            h.stylesheet(path('index.css')),
             h('ul', {}, attrs.values.map(country => (
                 h('li', {}, country)
-            )));
+            )))
         ])
-
-));
+)));
 ```
 
 We use the `h.stylesheet` helper function that uses `@import` to import a CSS document into the DOM. By using the `init` function we have a function that allows us to resolve assets relative to the current JS file, in this our `index.css` document that's sat alongside the component's JS file:
