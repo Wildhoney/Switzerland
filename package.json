@@ -1,16 +1,18 @@
 {
     "name": "switzerland",
     "version": "3.1.1",
-    "module": "./src/index.js",
+    "module": "./es/index.js",
     "description": "",
     "directories": {
         "test": "tests"
     },
     "scripts": {
+        "build": "taskfile build",
         "coverage": "taskfile test/coverage",
         "docker": "taskfile docker",
         "format": "taskfile format",
         "postpublish": "taskfile docker",
+        "prepublishOnly": "taskfile build",
         "start": "taskfile start",
         "test": "taskfile test"
     },
@@ -78,7 +80,10 @@
         "nodemon": "^1.18.4",
         "nyc": "^13.0.1",
         "prettier": "^1.14.2",
-        "sinon": "^6.3.1",
+        "rollup": "^0.65.2",
+        "rollup-plugin-terser": "^2.0.2",
+        "rollup-plugin-uglify": "^5.0.2",
+        "sinon": "^6.3.3",
         "starwars": "^1.0.0",
         "stylelint": "^9.5.0",
         "stylelint-config-prettier": "^4.0.0",

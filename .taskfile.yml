@@ -2,7 +2,12 @@
   task: nodemon --experimental-modules ./example/server/index.mjs
 
 - name: format
-  task: prettier --write '{src,tests,example}/**/*.{js,css}'
+  tasks: 
+    - prettier --write '{src,tests,example}/**/*.{js,css}'
+    - prettier --write '*.{js,json}'
+
+- name: build
+  task: rollup -c rollup.config.js
 
 - name: test/lint
   tasks:
