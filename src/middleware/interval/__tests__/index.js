@@ -4,7 +4,7 @@ import defaultProps from '../../../../tests/helpers/default-props.js';
 import interval from '../index.js';
 
 test.beforeEach(t => {
-    t.context.clock = useFakeTimers(); 
+    t.context.clock = useFakeTimers();
 });
 
 test.afterEach(t => {

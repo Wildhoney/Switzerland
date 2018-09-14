@@ -18,7 +18,10 @@ test('It should invoke the function as the component is unresolved;', async t =>
     const resolved = () => Promise.resolve();
     const m = defer(identity, 10);
     const newProps = m({ ...defaultProps, resolved });
-    await delay(15);
+
+    // Required because `identity` is invoked asynchronously by the `defer` middleware.
+    await delay(100);
+
     t.is(identity.callCount, 1);
     t.deepEqual(newProps, { ...defaultProps, resolved });
 });
