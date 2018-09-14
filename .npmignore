@@ -1,3 +1,6 @@
 example/
 media/
+src/
 tests/
+Dockerfile
+rollup.config.js
