@@ -1,7 +1,7 @@
 {
     "name": "switzerland",
     "version": "3.2.1",
-    "module": "./es/index.js",
+    "module": "./src/index.js",
     "description": "",
     "directories": {
         "test": "tests"

@@ -6,9 +6,7 @@ const app = express();
 app.use(compression());
 
 const example = path.resolve('./example/app');
-const vendor = path.resolve(
-    process.env.NODE_ENV === 'production' ? './es' : './src'
-);
+const vendor = path.resolve('./src');
 
 app.get('*', (_, response, next) => {
     response.header('Service-Worker-Allowed', '/');

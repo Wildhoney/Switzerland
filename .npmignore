@@ -1,7 +1,7 @@
 Dockerfile
+es/
 example/
 media/
 README
 rollup.config.js
-src/
 tests/
