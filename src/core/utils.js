@@ -111,7 +111,7 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => {
         resolved,
         node,
         render: node.render.bind(node),
-        dispatch: dispatchEvent,
+        dispatch: dispatchEvent(node),
         prevProps: previous.get(node) || null
     };
 };
