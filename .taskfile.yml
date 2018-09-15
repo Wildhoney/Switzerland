@@ -7,7 +7,7 @@
     - prettier --write '*.{js,json}'
 
 - name: build
-  task: rollup -c rollup.config.js
+  task: node terser.config.js
 
 - name: test/lint
   tasks:

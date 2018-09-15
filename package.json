@@ -1,7 +1,7 @@
 {
     "name": "switzerland",
     "version": "3.2.2",
-    "module": "./src/index.js",
+    "module": "./es/index.js",
     "description": "",
     "directories": {
         "test": "tests"
@@ -78,17 +78,17 @@
         "express": "^4.16.3",
         "fslint": "^1.1.0",
         "jest": "^23.6.0",
+        "node-glob": "^1.2.0",
+        "node-mkdirp": "^0.0.1",
         "nodemon": "^1.18.4",
         "nyc": "^13.0.1",
         "prettier": "^1.14.2",
-        "rollup": "^0.65.2",
-        "rollup-plugin-terser": "^2.0.2",
-        "rollup-plugin-uglify": "^5.0.2",
         "sinon": "^6.3.3",
         "starwars": "^1.0.0",
         "stylelint": "^9.5.0",
         "stylelint-config-prettier": "^4.0.0",
         "taskfile": "^0.8.5",
+        "terser": "^3.8.2",
         "testcafe": "^0.22.0"
     }
 }
