@@ -12,11 +12,11 @@
 &nbsp;
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=for-the-badge)](https://github.com/prettier/prettier)
 
-`npm install switzerland --save`
+**npm**: `npm install switzerland --save`
 <br />
-`docker pull wildhoney/switzerland`
+**dkr**: `docker pull wildhoney/switzerland`
 <br />
-[`https://cdn.jsdelivr.net/npm/switzerland@3.2.0/es/index.js`](https://cdn.jsdelivr.net/npm/switzerland@3.2.0/es/index.js)
+**cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@3.2.0/es/index.js`](https://cdn.jsdelivr.net/npm/switzerland@3.2.0/es/index.js)
 
 ![Screenshot](media/screenshot.png)
 
@@ -130,20 +130,11 @@ create(
     m.render.vdom(({ attrs, dispatch, h }) =>
         h('section', {}, [
             h.stylesheet(path('index.css')),
-            h(
-                'ul',
-                {},
-                attrs.values.map(country =>
-                    h(
-                        'li',
-                        {
-                            onclick: () =>
-                                dispatch('clicked-country', { country })
-                        },
-                        country
-                    )
-                )
-            )
+            h('ul', {}, attrs.values.map(country => (
+                h('li', {
+                    onclick: () => dispatch('clicked-country', { country })
+                }, country)
+            )))
         ])
     )
 );
