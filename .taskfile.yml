@@ -14,7 +14,7 @@
       - eslint "{src,tests,example}/**/**.js"
       - stylelint "example/**/**.css"
       - - NODE_ENV=production yarn build
-      - - - tar -zcvf build.tar.gz es/
+      - - - tar -zcf build.tar.gz es/
       - - - - fslint --files=build.tar.gz --limit=4500
       - - - - - rm -rf build.tar.gz es/
 
