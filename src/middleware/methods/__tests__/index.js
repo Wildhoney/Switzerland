@@ -3,7 +3,7 @@ import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import methods from '../index.js';
 
-test('It should be able to wait for the images to load before continuing;', async t => {
+test('It should be able to attach methods to the node;', t => {
     const add = spy();
     const remove = spy();
     const node = defaultProps.node.cloneNode(true);
