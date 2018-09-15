@@ -49,7 +49,7 @@ create(
 );
 ```
 
-We have now successfully setup a custom element called `x-countries` which can be used anywhere:
+We have now successfully setup a custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder or even nothing at all before the component renders.
 
 ```html
 <x-countries />
@@ -105,7 +105,7 @@ create(
 );
 ```
 
-We use the `h.stylesheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. By using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
+We use the `h.stylesheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. In using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
 
 ```css
 :host {
@@ -115,7 +115,7 @@ We use the `h.stylesheet` helper function that uses `@import` to import a CSS do
 }
 ```
 
-By utilising [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) you're able to keep your CSS documents as general as possible, since none of the styles defined within it will leak into other elements or components. As the CSS document is imported, all assets referenced inside the CSS document are resolved relative to it. Switzerland also has a special function before a component is resolved to ensure all imported CSS files have been loaded into the DOM.
+By utilising [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) you're able to keep your CSS documents as general as possible, since none of the styles defined within it will leak into other elements or components. As the CSS document is imported, all assets referenced inside the CSS document are resolved relative to it. Switzerland also has a special function before a component is resolved to ensure all imported CSS files have been loaded into the DOM.
 
 Adding events to a component is achieved through the `dispatch` function which is passed through the `props`. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
 
