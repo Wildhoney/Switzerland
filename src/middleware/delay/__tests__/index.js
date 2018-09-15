@@ -7,6 +7,6 @@ test('It should yield only after the specified milliseconds have passed;', async
     const m = delay(100);
     const newProps = await m(defaultProps);
     const endTime = Date.now();
-    t.true(endTime - startTime > 100);
+    t.true(endTime - startTime >= 100);
     t.deepEqual(newProps, defaultProps);
 });
