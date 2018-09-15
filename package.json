@@ -78,6 +78,7 @@
         "express": "^4.16.3",
         "fslint": "^1.1.0",
         "jest": "^23.6.0",
+        "mkdirp": "^0.5.1",
         "node-glob": "^1.2.0",
         "node-mkdirp": "^0.0.1",
         "nodemon": "^1.18.4",
