@@ -15,7 +15,7 @@
       - stylelint "example/**/**.css"
       - - NODE_ENV=production yarn build
       - - - tar -zcf build.tar.gz es/
-      - - - - fslint --files=build.tar.gz --limit=4500
+      - - - - fslint --files=build.tar.gz --limit=5120
       - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
