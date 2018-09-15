@@ -1,4 +1,4 @@
-import { once } from '../index.js';
+import once from '../once/index.js';
 
 /**
  * @function serviceWorker ∷ Props p ⇒ String → String → (p → Promise p)

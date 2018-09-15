@@ -4,7 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 const config = (input, output = input) => ({
     input: `src/${input}`,
     output: { format: 'es', file: `es/${output}` },
-    plugins: [terser()]
+    plugins: [terser({ ecma: 8, module: true })]
 });
 
 const middleware = fs
