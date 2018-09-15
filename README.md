@@ -30,7 +30,7 @@ Thankfully by utilising custom elements which are native to the browser, we can 
 
 ## Getting Started
 
-As Switzerland is functional its components simply take `props` and yield `props` &ndash; middleware can have side-effects such as writing to the DOM. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
+As Switzerland is functional its components simply take `props` and yield `props` &ndash; middleware can have side-effects such as writing to the DOM, and can also be asynchronous by yielding a `Promise`. Middleware is processed on each render from left-to-right which makes components very easy to reason about. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
 ```javascript
 import { create, m } from 'switzerland';
@@ -44,9 +44,15 @@ create('x-countries', m.vdom(({ h }) => (
 )));
 ```
 
+We have now successfully setup a custom element called `x-countries` which can be used anywhere:
+
+```html
+<x-countries />
+```
+
 For the `x-countries` component we only have one middleware function &ndash; the `vdom` middleware which takes `props` and yields `props` but has a side-effect of writing to the DOM using [`superfine`](https://github.com/jorgebucaran/superfine)'s implementation of virtual DOM. It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity.
 
-Nevertheless let's take the next step and supply the list of countries via HTML attributes. For this example we'll use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
+Let's take the next step and supply the list of countries via HTML attributes. For this example we'll use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
 ```javascript
 import { create, m, t } from 'switzerland';
@@ -60,22 +66,22 @@ create('x-countries',
 )));
 ```
 
-Notice that we've now introduced the `attrs` middleware. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
+Notice that we've now introduced the `attrs` middleware before the `vdom` middleware; we have a guarantee that `attrs` has completed its work before passing the baton to `vdom`. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
 
 ```html
 <x-countries values="United Kingdom,Russian Federation,Indonesia" />
 ```
 
-By taking a reference to the `x-countries` element and mutating the `values` attribute we can force a re-render of the component with the updated list of countries:
+By taking a reference to the `x-countries` element and mutating the `values` attribute we can force a re-render of the component with an updated list of countries:
 
 ```javascript
 const node = document.querySelector('x-countries');
-node.dataset.values = `${node.dataset.values},Hungary`;
+node.attributes.values = `${node.attributes.values},Hungary,Cuba`;
 ```
 
-Switzerland components only take string values as their attributes as that's all of that the HTML spec allows. Using the types we can transform those string values into JS values, and with this approach we allow for greater interoperability. Components can be used as pure HTML, using vanilla JS, React, Vue, Angular, etc... Passing complex state to components only reduces their reusability.
+Switzerland components only take string values as their attributes as that's all the HTML spec allows. Using the types we can transform those string values into JS values, and with this approach we allow for greater interoperability. Components can be used as pure HTML, using vanilla JS, or inside React, Vue, Angular, etc... Passing complex state to components only reduces their reusability.
 
-Where other JS libraries fall short, Switzerland considers all web assets to be its responsibility. For example in React it is fairly common to use a non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the `vdom` middleware &ndash; or the `template` middleware if we choose to use JS template literals:
+Where other JS libraries fall short, Switzerland considers all web assets to be within its remit. For example in React it is fairly common to use a third-party, non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the `vdom` middleware &ndash; or the `template` middleware if we choose to use JS template literals:
 
 ```javascript
 import { create, init, m, t } from 'switzerland';
@@ -94,7 +100,7 @@ create('x-countries',
 )));
 ```
 
-We use the `h.stylesheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` to pervent the CSS from being constantly downloaded on re-render. By using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
+We use the `h.stylesheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. By using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
 
 ```css
 :host {
@@ -104,9 +110,9 @@ We use the `h.stylesheet` helper function that uses `@import` to import a CSS do
 }
 ```
 
-As the CSS document is imported, all assets referenced inside the CSS document are resolved relative to it. Switzerland also has a special function before a component is resolved to ensure all imported CSS files have been loaded into the DOM.
+By utilising [Shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) you're able to keep your CSS documents as general as possible, since none of the styles defined within it will leak into other elements or components. As the CSS document is imported, all assets referenced inside the CSS document are resolved relative to it. Switzerland also has a special function before a component is resolved to ensure all imported CSS files have been loaded into the DOM.
 
-Next it may be useful to introduce the ability to click on a country. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
+Adding events to a component is achieved through the `dispatch` function which is passed through the `props`. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
 
 ```javascript
 import { create, init, m, t } from 'switzerland';
@@ -127,7 +133,7 @@ create('x-countries',
 )));
 ```
 
-Interestingly it's possible to use any valid event name for the `dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our `dispatch` all set up we can then attach the listener by using the native `addEventListener` method on the custom element itself:
+Interestingly it's possible to use any valid event name for the `dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our event all set up we can attach the listener by using the native `addEventListener` method on the custom element itself:
 
 ```javascript
 const node = document.querySelector('x-countries');
