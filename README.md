@@ -55,7 +55,7 @@ We have now successfully setup a custom element called `x-countries` which can b
 <x-countries />
 ```
 
-For the `x-countries` component we only have one middleware function &ndash; the `vdom` middleware which takes `props` and yields `props` but has a side-effect of writing to the DOM using [`superfine`](https://github.com/jorgebucaran/superfine)'s implementation of virtual DOM. It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity.
+For the `x-countries` component we only have one middleware function &ndash; the `vdom` middleware which takes `props` and yields `props` but has a side-effect of writing to the DOM using [`superfine`](https://github.com/jorgebucaran/superfine)'s implementation of virtual DOM. It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
 
 Let's take the next step and supply the list of countries via HTML attributes. For this example we'll use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
