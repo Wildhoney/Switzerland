@@ -32,4 +32,4 @@ const nothing = ({ h }) =>
         h('p', {}, 'You have not added any todos yet.')
     ]);
 
-export default create('todo-list', store, m.vdom(container));
+export default create('todo-list', store, m.render.vdom(container));

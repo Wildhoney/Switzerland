@@ -35,13 +35,16 @@ As Switzerland is functional its components simply take `props` and yield `props
 ```javascript
 import { create, m } from 'switzerland';
 
-create('x-countries', m.vdom(({ h }) => (
-    h('ul', {}, [
-        h('li', {}, 'United Kingdom'),
-        h('li', {}, 'Russian Federation'),
-        h('li', {}, 'Indonesia')
-    ])
-)));
+create(
+    'x-countries',
+    m.render.vdom(({ h }) =>
+        h('ul', {}, [
+            h('li', {}, 'United Kingdom'),
+            h('li', {}, 'Russian Federation'),
+            h('li', {}, 'Indonesia')
+        ])
+    )
+);
 ```
 
 We have now successfully setup a custom element called `x-countries` which can be used anywhere:
@@ -57,13 +60,13 @@ Let's take the next step and supply the list of countries via HTML attributes. F
 ```javascript
 import { create, m, t } from 'switzerland';
 
-create('x-countries',
+create(
+    'x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom(({ attrs, h }) => (
-    h('ul', {}, attrs.values.map(country => (
-        h('li', {}, country)
-    )))
-)));
+    m.render.vdom(({ attrs, h }) =>
+        h('ul', {}, attrs.values.map(country => h('li', {}, country)))
+    )
+);
 ```
 
 Notice that we've now introduced the `attrs` middleware before the `vdom` middleware; we have a guarantee that `attrs` has completed its work before passing the baton to `vdom`. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
@@ -88,16 +91,16 @@ import { create, init, m, t } from 'switzerland';
 
 const path = init(import.meta.url);
 
-create('x-countries',
+create(
+    'x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom(({ attrs, h }) => (
+    m.render.vdom(({ attrs, h }) =>
         h('section', {}, [
             h.stylesheet(path('index.css')),
-            h('ul', {}, attrs.values.map(country => (
-                h('li', {}, country)
-            )))
+            h('ul', {}, attrs.values.map(country => h('li', {}, country)))
         ])
-)));
+    )
+);
 ```
 
 We use the `h.stylesheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. By using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
@@ -119,18 +122,29 @@ import { create, init, m, t } from 'switzerland';
 
 const path = init(import.meta.url);
 
-create('x-countries',
+create(
+    'x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom(({ attrs, dispatch, h }) => (
+    m.render.vdom(({ attrs, dispatch, h }) =>
         h('section', {}, [
             h.stylesheet(path('index.css')),
-            h('ul', {}, attrs.values.map(country => (
-                h('li', {
-                    onclick: () => dispatch('clicked-country', { country })
-                }, country)
-            )))
+            h(
+                'ul',
+                {},
+                attrs.values.map(country =>
+                    h(
+                        'li',
+                        {
+                            onclick: () =>
+                                dispatch('clicked-country', { country })
+                        },
+                        country
+                    )
+                )
+            )
         ])
-)));
+    )
+);
 ```
 
 Interestingly it's possible to use any valid event name for the `dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our event all set up we can attach the listener by using the native `addEventListener` method on the custom element itself:
