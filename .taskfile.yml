@@ -13,6 +13,10 @@
   tasks:
       - eslint "{src,tests,example}/**/**.js"
       - stylelint "example/**/**.css"
+      - - NODE_ENV=production yarn build
+      - - - tar -zcvf build.tar.gz es/
+      - - - - fslint --files=build.tar.gz --limit=4500
+      - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
   task: NODE_ENV=test nyc ava
@@ -25,9 +29,9 @@
 
 - name: test
   tasks:
-      - taskfile test/lint
       - taskfile test/spec
-      # - taskfile test/integration
+      - - taskfile test/lint
+      # - - - taskfile test/integration
 
 - name: docker
   tasks:

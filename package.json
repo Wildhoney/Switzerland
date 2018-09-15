@@ -76,6 +76,7 @@
         "eslint-plugin-standard": "^4.0.0",
         "esm": "^3.0.82",
         "express": "^4.16.3",
+        "fslint": "^1.1.0",
         "jest": "^23.6.0",
         "nodemon": "^1.18.4",
         "nyc": "^13.0.1",
