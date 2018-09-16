@@ -145,6 +145,6 @@ Interestingly it's possible to use any valid event name for the `dispatch` as we
 ```javascript
 const node = document.querySelector('x-countries');
 node.addEventListener('clicked-country', event => (
-    console.log(`Country: ${event.payload.country}!`);
+    console.log(`Country: ${event.detail.country}!`)
 ));
 ```
