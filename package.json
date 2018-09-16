@@ -39,18 +39,6 @@
             "./tests/helpers/browser-env.js"
         ]
     },
-    "babel": {
-        "presets": [
-            "@babel/env"
-        ],
-        "env": {
-            "test": {
-                "plugins": [
-                    "istanbul"
-                ]
-            }
-        }
-    },
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
         "@wildhoney/redux": "4.0.1",
