@@ -1,6 +1,13 @@
+.eslintrc
+.history
+.nyc_output
+.prettierrc.json
+.stylelintrc
+.taskfile.yml
+.travis.yml
 Dockerfile
 example/
 media/
-README
 src/
+terser.config.js
 tests/
