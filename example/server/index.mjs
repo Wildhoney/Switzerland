@@ -7,7 +7,7 @@ app.use(compression());
 
 const example = path.resolve('./example/app');
 const vendor = path.resolve(
-    process.env.NODE_ENV === 'production' ? './es' : './src'
+    process.env.NODE_ENV === 'production' ? './es/production' : './src'
 );
 
 app.get('*', (_, response, next) => {
