@@ -11,8 +11,8 @@
         "coverage": "taskfile test/coverage",
         "docker": "taskfile docker",
         "format": "taskfile format",
-        "postpublish": "taskfile docker",
-        "prepublishOnly": "taskfile build",
+        "postpublish": "taskfile postpublish",
+        "prepublishOnly": "taskfile prepublish",
         "start": "taskfile start",
         "test": "taskfile test"
     },

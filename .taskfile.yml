@@ -38,3 +38,16 @@
     - docker build -t wildhoney/switzerland:latest .
     - - docker tag wildhoney/switzerland wildhoney/switzerland:$npm_package_version
     - - - docker push wildhoney/switzerland
+
+- name: prepublish
+  tasks:
+    - rm -rf es
+    - - mkdir -p es/production
+    - - mkdir -p es/development
+    - - - taskfile build
+
+
+- name: postpublish
+  tasks:
+    - rm -rf es
+    - - taskfile docker

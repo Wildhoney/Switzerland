@@ -10,13 +10,20 @@ function main() {
         .filter(a => !a.includes('__tests__'));
 
     files.forEach(input => {
+        
         const data = fs.readFileSync(input, 'utf-8');
-        const output = input.replace('./src', './es');
-        mkdirp(path.parse(output).dir, () => {
+        const outputProduction = input.replace('./src', './es/production');
+        const outputDevelopment = input.replace('./src', './es/development');
+
+        mkdirp(path.parse(outputProduction).dir, () => {
             fs.writeFileSync(
-                output,
+                outputProduction,
                 terser.minify(data, { ecma: 8, module: true }).code
             );
+        });
+
+        mkdirp(path.parse(outputDevelopment).dir, () => {
+            fs.copyFile(input, outputDevelopment, () => {});
         });
     });
 }
