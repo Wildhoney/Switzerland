@@ -24,10 +24,10 @@ const container = ({ h, props }) =>
         h.stylesheet(path('styles/print.css'), 'print')
     ]);
 
-const header = ({ h }) =>
+const header = ({ loader, h }) =>
     h('h1', {}, [
         h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
-            h('img', { src: path('images/logo.png') })
+            h('img', { src: loader.logo })
         ])
     ]);
 
@@ -94,6 +94,7 @@ export default create(
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
+    m.loader({ logo: path('images/logo.png') }),
     m.render.vdom(container),
     m.wait(todoInput, todoList),
 );
