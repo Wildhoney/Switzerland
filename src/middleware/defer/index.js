@@ -5,12 +5,12 @@
  * has been completed. It's useful for such things as only rendering a "Loading" message if the component is
  * taking a while to load for improved perception of speed.
  */
-export default function defer(fn, milliseconds) {
+export default function defer(fnP, milliseconds) {
     return props => {
-        setTimeout(
-            async () => !(await props.resolved()) && fn(props),
-            milliseconds
-        );
+        setTimeout(async () => {
+            const fn = await fnP;
+            !(await props.resolved()) && (await fn(props));
+        }, milliseconds);
         return props;
     };
 }
