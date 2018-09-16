@@ -12,9 +12,10 @@ test('It should be able to parse Int types;', t => {
 });
 
 test('It should be able to parse BigInt types;', t => {
-    window.BigInt = Number;
-    t.is(type.BigInt('5'), 5);
-    t.is(type.BigInt('a'), NaN);
+    window.BigInt = global.BigInt;
+    t.is(type.BigInt('1'), global.BigInt(1));
+    t.is(type.BigInt('5'), global.BigInt(5));
+    t.is(type.BigInt('104'), global.BigInt(104));
     window.BigInt = undefined;
 });
 
