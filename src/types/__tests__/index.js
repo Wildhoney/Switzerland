@@ -25,6 +25,12 @@ test('It should be able to parse Float types;', t => {
     t.is(type.Float('a'), NaN);
 });
 
+test('It should be able to parse Float.DP types;', t => {
+    t.is(type.Float.DP(2)('1.732493'), 1.73);
+    t.is(type.Float.DP(4)('2.5989102'), 2.5989);
+    t.is(type.Float.DP(6)('a'), NaN);
+});
+
 test('It should be able to parse Bool types;', t => {
     t.is(type.Bool('True'), true);
     t.is(type.Bool('false'), false);

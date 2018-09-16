@@ -19,6 +19,11 @@ export const BigInt = a => window.BigInt(a);
 export const Float = parseFloat;
 
 /**
+ * @function Float.DP ∷ Integer → String → Float
+ */
+Float.DP = dp => a =>  Number(parseFloat(a).toFixed(dp));
+
+/**
  * @function Bool ∷ String → Boolean
  */
 export const Bool = a => a === '1' || a.toLowerCase() === 'true';
