@@ -96,5 +96,5 @@ export default create(
     m.adapt(),
     m.loader({ logo: path('images/logo.png') }),
     m.render.vdom(container),
-    m.wait(todoInput, todoList),
+    m.wait(todoInput, todoList)
 );

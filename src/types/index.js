@@ -16,12 +16,12 @@ export const BigInt = a => window.BigInt(a);
 /**
  * @function Float ∷ String → Float
  */
-export const Float = parseFloat;
+export const Float = a => parseFloat(a);
 
 /**
  * @function Float.DP ∷ Integer → String → Float
  */
-Float.DP = dp => a =>  Number(parseFloat(a).toFixed(dp));
+Float.DP = dp => a => Number(parseFloat(a).toFixed(dp));
 
 /**
  * @function Bool ∷ String → Boolean
