@@ -16,12 +16,8 @@ export const loader = load('loader');
 export const methods = load('methods');
 export const once = load('once');
 export const redux = load('redux');
-export const render = {
-    template: load('template'),
-    vdom: load('vdom')
-};
 export const rescue = load('rescue');
+export const serviceWorker = load('service-worker');
+export const template = load('template');
+export const vdom = load('vdom');
 export const wait = load('wait');
-export const worker = {
-    service: load('service-worker')
-};

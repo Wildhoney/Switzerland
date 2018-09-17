@@ -88,13 +88,13 @@ const retry = ({ render, h, props }) =>
 export default create(
     'todo-app',
     store,
-    m.rescue(m.render.vdom(retry)),
+    m.rescue(m.vdom(retry)),
     m.methods({ insert: (value, { redux }) => redux.actions.add(value) }),
-    m.worker.service(path('../../utils/worker.js'), '/'),
+    m.serviceWorker(path('../../utils/worker.js'), '/'),
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
     m.loader({ logo: path('images/logo.png') }),
-    m.render.vdom(container),
+    m.vdom(container),
     m.wait(todoInput, todoList)
 );
