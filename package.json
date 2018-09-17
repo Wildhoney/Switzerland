@@ -1,6 +1,6 @@
 {
     "name": "switzerland",
-    "version": "3.2.5",
+    "version": "3.2.6",
     "module": "./es/development/index.js",
     "description": "",
     "directories": {
