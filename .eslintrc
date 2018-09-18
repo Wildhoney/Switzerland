@@ -13,6 +13,7 @@
         "fetch": true,
         "fixture": true,
         "HTMLElement": true,
+        "HTMLFormElement": true,
         "Image": true,
         "IntersectionObserver": true,
         "MutationObserver": true,
