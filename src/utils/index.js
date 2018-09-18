@@ -1,9 +1,6 @@
 /**
- * @method validate ∷ ∀ a. Object String a → [String] → Object String a
- * @param {String} event
- * @param {String} [nodeNames = ['input', 'textarea', 'select']]
- * @return {Object}
- *
+ * @function validate ∷ ∀ a. Object String a → [String] → Object String a
+ * ---
  * Uses the built-in HTML validation rules for validating a given form based on the requirements specified
  * on the fields. To use the `validate` utility function it's important to set `novalidate` on the <form />
  * elment, otherwise you'll simply get the default behaviour for form validation, including the built-in
