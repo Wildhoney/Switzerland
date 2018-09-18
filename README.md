@@ -37,19 +37,16 @@ As Switzerland is functional its components simply take `props` and yield `props
 ```javascript
 import { create, m } from 'switzerland';
 
-create(
-    'x-countries',
-    m.vdom(({ h }) =>
-        h('ul', {}, [
-            h('li', {}, 'United Kingdom'),
-            h('li', {}, 'Russian Federation'),
-            h('li', {}, 'Indonesia')
-        ])
-    )
-);
+create('x-countries', m.vdom(({ h }) =>
+    h('ul', {}, [
+        h('li', {}, 'United Kingdom'),
+        h('li', {}, 'Russian Federation'),
+        h('li', {}, 'Republic of Indonesia')
+    ])
+)); 
 ```
 
-We have now successfully setup a custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder or even nothing at all before the component renders.
+We now have a usable custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder or even nothing at all before the component renders.
 
 ```html
 <x-countries />
@@ -74,7 +71,7 @@ create(
 Notice that we've now introduced the `attrs` middleware before the `vdom` middleware; we have a guarantee that `attrs` has completed its work before passing the baton to `vdom`. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
 
 ```html
-<x-countries values="United Kingdom,Russian Federation,Indonesia" />
+<x-countries values="United Kingdom,Russian Federation,Republic of Indonesia" />
 ```
 
 By taking a reference to the `x-countries` element and mutating the `values` attribute we can force a re-render of the component with an updated list of countries:
