@@ -4,19 +4,21 @@ import { previous, handlers, state } from './index.js';
 const roots = new WeakMap();
 
 /**
- * @function dispatchEvent ∷ ∀ a. HTMLElement e ⇒ e → String → Object String a → void
+ * @function dispatchEvent ∷ ∀ a b. HTMLElement e ⇒ e → b → Boolean
  * ---
  * Dispatches an event, merging in the current package's version for handling legacy events
  * if/when the payloads differ from version-to-version.
  */
-export const dispatchEvent = node => (name, payload) =>
-    node.dispatchEvent(
+export const dispatchEvent = node => (name, payload) => {
+    const model = typeof payload === 'object' ? payload : { value: payload };
+    return node.dispatchEvent(
         new window.CustomEvent(name, {
-            detail: { ...payload, version: 2 },
+            detail: { ...model, version: 3 },
             bubbles: true,
             composed: true
         })
     );
+};
 
 /**
  * @function createShadowRoot ∷ ∀ a. ShadowRoot s, HTMLElement e ⇒ e → Object String a → s|e
