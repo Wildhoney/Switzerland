@@ -13,6 +13,13 @@ import * as u from './utils.js';
  */
 export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
     const observers = new Map();
+    const defaults = Object.entries(types).reduce(
+        (accum, [key, value]) =>
+            Array.isArray(value) && typeof value[1] !== 'undefined'
+                ? { ...accum, [key]: value[1] }
+                : accum,
+        {}
+    );
 
     return props => {
         if (!observers.has(props.node)) {
@@ -41,14 +48,14 @@ export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
         const attrs = Object.values(props.node.attributes).reduce(
             (acc, attr) => {
                 const name = u.kebabToCamel(attr.nodeName);
-                const f = types[name] || (a => a);
+                const [f] = [].concat(types[name] || (a => a));
 
                 return {
                     ...acc,
                     [name]: f(attr.nodeValue)
                 };
             },
-            {}
+            defaults
         );
 
         return { ...props, attrs };

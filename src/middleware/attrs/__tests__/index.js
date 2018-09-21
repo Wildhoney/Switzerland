@@ -44,3 +44,23 @@ test('It should be able to parse the attrs with custom types;', t => {
         }
     });
 });
+
+test('It should be able to define defaults using a tuple;', t => {
+    const node = defaultProps.node.cloneNode(true);
+    node.setAttribute('name', 'Adam');
+
+    const m = attrs({
+        name: type.String,
+        age: [type.Int, 32],
+        isDeveloper: [type.Bool, true]
+    });
+    const newProps = m({ node });
+    t.deepEqual(newProps, {
+        node,
+        attrs: {
+            name: 'Adam',
+            age: 32,
+            isDeveloper: true
+        }
+    });
+});
