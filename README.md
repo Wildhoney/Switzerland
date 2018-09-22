@@ -145,3 +145,19 @@ node.addEventListener('clicked-country', event => (
     console.log(`Country: ${event.detail.country}!`)
 ));
 ```
+
+## Plug & Play
+
+Switzerland is capable of being integrated into any website or app without any formal installation or build process if you wish. Thanks to shadow DOM technology, all styles are also applied since Switzerland detects which host the JS originated from; if the origin and the JS host differ, then absolute paths to the domain are used when loading assets, such as CSS documents and images.
+
+As a little teaser, navigate to [Google.com](https://www.google.com/) and paste the following snippet of code into the console:
+
+```javascript
+const script = document.createElement('script');
+script.type = 'module';
+script.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
+document.head.append(script);
+document.body.append(document.createElement('todo-app'));
+```
+
+After a couple of milliseconds you *should* see the todo app embedded into Google with all of the styles applied. If you have any todos in your list then you will also see those due to the IndexedDb that the example utilises. It's worth noting that for this example to work correctly, the host &mdash in the above case `switzerland.herokuapp.com` &mdash; needs the CORS headers configured correctly.
