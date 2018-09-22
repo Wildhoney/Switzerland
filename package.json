@@ -52,6 +52,7 @@
         "browser-env": "^3.2.5",
         "compression": "^1.7.3",
         "concurrently": "^4.0.1",
+        "cors": "^2.8.4",
         "coveralls": "^3.0.2",
         "delay": "^4.0.1",
         "eslint": "^5.6.0",
