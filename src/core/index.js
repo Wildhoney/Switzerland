@@ -8,7 +8,12 @@ const queue = Symbol('@switzerland/queue');
 /**
  * @function init ∷ String → String
  */
-export const init = url => path => new URL(path, url).pathname;
+export const init = url => path => {
+    const a = document.createElement('a');
+    a.href = url;
+    const key = a.host === window.location.host ? 'pathname' : 'href';
+    return new URL(path, url)[key];
+};
 
 /**
  * @function create ∷ Props p ⇒ String → [(p → Promise p)] → String

@@ -40,7 +40,6 @@ export const validate = (
             ({ state }) => state.valid
         );
 
-        console.log(isFormValid);
         return { results: validityReport, valid: isFormValid, error: null };
     } catch (err) {
         // Yield an indeterminate result as an error was raised in the above code.
