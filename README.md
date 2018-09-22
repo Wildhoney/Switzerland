@@ -16,7 +16,7 @@
 <br />
 **dkr**: `docker pull wildhoney/switzerland`
 <br />
-**cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@3.2.6/es/production/index.js`](https://cdn.jsdelivr.net/npm/switzerland@3.2.6/es/production/index.js)
+**cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@3.3.0/es/production/index.js`](https://cdn.jsdelivr.net/npm/switzerland@3.3.0/es/production/index.js)
 
 ![Screenshot](media/screenshot.png)
 
