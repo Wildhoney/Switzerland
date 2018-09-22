@@ -6,7 +6,7 @@ import { createShadowRoot } from '../../core/utils.js';
 import * as u from './utils.js';
 
 /**
- * @function stylesheet ∷ View v ⇒ String → String → String → v
+ * @function stylesheet ∷ View v ⇒ String → String → v
  */
 const stylesheet = (path, mediaQuery = '') =>
     h(
