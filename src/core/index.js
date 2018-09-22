@@ -6,7 +6,7 @@ export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');
 
 /**
- * @function init ∷ String → String → String
+ * @function init ∷ String → String → (String → String)
  */
 export const init = (url, host = window.location.host) => path => {
     const a = document.createElement('a');
