@@ -6,12 +6,12 @@ export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');
 
 /**
- * @function init ∷ String → String
+ * @function init ∷ String → String → String
  */
-export const init = url => path => {
+export const init = (url, host = window.location.host) => path => {
     const a = document.createElement('a');
     a.href = url;
-    const key = a.host === window.location.host ? 'pathname' : 'href';
+    const key = a.host === host ? 'pathname' : 'href';
     return new URL(path, url)[key];
 };
 

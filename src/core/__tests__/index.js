@@ -21,12 +21,21 @@ test.afterEach(() => {
 });
 
 test('It should be able to handle the relative paths correctly;', t => {
-    const path = init('https://localhost:3000/nodes/earth/planets.js');
+    const path = init('https://localhost:3000/nodes/earth/planets.js', 'localhost:3000');
     t.is(path('../mercury.js'), '/nodes/mercury.js');
     t.is(path('../../venus.js'), '/venus.js');
     t.is(path('jupiter.js'), '/nodes/earth/jupiter.js');
     t.is(path('saturn/uranus.js'), '/nodes/earth/saturn/uranus.js');
     t.is(path('../saturn/neptune/pluto.js'), '/nodes/saturn/neptune/pluto.js');
+});
+
+test('It should be able to handle the absolute paths correctly;', t => {
+    const path = init('https://localhost:3000/nodes/earth/planets.js', 'switzerland.herokuapp.com');
+    t.is(path('../mercury.js'), 'https://localhost:3000/nodes/mercury.js');
+    t.is(path('../../venus.js'), 'https://localhost:3000/venus.js');
+    t.is(path('jupiter.js'), 'https://localhost:3000/nodes/earth/jupiter.js');
+    t.is(path('saturn/uranus.js'), 'https://localhost:3000/nodes/earth/saturn/uranus.js');
+    t.is(path('../saturn/neptune/pluto.js'), 'https://localhost:3000/nodes/saturn/neptune/pluto.js');
 });
 
 test('It should yield the defined tag name when creating a custom element;', t => {
