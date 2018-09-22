@@ -8,6 +8,7 @@ import todoList from '../todo-list/index.js';
 const path = init(import.meta.url);
 
 console.log(window.location);
+console.log(import.meta.url);
 
 const container = ({ h, props }) =>
     h('section', { class: 'todo-app' }, [
