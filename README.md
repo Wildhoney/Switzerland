@@ -2,12 +2,6 @@
 
 > Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc&hellip; out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.
 
-## Contents
-
-1. [Motivation](#motivation)
-2. [Plug & Play](#plug--play)
-3. [Getting Started](#getting-started)
-
 ![Travis](http://img.shields.io/travis/Wildhoney/Switzerland.svg?style=for-the-badge)
 &nbsp;
 ![npm](http://img.shields.io/npm/v/switzerland.svg?style=for-the-badge)
@@ -23,6 +17,12 @@
 **dkr**: `docker pull wildhoney/switzerland`
 <br />
 **cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@3.3.0/es/production/index.js`](https://cdn.jsdelivr.net/npm/switzerland@3.3.0/es/production/index.js)
+
+## Contents
+
+1. [Motivation](#motivation)
+2. [Plug & Play](#plug--play)
+3. [Getting Started](#getting-started)
 
 ![Screenshot](media/screenshot.png)
 
