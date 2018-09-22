@@ -30,6 +30,24 @@ For example, if somebody writes a `<mayan-calendar />` component that works nice
 
 Thankfully by utilising custom elements which are native to the browser, we can write interoperable components that can be used **anywhere** &mdash; on their own or in a framework. In addition we inherit other benefits, such as style encapsulation to prevent cross-contamination, and relative loading of CSS documents and associated images.
 
+
+
+## Plug & Play
+
+Switzerland is capable of being integrated into any website or app without any formal installation or build process if you wish. Thanks to shadow DOM technology, all styles are also applied since Switzerland detects which host the JS originated from; if the origin and the JS host differ, then absolute paths to the domain are used when loading assets, such as CSS documents and images.
+
+As a little teaser, navigate to [Google.com](https://www.google.com/) and paste the following snippet of code into the console:
+
+```javascript
+const script = document.createElement('script');
+script.type = 'module';
+script.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
+document.head.append(script);
+document.body.append(document.createElement('todo-app'));
+```
+
+After a couple of milliseconds you *should* see the todo app embedded into Google with all of the styles applied. If you have any todos in your list then you will also see those due to the IndexedDb that the example utilises. It's worth noting that for this example to work correctly, the host &mdash; in the above case `switzerland.herokuapp.com` &mdash; needs the CORS headers configured correctly.
+
 ## Getting Started
 
 As Switzerland is functional its components simply take `props` and yield `props` &ndash; middleware can have side-effects such as writing to the DOM, and can also be asynchronous by yielding a `Promise`. Middleware is processed on each render from left-to-right which makes components very easy to reason about. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
@@ -145,19 +163,3 @@ node.addEventListener('clicked-country', event => (
     console.log(`Country: ${event.detail.country}!`)
 ));
 ```
-
-## Plug & Play
-
-Switzerland is capable of being integrated into any website or app without any formal installation or build process if you wish. Thanks to shadow DOM technology, all styles are also applied since Switzerland detects which host the JS originated from; if the origin and the JS host differ, then absolute paths to the domain are used when loading assets, such as CSS documents and images.
-
-As a little teaser, navigate to [Google.com](https://www.google.com/) and paste the following snippet of code into the console:
-
-```javascript
-const script = document.createElement('script');
-script.type = 'module';
-script.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
-document.head.append(script);
-document.body.append(document.createElement('todo-app'));
-```
-
-After a couple of milliseconds you *should* see the todo app embedded into Google with all of the styles applied. If you have any todos in your list then you will also see those due to the IndexedDb that the example utilises. It's worth noting that for this example to work correctly, the host &mdash in the above case `switzerland.herokuapp.com` &mdash; needs the CORS headers configured correctly.
