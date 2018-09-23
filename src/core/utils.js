@@ -1,5 +1,5 @@
 import { handler } from '../middleware/rescue/index.js';
-import { previous, handlers, state } from './index.js';
+import { previous, handlers, state, CancelError } from './index.js';
 
 const roots = new WeakMap();
 
@@ -98,8 +98,10 @@ export const consoleMessage = (text, type = 'error') =>
  * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
  */
 export const getInitialProps = (node, mergeProps, scheduledTask) => {
+    const abort = () => {
+        throw new CancelError();
+    };
     const prevProps = previous.get(node);
-
     const resolved = async () => {
         const resolution = await Promise.race([
             scheduledTask,
@@ -107,11 +109,13 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => {
         ]);
         return resolution !== false;
     };
+
     return {
         ...(prevProps || {}),
         ...mergeProps,
         resolved,
         node,
+        abort,
         render: node.render.bind(node),
         dispatch: dispatchEvent(node),
         prevProps: previous.get(node) || null
@@ -139,9 +143,9 @@ export const processMiddleware = async (node, initialProps, middleware) => {
 };
 
 /**
- * @function handleError ∷ ∀ a. HTMLElement e ⇒ e → Error a → void
+ * @function handleError ∷ ∀ a. HTMLElement e ⇒ e → Error a → Promise void
  */
-export const handleError = (node, error) => {
+export const handleError = async (node, error) => {
     // Attempt to find an error handler for the current node which can handle the error gracefully.
     // Otherwise a simple yet abrasive `console.error` will be used with no recovery possible.
     const props = handlers.get(node);
@@ -152,7 +156,8 @@ export const handleError = (node, error) => {
     }
 
     previous.set(node, { ...props, error });
-    props[handler]({
+    const f = await props[handler];
+    f({
         ...props,
         error,
         render: mergeProps => {
