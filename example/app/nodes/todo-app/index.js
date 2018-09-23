@@ -80,7 +80,7 @@ const itemDimensions = ({ h, adapt }) =>
 
 const retry = ({ render, h, props }) =>
     h('section', { class: 'todo-app' }, [
-        h.stylesheet(path('styles.css')),
+        h.stylesheet(path('styles/index.css')),
         header(props),
         h('button', { class: 'retry', onclick: render }, 'Retry')
     ]);
@@ -88,13 +88,13 @@ const retry = ({ render, h, props }) =>
 export default create(
     'todo-app',
     store,
+    m.loader({ logo: path('images/logo.png') }),
     m.rescue(m.vdom(retry)),
     m.methods({ insert: (value, { redux }) => redux.actions.add(value) }),
     m.serviceWorker(path('../../utils/worker.js'), '/'),
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
-    m.loader({ logo: path('images/logo.png') }),
     m.vdom(container),
     m.wait(todoInput, todoList)
 );
