@@ -36,8 +36,6 @@ For example, if somebody writes a `<mayan-calendar />` component that works nice
 
 Thankfully by utilising custom elements which are native to the browser, we can write interoperable components that can be used **anywhere** &mdash; on their own or in a framework. In addition we inherit other benefits, such as style encapsulation to prevent cross-contamination, and relative loading of CSS documents and associated images.
 
-
-
 ## Plug & Play
 
 Switzerland is capable of being integrated into any website or app without any formal installation or build process if you wish. Thanks to shadow DOM technology, all styles are also applied since Switzerland detects which host the JS originated from; if the origin and the JS host differ, then absolute paths to the domain are used when loading assets, such as CSS documents and images.
@@ -45,10 +43,10 @@ Switzerland is capable of being integrated into any website or app without any f
 As a little teaser, navigate to [Google.com](https://www.google.com/) and paste the following snippet of code into the console:
 
 ```javascript
-const script = document.createElement('script');
-script.type = 'module';
-script.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
-document.head.append(script);
+const node = document.createElement('script');
+node.type = 'module';
+node.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
+document.head.append(node);
 document.body.append(document.createElement('todo-app'));
 ```
 
