@@ -5,6 +5,8 @@ export const previous = new WeakMap();
 export const state = Symbol('@switzerland/state');
 const queue = Symbol('@switzerland/queue');
 
+export class CancelError extends Error {}
+
 /**
  * @function init ∷ String → String → (String → String)
  */
@@ -91,12 +93,14 @@ export const create = (name, ...middleware) => {
                             middleware
                         );
                     } catch (error) {
-                        // Errors should cancel any enqueued middleware.
-                        this[queue].clear();
-                        this[state] = 'error';
+                        if (!(error instanceof CancelError)) {
+                            // Errors should cancel any enqueued middleware.
+                            this[queue].clear();
+                            this[state] = 'error';
 
-                        // Handle any errors that were thrown from the processing of the middleware functions.
-                        return u.handleError(this, error);
+                            // Handle any errors that were thrown from the processing of the middleware functions.
+                            return u.handleError(this, error);
+                        }
                     } finally {
                         // Await the resolution of all the CSS import rules.
                         const stylesheets = u
