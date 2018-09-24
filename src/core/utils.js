@@ -156,7 +156,7 @@ export const handleError = async (node, error) => {
     }
 
     previous.set(node, { ...props, error });
-    
+
     (await props[handler])({
         ...props,
         error,
@@ -168,12 +168,11 @@ export const handleError = async (node, error) => {
 };
 
 /**
- * @function hasLoadedCSSImports ∷ [HTMLStyleElement] s ⇒ s → Promise void
- * ---
- * Takes a list of `HTMLStyleElement` nodes and extracts all of the `CSSImportRule` rules, awaiting
- * the resolution of each one before resolving the yielded promise.
+ * @function hasLoadedCSSImports ∷ HTMLElement e ⇒ e → Promise void
  */
-export const hasLoadedCSSImports = styles => {
+export const hasLoadedCSSImports = node => {
+    const styles = createShadowRoot(node).querySelectorAll('style');
+
     return new Promise(resolve => {
         try {
             const isLoaded = rules =>

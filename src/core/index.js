@@ -68,6 +68,13 @@ export const create = (name, ...middleware) => {
                     const tasks = Array.from(this[queue]);
                     const prevScheduledTask = tasks[tasks.length - 1];
                     await prevScheduledTask;
+                    const isQueued = this[queue].has(prevScheduledTask);
+
+                    if (prevScheduledTask && !isQueued) {
+                        // If a caught error has removed it from the queue, then we don't go any further.
+                        resolve();
+                        return;
+                    }
 
                     const dispatchEvent = u.dispatchEvent(this);
                     const initialProps = u.getInitialProps(
@@ -75,15 +82,6 @@ export const create = (name, ...middleware) => {
                         mergeProps,
                         scheduledTask
                     );
-
-                    if (
-                        prevScheduledTask &&
-                        !this[queue].has(prevScheduledTask)
-                    ) {
-                        // If a caught error has removed it from the queue, then we don't go any further.
-                        resolve();
-                        return;
-                    }
 
                     try {
                         // Cycle through all of the middleware functions, updating the props as we go.
@@ -93,7 +91,9 @@ export const create = (name, ...middleware) => {
                             middleware
                         );
                     } catch (error) {
-                        if (!(error instanceof CancelError)) {
+                        const isCancelled = error instanceof CancelError;
+
+                        if (!isCancelled) {
                             // Errors should cancel any enqueued middleware.
                             this[queue].clear();
                             this[state] = 'error';
@@ -103,10 +103,7 @@ export const create = (name, ...middleware) => {
                         }
                     } finally {
                         // Await the resolution of all the CSS import rules.
-                        const stylesheets = u
-                            .createShadowRoot(this)
-                            .querySelectorAll('style');
-                        await u.hasLoadedCSSImports(stylesheets);
+                        await u.hasLoadedCSSImports(this);
 
                         // Always dispatch the "resolved" event regardless of success or failure. We also apply
                         // the "resolved" class name to the element.
