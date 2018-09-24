@@ -156,8 +156,8 @@ export const handleError = async (node, error) => {
     }
 
     previous.set(node, { ...props, error });
-    const f = await props[handler];
-    f({
+    
+    (await props[handler])({
         ...props,
         error,
         render: mergeProps => {
