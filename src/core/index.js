@@ -1,9 +1,11 @@
 import * as u from './utils.js';
+import createState from './state/index.js';
+import createQueue from './queue/index.js';
 
 export const handlers = new WeakMap();
 export const previous = new WeakMap();
-export const state = Symbol('@switzerland/state');
-const queue = Symbol('@switzerland/queue');
+
+export const meta = Symbol('@switzerland/meta');
 
 export class CancelError extends Error {}
 
@@ -24,101 +26,77 @@ export const init = (url, host = window.location.host) => path => {
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
 export const create = (name, ...middleware) => {
-    const parts = name.split('/');
-    const [tag, Prototype] = [
-        u.resolveTagName(parts[0]),
-        u.getPrototype(parts[1])
-    ];
+    const [tag, extendsElement] = u.parseTagName(name);
 
     window.customElements.define(
         tag,
-        class extends Prototype {
+        class extends extendsElement {
             constructor() {
                 super();
-                this[queue] = new Set();
-                this[state] = 'normal';
+                this[meta] = {
+                    queue: createQueue(),
+                    state: createState(this)
+                };
             }
-
-            /**
-             * @method connectedCallback ∷ Props p ⇒ p
-             */
             connectedCallback() {
                 return this.render();
             }
-
-            /**
-             * @method disconnectedCallback ∷ Props p ⇒ p
-             */
             disconnectedCallback() {
                 this.classList.remove('resolved');
                 return this.render();
             }
-
-            /**
-             * @method render ∷ ∀ a. Props p ⇒ Object String a → p
-             */
             async render(mergeProps = {}) {
-                if (this[state] === 'error') {
+                if (this[meta].state.isError()) {
                     // Cannot process new render cycles until the error has been resolved.
                     return;
                 }
 
-                const scheduledTask = new Promise(async resolve => {
+                const { queue, state } = this[meta];
+
+                const newTask = new Promise(async resolve => {
                     // Await the completion of the task last added to the stack.
-                    const tasks = Array.from(this[queue]);
-                    const prevScheduledTask = tasks[tasks.length - 1];
-                    await prevScheduledTask;
-                    const isQueued = this[queue].has(prevScheduledTask);
+                    const currentTask = queue.current();
+                    await currentTask;
 
-                    if (prevScheduledTask && !isQueued) {
+                    if (this[meta].queue.isInvalid(newTask)) {
                         // If a caught error has removed it from the queue, then we don't go any further.
-                        resolve();
-                        return;
+                        return void resolve();
                     }
-
-                    const dispatchEvent = u.dispatchEvent(this);
-                    const initialProps = u.getInitialProps(
-                        this,
-                        mergeProps,
-                        scheduledTask
-                    );
 
                     try {
                         // Cycle through all of the middleware functions, updating the props as we go.
-                        return await u.processMiddleware(
-                            this,
-                            initialProps,
-                            middleware
-                        );
+                        const props = u.getInitialProps(this, mergeProps, currentTask);
+                        return void (await u.handleMiddleware(this, props, middleware));
                     } catch (error) {
-                        const isCancelled = error instanceof CancelError;
-
-                        if (!isCancelled) {
-                            // Errors should cancel any enqueued middleware.
-                            this[queue].clear();
-                            this[state] = 'error';
-
-                            // Handle any errors that were thrown from the processing of the middleware functions.
-                            return u.handleError(this, error);
+                        if (error instanceof CancelError) {
+                            return;
                         }
+
+                        // // Errors should cancel any enqueued middleware.
+                        // queue.dropAll();
+                        // state.setError();
+
+                        // Handle any errors that were thrown from the processing of the middleware functions.
+                        return void (queue.dropAll(), state.setError(), u.handleError(this, error));
                     } finally {
                         // Await the resolution of all the CSS import rules.
-                        await u.hasLoadedCSSImports(this);
+                        await u.fetchedCSSImports(this);
 
                         // Always dispatch the "resolved" event regardless of success or failure. We also apply
                         // the "resolved" class name to the element.
+                        const dispatchEvent = u.dispatchEvent(this);
                         dispatchEvent(u.getEventName('resolved'), {
                             node: this
                         });
                         this.isConnected && this.classList.add('resolved');
-                        this[queue].delete(prevScheduledTask);
+                        queue.drop(newTask);
                         resolve();
                     }
                 });
 
                 // Add task to the queue.
-                this[queue].add(scheduledTask);
-                return scheduledTask;
+                queue.push(newTask);
+                return newTask;
             }
         }
     );
@@ -130,28 +108,26 @@ export const create = (name, ...middleware) => {
  * @function alias ∷ String → String → String
  */
 export const alias = (name, newName) => {
-    const Constructor = window.customElements.get(name);
-    const instance = new Constructor();
-    const parts = newName.split('/');
-    const Prototype = u.getPrototype(parts[1]);
+    const CustomElement = window.customElements.get(name);
+    const instance = new CustomElement();
+    const [, extendsElement] = u.parseTagName(newName);
 
     window.customElements.define(
         newName,
-        class extends Prototype {
+        class extends extendsElement {
             constructor() {
                 super();
-                this[queue] = new Set();
-                this[state] = 'normal';
+                this[meta] = {
+                    queue: createQueue(),
+                    state: createState(this)
+                };
             }
-
             connectedCallback() {
                 return instance.connectedCallback.call(this);
             }
-
             disconnectedCallback() {
                 return instance.disconnectedCallback.call(this);
             }
-
             render() {
                 return instance.render.call(this);
             }

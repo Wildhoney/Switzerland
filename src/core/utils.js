@@ -1,5 +1,5 @@
 import { handler } from '../middleware/rescue/index.js';
-import { previous, handlers, state, CancelError } from './index.js';
+import { previous, handlers, meta, CancelError } from './index.js';
 
 const roots = new WeakMap();
 
@@ -54,18 +54,23 @@ export const getRandomId = () => {
     return a[0].toString(16);
 };
 
+export const parseTagName = name => {
+    const parts = name.split('/');
+    return [findFreeTagName(parts[0]), determinePrototype(parts[1])];
+};
+
 /**
- * @function resolveTagName ∷ String → String → String
+ * @function findFreeTagName ∷ String → String → String
  * ---
  * Resolves the node name by first attempting to use the requested node name, unless it already exists as
  * a custom component. If so, we recursively call the `resolveTagName` function to append a random suffix
  * to the end of the node name until we find a node that isn't registered.
  */
-export const resolveTagName = (name, suffix = null) => {
+export const findFreeTagName = (name, suffix = null) => {
     const tag = suffix ? `${name}-${suffix}` : name;
     return !window.customElements.get(tag)
         ? tag
-        : resolveTagName(tag, getRandomId());
+        : findFreeTagName(tag, getRandomId());
 };
 
 /**
@@ -76,12 +81,12 @@ export const resolveTagName = (name, suffix = null) => {
 export const getEventName = label => `@switzerland/${label}`;
 
 /**
- * @function getPrototype ∷ HTMLElement e ⇒ String → e
+ * @function determinePrototype ∷ HTMLElement e ⇒ String → e
  * ---
  * Determines which constructor to extend from for the defining of the custom element. In most cases it
  * will be `HTMLElement` unless the user is extending an existing element.
  */
-export const getPrototype = tag =>
+export const determinePrototype = tag =>
     tag ? document.createElement(tag).constructor : window.HTMLElement;
 
 /**
@@ -97,35 +102,29 @@ export const consoleMessage = (text, type = 'error') =>
 /**
  * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
  */
-export const getInitialProps = (node, mergeProps, scheduledTask) => {
-    const abort = () => {
-        throw new CancelError();
-    };
-    const prevProps = previous.get(node);
-    const resolved = async () => {
+export const getInitialProps = (node, mergeProps, scheduledTask) => ({
+    ...(previous.get(node) || {}),
+    ...mergeProps,
+    node,
+    render: node.render.bind(node),
+    dispatch: dispatchEvent(node),
+    prevProps: previous.get(node) || null,
+    resolved: async () => {
         const resolution = await Promise.race([
             scheduledTask,
             Promise.resolve(false)
         ]);
         return resolution !== false;
-    };
-
-    return {
-        ...(prevProps || {}),
-        ...mergeProps,
-        resolved,
-        node,
-        abort,
-        render: node.render.bind(node),
-        dispatch: dispatchEvent(node),
-        prevProps: previous.get(node) || null
-    };
-};
+    },
+    abort: () => {
+        throw new CancelError();
+    }
+});
 
 /**
- * @function processMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
+ * @function handleMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
  */
-export const processMiddleware = async (node, initialProps, middleware) => {
+export const handleMiddleware = async (node, initialProps, middleware) => {
     const props = await middleware.reduce(async (accumP, middlewareP) => {
         const props = await accumP;
         props.props = props;
@@ -161,19 +160,19 @@ export const handleError = (node, error) => {
         ...props,
         error,
         render: mergeProps => {
-            node[state] = 'normal';
+            node[meta].state.setNormal();
             return node.render(mergeProps);
         }
     });
 };
 
 /**
- * @function hasLoadedCSSImports ∷ HTMLElement e ⇒ e → Promise void
+ * @function fetchedCSSImports ∷ HTMLElement e ⇒ e → Promise void
  * ---
  * Finds all of the component's `HTMLStyleElement` nodes and extracts the `CSSImportRule` rules, awaiting
  * the resolution of each one before resolving the yielded promise.
  */
-export const hasLoadedCSSImports = node => {
+export const fetchedCSSImports = node => {
     const styles = createShadowRoot(node).querySelectorAll('style');
 
     return new Promise(resolve => {
