@@ -1,4 +1,4 @@
-export const handler = Symbol('@switzerland/error-handler');
+export const handler = Symbol('@switzerland/error');
 
 /**
  * @function rescue ∷ View v, Props p ⇒ v → (p → p)
@@ -8,7 +8,7 @@ export const handler = Symbol('@switzerland/error-handler');
  * defined on the component, then a console error will be rendered instead, but only in development mode.
  */
 export default function rescue(getView) {
-    return props => {
-        return { ...props, [handler]: getView };
+    return async props => {
+        return { ...props, [handler]: await getView };
     };
 }

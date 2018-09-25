@@ -5,6 +5,6 @@ import rescue, { handler } from '../index.js';
 test('It should be able to setup the rescue function for `catch`;', async t => {
     const f = () => {};
     const m = rescue(f);
-    const newProps = m(defaultProps);
+    const newProps = await m(defaultProps);
     t.deepEqual(newProps, { ...defaultProps, [handler]: f });
 });
