@@ -143,9 +143,9 @@ export const processMiddleware = async (node, initialProps, middleware) => {
 };
 
 /**
- * @function handleError ∷ ∀ a. HTMLElement e ⇒ e → Error a → Promise void
+ * @function handleError ∷ ∀ a. HTMLElement e ⇒ e → Error a → void
  */
-export const handleError = async (node, error) => {
+export const handleError = (node, error) => {
     // Attempt to find an error handler for the current node which can handle the error gracefully.
     // Otherwise a simple yet abrasive `console.error` will be used with no recovery possible.
     const props = handlers.get(node);
@@ -157,7 +157,7 @@ export const handleError = async (node, error) => {
 
     previous.set(node, { ...props, error });
 
-    (await props[handler])({
+    props[handler]({
         ...props,
         error,
         render: mergeProps => {
@@ -169,6 +169,9 @@ export const handleError = async (node, error) => {
 
 /**
  * @function hasLoadedCSSImports ∷ HTMLElement e ⇒ e → Promise void
+ * ---
+ * Finds all of the component's `HTMLStyleElement` nodes and extracts the `CSSImportRule` rules, awaiting
+ * the resolution of each one before resolving the yielded promise.
  */
 export const hasLoadedCSSImports = node => {
     const styles = createShadowRoot(node).querySelectorAll('style');

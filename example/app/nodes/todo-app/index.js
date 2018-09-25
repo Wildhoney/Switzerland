@@ -1,6 +1,6 @@
 import { create, init, m, t } from '/vendor/index.js';
 import store from '../../utils/store.js';
-import { retrieve } from './middleware.js';
+import { retrieve, serviceWorker } from './middleware.js';
 import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
@@ -88,10 +88,10 @@ const retry = ({ render, h, props }) =>
 export default create(
     'todo-app',
     store,
+    serviceWorker(path('../../utils/worker.js'), '/'),
     m.loader({ logo: path('images/logo.png') }),
     m.rescue(m.vdom(retry)),
     m.methods({ insert: (value, { redux }) => redux.actions.add(value) }),
-    m.serviceWorker(path('../../utils/worker.js'), '/'),
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
