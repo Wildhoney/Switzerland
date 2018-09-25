@@ -5,9 +5,7 @@ const path = require('path');
 const terser = require('terser');
 
 function main() {
-    const files = glob
-        .sync('./src/**/**.js')
-        .filter(a => !a.includes('__tests__'));
+    const files = glob.sync('./src/**/**.js').filter(a => !a.includes('__tests__'));
 
     files.forEach(input => {
         const data = fs.readFileSync(input, 'utf-8');
@@ -15,10 +13,7 @@ function main() {
         const outputDevelopment = input.replace('./src', './es/development');
 
         mkdirp(path.parse(outputProduction).dir, () => {
-            fs.writeFileSync(
-                outputProduction,
-                terser.minify(data, { ecma: 8, module: true }).code
-            );
+            fs.writeFileSync(outputProduction, terser.minify(data, { ecma: 8, module: true }).code);
         });
 
         mkdirp(path.parse(outputDevelopment).dir, () => {

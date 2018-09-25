@@ -16,19 +16,17 @@ test('It should be able to set the event name;', t => {
 
 test('It should be able to recursively determine the component name;', t => {
     window.customElements = { get: () => false };
-    t.is(u.resolveTagName('x-example'), 'x-example');
-    t.is(u.resolveTagName('x-example', 'abc'), 'x-example-abc');
+    t.is(u.findFreeTagName('x-example'), 'x-example');
+    t.is(u.findFreeTagName('x-example', 'abc'), 'x-example-abc');
     window.customElements = { get: a => a === 'x-example' };
-    t.is(u.resolveTagName('x-example'), 'x-example-0');
+    t.is(u.findFreeTagName('x-example'), 'x-example-0');
 });
 
 test('It should be able to attach the shadow boundary to an element;', t => {
     const element = document.createElement('section');
     const sameElement = u.createShadowRoot(element);
     t.is(element, sameElement);
-    const attachShadow = spy(() =>
-        document.createElement('fake-shadow-boundary')
-    );
+    const attachShadow = spy(() => document.createElement('fake-shadow-boundary'));
     element.attachShadow = attachShadow;
     const shadowBoundary = u.createShadowRoot(element);
     t.is(attachShadow.callCount, 1);
@@ -36,9 +34,9 @@ test('It should be able to attach the shadow boundary to an element;', t => {
 });
 
 test('It should be able to determine the prototype of a given element;', t => {
-    t.is(u.getPrototype('div'), window.HTMLDivElement);
-    t.is(u.getPrototype('span'), window.HTMLSpanElement);
-    t.is(u.getPrototype('section'), window.HTMLElement);
+    t.is(u.determinePrototype('div'), window.HTMLDivElement);
+    t.is(u.determinePrototype('span'), window.HTMLSpanElement);
+    t.is(u.determinePrototype('section'), window.HTMLElement);
 });
 
 test('It should be able to dispatch the event with the node and version;', t => {

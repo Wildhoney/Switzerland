@@ -27,9 +27,6 @@ const list = ({ redux, h }) =>
         ])
     );
 
-const nothing = ({ h }) =>
-    h('li', { class: 'none' }, [
-        h('p', {}, 'You have not added any todos yet.')
-    ]);
+const nothing = ({ h }) => h('li', { class: 'none' }, [h('p', {}, 'You have not added any todos yet.')]);
 
 export default create('todo-list', store, m.vdom(container));

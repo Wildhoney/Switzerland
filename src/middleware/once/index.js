@@ -43,8 +43,7 @@ export default function once(fn, strategy = types.ONLY) {
 
     return async props => {
         if (props.node.isConnected) {
-            const result =
-                strategy !== types.ON_UNMOUNT && (await maybeInvoke(fn, props));
+            const result = strategy !== types.ON_UNMOUNT && (await maybeInvoke(fn, props));
             strategy === types.ON_UNMOUNT && cache.delete(props.node);
             return { ...result, ...props };
         }

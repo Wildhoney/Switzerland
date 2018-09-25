@@ -17,5 +17,4 @@ export const takeTree = node => {
 /**
  * @function camelToKebab ∷ String → String
  */
-export const camelToKebab = value =>
-    value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+export const camelToKebab = value => value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();

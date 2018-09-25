@@ -1,7 +1,4 @@
-import {
-    patch,
-    h
-} from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { patch, h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import { createShadowRoot } from '../../core/utils.js';
 import * as u from './utils.js';
 
@@ -9,11 +6,7 @@ import * as u from './utils.js';
  * @function stylesheet ∷ View v ⇒ String → String → v
  */
 const stylesheet = (path, mediaQuery = '') =>
-    h(
-        'style',
-        { key: path, type: 'text/css' },
-        `@import "${path}" ${mediaQuery}`.trim() + ';'
-    );
+    h('style', { key: path, type: 'text/css' }, `@import "${path}" ${mediaQuery}`.trim() + ';');
 
 /**
  * @function variables ∷ ∀ a. Object a String → String

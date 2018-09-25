@@ -24,21 +24,14 @@ export default function wait(...names) {
             // Find all of the nodes to wait upon, minus those that have already been resolved.
             const nodes = [
                 ...names.reduce(
-                    (accum, name) => [
-                        ...accum,
-                        ...Array.from(
-                            createShadowRoot(props.node).querySelectorAll(name)
-                        )
-                    ],
+                    (accum, name) => [...accum, ...Array.from(createShadowRoot(props.node).querySelectorAll(name))],
                     []
                 )
             ].filter(node => !node.classList.contains('resolved'));
 
             nodes.length === 0
                 ? resolve()
-                : document.addEventListener(eventName, function listener({
-                      detail: { node }
-                  }) {
+                : document.addEventListener(eventName, function listener({ detail: { node } }) {
                       nodes.includes(node) && resolved.add(node);
                       if (resolved.size === nodes.length) {
                           document.removeEventListener(eventName, listener);

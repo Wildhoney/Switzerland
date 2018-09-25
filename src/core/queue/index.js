@@ -1,7 +1,6 @@
 export default () => {
+    const queue = (window.set = new Set());
 
-    const queue = window.set = new Set;
-    
     return {
         current: () => {
             const tasks = Array.from(queue);
@@ -12,6 +11,4 @@ export default () => {
         dropAll: () => queue.clear(),
         isInvalid: task => !queue.has(task)
     };
-
-
 };

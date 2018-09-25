@@ -4,9 +4,7 @@
 const getObserver = () =>
     'ResizeObserver' in window &&
     new window.ResizeObserver(entries => {
-        entries.forEach(entry =>
-            entry.target.render({ adapt: entry.contentRect })
-        );
+        entries.forEach(entry => entry.target.render({ adapt: entry.contentRect }));
     });
 
 /**
