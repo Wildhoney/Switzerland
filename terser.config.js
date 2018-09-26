@@ -13,7 +13,13 @@ function main() {
         const outputDevelopment = input.replace('./src', './es/development');
 
         mkdirp(path.parse(outputProduction).dir, () => {
-            fs.writeFileSync(outputProduction, terser.minify(data, { ecma: 8, module: true }).code);
+            fs.writeFileSync(
+                outputProduction,
+                terser.minify(data, {
+                    ecma: 8,
+                    module: true
+                }).code
+            );
         });
 
         mkdirp(path.parse(outputDevelopment).dir, () => {

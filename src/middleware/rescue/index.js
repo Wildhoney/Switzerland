@@ -1,4 +1,4 @@
-export const handler = Symbol('@switzerland/error');
+export const handler = Symbol('error');
 
 /**
  * @function rescue ∷ View v, Props p ⇒ v → (p → p)

@@ -2,7 +2,7 @@ import * as u from '../utils.js';
 import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
 
-export const meta = Symbol('@switzerland/meta');
+export const meta = Symbol('meta');
 
 export class CancelError extends Error {}
 
