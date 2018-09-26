@@ -11,8 +11,8 @@
 
 - name: test/lint
   tasks:
-      # - eslint "{src,tests,example}/**/**.js"
-      # - stylelint "example/**/**.css"
+      - eslint "{src,tests,example}/**/**.js"
+      - stylelint "example/**/**.css"
       - rm -rf es/ 
       - - NODE_ENV=production yarn build
       - - - tar -zcf build.tar.gz es/production/
@@ -30,7 +30,7 @@
 
 - name: test
   tasks:
-      # - taskfile test/spec
+      - taskfile test/spec
       - - taskfile test/lint
       # - - - taskfile test/integration
 
