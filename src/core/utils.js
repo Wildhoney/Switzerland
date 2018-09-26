@@ -1,7 +1,9 @@
 import { handler } from '../middleware/rescue/index.js';
-import { previous, handlers, meta, CancelError } from './index.js';
+import { meta, CancelError } from './index.js';
 
 const roots = new WeakMap();
+const handlers = new WeakMap();
+const previous = new WeakMap();
 
 /**
  * @function dispatchEvent ∷ ∀ a b. HTMLElement e ⇒ e → b → Boolean
