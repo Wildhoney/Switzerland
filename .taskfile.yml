@@ -15,9 +15,9 @@
       - stylelint "example/**/**.css"
       - rm -rf es/ 
       - - NODE_ENV=production yarn build
-      - - - tar -zcf build.tar.gz es/production/
-      - - - - fslint --files=build.tar.gz --limit=5120
-      - - - - - rm -rf build.tar.gz es/production/
+      - - - (cd es/production && tar -zcf ../../build.tar.gz .)
+      - - - - fslint --files=build.tar.gz --limit=5120 || rm -rf build.tar.gz es/
+      - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
   task: NODE_ENV=test nyc ava
