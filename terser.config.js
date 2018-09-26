@@ -17,7 +17,10 @@ function main() {
                 outputProduction,
                 terser.minify(data, {
                     ecma: 8,
-                    module: true
+                    module: true,
+                    compress: {
+                        passes: 2
+                    }
                 }).code
             );
         });
