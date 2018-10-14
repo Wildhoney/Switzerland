@@ -73,7 +73,7 @@
         "nodemon": "^1.18.4",
         "nyc": "^13.1.0",
         "prettier": "^1.14.3",
-        "sinon": "^6.3.5",
+        "sinon": "^7.0.0",
         "starwars": "^1.0.0",
         "stylelint": "^9.6.0",
         "stylelint-config-prettier": "^4.0.0",
