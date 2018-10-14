@@ -9,7 +9,11 @@ const container = ({ value, render, redux, h, props }) =>
         {
             novalidate: true,
             oncreate: form => props.render({ form }),
-            onsubmit: async event => (event.preventDefault(), await render({ value: '' }), redux.actions.add(value))
+            onsubmit: async event => (
+                event.preventDefault(),
+                await render({ value: '' }),
+                redux.actions.add(value)
+            )
         },
         [
             input(props),

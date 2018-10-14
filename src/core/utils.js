@@ -70,7 +70,9 @@ export const parseTagName = name => {
  */
 export const findFreeTagName = (name, suffix = null) => {
     const tag = suffix ? `${name}-${suffix}` : name;
-    return !window.customElements.get(tag) ? tag : findFreeTagName(tag, getRandomId());
+    return !window.customElements.get(tag)
+        ? tag
+        : findFreeTagName(tag, getRandomId());
 };
 
 /**
@@ -86,7 +88,8 @@ export const getEventName = label => `@switzerland/${label}`;
  * Determines which constructor to extend from for the defining of the custom element. In most cases it
  * will be `HTMLElement` unless the user is extending an existing element.
  */
-export const determinePrototype = tag => (tag ? document.createElement(tag).constructor : window.HTMLElement);
+export const determinePrototype = tag =>
+    tag ? document.createElement(tag).constructor : window.HTMLElement;
 
 /**
  * @function consoleMessage ∷ String → String → void
@@ -95,7 +98,8 @@ export const determinePrototype = tag => (tag ? document.createElement(tag).cons
  * from the generated output if 'NODE_ENV' is defined as 'production', as it will be unused due to 'process.env'
  * checks later on in the code.
  */
-export const consoleMessage = (text, type = 'error') => console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
+export const consoleMessage = (text, type = 'error') =>
+    console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 
 /**
  * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
@@ -108,7 +112,10 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => ({
     dispatch: dispatchEvent(node),
     prevProps: previous.get(node) || null,
     resolved: async () => {
-        const resolution = await Promise.race([scheduledTask, Promise.resolve(false)]);
+        const resolution = await Promise.race([
+            scheduledTask,
+            Promise.resolve(false)
+        ]);
         return resolution !== false;
     },
     abort: () => {

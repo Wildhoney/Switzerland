@@ -46,7 +46,11 @@ ul li p {
 }
 
 ul li button.delete {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.075), rgba(0, 0, 0, 0.125));
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.075),
+        rgba(0, 0, 0, 0.125)
+    );
     margin: 10px;
     width: 100px;
     align-self: flex-start;
@@ -62,7 +66,11 @@ ul li button.delete {
 }
 
 ul li button.delete:hover {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.15));
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.15)
+    );
 }
 
 ul li button.delete:active {

@@ -45,8 +45,16 @@ export const createDefault = (extendsElement, middleware) =>
 
                 try {
                     // Cycle through all of the middleware functions, updating the props as we go.
-                    const props = u.getInitialProps(this, mergeProps, currentTask);
-                    return void (await u.handleMiddleware(this, props, middleware));
+                    const props = u.getInitialProps(
+                        this,
+                        mergeProps,
+                        currentTask
+                    );
+                    return void (await u.handleMiddleware(
+                        this,
+                        props,
+                        middleware
+                    ));
                 } catch (error) {
                     if (error instanceof CancelError) {
                         return;
@@ -57,7 +65,9 @@ export const createDefault = (extendsElement, middleware) =>
                     state.setError();
 
                     // Handle any errors that were thrown from the processing of the middleware functions.
-                    return void (queue.dropAll(), state.setError(), u.handleError(this, error));
+                    return void (queue.dropAll(),
+                    state.setError(),
+                    u.handleError(this, error));
                 } finally {
                     // Await the resolution of all the CSS import rules.
                     await u.fetchedCSSImports(this);

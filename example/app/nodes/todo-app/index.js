@@ -15,7 +15,9 @@ const container = ({ h, props }) =>
         list(props),
         h.variables({
             orderPosition: u.isBottom(props) ? 1 : -1,
-            borderColour: u.isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
+            borderColour: u.isBottom(props)
+                ? 'transparent'
+                : 'rgba(0, 0, 0, 0.1)'
         }),
         h.stylesheet(path('styles/index.css')),
         h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
@@ -23,10 +25,18 @@ const container = ({ h, props }) =>
     ]);
 
 const header = ({ loader, h }) =>
-    h('h1', {}, [h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [h('img', { src: loader.logo })])]);
+    h('h1', {}, [
+        h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
+            h('img', { src: loader.logo })
+        ])
+    ]);
 
 const list = ({ h, props }) =>
-    h('ul', {}, [itemCompleted(props), itemPosition(props), props.adapt && itemDimensions(props)]);
+    h('ul', {}, [
+        itemCompleted(props),
+        itemPosition(props),
+        props.adapt && itemDimensions(props)
+    ]);
 
 const itemCompleted = ({ redux, h }) =>
     h('li', {}, [
@@ -34,10 +44,9 @@ const itemCompleted = ({ redux, h }) =>
         h(
             'span',
             {},
-            `${redux.state.list.filter(x => x.done).length} of ${redux.state.list.length} ${u.pluralise(
-                redux.state.list.length,
-                'task'
-            )}`
+            `${redux.state.list.filter(x => x.done).length} of ${
+                redux.state.list.length
+            } ${u.pluralise(redux.state.list.length, 'task')}`
         )
     ]);
 
@@ -64,7 +73,10 @@ const itemPosition = ({ h, props }) =>
     ]);
 
 const itemDimensions = ({ h, adapt }) =>
-    h('li', {}, [h('em', {}, 'Dimensions: '), h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)]);
+    h('li', {}, [
+        h('em', {}, 'Dimensions: '),
+        h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)
+    ]);
 
 const retry = ({ render, h, props }) =>
     h('section', { class: 'todo-app' }, [

@@ -21,7 +21,10 @@ export const init = (url, host = window.location.host) => path => {
  */
 export const create = (name, ...middleware) => {
     const [tag, extendsElement] = u.parseTagName(name);
-    window.customElements.define(tag, c.createDefault(extendsElement, middleware));
+    window.customElements.define(
+        tag,
+        c.createDefault(extendsElement, middleware)
+    );
     return tag;
 };
 
@@ -32,6 +35,9 @@ export const alias = (name, newName) => {
     const CustomElement = window.customElements.get(name);
     const instance = new CustomElement();
     const [, extendsElement] = u.parseTagName(newName);
-    window.customElements.define(newName, c.createAlias(extendsElement, instance));
+    window.customElements.define(
+        newName,
+        c.createAlias(extendsElement, instance)
+    );
     return newName;
 };
