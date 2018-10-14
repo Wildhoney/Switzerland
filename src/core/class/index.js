@@ -2,12 +2,26 @@ import * as u from '../utils.js';
 import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
 
+/**
+ * @constant meta ∷ Symbol
+ * ---
+ * Used internally by each Switzerland class to store private data, such as the queue and its current state.
+ */
 export const meta = Symbol('meta');
 
+/**
+ * @class CancelError ∷ Error
+ * ---
+ * Used for the `abort` function which allows the current render of a component to be cancelled, and any
+ * queued items to be processed immediately afterwards.
+ */
 export class CancelError extends Error {}
 
 /**
  * @function createDefault ∷ Props p ⇒ HTMLElement → [(p → Promise p)] → Class
+ * ---
+ * The default implementation of the custom element class which contains all of the render logic. Render
+ * passes occur consecutively and as such repeated calls to `render` will be enqueued for the same component.
  */
 export const createDefault = (extendsElement, middleware) =>
     class extends extendsElement {
@@ -92,6 +106,9 @@ export const createDefault = (extendsElement, middleware) =>
 
 /**
  * @function createAlias ∷ Props p ⇒ HTMLElement → Class → Class
+ * ---
+ * Alias class implementation which attempts to locate the existing custom component, and to then create an
+ * alias of it under its new name. Delegates all responsibilities to the above `createDefault` yielded class.
  */
 export const createAlias = (extendsElement, instance) =>
     class extends extendsElement {

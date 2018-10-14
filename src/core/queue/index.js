@@ -1,4 +1,12 @@
-export default () => {
+/**
+ * @function queue ∷ void
+ * ---
+ * Encapsulated logic for handling the queuing system for components, where each component can only
+ * have one active render cycle at any given time. Subsequent invocations to the `render` method are
+ * queued and processed subsequently. Any errors that are thrown in the middleware cause the queue
+ * to be emptied.
+ */
+export default function queue() {
     const queue = (window.set = new Set());
 
     return {

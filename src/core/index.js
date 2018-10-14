@@ -5,6 +5,11 @@ export { meta, CancelError } from './class/index.js';
 
 /**
  * @function init ∷ String → String → (String → String)
+ * ---
+ * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
+ * the components by using the `import.meta.url` (or `document.currentScript` for non-module includes).
+ * Detects when the component is being used on a different host where absolute paths will be used instead
+ * of relative ones to allow components to be rendered cross-domain.
  */
 export const init = (url, host = window.location.host) => path => {
     const a = document.createElement('a');
@@ -30,6 +35,10 @@ export const create = (name, ...middleware) => {
 
 /**
  * @function alias ∷ String → String → String
+ * ---
+ * Takes the name of an existing custom element, and creates a clone of it under a different name. No attempt
+ * to find a unique name takes place in this function, and so if the new custom component name already exists, a
+ * native ungraceful `customElements` exception will be thrown.
  */
 export const alias = (name, newName) => {
     const CustomElement = window.customElements.get(name);

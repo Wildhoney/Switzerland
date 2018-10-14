@@ -1,9 +1,27 @@
 import { handler } from '../middleware/rescue/index.js';
 import { meta, CancelError } from './index.js';
 
-const roots = new WeakMap();
-const handlers = new WeakMap();
-const previous = new WeakMap();
+/**
+ * @constant previousProps ∷ HTMLElement e, Props p ⇒ e → p
+ * ---
+ * Previous props that were used for the last render of each component.
+ */
+const previousProps = new WeakMap();
+
+/**
+ * @constant shadowBoundaries ∷ HTMLElement e, ShadowRoot s ⇒ e → s
+ * ---
+ * Elements and their corresponding shadow boundaries, as `e.shadowRoot` is unreliable due to closed
+ * shadow boundaries that make that prop always `null`.
+ */
+const shadowBoundaries = new WeakMap();
+
+/**
+ * @constant errorHandlers ∷ HTMLElement e, Props p ⇒ e → p
+ * ---
+ * An incomplete set of props for a component that are used in the error recovery handler.
+ */
+const errorHandlers = new WeakMap();
 
 /**
  * @function dispatchEvent ∷ ∀ a b. HTMLElement e ⇒ e → b → Boolean
@@ -31,8 +49,8 @@ export const dispatchEvent = node => (name, payload) => {
 export const createShadowRoot = (node, options = {}) => {
     const defaultOptions = { mode: 'open', delegatesFocus: false };
 
-    if (roots.has(node)) {
-        return roots.get(node);
+    if (shadowBoundaries.has(node)) {
+        return shadowBoundaries.get(node);
     }
 
     try {
@@ -40,7 +58,7 @@ export const createShadowRoot = (node, options = {}) => {
             ...defaultOptions,
             ...options
         });
-        roots.set(node, root);
+        shadowBoundaries.set(node, root);
         return root;
     } catch (err) {
         return node;
@@ -49,6 +67,8 @@ export const createShadowRoot = (node, options = {}) => {
 
 /**
  * @function getRandomId ∷ String
+ * ---
+ * Uses the browser-native Crypto module for generating a random ID.
  */
 export const getRandomId = () => {
     const a = new Uint32Array(1);
@@ -56,6 +76,13 @@ export const getRandomId = () => {
     return a[0].toString(16);
 };
 
+/**
+ * @function parseTagName ∷ HTMLElement e ⇒ [String, e]
+ * ---
+ * Parses the required tag name using the optional forward-slash as a separator for specifying the prototype
+ * that the custom element should extend, such as when you're extending a native element. Yields a tuple of
+ * a free tag name -- which is determined recursively -- and the prototype that the custom element will extend.
+ */
 export const parseTagName = name => {
     const parts = name.split('/');
     return [findFreeTagName(parts[0]), determinePrototype(parts[1])];
@@ -103,14 +130,17 @@ export const consoleMessage = (text, type = 'error') =>
 
 /**
  * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
+ * ---
+ * A utility function for setting all of the initial props that are used for each rendering of a component.
+ * Takes the `mergeProps` which a developer can pass to the `render` method.
  */
 export const getInitialProps = (node, mergeProps, scheduledTask) => ({
-    ...(previous.get(node) || {}),
+    ...(previousProps.get(node) || {}),
     ...mergeProps,
     node,
     render: node.render.bind(node),
     dispatch: dispatchEvent(node),
-    prevProps: previous.get(node) || null,
+    prevProps: previousProps.get(node) || null,
     resolved: async () => {
         const resolution = await Promise.race([
             scheduledTask,
@@ -125,6 +155,10 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => ({
 
 /**
  * @function handleMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
+ * ---
+ * Iterates over the defined middleware for a component, detecting if any error handlers have been
+ * defined, and if so storing the current set of props up to that point. Yields the props that were
+ * returned by cycling through each of the middleware functions.
  */
 export const handleMiddleware = async (node, initialProps, middleware) => {
     const props = await middleware.reduce(async (accumP, middlewareP) => {
@@ -135,28 +169,33 @@ export const handleMiddleware = async (node, initialProps, middleware) => {
 
         // Determine if there's an error handler in the current set of props. If there is then
         // set the handler function as the default to be used if an error is subsequently thrown.
-        handler in newProps && handlers.set(node, newProps);
+        handler in newProps && errorHandlers.set(node, newProps);
         return newProps;
     }, initialProps);
 
-    previous.set(node, props);
+    previousProps.set(node, props);
     return props;
 };
 
 /**
  * @function handleError ∷ ∀ a. HTMLElement e ⇒ e → Error a → void
+ * ---
+ * Determines whether an error handler had been set for the component before it errored inside one of
+ * the middleware functions. If there's a error handler then it's used -- hopefully to render something to
+ * the screen, but it's not guaranteed as it merely works like a typical try-catch. If there is no error
+ * handler then `console.error` is used as a last resort.
  */
 export const handleError = (node, error) => {
     // Attempt to find an error handler for the current node which can handle the error gracefully.
     // Otherwise a simple yet abrasive `console.error` will be used with no recovery possible.
-    const props = handlers.get(node);
+    const props = errorHandlers.get(node);
 
     if (!props) {
         consoleMessage(error);
         return;
     }
 
-    previous.set(node, { ...props, error });
+    previousProps.set(node, { ...props, error });
 
     props[handler]({
         ...props,
