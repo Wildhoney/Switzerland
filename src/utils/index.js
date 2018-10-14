@@ -1,3 +1,5 @@
+import { meta } from '../core/index.js';
+
 /**
  * @function validate ∷ ∀ a. Object String a → [String] → Object String a
  * ---
@@ -46,3 +48,18 @@ export const validate = (
         return { results: [], valid: null, error: err };
     }
 };
+
+/**
+ * @function idle ∷ HTMLElement e ⇒ e → Integer → Promise void
+ * ---
+ * Resolves the yielded promise when the queue for the passed component is empty.
+ */
+export const idle = (element, ms = 10) =>
+    new Promise(resolve => {
+        const interval = setInterval(() => {
+            if (element[meta].queue.isEmpty()) {
+                clearInterval(interval);
+                return void resolve();
+            }
+        }, ms);
+    });

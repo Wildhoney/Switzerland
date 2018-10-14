@@ -17,6 +17,7 @@ export default function queue() {
         push: task => queue.add(task),
         drop: task => queue.delete(task),
         dropAll: () => queue.clear(),
-        isInvalid: task => !queue.has(task)
+        isInvalid: task => !queue.has(task),
+        isEmpty: () => queue.size === 0
     };
-};
+}

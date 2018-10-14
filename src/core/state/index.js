@@ -28,4 +28,4 @@ export default function state(node) {
         setNormal: () => states.set(node, normal),
         setError: () => states.set(node, error)
     };
-};
+}
