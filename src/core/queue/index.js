@@ -7,7 +7,7 @@
  * to be emptied.
  */
 export default function queue() {
-    const queue = (window.set = new Set());
+    const queue = new Set();
 
     return {
         current: () => {
