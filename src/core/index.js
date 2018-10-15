@@ -3,7 +3,7 @@ import * as c from './class/index.js';
 
 export { meta, CancelError } from './class/index.js';
 
-/**
+    /**
  * @function init ∷ String → String → (String → String)
  * ---
  * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
@@ -28,7 +28,7 @@ export const create = (name, ...middleware) => {
     const [tag, extendsElement] = u.parseTagName(name);
     window.customElements.define(
         tag,
-        c.createDefault(extendsElement, middleware)
+        c.getDefaultImplementation(extendsElement, middleware)
     );
     return tag;
 };
@@ -46,7 +46,7 @@ export const alias = (name, newName) => {
     const [, extendsElement] = u.parseTagName(newName);
     window.customElements.define(
         newName,
-        c.createAlias(extendsElement, instance)
+        c.getAliasImplementation(extendsElement, instance)
     );
     return newName;
 };
