@@ -34,12 +34,12 @@ export const Bool = a => a === '1' || a.toLowerCase() === 'true';
 export const Date = a => new window.Date(window.Date.parse(a));
 
 /**
- * @function Array ∷ ∀ a b. (a → b) → String → [b]
+ * @function Array ∷ ∀ a. (String → a) → String → [a]
  */
 export const Array = (f = String) => a => a.split(',').map(a => f(a));
 
 /**
- * @function Tuple ∷ ∀ a b. (a → b) → String → [b]
+ * @function Tuple ∷ ∀ a. [(String → a)] → String → [a]
  */
 export const Tuple = (...fs) => a =>
     a.split(',').map((a, index) => {

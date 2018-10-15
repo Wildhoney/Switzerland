@@ -3,7 +3,7 @@ import * as c from './class/index.js';
 
 export { meta, CancelError } from './class/index.js';
 
-    /**
+/**
  * @function init ∷ String → String → (String → String)
  * ---
  * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
