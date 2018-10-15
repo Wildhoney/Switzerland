@@ -18,12 +18,12 @@ export const meta = Symbol('meta');
 export class CancelError extends Error {}
 
 /**
- * @function getDefaultImplementation ∷ Props p ⇒ HTMLElement → [(p → Promise p)] → Class
+ * @function base ∷ Props p ⇒ HTMLElement → [(p → Promise p)] → Class
  * ---
  * The default implementation of the custom element class which contains all of the render logic. Render
  * passes occur consecutively and as such repeated calls to `render` will be enqueued for the same component.
  */
-export const getDefaultImplementation = (extendsElement, middleware) =>
+export const base = (extendsElement, middleware) =>
     class Switzerland extends extendsElement {
         constructor() {
             super();
@@ -105,12 +105,12 @@ export const getDefaultImplementation = (extendsElement, middleware) =>
     };
 
 /**
- * @function getAliasImplementation ∷ Props p ⇒ HTMLElement → Class → Class
+ * @function alias ∷ Props p ⇒ HTMLElement → Class → Class
  * ---
  * Alias class implementation which attempts to locate the existing custom component, and to then create an
  * alias of it under its new name. Delegates all responsibilities to the above `createDefault` yielded class.
  */
-export const getAliasImplementation = (extendsElement, instance) =>
+export const alias = (extendsElement, instance) =>
     class Switzerland extends extendsElement {
         constructor() {
             super();

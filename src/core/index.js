@@ -1,5 +1,5 @@
 import * as u from './utils.js';
-import * as c from './class/index.js';
+import * as impl from './impl/index.js';
 
 export { meta, CancelError } from './class/index.js';
 
@@ -26,10 +26,7 @@ export const init = (url, host = window.location.host) => path => {
  */
 export const create = (name, ...middleware) => {
     const [tag, extendsElement] = u.parseTagName(name);
-    window.customElements.define(
-        tag,
-        c.getDefaultImplementation(extendsElement, middleware)
-    );
+    window.customElements.define(tag, impl.base(extendsElement, middleware));
     return tag;
 };
 
@@ -44,9 +41,6 @@ export const alias = (name, newName) => {
     const CustomElement = window.customElements.get(name);
     const instance = new CustomElement();
     const [, extendsElement] = u.parseTagName(newName);
-    window.customElements.define(
-        newName,
-        c.getAliasImplementation(extendsElement, instance)
-    );
+    window.customElements.define(newName, impl.alias(extendsElement, instance));
     return newName;
 };
