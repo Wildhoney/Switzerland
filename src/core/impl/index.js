@@ -23,8 +23,8 @@ export class CancelError extends Error {}
  * The default implementation of the custom element class which contains all of the render logic. Render
  * passes occur consecutively and as such repeated calls to `render` will be enqueued for the same component.
  */
-export const base = (extendsElement, middleware) =>
-    class Switzerland extends extendsElement {
+export const base = (extension, middleware) =>
+    class Switzerland extends extension {
         constructor() {
             super();
             this[meta] = {
@@ -110,8 +110,8 @@ export const base = (extendsElement, middleware) =>
  * Alias class implementation which attempts to locate the existing custom component, and to then create an
  * alias of it under its new name. Delegates all responsibilities to the above `createDefault` yielded class.
  */
-export const alias = (extendsElement, instance) =>
-    class Switzerland extends extendsElement {
+export const alias = (extension, instance) =>
+    class Switzerland extends extension {
         constructor() {
             super();
             this[meta] = {

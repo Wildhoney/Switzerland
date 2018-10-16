@@ -25,8 +25,8 @@ export const init = (url, host = window.location.host) => path => {
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
 export const create = (name, ...middleware) => {
-    const [tag, extendsElement] = u.parseTagName(name);
-    window.customElements.define(tag, impl.base(extendsElement, middleware));
+    const [tag, extension] = u.parseTagName(name);
+    window.customElements.define(tag, impl.base(extension, middleware));
     return tag;
 };
 
@@ -40,7 +40,7 @@ export const create = (name, ...middleware) => {
 export const alias = (name, newName) => {
     const CustomElement = window.customElements.get(name);
     const instance = new CustomElement();
-    const [, extendsElement] = u.parseTagName(newName);
-    window.customElements.define(newName, impl.alias(extendsElement, instance));
+    const [, extension] = u.parseTagName(newName);
+    window.customElements.define(newName, impl.alias(extension, instance));
     return newName;
 };
