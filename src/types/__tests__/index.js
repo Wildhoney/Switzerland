@@ -1,5 +1,4 @@
 import test from 'ava';
-import 'core-js';
 import * as type from '../index.js';
 
 test('It should be able to parse String types;', t => {
