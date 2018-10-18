@@ -46,3 +46,22 @@ export const Tuple = (...fs) => a =>
         const f = fs[index] || String;
         return f(a);
     });
+
+/**
+ * @function Regex ∷ RegExp r ⇒ r → String → Object String String|void
+ */
+export const Regex = expression => a => {
+    const captureGroups = [];
+    const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
+    for (const group of namedGroups) {
+        captureGroups.push(group[1]);
+    }
+    const match = a.match(expression);
+    return captureGroups.reduce(
+        (model, key) => ({
+            ...model,
+            [key]: model[key] || null
+        }),
+        match ? match.groups : {}
+    );
+};
