@@ -36,6 +36,7 @@
         "failFast": true,
         "require": [
             "esm",
+            "core-js",
             "./tests/helpers/browser-env.js"
         ]
     },
