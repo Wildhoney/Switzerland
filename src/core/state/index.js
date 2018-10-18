@@ -24,7 +24,7 @@ const error = Symbol('error');
 export default function state(node) {
     states.set(node, normal);
     return {
-        isError: () => states[node] === error,
+        isError: () => states.get(node) === error,
         setNormal: () => states.set(node, normal),
         setError: () => states.set(node, error)
     };
