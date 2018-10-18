@@ -11,13 +11,15 @@
 
 - name: test/lint
   tasks:
-      - eslint "{src,tests,example}/**/**.js"
-      - stylelint "example/**/**.css"
-      - rm -rf es/ 
-      - - NODE_ENV=production yarn build
-      - - - (cd es/production && tar -zcf ../../build.tar.gz .)
-      - - - - fslint --files=build.tar.gz --limit=5500 || rm -rf build.tar.gz es/
-      - - - - - rm -rf build.tar.gz es/
+      - prettier --list-different '{src,tests,example}/**/*.{js,css}'
+      - prettier --list-different '*.{js,json}'
+      - - eslint "{src,tests,example}/**/**.js"
+      - - stylelint "example/**/**.css"
+      - - rm -rf es/ 
+      - - - NODE_ENV=production yarn build
+      - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
+      - - - - - fslint --files=build.tar.gz --limit=5500 || rm -rf build.tar.gz es/
+      - - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
   task: NODE_ENV=test nyc ava
@@ -30,8 +32,8 @@
 
 - name: test
   tasks:
-      - taskfile test/spec
-      - - taskfile test/lint
+      - taskfile test/lint
+      - - taskfile test/spec
       # - - - taskfile test/integration
 
 - name: docker
@@ -46,7 +48,6 @@
     - - mkdir -p es/production
     - - mkdir -p es/development
     - - - taskfile build
-
 
 - name: postpublish
   tasks:
