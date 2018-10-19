@@ -32,8 +32,8 @@
 
 - name: test
   tasks:
-      - taskfile test/lint
-      - - taskfile test/spec
+      - taskfile test/spec
+      - - taskfile test/lint
       # - - - taskfile test/integration
 
 - name: docker
