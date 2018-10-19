@@ -8,7 +8,7 @@ test('It should be able to parse String types;', t => {
 test('It should be able to parse Int types;', t => {
     t.is(type.Int('5'), 5);
     t.is(type.Int('2.5'), 2);
-    t.is(type.Int('a'), NaN);
+    t.is(type.Int('a'), null);
 });
 
 test('It should be able to parse BigInt types;', t => {
@@ -16,19 +16,20 @@ test('It should be able to parse BigInt types;', t => {
     t.is(type.BigInt('1'), global.BigInt(1));
     t.is(type.BigInt('5'), global.BigInt(5));
     t.is(type.BigInt('104'), global.BigInt(104));
+    t.is(type.BigInt('a'), null);
     window.BigInt = undefined;
 });
 
 test('It should be able to parse Float types;', t => {
     t.is(type.Float('5'), 5.0);
     t.is(type.Float('2.5'), 2.5);
-    t.is(type.Float('a'), NaN);
+    t.is(type.Float('a'), null);
 });
 
 test('It should be able to parse Float.DP types;', t => {
     t.is(type.Float.DP(2)('1.732493'), 1.73);
     t.is(type.Float.DP(4)('2.5989102'), 2.5989);
-    t.is(type.Float.DP(6)('a'), NaN);
+    t.is(type.Float.DP(6)('a'), null);
 });
 
 test('It should be able to parse Bool types;', t => {
@@ -44,6 +45,7 @@ test('It should be able to parse Date types;', t => {
     t.is(date.getFullYear(), 1985);
     t.is(date.getMonth() + 1, 10);
     t.is(date.getDate(), 10);
+    t.is(type.Date('a'), null);
     window.Date = undefined;
 });
 
@@ -65,20 +67,25 @@ test('It should be able to parse Tuple types;', t => {
 });
 
 test('It should be able to parse Regex types;', t => {
-    const regExp = /(?<day>\d+)-(?<month>\d+)(?:-(?<year>\d+))?/;
-    t.deepEqual(type.Regex(regExp)('10-10-1985'), {
+    const r = /(?<day>\d+)-(?<month>\d+)(?:-(?<year>\d+))?/;
+    t.deepEqual(type.Regex(r)('10-10-1985'), {
         day: '10',
         month: '10',
         year: '1985'
     });
-    t.deepEqual(type.Regex(regExp)('10-10'), {
+    t.deepEqual(type.Regex(r)('10-10'), {
         day: '10',
         month: '10',
         year: null
     });
-    t.deepEqual(type.Regex(regExp)('Adam'), {
+    t.deepEqual(type.Regex(r)('Adam'), {
         day: null,
         month: null,
         year: null
+    });
+    t.deepEqual(type.Regex(r, type.Int)('10-10-1985'), {
+        day: 10,
+        month: 10,
+        year: 1985
     });
 });

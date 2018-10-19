@@ -6,22 +6,37 @@ export const String = a => a;
 /**
  * @function Int ∷ String → Integer
  */
-export const Int = parseInt;
+export const Int = a => {
+    const value = parseInt(a);
+    return Number.isNaN(value) ? null : value;
+};
 
 /**
  * @function BigInt ∷ String → BigInt
  */
-export const BigInt = a => window.BigInt(a);
+export const BigInt = a => {
+    try {
+        return window.BigInt(a);
+    } catch (err) {
+        return null;
+    }
+};
 
 /**
  * @function Float ∷ String → Float
  */
-export const Float = a => parseFloat(a);
+export const Float = a => {
+    const value = parseFloat(a);
+    return Number.isNaN(value) ? null : value;
+};
 
 /**
  * @function Float.DP ∷ Integer → String → Float
  */
-Float.DP = dp => a => Number(parseFloat(a).toFixed(dp));
+Float.DP = dp => a => {
+    const value = Float(a);
+    return value === null ? null : Float(value.toFixed(dp));
+};
 
 /**
  * @function Bool ∷ String → Boolean
@@ -31,7 +46,10 @@ export const Bool = a => a === '1' || a.toLowerCase() === 'true';
 /**
  * @function Date ∷ String → Date
  */
-export const Date = a => new window.Date(window.Date.parse(a));
+export const Date = a => {
+    const value = new window.Date(window.Date.parse(a));
+    return Number.isNaN(value.getTime()) ? null : value;
+};
 
 /**
  * @function Array ∷ ∀ a. (String → a) → String → [a]
@@ -48,9 +66,9 @@ export const Tuple = (...fs) => a =>
     });
 
 /**
- * @function Regex ∷ RegExp r ⇒ r → String → Object String String|void
+ * @function Regex ∷ ∀ a. RegExp r ⇒ r → String → (String → String → a) → Object String a|void
  */
-export const Regex = expression => a => {
+export const Regex = (expression, f = String) => a => {
     const captureGroups = [];
     const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
     for (const group of namedGroups) {
@@ -60,7 +78,7 @@ export const Regex = expression => a => {
     return captureGroups.reduce(
         (model, key) => ({
             ...model,
-            [key]: model[key] || null
+            [key]: model[key] ? f(model[key], key) : null
         }),
         match ? match.groups : {}
     );
