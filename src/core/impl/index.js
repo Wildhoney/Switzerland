@@ -39,7 +39,7 @@ export const base = (extension, middleware) =>
             this.classList.remove('resolved');
             return this.render();
         }
-        async render(mergeProps = {}) {
+        render(mergeProps = {}) {
             if (this[meta].state.isError()) {
                 // Cannot process new render cycles until the error has been resolved.
                 return;
@@ -64,6 +64,7 @@ export const base = (extension, middleware) =>
                         mergeProps,
                         currentTask
                     );
+
                     return void (await u.handleMiddleware(
                         this,
                         props,
@@ -74,11 +75,8 @@ export const base = (extension, middleware) =>
                         return;
                     }
 
-                    // Errors should cancel any enqueued middleware.
-                    queue.dropAll();
-                    state.setError();
-
                     // Handle any errors that were thrown from the processing of the middleware functions.
+                    // Errors should cancel any enqueued middleware.
                     return void (queue.dropAll(),
                     state.setError(),
                     u.handleError(this, error));
