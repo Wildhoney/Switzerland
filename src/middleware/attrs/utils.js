@@ -1,7 +1,7 @@
 /**
  * @function kebabToCamel ∷ String → String
  */
-export const kebabToCamel = value => {
+const kebabToCamel = value => {
     return value.replace(/(-\w)/g, match => match[1].toUpperCase());
 };
 
