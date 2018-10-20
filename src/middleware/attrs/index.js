@@ -13,30 +13,15 @@ import * as u from './utils.js';
  */
 export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
     const observers = new Map();
-    const defaults = Object.entries(types).reduce(
-        (accum, [key, value]) =>
-            Array.isArray(value) && typeof value[1] !== 'undefined'
-                ? { ...accum, [key]: value[1] }
-                : accum,
-        {}
-    );
+    const defaults = u.getDefaults(types);
 
     return props => {
         if (!observers.has(props.node)) {
-            const observer = new window.MutationObserver(mutations => {
-                mutations.some(mutation => {
-                    // Only cause a re-render if some of the mutated items have actually changed the attribute
-                    // when compared, and are not included in the `exclude` list specified in the function's
-                    // parameters.
-                    const isObserved = !exclude.includes(
-                        mutation.attributeName
-                    );
-                    const isModified =
-                        mutation.oldValue !==
-                        props.node.getAttribute(mutation.attributeName);
-                    return isObserved && isModified;
-                }) && props.render();
-            });
+            const observer = new window.MutationObserver(
+                mutations =>
+                    u.hasApplicableMutations(props.node, mutations, exclude) &&
+                    props.render()
+            );
 
             observer.observe(props.node, {
                 attributes: true,
@@ -45,19 +30,9 @@ export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
             observers.set(props.node, observer);
         }
 
-        const attrs = Object.values(props.node.attributes).reduce(
-            (acc, attr) => {
-                const name = u.kebabToCamel(attr.nodeName);
-                const [f] = [].concat(types[name] || (a => a));
-
-                return {
-                    ...acc,
-                    [name]: f(attr.nodeValue)
-                };
-            },
-            defaults
-        );
-
-        return { ...props, attrs };
+        return {
+            ...props,
+            attrs: u.transformAttributes(props.node.attributes, defaults, types)
+        };
     };
 }
