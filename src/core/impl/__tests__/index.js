@@ -155,3 +155,15 @@ test.serial(
         getInitialPropsStub.restore();
     }
 );
+
+test.serial(
+    'It should not continue if the current task has become invalid',
+    async t => {
+        const { instance, injectors } = t.context;
+        const getInitialPropsStub = stub(u, 'getInitialProps');
+        const task = instance.render();
+        injectors.queue.drop(task);
+        await task;
+        t.is(getInitialPropsStub.callCount, 0);
+    }
+);
