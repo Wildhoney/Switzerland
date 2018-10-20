@@ -37,7 +37,7 @@ export const transformAttributes = (attrs, defaults, types) =>
  * Only cause a re-render if some of the mutated items have actually changed the attribute when compared, and
  * are not included in the `exclude` list specified in the function's parameters.
  */
-export const hasApplicableMutations = (node, mutations, exclude) =>
+export const hasApplicableMutations = (node, mutations, exclude = []) =>
     mutations.some(mutation => {
         const isObserved = !exclude.includes(mutation.attributeName);
         const isModified =
