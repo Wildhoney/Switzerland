@@ -13,19 +13,25 @@ const container = ({ redux, h, props }) =>
     ]);
 
 const list = ({ redux, h }) =>
-    redux.state.list.sort((a, b) => a.created - b.created).map(model =>
-        h('li', { class: model.done ? 'done' : '' }, [
-            h('p', { onclick: () => redux.actions.mark(model.id) }, model.text),
-            h(
-                'button',
-                {
-                    class: 'delete',
-                    onclick: () => redux.actions.remove(model.id)
-                },
-                'Delete'
-            )
-        ])
-    );
+    redux.state.list
+        .sort((a, b) => a.created - b.created)
+        .map(model =>
+            h('li', { class: model.done ? 'done' : '' }, [
+                h(
+                    'p',
+                    { onclick: () => redux.actions.mark(model.id) },
+                    model.text
+                ),
+                h(
+                    'button',
+                    {
+                        class: 'delete',
+                        onclick: () => redux.actions.remove(model.id)
+                    },
+                    'Delete'
+                )
+            ])
+        );
 
 const nothing = ({ h }) =>
     h('li', { class: 'none' }, [

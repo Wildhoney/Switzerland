@@ -222,8 +222,8 @@ export const fetchedCSSImports = node => {
                 rules.every(a => a.styleSheet)
                     ? resolve()
                     : 'requestIdleCallback' in window
-                        ? requestIdleCallback(() => isLoaded(rules))
-                        : setTimeout(() => isLoaded(rules), 10);
+                    ? requestIdleCallback(() => isLoaded(rules))
+                    : setTimeout(() => isLoaded(rules), 10);
 
             const importRules = [...styles].flatMap(({ sheet }) =>
                 [...sheet.rules].filter(a => a instanceof CSSImportRule)
