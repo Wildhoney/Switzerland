@@ -43,7 +43,7 @@
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
         "@wildhoney/redux": "4.0.1",
-        "hyperhtml": "2.16.4",
+        "hyperhtml": "2.17.1",
         "redux-thunk": "2.3.0",
         "superfine": "6.0.1"
     },

@@ -1,4 +1,4 @@
-import hyper from 'https://cdn.jsdelivr.net/npm/hyperhtml@2.13.2/esm/index.js';
+import hyper from 'https://cdn.jsdelivr.net/npm/hyperhtml@2.17.1/esm/index.js';
 import { createShadowRoot } from '../../core/utils.js';
 
 /**
