@@ -73,13 +73,13 @@
         "node-mkdirp": "^0.0.1",
         "nodemon": "^1.18.7",
         "nyc": "^13.1.0",
-        "prettier": "^1.15.2",
+        "prettier": "^1.15.3",
         "sinon": "^7.1.1",
         "starwars": "^1.0.0",
         "stylelint": "^9.9.0",
         "stylelint-config-prettier": "^4.0.0",
         "taskfile": "^0.8.5",
-        "terser": "^3.10.12",
+        "terser": "^3.11.0",
         "testcafe": "^0.23.2"
     }
 }
