@@ -318,10 +318,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/create-content/-/create-content-0.1.1.tgz#c775dfbe3cd3d2446b06c362c8e35c27409a27e9"
   integrity sha512-budM7QUb7RDzP2gdWsQAue2CvZzDlWLytOck+BmDUvvYDXL011hncwRwkSbRIwYV5H8eleqel9G6ow+gnnwbeg==
 
-"@ungap/custom-event@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@ungap/custom-event/-/custom-event-0.1.1.tgz#0a62313086975ae6fef8c4479a92208c2ed9eb4b"
-  integrity sha512-2qHGxJ/xMUGcamPLRfubjKNkGhWcDpVTl8T8tIvOPhbUhECDOEqNNDLviLlaLaWALsb92YbN5cA5W1Y7D38T1w==
+"@ungap/custom-event@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@ungap/custom-event/-/custom-event-0.1.2.tgz#b2255e8dd5a96c5028b90d9c08ecec17d8cc5a65"
+  integrity sha512-3Hs90m2EZ9MG54iAy4As9sgwnYepG4uI/9/GswqHcDS9IsVIyqbIDuO5kgVrig3XDsVccielB+4JZMjaP5fC6g==
 
 "@ungap/essential-map@^0.1.7":
   version "0.1.7"
@@ -2856,10 +2856,10 @@ dir-glob@^2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
-disconnected@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/disconnected/-/disconnected-0.1.5.tgz#0eb2efd7ef78172abce25c0a55fdab312d63d714"
-  integrity sha512-7WOJ8uqCmXY2sdfms0swYfy1u5ibwZ3QWmY6Y3SzNduiFANFQOoHK5Fjb67GvMsp/KFMfaT5Zc+s2EKlNHB+5Q==
+disconnected@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/disconnected/-/disconnected-0.1.6.tgz#8c964f5582e5b5b2162b1a37affbdf3554234b9d"
+  integrity sha512-HU7IB9cbQT+ltplB1x5NnEu9g8qHzSRfRw00EPTQKyGpih+MdfCz3bOnczHjtoYWrP6h4cX6e+dJhxJTpTYiMQ==
 
 doctrine@1.5.0:
   version "1.5.0"
@@ -2929,10 +2929,10 @@ domhandler@^2.3.0:
   dependencies:
     domelementtype "1"
 
-domtagger@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/domtagger/-/domtagger-0.1.4.tgz#2b33b6b1b5fd41a214a9b1a26bcc8eca2c792826"
-  integrity sha512-JErB0Y3HndbwcOqkNU6+kevQ6pzezze5AG3lC7sM8rsECq3x/pql1wT+HejyPbEEN8JUYwwLk7E3JR3Oamg0QQ==
+domtagger@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/domtagger/-/domtagger-0.1.5.tgz#317a827b199e8e6f291d56c25478217648f13b85"
+  integrity sha512-g78Mao9l/9h9fhdyxve9QrWPBwx6Jak27p0fAcv4FLT7yMw+Xt22Azj3qxJxZQE4QRluIWHdJiN0pfTtUybKTQ==
   dependencies:
     "@ungap/create-content" "^0.1.1"
     "@ungap/essential-map" "^0.1.7"
@@ -4405,22 +4405,28 @@ hullabaloo-config-manager@^1.1.0:
     resolve-from "^3.0.0"
     safe-buffer "^5.0.1"
 
-hyperhtml@2.19.1:
-  version "2.19.1"
-  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.19.1.tgz#66e4b5f80e69ac3086d5040c477362859123ed69"
-  integrity sha512-LY2OIQFd0bZkzOZptB1LSc5duOMZgzggsVKuXhSOvY2u5UBYTpRG0ZcADIVZtXJJ5QB5Zmf4agtM0NHhm6qh/A==
+hyperhtml-style@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/hyperhtml-style/-/hyperhtml-style-0.1.2.tgz#c7a7904656a95575d5afdd06ac96bb4d757e0197"
+  integrity sha512-ZDRYNClEaqUS0a8RAED0nQRqWmZk7ctdyij3Iw/PqUUef6xhYO87nx9vJNuxg7Yc6J2FdJjXRKbB0iud2ZyzwQ==
+
+hyperhtml@2.20.2:
+  version "2.20.2"
+  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.20.2.tgz#a1361291470401dda123a06ef97cc1d010bd9b74"
+  integrity sha512-TUrDUHwQjfrAoOMNF6J1XvOTpI6IA88UO9PCwg5c1L3JzrFB2Q/M5eAqzDmknoUyPnxG948DUsX0y48UObzo1g==
   dependencies:
     "@ungap/create-content" "^0.1.1"
-    "@ungap/custom-event" "^0.1.1"
+    "@ungap/custom-event" "^0.1.2"
     "@ungap/essential-map" "^0.1.7"
     "@ungap/essential-weakset" "^0.1.2"
     "@ungap/is-array" "^0.1.1"
     "@ungap/template-literal" "^0.1.0"
     "@ungap/trim" "^0.1.1"
     "@ungap/weakmap" "^0.1.4"
-    disconnected "^0.1.5"
+    disconnected "^0.1.6"
     domdiff "^2.0.2"
-    domtagger "^0.1.4"
+    domtagger "^0.1.5"
+    hyperhtml-style "^0.1.2"
     lightercollective "^0.1.0"
 
 iconv-lite@0.4.11:
