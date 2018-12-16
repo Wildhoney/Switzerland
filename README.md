@@ -65,7 +65,7 @@ create('x-countries', m.vdom(({ h }) =>
         h('li', {}, 'Russian Federation'),
         h('li', {}, 'Republic of Indonesia')
     ])
-)); 
+));
 ```
 
 We now have a usable custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder or even nothing at all before the component renders.
