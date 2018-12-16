@@ -74,6 +74,7 @@
         "nodemon": "^1.18.7",
         "nyc": "^13.1.0",
         "prettier": "^1.15.3",
+        "readlint": "^0.4.0",
         "sinon": "^7.1.1",
         "starwars": "^1.0.0",
         "stylelint": "^9.9.0",
