@@ -3469,10 +3469,10 @@ domhandler@^2.3.0:
   dependencies:
     domelementtype "1"
 
-domtagger@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/domtagger/-/domtagger-0.1.6.tgz#64a22a8980bcb435d6f3c2a4ab237ed6a6a46f38"
-  integrity sha512-2MwnmGDrQvEHStS3olZS8V+Hksl8m3tUPlaUFBwIY+qSroFsFrBMGrip3bc2bUZII81SNZIfYYdeGYwe99XuAg==
+domtagger@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/domtagger/-/domtagger-0.2.3.tgz#2f4065c7cf5a17152fa5fc0c371b37fe65cc4cd7"
+  integrity sha512-rEJNe3JqS7tth78ysOGvl2hMQKx9jABjsF76T6MRYjEnzbzLXZsJmTMrreUtybIw4TwRDRkT8UeP854omaiTkA==
   dependencies:
     "@ungap/create-content" "^0.1.4"
     "@ungap/essential-map" "^0.1.7"
@@ -5000,10 +5000,10 @@ hyperhtml-style@^0.1.2:
   resolved "https://registry.yarnpkg.com/hyperhtml-style/-/hyperhtml-style-0.1.2.tgz#c7a7904656a95575d5afdd06ac96bb4d757e0197"
   integrity sha512-ZDRYNClEaqUS0a8RAED0nQRqWmZk7ctdyij3Iw/PqUUef6xhYO87nx9vJNuxg7Yc6J2FdJjXRKbB0iud2ZyzwQ==
 
-hyperhtml@2.21.0:
-  version "2.21.0"
-  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.21.0.tgz#24e278ee2d89ea58deb85b011cf62de39d9be4fa"
-  integrity sha512-xAo5B/0yZNpeUvtPwRABHguGFG9IUriNpk6bWxAZtoCNMlPQEGbZLCjlrae0pPqU/8xpegp6i3WXIJNM88w5ZQ==
+hyperhtml@2.22.1:
+  version "2.22.1"
+  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.22.1.tgz#73b37e1a7e07a43c6705971ae332b46b2e3c63d5"
+  integrity sha512-PXzMYSzCRVlKTJKPnJ6c//WOz176lOU+0Aedw/kxYyLoM9R7tteeXucmCdOTEbi2HlGbTyg7LOsbvEN8V7heKw==
   dependencies:
     "@ungap/create-content" "^0.1.1"
     "@ungap/custom-event" "^0.2.0"
@@ -5011,11 +5011,10 @@ hyperhtml@2.21.0:
     "@ungap/essential-weakset" "^0.1.2"
     "@ungap/is-array" "^0.1.1"
     "@ungap/template-literal" "^0.1.0"
-    "@ungap/trim" "^0.1.1"
     "@ungap/weakmap" "^0.1.4"
     disconnected "^0.1.6"
     domdiff "^2.0.2"
-    domtagger "^0.1.6"
+    domtagger "^0.2.3"
     hyperhtml-style "^0.1.2"
     lightercollective "^0.1.0"
 
