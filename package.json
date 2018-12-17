@@ -43,7 +43,7 @@
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
         "@wildhoney/redux": "4.0.1",
-        "hyperhtml": "2.20.2",
+        "hyperhtml": "2.21.0",
         "redux-thunk": "2.3.0",
         "superfine": "6.0.1"
     },
@@ -71,11 +71,11 @@
         "mkdirp": "^0.5.1",
         "node-glob": "^1.2.0",
         "node-mkdirp": "^0.0.1",
-        "nodemon": "^1.18.7",
+        "nodemon": "^1.18.9",
         "nyc": "^13.1.0",
         "prettier": "^1.15.3",
-        "readlint": "^0.4.0",
-        "sinon": "^7.1.1",
+        "readlint": "^0.6.1",
+        "sinon": "^7.2.2",
         "starwars": "^1.0.0",
         "stylelint": "^9.9.0",
         "stylelint-config-prettier": "^4.0.0",
