@@ -804,11 +804,6 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.116.tgz#5ccf215653e3e8c786a58390751033a9adca0eb9"
   integrity sha512-lRnAtKnxMXcYYXqOiotTmJd74uawNWuPnsnPrrO7HiFuE3npE2iQhfABatbYDyxTNqZNuXzcKGhw37R7RjBFLg==
 
-"@ungap/create-content@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@ungap/create-content/-/create-content-0.1.1.tgz#c775dfbe3cd3d2446b06c362c8e35c27409a27e9"
-  integrity sha512-budM7QUb7RDzP2gdWsQAue2CvZzDlWLytOck+BmDUvvYDXL011hncwRwkSbRIwYV5H8eleqel9G6ow+gnnwbeg==
-
 "@ungap/create-content@^0.1.4":
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/@ungap/create-content/-/create-content-0.1.4.tgz#e30b40c527d40dbac598672fc2ad497f912b30c6"
@@ -5000,12 +4995,12 @@ hyperhtml-style@^0.1.2:
   resolved "https://registry.yarnpkg.com/hyperhtml-style/-/hyperhtml-style-0.1.2.tgz#c7a7904656a95575d5afdd06ac96bb4d757e0197"
   integrity sha512-ZDRYNClEaqUS0a8RAED0nQRqWmZk7ctdyij3Iw/PqUUef6xhYO87nx9vJNuxg7Yc6J2FdJjXRKbB0iud2ZyzwQ==
 
-hyperhtml@2.22.1:
-  version "2.22.1"
-  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.22.1.tgz#73b37e1a7e07a43c6705971ae332b46b2e3c63d5"
-  integrity sha512-PXzMYSzCRVlKTJKPnJ6c//WOz176lOU+0Aedw/kxYyLoM9R7tteeXucmCdOTEbi2HlGbTyg7LOsbvEN8V7heKw==
+hyperhtml@2.23.0:
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/hyperhtml/-/hyperhtml-2.23.0.tgz#00f55b82a54fb6efb3a25c5c97d9fa91ee2efead"
+  integrity sha512-SW2wyV8SWK9zjPyrMu/fDpBEVBrcfqqsZX/KMPnOWB72XXVRp5UMIG7PKhA618yZM3p7IGF1LpeK9s61vwZ/Rg==
   dependencies:
-    "@ungap/create-content" "^0.1.1"
+    "@ungap/create-content" "^0.1.4"
     "@ungap/custom-event" "^0.2.0"
     "@ungap/essential-map" "^0.1.7"
     "@ungap/essential-weakset" "^0.1.2"
