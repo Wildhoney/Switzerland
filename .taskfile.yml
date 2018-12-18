@@ -19,7 +19,7 @@
       - - - rm -rf es/ 
       - - - - NODE_ENV=production yarn build
       - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
-      - - - - - - fslint --files=build.tar.gz --limit=5500 || rm -rf build.tar.gz es/
+      - - - - - - fslint --files=build.tar.gz --limit=6000 || rm -rf build.tar.gz es/
       - - - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
