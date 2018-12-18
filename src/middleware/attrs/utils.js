@@ -6,18 +6,6 @@ const kebabToCamel = value => {
 };
 
 /**
- * @function getDefaults ∷ ∀ a. Object String (String → a)
- */
-export const getDefaults = types =>
-    Object.entries(types).reduce(
-        (accum, [key, value]) =>
-            Array.isArray(value) && typeof value[1] !== 'undefined'
-                ? { ...accum, [key]: value[1] }
-                : accum,
-        {}
-    );
-
-/**
  * @function transformAttributes ∷ ∀ a b c. NamedNodeMap mnm, Object o ⇒ mnm -> o String a -> o String (String → b) -> o (String → c)
  */
 export const transformAttributes = (attrs, defaults, types) =>

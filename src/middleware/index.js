@@ -10,6 +10,7 @@
 // export const attrs = load('attrs');
 // export const defer = load('defer');
 // export const delay = load('delay');
+// export const history = load('history');
 // export const intersect = load('intersect');
 // export const interval = load('interval');
 // export const loader = load('loader');
@@ -25,6 +26,7 @@ export { default as adapt } from './adapt/index.js';
 export { default as attrs } from './attrs/index.js';
 export { default as defer } from './defer/index.js';
 export { default as delay } from './delay/index.js';
+export { default as history } from './history/index.js';
 export { default as intersect } from './intersect/index.js';
 export { default as interval } from './interval/index.js';
 export { default as loader } from './loader/index.js';

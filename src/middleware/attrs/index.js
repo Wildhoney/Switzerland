@@ -1,3 +1,4 @@
+import { getDefaults } from '../../core/utils.js';
 import * as u from './utils.js';
 
 /**
@@ -13,7 +14,7 @@ import * as u from './utils.js';
  */
 export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
     const observers = new Map();
-    const defaults = u.getDefaults(types);
+    const defaults = getDefaults(types);
 
     return props => {
         if (!observers.has(props.node)) {

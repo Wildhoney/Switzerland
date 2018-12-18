@@ -35,7 +35,8 @@ const list = ({ h, props }) =>
     h('ul', {}, [
         itemCompleted(props),
         itemPosition(props),
-        props.adapt && itemDimensions(props)
+        props.adapt && itemDimensions(props),
+        itemFilter(props)
     ]);
 
 const itemCompleted = ({ redux, h }) =>
@@ -78,6 +79,28 @@ const itemDimensions = ({ h, adapt }) =>
         h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)
     ]);
 
+const itemFilter = ({ h, history }) =>
+    h('li', {}, [
+        h('em', {}, 'Complete: '),
+        h(
+            'a',
+            {
+                class: history.params.get('show_done') ? 'active' : '',
+                onclick: () => history.push({}, '', '?show_done=true')
+            },
+            'Show'
+        ),
+        h('span', {}, ' / '),
+        h(
+            'a',
+            {
+                class: !history.params.get('show_done') ? 'active' : '',
+                onclick: () => history.push({}, '', '?show_done=false')
+            },
+            'Hide'
+        )
+    ]);
+
 const retry = ({ render, h, props }) =>
     h('section', { class: 'todo-app' }, [
         h.stylesheet(path('styles/index.css')),
@@ -89,6 +112,9 @@ export default create(
     'todo-app',
     store,
     serviceWorker(path('../../utils/worker.js'), '/'),
+    m.history({
+        showDone: [t.Bool, true]
+    }),
     m.loader({ logo: path('images/logo.png') }),
     m.rescue(m.vdom(retry)),
     m.methods({ insert: (value, { redux }) => redux.actions.add(value) }),

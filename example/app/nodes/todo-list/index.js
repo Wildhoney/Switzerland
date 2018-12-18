@@ -1,4 +1,4 @@
-import { create, init, m } from '/vendor/index.js';
+import { create, init, m, t } from '/vendor/index.js';
 import store from '../../utils/store.js';
 
 const path = init(import.meta.url);
@@ -12,8 +12,9 @@ const container = ({ redux, h, props }) =>
         h.stylesheet(path('styles/print.css'), 'print')
     ]);
 
-const list = ({ redux, h }) =>
+const list = ({ history, redux, h }) =>
     redux.state.list
+        .filter(model => (history.params.get('show_done') ? true : !model.done))
         .sort((a, b) => a.created - b.created)
         .map(model =>
             h('li', { class: model.done ? 'done' : '' }, [
@@ -38,4 +39,11 @@ const nothing = ({ h }) =>
         h('p', {}, 'You have not added any todos yet.')
     ]);
 
-export default create('todo-list', store, m.vdom(container));
+export default create(
+    'todo-list',
+    store,
+    m.history({
+        showDone: [t.Bool, true]
+    }),
+    m.vdom(container)
+);

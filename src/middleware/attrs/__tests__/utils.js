@@ -7,16 +7,6 @@ const node = document.createElement('x-example');
 node.setAttribute('country-name', 'United Kingdom');
 node.setAttribute('persons-age', 33);
 
-test('It should be able to yield an object of defaults;', t => {
-    const defaults = u.getDefaults({
-        name: 'Adam',
-        age: [type.Int, 33],
-        city: [type.String, 'Watford'],
-        country: type.String
-    });
-    t.deepEqual(defaults, { age: 33, city: 'Watford' });
-});
-
 test('It should be able to transform kebab attributes to camel case;', t => {
     const attributes = u.transformAttributes(
         node.attributes,

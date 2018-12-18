@@ -1,6 +1,7 @@
 import test from 'ava';
-import * as u from '../utils.js';
 import { spy } from 'sinon';
+import * as u from '../utils.js';
+import * as type from '../../types/index.js';
 
 test.beforeEach(() => {
     window.crypto = { getRandomValues: () => {} };
@@ -47,4 +48,14 @@ test('It should be able to dispatch the event with the node and version;', t => 
     node.dispatchEvent = dispatchEvent;
     u.dispatchEvent(node)('test', { data: 'abc' });
     t.is(dispatchEvent.callCount, 1);
+});
+
+test('It should be able to yield an object of defaults;', t => {
+    const defaults = u.getDefaults({
+        name: 'Adam',
+        age: [type.Int, 33],
+        city: [type.String, 'Watford'],
+        country: type.String
+    });
+    t.deepEqual(defaults, { age: 33, city: 'Watford' });
 });
