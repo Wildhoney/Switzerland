@@ -65,4 +65,4 @@ test('It should be able to transform into camelCase from snake and kebab;', t =>
     t.is(u.toCamelcase('one_two').fromSnake(), 'oneTwo');
     t.is(u.toCamelcase('one').fromKebab(), 'one');
     t.is(u.toCamelcase('one+two').fromSnake(), 'one+two');
-})
+});
