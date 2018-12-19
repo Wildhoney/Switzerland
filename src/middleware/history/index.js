@@ -1,14 +1,13 @@
-import { getDefaults, getEventName } from '../../core/utils.js';
-import * as u from './utils.js';
+import { getDefaults, getEventName, toCamelcase } from '../../core/utils.js';
 
 const nodes = new Set();
 
+const eventName = getEventName('update-state');
+
 const notify = () => nodes.forEach(node => node.render());
 
-window.addEventListener('@switzerland/update-state', notify);
+window.addEventListener(eventName, notify);
 window.addEventListener('popstate', notify);
-
-const eventName = getEventName('update-state');
 
 export default function history(schema) {
     return props => {
@@ -16,7 +15,7 @@ export default function history(schema) {
         const params = new URLSearchParams(window.location.search);
         const get = params.get.bind(params);
         params.get = name => {
-            const key = u.snakeToCamel(name);
+            const key = toCamelcase(name).fromSnake();
             const [f] = [].concat(schema[key] || (a => a));
             return get(name) ? f(get(name)) : defaults[key] || null;
         };
