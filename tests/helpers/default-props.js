@@ -1,3 +1,8 @@
+import { dispatchEvent } from '../../src/core/utils.js';
+
+const node = document.createElement('div');
+
 export default {
-    node: document.createElement('div')
+    node,
+    dispatch: dispatchEvent(node)
 };

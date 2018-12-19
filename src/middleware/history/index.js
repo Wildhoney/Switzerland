@@ -8,15 +8,17 @@ const notify = () => nodes.forEach(node => node.render());
 
 window.addEventListener(eventName, notify);
 window.addEventListener('popstate', notify);
+window.addEventListener('hashchange', notify);
 
-export default function history(schema) {
+export default function history(types = {}, location = window.location) {
     return props => {
-        const defaults = getDefaults(schema);
-        const params = new URLSearchParams(window.location.search);
+        const defaults = getDefaults(types);
+        const params = new URLSearchParams(location.search);
+        const hash = location.hash;
         const get = params.get.bind(params);
         params.get = name => {
             const key = toCamelcase(name).fromSnake();
-            const [f] = [].concat(schema[key] || (a => a));
+            const [f] = [].concat(types[key] || (a => a));
             return get(name) ? f(get(name)) : defaults[key] || null;
         };
 
@@ -25,6 +27,8 @@ export default function history(schema) {
         return {
             ...props,
             history: {
+                hash,
+                params,
                 push: (...params) => {
                     window.history.pushState(...params);
                     props.dispatch(eventName, { params });
@@ -32,8 +36,7 @@ export default function history(schema) {
                 replace: (...params) => {
                     window.history.replaceState(...params);
                     props.dispatch(eventName, { params });
-                },
-                params
+                }
             }
         };
     };
