@@ -1,4 +1,5 @@
 import test from 'ava';
+import capitalise from 'capitalize';
 import * as type from '../index.js';
 
 test('It should be able to parse String types;', t => {
@@ -6,6 +7,7 @@ test('It should be able to parse String types;', t => {
 });
 
 test('It should be able to parse Int types;', t => {
+    t.is(type.Int('0'), 0);
     t.is(type.Int('5'), 5);
     t.is(type.Int('2.5'), 2);
     t.is(type.Int('a'), null);
@@ -13,6 +15,7 @@ test('It should be able to parse Int types;', t => {
 
 test('It should be able to parse BigInt types;', t => {
     window.BigInt = global.BigInt;
+    t.is(type.BigInt('0'), global.BigInt(0));
     t.is(type.BigInt('1'), global.BigInt(1));
     t.is(type.BigInt('5'), global.BigInt(5));
     t.is(type.BigInt('104'), global.BigInt(104));
@@ -21,27 +24,36 @@ test('It should be able to parse BigInt types;', t => {
 });
 
 test('It should be able to parse Float types;', t => {
+    t.is(type.Float('0'), 0.0);
     t.is(type.Float('5'), 5.0);
     t.is(type.Float('2.5'), 2.5);
     t.is(type.Float('a'), null);
 });
 
 test('It should be able to parse Float.DP types;', t => {
+    t.is(type.Float.DP(1)('0.0'), 0.0);
     t.is(type.Float.DP(2)('1.732493'), 1.73);
     t.is(type.Float.DP(4)('2.5989102'), 2.5989);
     t.is(type.Float.DP(6)('a'), null);
 });
 
 test('It should be able to parse Bool types;', t => {
-    t.is(type.Bool('True'), true);
-    t.is(type.Bool('1'), true);
-    t.is(type.Bool('yes'), true);
-    t.is(type.Bool('On'), true);
+    t.plan(25);
 
-    t.is(type.Bool('false'), false);
-    t.is(type.Bool('0'), false);
-    t.is(type.Bool('no'), false);
-    t.is(type.Bool('Off'), false);
+    const truthies = ['true', '1', 'yes', 'on'];
+    const falsies = ['false', '0', 'no', 'off'];
+
+    truthies.forEach(value => {
+        t.true(type.Bool(value));
+        t.true(type.Bool(value.toUpperCase()));
+        t.true(type.Bool(capitalise(value)));
+    });
+
+    falsies.forEach(value => {
+        t.false(type.Bool(value));
+        t.false(type.Bool(value.toUpperCase()));
+        t.false(type.Bool(capitalise(value)));
+    });
 
     t.is(type.Bool('unknown'), null);
 });
