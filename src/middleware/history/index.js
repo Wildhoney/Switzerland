@@ -1,42 +1,33 @@
-import { getDefaults, getEventName, toCamelcase } from '../../core/utils.js';
+import { getDefaults } from '../../core/utils.js';
+import * as u from './utils.js';
 
-const nodes = new Set();
+export const nodes = new Set();
 
-const eventName = getEventName('update-state');
-
-const notify = () => nodes.forEach(node => node.render());
-
-window.addEventListener(eventName, notify);
-window.addEventListener('popstate', notify);
-window.addEventListener('hashchange', notify);
+[u.eventName, 'popstate', 'hashchange'].forEach(
+    eventName =>
+        console.log(eventName) ||
+        window.addEventListener(eventName, () =>
+            nodes.forEach(node => node.render())
+        )
+);
 
 export default function history(types = {}, location = window.location) {
-    return props => {
-        const defaults = getDefaults(types);
-        const params = new URLSearchParams(location.search);
-        const hash = location.hash;
-        const get = params.get.bind(params);
-        params.get = name => {
-            const key = toCamelcase(name).fromSnake();
-            const [f] = [].concat(types[key] || (a => a));
-            return get(name) ? f(get(name)) : defaults[key] || null;
-        };
+    const defaults = getDefaults(types);
 
+    return props => {
         !nodes.has(props.node) && nodes.add(props.node);
+
+        const params = new URLSearchParams(location.search);
+        const get = params.get.bind(params);
+        params.get = u.createPatch(get, types, defaults);
 
         return {
             ...props,
             history: {
-                hash,
+                hash: location.hash,
                 params,
-                push: (...params) => {
-                    window.history.pushState(...params);
-                    props.dispatch(eventName, { params });
-                },
-                replace: (...params) => {
-                    window.history.replaceState(...params);
-                    props.dispatch(eventName, { params });
-                }
+                push: u.changeState(props, 'pushState'),
+                replace: u.changeState(props, 'replaceState')
             }
         };
     };
