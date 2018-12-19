@@ -80,7 +80,7 @@
         "stylelint": "^9.9.0",
         "stylelint-config-prettier": "^4.0.0",
         "taskfile": "^0.8.5",
-        "terser": "^3.11.0",
-        "testcafe": "^0.23.2"
+        "terser": "^3.12.0",
+        "testcafe": "^0.23.3"
     }
 }
