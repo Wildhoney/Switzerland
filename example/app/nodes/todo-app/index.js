@@ -85,8 +85,8 @@ const itemFilter = ({ h, history }) =>
         h(
             'a',
             {
-                class: history.params.get('show_done') ? 'active' : '',
-                onclick: () => history.push({}, '', '?show_done=true')
+                class: history.params.get('filter') ? '' : 'active',
+                onclick: () => history.push({}, '', '?filter=no')
             },
             'Show'
         ),
@@ -94,8 +94,8 @@ const itemFilter = ({ h, history }) =>
         h(
             'a',
             {
-                class: !history.params.get('show_done') ? 'active' : '',
-                onclick: () => history.push({}, '', '?show_done=false')
+                class: !history.params.get('filter') ? '' : 'active',
+                onclick: () => history.push({}, '', '?filter=yes')
             },
             'Hide'
         )
@@ -113,7 +113,7 @@ export default create(
     store,
     serviceWorker(path('../../utils/worker.js'), '/'),
     m.history({
-        showDone: [t.Bool, true]
+        filter: [t.Bool, false]
     }),
     m.loader({ logo: path('images/logo.png') }),
     m.rescue(m.vdom(retry)),

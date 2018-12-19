@@ -41,7 +41,21 @@ Float.DP = dp => a => {
 /**
  * @function Bool ∷ String → Boolean
  */
-export const Bool = a => a === '1' || a.toLowerCase() === 'true';
+export const Bool = type => {
+    switch (type.toLowerCase()) {
+        case '1':
+        case 'true':
+        case 'on':
+        case 'yes':
+            return true;
+        case '0':
+        case 'false':
+        case 'off':
+        case 'no':
+            return false;
+    }
+    return null;
+};
 
 /**
  * @function Date ∷ String → Date

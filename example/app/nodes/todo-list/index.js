@@ -14,7 +14,7 @@ const container = ({ redux, h, props }) =>
 
 const list = ({ history, redux, h, props }) => {
     const todos = redux.state.list
-        .filter(model => (history.params.get('show_done') ? true : !model.done))
+        .filter(model => (history.params.get('filter') ? !model.done : true))
         .sort((a, b) => a.created - b.created);
 
     return todos.length === 0
@@ -43,7 +43,7 @@ const nothing = ({ h }) =>
         h('p', {}, 'You have not added any todos yet.')
     ]);
 
-const filtered = ({ history, h }) =>
+const filtered = ({ h }) =>
     h('li', { class: 'none' }, [
         h('p', {}, 'You are filtering out all completed todos.')
     ]);
@@ -52,7 +52,7 @@ export default create(
     'todo-list',
     store,
     m.history({
-        showDone: [t.Bool, true]
+        filter: [t.Bool, false]
     }),
     m.vdom(container)
 );

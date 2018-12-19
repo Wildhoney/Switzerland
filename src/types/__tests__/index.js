@@ -34,9 +34,16 @@ test('It should be able to parse Float.DP types;', t => {
 
 test('It should be able to parse Bool types;', t => {
     t.is(type.Bool('True'), true);
-    t.is(type.Bool('false'), false);
     t.is(type.Bool('1'), true);
+    t.is(type.Bool('yes'), true);
+    t.is(type.Bool('On'), true);
+
+    t.is(type.Bool('false'), false);
     t.is(type.Bool('0'), false);
+    t.is(type.Bool('no'), false);
+    t.is(type.Bool('Off'), false);
+
+    t.is(type.Bool('unknown'), null);
 });
 
 test('It should be able to parse Date types;', t => {
