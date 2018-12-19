@@ -3,12 +3,10 @@ import * as u from './utils.js';
 
 export const nodes = new Set();
 
-[u.eventName, 'popstate', 'hashchange'].forEach(
-    eventName =>
-        console.log(eventName) ||
-        window.addEventListener(eventName, () =>
-            nodes.forEach(node => node.render())
-        )
+[u.eventName, 'popstate', 'hashchange'].forEach(eventName =>
+    window.addEventListener(eventName, () =>
+        nodes.forEach(node => node.render())
+    )
 );
 
 export default function history(types = {}, location = window.location) {
