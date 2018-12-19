@@ -247,3 +247,17 @@ export const getDefaults = types =>
                 : accum,
         {}
     );
+
+/**
+ * @function toCamelcase ∷ String → String
+ */
+export const toCamelcase = value => {
+    const f = separator => () => {
+        const r = new RegExp(`(${separator}\\w)`, 'g');
+        return value.replace(r, match => match[1].toUpperCase());
+    };
+    return {
+        fromKebab: f('-'),
+        fromSnake: f('_')
+    };
+};
