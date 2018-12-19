@@ -1,16 +1,11 @@
-/**
- * @function kebabToCamel ∷ String → String
- */
-const kebabToCamel = value => {
-    return value.replace(/(-\w)/g, match => match[1].toUpperCase());
-};
+import { toCamelcase } from '../../core/utils.js';
 
 /**
  * @function transformAttributes ∷ ∀ a b c. NamedNodeMap mnm, Object o ⇒ mnm -> o String a -> o String (String → b) -> o (String → c)
  */
 export const transformAttributes = (attrs, defaults, types) =>
     Object.values(attrs).reduce((acc, attr) => {
-        const name = kebabToCamel(attr.nodeName);
+        const name = toCamelcase(attr.nodeName).fromKebab();
         const [f] = [].concat(types[name] || (a => a));
 
         return {
