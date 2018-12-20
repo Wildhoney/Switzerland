@@ -86,7 +86,7 @@ const itemFilter = ({ h, history }) =>
             'a',
             {
                 class: history.params.get('filter') ? '' : 'active',
-                onclick: () => history.push({}, '', '?filter=no')
+                onclick: () => history.replace({}, '', '?filter=no')
             },
             'Show'
         ),
@@ -95,7 +95,7 @@ const itemFilter = ({ h, history }) =>
             'a',
             {
                 class: !history.params.get('filter') ? '' : 'active',
-                onclick: () => history.push({}, '', '?filter=yes')
+                onclick: () => history.replace({}, '', '?filter=yes')
             },
             'Hide'
         )
