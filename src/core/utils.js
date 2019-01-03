@@ -24,18 +24,19 @@ const shadowBoundaries = new WeakMap();
 const errorHandlers = new WeakMap();
 
 /**
- * @function dispatchEvent ∷ ∀ a b. HTMLElement e ⇒ e → b → Boolean
+ * @function dispatchEvent ∷ ∀ a b c. HTMLElement e ⇒ e → b → Boolean → Object String c
  * ---
  * Dispatches an event, merging in the current package's version for handling legacy events
  * if/when the payloads differ from version-to-version.
  */
-export const dispatchEvent = node => (name, payload) => {
+export const dispatchEvent = node => (name, payload, options = {}) => {
     const model = typeof payload === 'object' ? payload : { value: payload };
     return node.dispatchEvent(
         new window.CustomEvent(name, {
-            detail: { ...model, version: 3 },
             bubbles: true,
-            composed: true
+            composed: true,
+            ...options,
+            detail: { ...model, version: 4 }
         })
     );
 };
