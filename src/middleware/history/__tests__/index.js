@@ -43,9 +43,9 @@ test('It should be able to parse params/hash and set defaults;', t => {
     };
     const m = history(
         {
-            name: [type.String, 'Adam'],
-            age: type.Int,
-            dateOfBirth: [type.Date, new Date('10-10-1985')]
+            name: [type.string, 'Adam'],
+            age: type.int,
+            dateOfBirth: [type.date, new Date('10-10-1985')]
         },
         mockLocation
     );

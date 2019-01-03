@@ -83,7 +83,7 @@ import { create, m, t } from 'switzerland';
 
 create(
     'x-countries',
-    m.attrs({ values: t.Array(t.String) }),
+    m.attrs({ values: t.array(t.string) }),
     m.vdom(({ attrs, h }) =>
         h('ul', {}, attrs.values.map(country => h('li', {}, country)))
     )
@@ -114,7 +114,7 @@ const path = init(import.meta.url);
 
 create(
     'x-countries',
-    m.attrs({ values: t.Array(t.String) }),
+    m.attrs({ values: t.array(t.string) }),
     m.vdom(({ attrs, h }) =>
         h('section', {}, [
             h.stylesheet(path('index.css')),
@@ -145,7 +145,7 @@ const path = init(import.meta.url);
 
 create(
     'x-countries',
-    m.attrs({ values: t.Array(t.String) }),
+    m.attrs({ values: t.array(t.string) }),
     m.vdom(({ attrs, dispatch, h }) =>
         h('section', {}, [
             h.stylesheet(path('index.css')),

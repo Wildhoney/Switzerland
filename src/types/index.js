@@ -1,47 +1,47 @@
 /**
- * @function String ∷ String → String
+ * @function string ∷ String → String
  */
-export const String = a => a;
+export const string = a => a;
 
 /**
- * @function Int ∷ String → Integer
+ * @function int ∷ String → Integer
  */
-export const Int = a => {
+export const int = a => {
     const value = parseInt(a);
     return Number.isNaN(value) ? null : value;
 };
 
 /**
- * @function BigInt ∷ String → BigInt
+ * @function bigInt ∷ String → BigInt
  */
-export const BigInt = a => {
+export const bigInt = a => {
     try {
-        return window.BigInt(a);
+        return BigInt(a);
     } catch (err) {
         return null;
     }
 };
 
 /**
- * @function Float ∷ String → Float
+ * @function float ∷ String → Float
  */
-export const Float = a => {
+export const float = a => {
     const value = parseFloat(a);
     return Number.isNaN(value) ? null : value;
 };
 
 /**
- * @function Float.DP ∷ Integer → String → Float
+ * @function float.dp ∷ Integer → String → Float
  */
-Float.DP = dp => a => {
-    const value = Float(a);
-    return value === null ? null : Float(value.toFixed(dp));
+float.dp = dp => a => {
+    const value = float(a);
+    return value === null ? null : float(value.toFixed(dp));
 };
 
 /**
- * @function Bool ∷ String → Boolean
+ * @function bool ∷ String → Boolean
  */
-export const Bool = type => {
+export const bool = type => {
     switch (type.toLowerCase()) {
         case '1':
         case 'true':
@@ -58,31 +58,31 @@ export const Bool = type => {
 };
 
 /**
- * @function Date ∷ String → Date
+ * @function date ∷ String → Date
  */
-export const Date = a => {
-    const value = new window.Date(window.Date.parse(a));
+export const date = a => {
+    const value = new Date(Date.parse(a));
     return Number.isNaN(value.getTime()) ? null : value;
 };
 
 /**
- * @function Array ∷ ∀ a. (String → a) → String → [a]
+ * @function array ∷ ∀ a. (String → a) → String → [a]
  */
-export const Array = (f = String) => a => a.split(',').map(a => f(a));
+export const array = (f = string) => a => a.split(',').map(a => f(a));
 
 /**
- * @function Tuple ∷ ∀ a. [(String → a)] → String → [a]
+ * @function tuple ∷ ∀ a. [(String → a)] → String → [a]
  */
-export const Tuple = (...fs) => a =>
+export const tuple = (...fs) => a =>
     a.split(',').map((a, index) => {
-        const f = fs[index] || String;
+        const f = fs[index] || string;
         return f(a);
     });
 
 /**
- * @function Regex ∷ ∀ a. RegExp r ⇒ r → String → (String → String → a) → Object String a|void
+ * @function regex ∷ ∀ a. RegExp r ⇒ r → String → (String → String → a) → Object String a|void
  */
-export const Regex = (expression, f = String) => a => {
+export const regex = (expression, f = string) => a => {
     const captureGroups = [];
     const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
     for (const group of namedGroups) {

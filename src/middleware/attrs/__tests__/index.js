@@ -30,9 +30,9 @@ test('It should be able to parse the attrs with custom types;', t => {
     node.setAttribute('is-developer', 'true');
 
     const m = attrs({
-        name: type.String,
-        age: type.Int,
-        isDeveloper: type.Bool
+        name: type.string,
+        age: type.int,
+        isDeveloper: type.bool
     });
     const newProps = m({ node });
     t.deepEqual(newProps, {

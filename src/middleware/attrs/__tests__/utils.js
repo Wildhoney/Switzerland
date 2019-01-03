@@ -12,7 +12,7 @@ test('It should be able to transform kebab attributes to camel case;', t => {
         node.attributes,
         { originCity: 'Nottingham' },
         {
-            personsAge: type.Int
+            personsAge: type.int
         }
     );
     t.deepEqual(attributes, {

@@ -113,13 +113,13 @@ export default create(
     store,
     serviceWorker(path('../../utils/worker.js'), '/'),
     m.history({
-        filter: [t.Bool, false]
+        filter: [t.bool, false]
     }),
     m.loader({ logo: path('images/logo.png') }),
     m.rescue(m.vdom(retry)),
     m.methods({ insert: (value, { redux }) => redux.actions.add(value) }),
     m.once(retrieve),
-    m.attrs({ logo: t.String }),
+    m.attrs({ logo: t.string }),
     m.adapt(),
     m.vdom(container),
     m.wait(todoInput, todoList)

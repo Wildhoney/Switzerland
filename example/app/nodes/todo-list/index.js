@@ -4,6 +4,7 @@ import store from '../../utils/store.js';
 const path = init(import.meta.url);
 
 const container = ({ redux, h, props }) =>
+    console.log('render') ||
     h('ul', {}, [
         !!redux.state.list.length && list(props),
         !redux.state.list.length && nothing(props),
@@ -52,7 +53,7 @@ export default create(
     'todo-list',
     store,
     m.history({
-        filter: [t.Bool, false]
+        filter: [t.bool, false]
     }),
     m.vdom(container)
 );
