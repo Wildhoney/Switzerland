@@ -3,16 +3,16 @@ import { toCamelcase } from '../../core/utils.js';
 /**
  * @function transformAttributes ∷ ∀ a b c. NamedNodeMap mnm, Object o ⇒ mnm -> o String a -> o String (String → b) -> o (String → c)
  */
-export const transformAttributes = (attrs, types) =>
+export const transformAttributes = (attrs, defaults, types) =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
-        const f = types[name] || (a => a);
+        const [f] = [].concat(types[name] || (a => a));
 
         return {
             ...acc,
             [name]: f(attr.nodeValue)
         };
-    }, {});
+    }, defaults);
 
 /**
  * @function hasApplicableMutations ∷ HTMLElement e, MutationRecord mr ⇒ e -> mr -> [String] -> Boolean
