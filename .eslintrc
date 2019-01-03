@@ -6,7 +6,6 @@
         "no-sequences": "off"
     },
     "globals": {
-        "BigInt": true,
         "caches": true,
         "CSSImportRule": true,
         "customElements": true,
