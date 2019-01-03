@@ -36,7 +36,7 @@ test('It should register the events to notify changes only once;', async t => {
     }
 });
 
-test('It should be able to parse params/hash and set defaults;', t => {
+test.skip('It should be able to parse params/hash and set defaults;', t => {
     const mockLocation = {
         hash: '#test-me',
         search: '?age=33&location=Watford'

@@ -237,18 +237,6 @@ export const fetchedCSSImports = node => {
 };
 
 /**
- * @function getDefaults ∷ ∀ a. Object String (String → a)
- */
-export const getDefaults = types =>
-    Object.entries(types).reduce(
-        (accum, [key, value]) =>
-            Array.isArray(value) && typeof value[1] !== 'undefined'
-                ? { ...accum, [key]: value[1] }
-                : accum,
-        {}
-    );
-
-/**
  * @function toCamelcase ∷ String → String
  */
 export const toCamelcase = value => {

@@ -7,7 +7,7 @@ const node = document.createElement('x-example');
 node.setAttribute('country-name', 'United Kingdom');
 node.setAttribute('persons-age', 33);
 
-test('It should be able to transform kebab attributes to camel case;', t => {
+test.skip('It should be able to transform kebab attributes to camel case;', t => {
     const attributes = u.transformAttributes(
         node.attributes,
         { originCity: 'Nottingham' },

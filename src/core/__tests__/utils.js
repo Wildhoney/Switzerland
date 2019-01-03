@@ -50,12 +50,12 @@ test('It should be able to dispatch the event with the node and version;', t => 
     t.is(dispatchEvent.callCount, 1);
 });
 
-test('It should be able to yield an object of defaults;', t => {
+test.skip('It should be able to yield an object of defaults;', t => {
     const defaults = u.getDefaults({
         name: 'Adam',
-        age: [type.Int, 33],
-        city: [type.String, 'Watford'],
-        country: type.String
+        age: [type.int, 33],
+        city: [type.string, 'Watford'],
+        country: type.string
     });
     t.deepEqual(defaults, { age: 33, city: 'Watford' });
 });
