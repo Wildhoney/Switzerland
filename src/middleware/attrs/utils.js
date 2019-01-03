@@ -1,9 +1,9 @@
 import { toCamelcase } from '../../core/utils.js';
 
 /**
- * @function transformAttributes ∷ ∀ a b c. NamedNodeMap mnm, Object o ⇒ mnm -> o String a -> o String (String → b) -> o (String → c)
+ * @function transformAttributes ∷ ∀ a b c. NamedNodeMap mnm, Object o ⇒ mnm → o String (String → b) → o String a → o (String → c)
  */
-export const transformAttributes = (attrs, defaults, types) =>
+export const transformAttributes = (attrs, types, defaults) =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
         const [f] = [].concat(types[name] || (a => a));
@@ -15,7 +15,7 @@ export const transformAttributes = (attrs, defaults, types) =>
     }, defaults);
 
 /**
- * @function hasApplicableMutations ∷ HTMLElement e, MutationRecord mr ⇒ e -> mr -> [String] -> Boolean
+ * @function hasApplicableMutations ∷ HTMLElement e, MutationRecord mr ⇒ e → mr → [String] → Boolean
  * ---
  * Only cause a re-render if some of the mutated items have actually changed the attribute when compared, and
  * are not included in the `exclude` list specified in the function's parameters.

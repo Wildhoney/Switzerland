@@ -10,10 +10,10 @@ node.setAttribute('persons-age', 33);
 test('It should be able to transform kebab attributes to camel case;', t => {
     const attributes = u.transformAttributes(
         node.attributes,
-        { originCity: 'Nottingham' },
         {
             personsAge: type.Int
-        }
+        },
+        { originCity: 'Nottingham' }
     );
     t.deepEqual(attributes, {
         countryName: 'United Kingdom',

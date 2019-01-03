@@ -33,7 +33,7 @@ export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
 
         return {
             ...props,
-            attrs: u.transformAttributes(props.node.attributes, defaults, types)
+            attrs: u.transformAttributes(props.node.attributes, types, defaults)
         };
     };
 }
