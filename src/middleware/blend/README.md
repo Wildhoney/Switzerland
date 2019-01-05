@@ -17,7 +17,7 @@ With the `blend` middleware you are able to have a generic function that yields 
 // Instead yields the promise which blend uses to invoke `render` for you...
 
 const fetchProfile = ({ name }) => {
-    return fetch(`/api/profile/${name}`).then(render);
+    return fetch(`/api/profile/${name}`);
 }
 ```
 
