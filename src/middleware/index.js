@@ -8,6 +8,7 @@
 
 // export const adapt = load('adapt');
 // export const attrs = load('attrs');
+// export const blend = load('blend');
 // export const defer = load('defer');
 // export const delay = load('delay');
 // export const history = load('history');
@@ -24,6 +25,7 @@
 
 export { default as adapt } from './adapt/index.js';
 export { default as attrs } from './attrs/index.js';
+export { default as blend } from './blend/index.js';
 export { default as defer } from './defer/index.js';
 export { default as delay } from './delay/index.js';
 export { default as history } from './history/index.js';
