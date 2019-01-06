@@ -140,6 +140,7 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => ({
     ...mergeProps,
     node,
     render: node.render.bind(node),
+    lifecycle: mergeProps.lifecycle || 'update',
     dispatch: dispatchEvent(node),
     prevProps: previousProps.get(node) || null,
     resolved: async () => {

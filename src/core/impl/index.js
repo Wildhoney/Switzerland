@@ -33,11 +33,11 @@ export const base = (extension, middleware) =>
             };
         }
         connectedCallback() {
-            return this.render();
+            return this.render({ lifecycle: 'mounted' });
         }
         disconnectedCallback() {
             this.classList.remove('resolved');
-            return this.render();
+            return this.render({ lifecycle: 'unmounted' });
         }
         render(mergeProps = {}) {
             if (this[meta].state.isError()) {
