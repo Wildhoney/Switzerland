@@ -40,12 +40,14 @@ export const base = (extension, middleware) =>
             return this.render({ lifecycle: 'unmounted' });
         }
         render(mergeProps = {}) {
-            if (this[meta].state.isError()) {
-                // Cannot process new render cycles until the error has been resolved.
+            const isRemounting = mergeProps.lifecycle === 'mounted';
+            const { queue, state } = this[meta];
+
+            if (state.isError() && !isRemounting) {
+                // Cannot process new render cycles until the error has been resolved, unless
+                // we're trying to re-mount the component.
                 return;
             }
-
-            const { queue, state } = this[meta];
 
             const newTask = new Promise(async resolve => {
                 // Await the completion of the task last added to the stack.
