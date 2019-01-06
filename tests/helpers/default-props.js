@@ -3,8 +3,12 @@ import { dispatchEvent } from '../../src/core/utils.js';
 
 const node = document.createElement('div');
 
-export default {
+const props = {
     node,
     render: spy(),
     dispatch: dispatchEvent(node)
 };
+
+props.props = props;
+
+export default props;
