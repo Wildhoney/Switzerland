@@ -29,11 +29,11 @@ export default function adapt() {
         const { lifecycle } = props;
 
         switch (lifecycle) {
-            case 'mounted':
+            case 'mount':
                 nodes.add(props.node);
                 observer && observer.observe(props.node);
                 break;
-            case 'unmounted':
+            case 'unmount':
                 nodes.delete(props.node);
                 observer && observer.unobserve(props.node);
                 break;

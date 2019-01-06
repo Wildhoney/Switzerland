@@ -27,11 +27,11 @@ export default function intersect() {
         const { lifecycle } = props;
 
         switch (lifecycle) {
-            case 'mounted':
+            case 'mount':
                 observers.add(props.node);
                 observer && observer.observe(props.node);
                 break;
-            case 'unmounted':
+            case 'unmount':
                 observers.delete(props.node);
                 observer && observer.unobserve(props.node);
                 break;

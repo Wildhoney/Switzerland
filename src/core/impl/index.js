@@ -33,14 +33,14 @@ export const base = (extension, middleware) =>
             };
         }
         connectedCallback() {
-            return this.render({ lifecycle: 'mounted' });
+            return this.render({ lifecycle: 'mount' });
         }
         disconnectedCallback() {
             this.classList.remove('resolved');
-            return this.render({ lifecycle: 'unmounted' });
+            return this.render({ lifecycle: 'unmount' });
         }
         render(mergeProps = {}) {
-            const isRemounting = mergeProps.lifecycle === 'mounted';
+            const isRemounting = mergeProps.lifecycle === 'mount';
             const { queue, state } = this[meta];
 
             if (state.isError() && !isRemounting) {

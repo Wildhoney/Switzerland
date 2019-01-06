@@ -10,7 +10,7 @@ export default function interval(milliseconds) {
         const { lifecycle } = props;
 
         switch (lifecycle) {
-            case 'mounted':
+            case 'mount':
                 // Use the `setInterval` to re-render the component every X milliseconds.
                 interval.set(
                     props.node,
@@ -18,7 +18,7 @@ export default function interval(milliseconds) {
                 );
                 break;
 
-            case 'unmounted':
+            case 'unmount':
                 // Stop the interval when the node is unmounted from the DOM.
                 clearInterval(interval.get(props.node));
                 break;

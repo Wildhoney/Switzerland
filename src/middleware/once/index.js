@@ -13,10 +13,9 @@ const registry = new Map();
 export default function once(fn) {
     return props => {
         const { node } = props;
-
         !registry.has(node) && registry.set(node, new WeakMap());
         const functions = registry.get(node);
-        const result = functions.get(fn) || fn(props);
+        const result = functions.has(fn) ? functions.get(fn) : fn(props);
         functions.set(fn, result);
         return { ...result, ...props };
     };

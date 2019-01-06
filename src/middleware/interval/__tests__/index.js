@@ -13,7 +13,7 @@ test.afterEach(t => {
 
 test('It should invoke `render` every 10 milliseconds until unmounted;', async t => {
     const m = interval(10);
-    const newMountProps = m({ ...defaultProps, lifecycle: 'mounted' });
+    const newMountProps = m({ ...defaultProps, lifecycle: 'mount' });
     t.is(defaultProps.render.callCount, 0);
     t.context.clock.tick(15);
     t.is(defaultProps.render.callCount, 1);
@@ -21,12 +21,12 @@ test('It should invoke `render` every 10 milliseconds until unmounted;', async t
     t.is(defaultProps.render.callCount, 2);
     t.context.clock.tick(1);
     t.is(defaultProps.render.callCount, 2);
-    const newUnmountProps = m({ ...defaultProps, lifecycle: 'unmounted' });
+    const newUnmountProps = m({ ...defaultProps, lifecycle: 'unmount' });
     t.context.clock.tick(24);
     t.is(defaultProps.render.callCount, 2);
-    t.deepEqual(await newMountProps, { ...defaultProps, lifecycle: 'mounted' });
+    t.deepEqual(await newMountProps, { ...defaultProps, lifecycle: 'mount' });
     t.deepEqual(await newUnmountProps, {
         ...defaultProps,
-        lifecycle: 'unmounted'
+        lifecycle: 'unmount'
     });
 });

@@ -15,3 +15,11 @@ test('It should only invoke the function once per node instance;', async t => {
     once(fn)({ ...defaultProps, node: document.createElement('div') });
     t.is(fn.callCount, 2);
 });
+
+test('It should only invoke the function once per node instance even when the function returns a falsy value;', async t => {
+    const fn = spy(() => null);
+    once(fn)(defaultProps);
+    once(fn)(defaultProps);
+    once(fn)(defaultProps);
+    t.is(fn.callCount, 1);
+});
