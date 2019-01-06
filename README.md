@@ -171,5 +171,8 @@ node.addEventListener('clicked-country', event => (
 
 ## Middleware
 
+* `adapt` &ndash; Uses `ResizeObserver` to re-render whenever the component's dimensions change; 
+* `attrs` &ndash; Provides the parsing and observing of a node's attributes.
 * [`blend`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/blend) &ndash; Keep your functions general when using as middleware functions.
-
+* `defer` &ndash; Invokes function after `x` milliseconds if the current render hasn't completed.
+* `delay` &ndash; Awaits by `x` milliseconds before continuing to the next middleware item.
