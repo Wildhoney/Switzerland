@@ -23,6 +23,7 @@
 1. [Motivation](#motivation)
 2. [Plug & Play](#plug--play)
 3. [Getting Started](#getting-started)
+4. [Middleware](#middleware)
 
 ![Screenshot](media/screenshot.png)
 
@@ -167,3 +168,8 @@ node.addEventListener('clicked-country', event => (
     console.log(`Country: ${event.detail.country}!`)
 ));
 ```
+
+## Middleware
+
+* [`blend`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/blend) &ndash; Keep your functions general when using as middleware functions.
+
