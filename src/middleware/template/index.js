@@ -6,7 +6,8 @@ import { createShadowRoot } from '../../core/utils.js';
  */
 export default function template(getView, options = {}) {
     return async props => {
-        const boundary = createShadowRoot(props.node, options);
+        const { node } = props;
+        const boundary = createShadowRoot(node, options);
         const h = hyper(boundary);
 
         if (props.node.isConnected) {

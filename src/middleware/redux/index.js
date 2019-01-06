@@ -6,16 +6,18 @@ import thunk from 'https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js';
  */
 export default function redux({ actions, reducer }) {
     const subscriptions = new WeakSet();
-    const store = r.createStore(reducer, r.applyMiddleware(thunk));
-    const actions_ = r.bindActionCreators(actions, store.dispatch);
-    const dispatch = store.dispatch;
+    const { dispatch, getState, subscribe } = r.createStore(
+        reducer,
+        r.applyMiddleware(thunk)
+    );
+    const actions_ = r.bindActionCreators(actions, dispatch);
 
     return props => {
-        const state = store.getState();
+        const state = getState();
         const redux = { state, actions: actions_, dispatch };
 
         if (!subscriptions.has(props.node)) {
-            store.subscribe(() => props.render({ redux }));
+            subscribe(() => props.render({ redux }));
             subscriptions.add(props.node);
         }
 

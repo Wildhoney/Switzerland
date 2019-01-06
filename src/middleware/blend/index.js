@@ -6,12 +6,13 @@
  */
 export default function blend(fn) {
     return props => {
+        const { render } = props;
         const future = fn(props);
         const isPromise = future instanceof Promise;
 
         switch (true) {
             case isPromise:
-                future.then(props.render);
+                future.then(render);
         }
 
         return props;

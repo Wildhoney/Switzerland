@@ -10,9 +10,9 @@ const getObserver = () =>
     });
 
 /**
- * @constant observers ∷ WeakSet
+ * @constant nodes ∷ WeakSet
  */
-export const observers = new WeakSet();
+export const nodes = new WeakSet();
 
 /**
  * @function adapt ∷ Props p ⇒ (p → p)
@@ -25,14 +25,16 @@ export const observers = new WeakSet();
 export default function adapt() {
     const observer = getObserver();
 
-    return ({ lifecycle, props }) => {
+    return props => {
+        const { lifecycle } = props;
+
         switch (lifecycle) {
             case 'mounted':
-                observers.add(props.node);
+                nodes.add(props.node);
                 observer && observer.observe(props.node);
                 break;
             case 'unmounted':
-                observers.delete(props.node);
+                nodes.delete(props.node);
                 observer && observer.unobserve(props.node);
                 break;
         }

@@ -11,7 +11,9 @@ const registry = new Map();
  * cleaning up when the node is removed from DOM.
  */
 export default function once(fn) {
-    return ({ node, props }) => {
+    return props => {
+        const { node } = props;
+
         !registry.has(node) && registry.set(node, new WeakMap());
         const functions = registry.get(node);
         const result = functions.get(fn) || fn(props);

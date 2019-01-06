@@ -23,7 +23,9 @@ export const observers = new WeakSet();
 export default function intersect() {
     const observer = getObserver();
 
-    return ({ lifecycle, props }) => {
+    return props => {
+        const { lifecycle } = props;
+
         switch (lifecycle) {
             case 'mounted':
                 observers.add(props.node);

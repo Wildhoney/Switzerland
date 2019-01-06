@@ -24,6 +24,9 @@ test('It should invoke `render` every 10 milliseconds until unmounted;', async t
     const newUnmountProps = m({ ...defaultProps, lifecycle: 'unmounted' });
     t.context.clock.tick(24);
     t.is(defaultProps.render.callCount, 2);
-    t.deepEqual(await newMountProps, defaultProps);
-    t.deepEqual(await newUnmountProps, defaultProps);
+    t.deepEqual(await newMountProps, { ...defaultProps, lifecycle: 'mounted' });
+    t.deepEqual(await newUnmountProps, {
+        ...defaultProps,
+        lifecycle: 'unmounted'
+    });
 });

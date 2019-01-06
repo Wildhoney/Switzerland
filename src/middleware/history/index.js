@@ -20,7 +20,8 @@ export default function history(types = {}, location = window.location) {
     const defaults = getDefaults(types);
 
     return props => {
-        !nodes.has(props.node) && nodes.add(props.node);
+        const { node } = props;
+        !nodes.has(node) && nodes.add(node);
 
         const params = new URLSearchParams(location.search);
         const get = params.get.bind(params);

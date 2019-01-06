@@ -7,8 +7,10 @@
  */
 export default function methods(fns) {
     return props => {
+        const { node } = props;
+
         Object.entries(fns).forEach(([name, fn]) => {
-            props.node[name] = (...args) => fn.call(props.node, ...args, props);
+            props.node[name] = (...args) => fn.call(node, ...args, props);
         });
 
         return props;

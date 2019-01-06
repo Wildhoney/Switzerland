@@ -2,6 +2,11 @@ import { getDefaults } from '../../core/utils.js';
 import * as u from './utils.js';
 
 /**
+ * @constant nodes ∷ Set
+ */
+const nodes = new Set();
+
+/**
  * @function attrs ∷ ∀ a b c. Props p ⇒ Object a (b → c) [String] → (p → p)
  * ---
  * Takes an optional list of excluded attributes that will be ignored when their values are mutated, such as you
@@ -13,27 +18,28 @@ import * as u from './utils.js';
  * of the non-excluded attributes are modified.
  */
 export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
-    const observers = new Map();
     const defaults = getDefaults(types);
 
     return props => {
-        if (!observers.has(props.node)) {
+        const { node, render } = props;
+
+        if (!nodes.has(node)) {
             const observer = new window.MutationObserver(
                 mutations =>
-                    u.hasApplicableMutations(props.node, mutations, exclude) &&
-                    props.render()
+                    u.hasApplicableMutations(node, mutations, exclude) &&
+                    render()
             );
 
-            observer.observe(props.node, {
+            observer.observe(node, {
                 attributes: true,
                 attributeOldValue: true
             });
-            observers.set(props.node, observer);
+            nodes.add(node);
         }
 
         return {
             ...props,
-            attrs: u.transformAttributes(props.node.attributes, types, defaults)
+            attrs: u.transformAttributes(node.attributes, types, defaults)
         };
     };
 }

@@ -17,6 +17,7 @@ export default function wait(...names) {
     const eventName = getEventName('resolved');
 
     return async props => {
+        const { node } = props;
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 
@@ -27,7 +28,7 @@ export default function wait(...names) {
                     (accum, name) => [
                         ...accum,
                         ...Array.from(
-                            createShadowRoot(props.node).querySelectorAll(name)
+                            createShadowRoot(node).querySelectorAll(name)
                         )
                     ],
                     []

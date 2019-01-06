@@ -39,7 +39,8 @@ extendedH.stylesheet = stylesheet;
  */
 export default function vdom(getView, options = {}) {
     return async props => {
-        const boundary = createShadowRoot(props.node, options);
+        const { node } = props;
+        const boundary = createShadowRoot(node, options);
 
         if (props.node.isConnected) {
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
@@ -49,8 +50,8 @@ export default function vdom(getView, options = {}) {
             const view = await getView({ ...props, h: extendedH });
 
             if (view) {
-                const tree = patch(u.takeTree(props.node), view, boundary);
-                u.putTree(props.node, tree);
+                const tree = patch(u.takeTree(node), view, boundary);
+                u.putTree(node, tree);
             }
         }
 

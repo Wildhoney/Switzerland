@@ -6,7 +6,9 @@
 export default function interval(milliseconds) {
     const interval = new WeakMap();
 
-    return ({ lifecycle, props }) => {
+    return props => {
+        const { lifecycle } = props;
+
         switch (lifecycle) {
             case 'mounted':
                 // Use the `setInterval` to re-render the component every X milliseconds.
