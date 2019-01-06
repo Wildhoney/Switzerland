@@ -14,12 +14,12 @@ export default function interval(milliseconds) {
                     props.node,
                     setInterval(props.render, milliseconds)
                 );
-                return props;
+                break;
 
             case 'unmounted':
                 // Stop the interval when the node is unmounted from the DOM.
                 clearInterval(interval.get(props.node));
-                return props;
+                break;
         }
 
         return props;
