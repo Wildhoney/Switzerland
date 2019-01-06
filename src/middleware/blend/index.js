@@ -1,3 +1,5 @@
+import { previousProps } from '../../core/utils.js';
+
 /**
  * @function blend ∷ ∀ a b. Props p ⇒ (p → Object(String → a)) → (p → p)
  * ---
@@ -6,13 +8,27 @@
  */
 export default function blend(fn) {
     return props => {
-        const { render } = props;
+        const { node, render } = props;
         const future = fn(props);
         const isPromise = future instanceof Promise;
+        const isGenerator =
+            fn.constructor &&
+            ['AsyncGeneratorFunction', 'GeneratorFunction'].includes(
+                fn.constructor.name
+            );
 
         switch (true) {
             case isPromise:
                 future.then(render);
+                break;
+            case isGenerator:
+                (async function next() {
+                    const latestProps = previousProps.get(node) || props;
+                    const { value, done } = await future.next(latestProps);
+                    render(value);
+                    !done && next();
+                })();
+                break;
         }
 
         return props;
