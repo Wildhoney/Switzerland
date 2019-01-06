@@ -1,25 +1,27 @@
-import once, { types } from '../once/index.js';
-
 /**
  * @function interval ∷ Props p ⇒ Number → [(p → p)]
  * ---
- * Re-renders the component specified by the milliseconds. As this middleware uses both mount and unmount
- * parts, it yields an array which should be spread (...) when using as a middleware item.
+ * Re-renders the component specified by the milliseconds.
  */
 export default function interval(milliseconds) {
     const interval = new WeakMap();
 
-    const mount = once(props => {
-        // Use the `setInterval` to re-render the component every X milliseconds.
-        interval.set(props.node, setInterval(props.render, milliseconds));
-        return props;
-    }, types.ON_MOUNT);
+    return ({ lifecycle, props }) => {
+        switch (lifecycle) {
+            case 'mounted':
+                // Use the `setInterval` to re-render the component every X milliseconds.
+                interval.set(
+                    props.node,
+                    setInterval(props.render, milliseconds)
+                );
+                return props;
 
-    const unmount = once(props => {
-        // Stop the interval when the node is unmounted from the DOM.
-        clearInterval(interval.get(props.node));
-        return props;
-    }, types.ON_UNMOUNT);
+            case 'unmounted':
+                // Stop the interval when the node is unmounted from the DOM.
+                clearInterval(interval.get(props.node));
+                return props;
+        }
 
-    return [mount, unmount];
+        return props;
+    };
 }

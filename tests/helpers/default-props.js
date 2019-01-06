@@ -5,6 +5,7 @@ const node = document.createElement('div');
 
 const props = {
     node,
+    lifecycle: 'render',
     render: spy(),
     dispatch: dispatchEvent(node)
 };
