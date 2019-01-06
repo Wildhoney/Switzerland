@@ -9,6 +9,13 @@ export const nodes = new Set();
     )
 );
 
+/**
+ * @function history ∷ ∀ a b. Props p ⇒ Object(String: a) → Object(String: b) → (p → p)
+ * ---
+ * Observes and re-renders whenever the route has been updated. Passes the parsed props that can be
+ * set by passing the params and their associated types. Useful for whenever you're managing state by
+ * using the browser's URL params.
+ */
 export default function history(types = {}, location = window.location) {
     const defaults = getDefaults(types);
 
