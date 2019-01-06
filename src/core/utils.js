@@ -6,7 +6,7 @@ import { meta, CancelError } from './index.js';
  * ---
  * Previous props that were used for the last render of each component.
  */
-export const previousProps = new WeakMap();
+const previousProps = new WeakMap();
 
 /**
  * @constant shadowBoundaries ∷ HTMLElement e, ShadowRoot s ⇒ e → s
