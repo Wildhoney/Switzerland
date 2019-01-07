@@ -61,7 +61,7 @@ export const createShadowRoot = (node, options = {}) => {
         });
         shadowBoundaries.set(node, root);
         return root;
-    } catch (err) {
+    } catch (_) {
         return node;
     }
 };

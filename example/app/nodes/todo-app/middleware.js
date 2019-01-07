@@ -15,7 +15,7 @@ export const serviceWorker = (path, scope) => {
                     scope
                 }));
             return props;
-        } catch (err) {
+        } catch (_) {
             return props;
         }
     });

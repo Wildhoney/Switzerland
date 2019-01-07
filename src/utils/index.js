@@ -43,9 +43,9 @@ export const validate = (
         );
 
         return { results: validityReport, valid: isFormValid, error: null };
-    } catch (err) {
+    } catch (error) {
         // Yield an indeterminate result as an error was raised in the above code.
-        return { results: [], valid: null, error: err };
+        return { results: [], valid: null, error };
     }
 };
 

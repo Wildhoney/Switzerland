@@ -17,7 +17,7 @@ export const Int = a => {
 export const BigInt = a => {
     try {
         return window.BigInt(a);
-    } catch (err) {
+    } catch (_) {
         return null;
     }
 };
