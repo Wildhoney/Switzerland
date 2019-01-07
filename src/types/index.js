@@ -84,9 +84,9 @@ export const Tuple = (...fs) => a =>
     });
 
 /**
- * @function Regex ∷ ∀ a. RegExp r ⇒ r → String → (String → String → a) → Object String a|void
+ * @function Regex ∷ ∀ a. RegExp r ⇒ r → String → → Object String a|void
  */
-export const Regex = (expression, f = String) => a => {
+export const Regex = expression => a => {
     const captureGroups = [];
     const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
     for (const group of namedGroups) {
@@ -96,7 +96,7 @@ export const Regex = (expression, f = String) => a => {
     return captureGroups.reduce(
         (model, key) => ({
             ...model,
-            [key]: model[key] ? f(model[key], key) : null
+            [key]: model[key] ? model[key] : null
         }),
         match ? match.groups : {}
     );
