@@ -31,6 +31,7 @@ body {
 
 todo-app {
     opacity: 0;
+    min-width: 100%;
     visibility: hidden;
     transition: transform 0.55s, opacity 0.55s;
     transform: scale(0.75);

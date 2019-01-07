@@ -91,11 +91,28 @@ ul li:not(:last-of-type) {
     border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-button.retry {
+div.error {
+    font-size: 12px;
+    font-weight: bold;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+div.error div.message {
+    color: #ff3232;
+    margin-bottom: 20px;
+    padding: 0 30px;
+    text-align: center;
+}
+
+div.error button.retry {
     padding: 10px;
     outline: none;
     cursor: pointer;
     font-weight: bold;
     border: 1px solid lightgray;
-    margin: 10px;
+    width: 25%;
 }

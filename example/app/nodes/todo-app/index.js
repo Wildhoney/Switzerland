@@ -101,11 +101,14 @@ const itemFilter = ({ h, history }) =>
         )
     ]);
 
-const retry = ({ render, h, props }) =>
+const retry = ({ render, h, props, error }) =>
     h('section', { class: 'todo-app' }, [
         h.stylesheet(path('styles/index.css')),
         header(props),
-        h('button', { class: 'retry', onclick: render }, 'Retry')
+        h('div', { class: 'error' }, [
+            h('div', { class: 'message' }, error.message),
+            h('button', { class: 'retry', onclick: render }, 'Retry')
+        ])
     ]);
 
 export default create(
