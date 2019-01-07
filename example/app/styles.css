@@ -31,11 +31,16 @@ body {
 
 todo-app {
     opacity: 0;
-    min-width: 100%;
     visibility: hidden;
     transition: transform 0.55s, opacity 0.55s;
     transform: scale(0.75);
     transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@media (max-width: 768px) {
+    todo-app {
+        min-width: 100%;
+    }
 }
 
 noscript.todo-app {
