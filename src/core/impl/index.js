@@ -61,11 +61,7 @@ export const base = (extension, middleware) =>
 
                 try {
                     // Cycle through all of the middleware functions, updating the props as we go.
-                    const props = u.getInitialProps(
-                        this,
-                        mergeProps,
-                        currentTask
-                    );
+                    const props = u.getProps(this, mergeProps, currentTask);
 
                     return void (await u.handleMiddleware(
                         this,
@@ -84,7 +80,7 @@ export const base = (extension, middleware) =>
                     u.handleError(this, error));
                 } finally {
                     // Await the resolution of all the CSS import rules.
-                    await u.fetchedCSSImports(this);
+                    await u.cssImports(this);
 
                     // Always dispatch the "resolved" event regardless of success or failure. We also apply
                     // the "resolved" class name to the element.

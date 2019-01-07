@@ -98,13 +98,13 @@ test.serial(
     'It should remain in the normal state when a render pass is cancelled;',
     async t => {
         const { instance, injectors } = t.context;
-        const getInitialPropsStub = stub(u, 'getInitialProps').throws(
+        const getPropsStub = stub(u, 'getProps').throws(
             () => new impl.CancelError()
         );
         const setErrorSpy = spy(injectors.state, 'setError');
         await instance.render();
         t.is(setErrorSpy.callCount, 0);
-        getInitialPropsStub.restore();
+        getPropsStub.restore();
     }
 );
 
@@ -147,12 +147,10 @@ test.serial(
         const { instance } = t.context;
         const quote = starwars();
         const mergeProps = { quote };
-        const getInitialPropsStub = stub(u, 'getInitialProps');
+        const getPropsStub = stub(u, 'getProps');
         await instance.render(mergeProps);
-        t.true(
-            getInitialPropsStub.calledWith(instance, mergeProps, match.promise)
-        );
-        getInitialPropsStub.restore();
+        t.true(getPropsStub.calledWith(instance, mergeProps, match.promise));
+        getPropsStub.restore();
     }
 );
 
@@ -160,10 +158,10 @@ test.serial(
     'It should not continue if the current task has become invalid',
     async t => {
         const { instance, injectors } = t.context;
-        const getInitialPropsStub = stub(u, 'getInitialProps');
+        const getPropsStub = stub(u, 'getProps');
         const task = instance.render();
         injectors.queue.drop(task);
         await task;
-        t.is(getInitialPropsStub.callCount, 0);
+        t.is(getPropsStub.callCount, 0);
     }
 );

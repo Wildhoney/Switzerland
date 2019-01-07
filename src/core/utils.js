@@ -130,12 +130,12 @@ export const consoleMessage = (text, type = 'error') =>
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 
 /**
- * @function getInitialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
+ * @function getProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
  * ---
  * A utility function for setting all of the initial props that are used for each rendering of a component.
  * Takes the `mergeProps` which a developer can pass to the `render` method.
  */
-export const getInitialProps = (node, mergeProps, scheduledTask) => ({
+export const getProps = (node, mergeProps, scheduledTask) => ({
     ...(previousProps.get(node) || {}),
     ...mergeProps,
     node,
@@ -143,6 +143,7 @@ export const getInitialProps = (node, mergeProps, scheduledTask) => ({
     lifecycle: mergeProps.lifecycle || 'update',
     dispatch: dispatchEvent(node),
     prevProps: previousProps.get(node) || null,
+    isQueue: () => node[meta].queue.size() === 1,
     resolved: async () => {
         const resolution = await Promise.race([
             scheduledTask,
@@ -210,12 +211,12 @@ export const handleError = (node, error) => {
 };
 
 /**
- * @function fetchedCSSImports ∷ HTMLElement e ⇒ e → Promise void
+ * @function cssImports ∷ HTMLElement e ⇒ e → Promise void
  * ---
  * Finds all of the component's `HTMLStyleElement` nodes and extracts the `CSSImportRule` rules, awaiting
  * the resolution of each one before resolving the yielded promise.
  */
-export const fetchedCSSImports = node => {
+export const cssImports = node => {
     const styles = createShadowRoot(node).querySelectorAll('style');
 
     return new Promise(resolve => {
