@@ -144,7 +144,7 @@ export const getProps = (node, mergeProps, scheduledTask) => {
         lifecycle: mergeProps.lifecycle || 'update',
         dispatch: dispatchEvent(node),
         prevProps: previousProps.get(node) || null,
-        isQueue: () => node[meta].queue.size() === 1,
+        isIdle: () => node[meta].queue.size() <= 1,
         resolved: async () => {
             const resolution = await Promise.race([
                 scheduledTask,
