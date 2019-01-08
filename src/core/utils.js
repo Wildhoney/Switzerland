@@ -135,35 +135,37 @@ export const consoleMessage = (text, type = 'error') =>
  * A utility function for setting all of the initial props that are used for each rendering of a component.
  * Takes the `mergeProps` which a developer can pass to the `render` method.
  */
-export const getProps = (node, mergeProps, scheduledTask) => ({
-    ...(previousProps.get(node) || {}),
-    ...mergeProps,
-    node,
-    render: node.render.bind(node),
-    lifecycle: mergeProps.lifecycle || 'update',
-    dispatch: dispatchEvent(node),
-    prevProps: previousProps.get(node) || null,
-    isQueue: () => node[meta].queue.size() === 1,
-    resolved: async () => {
-        const resolution = await Promise.race([
-            scheduledTask,
-            Promise.resolve(false)
-        ]);
-        return resolution !== false;
-    },
-    abort: () => {
-        throw new CancelError();
-    }
-});
+export const getProps = (node, mergeProps, scheduledTask) => {
+    return {
+        ...(previousProps.get(node) || {}),
+        ...mergeProps,
+        node,
+        render: node.render.bind(node),
+        lifecycle: mergeProps.lifecycle || 'update',
+        dispatch: dispatchEvent(node),
+        prevProps: previousProps.get(node) || null,
+        isQueue: () => node[meta].queue.size() === 1,
+        resolved: async () => {
+            const resolution = await Promise.race([
+                scheduledTask,
+                Promise.resolve(false)
+            ]);
+            return resolution !== false;
+        },
+        abort: () => {
+            throw new CancelError();
+        }
+    };
+};
 
 /**
- * @function handleMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
+ * @function cycleMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
  * ---
  * Iterates over the defined middleware for a component, detecting if any error handlers have been
  * defined, and if so storing the current set of props up to that point. Yields the props that were
  * returned by cycling through each of the middleware functions.
  */
-export const handleMiddleware = async (node, initialProps, middleware) => {
+export const cycleMiddleware = async (node, initialProps, middleware) => {
     const props = await middleware.reduce(async (accumP, middlewareP) => {
         const props = { ...(await accumP) };
         props.props = props;
@@ -181,14 +183,14 @@ export const handleMiddleware = async (node, initialProps, middleware) => {
 };
 
 /**
- * @function handleError ∷ ∀ a. HTMLElement e ⇒ e → Error a → void
+ * @function handleException ∷ ∀ a. HTMLElement e ⇒ e → Error a → void
  * ---
  * Determines whether an error handler had been set for the component before it errored inside one of
  * the middleware functions. If there's a error handler then it's used -- hopefully to render something to
  * the screen, but it's not guaranteed as it merely works like a typical try-catch. If there is no error
  * handler then `console.error` is used as a last resort.
  */
-export const handleError = (node, error) => {
+export const handleException = (node, error) => {
     // Attempt to find an error handler for the current node which can handle the error gracefully.
     // Otherwise a simple yet abrasive `console.error` will be used with no recovery possible.
     const props = errorHandlers.get(node);

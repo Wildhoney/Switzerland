@@ -54,7 +54,7 @@ test.serial(
     async t => {
         const { instance, spies } = t.context;
         const renderSpy = spy(instance, 'render');
-        const handleMiddlewareStub = stub(u, 'handleMiddleware').resolves();
+        const cycleMiddlewareStub = stub(u, 'cycleMiddleware').resolves();
         const firstTask = instance.render();
         const secondTask = instance.render();
         const thirdTask = instance.render();
@@ -65,7 +65,7 @@ test.serial(
         t.is(spies.dispatchEvent.callCount, 2);
         await thirdTask;
         t.is(spies.dispatchEvent.callCount, 3);
-        handleMiddlewareStub.restore();
+        cycleMiddlewareStub.restore();
     }
 );
 
@@ -110,17 +110,17 @@ test.serial(
 
 test.serial('It should be able to handle errors gracefully;', async t => {
     const { instance, injectors, spies } = t.context;
-    const handleMiddlewareStub = stub(u, 'handleMiddleware').throws(
+    const cycleMiddlewareStub = stub(u, 'cycleMiddleware').throws(
         () => new Error('Yoko Onoooo...')
     );
-    const handleErrorStub = stub(u, 'handleError');
+    const handleExceptionStub = stub(u, 'handleException');
     await instance.render();
     t.true(injectors.queue.isEmpty());
     t.true(injectors.state.isError());
-    t.is(handleErrorStub.callCount, 1);
+    t.is(handleExceptionStub.callCount, 1);
     t.is(spies.dispatchEvent.callCount, 1);
-    handleMiddlewareStub.restore();
-    handleErrorStub.restore();
+    cycleMiddlewareStub.restore();
+    handleExceptionStub.restore();
 });
 
 test('It should delegate all method invocations to the instance when aliasing;', t => {
