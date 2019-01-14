@@ -3,20 +3,31 @@ import store from '../../utils/store.js';
 
 const path = init(import.meta.url);
 
-const container = ({ value, render, redux, h, props }) =>
-    h(
-        'form',
+const container = ({
+    todoInput = document.createElement('input'),
+    redux,
+    h,
+    props
+}) =>
+    console.log(props) ||
+    h.form(
+        'default',
         {
             novalidate: true,
-            oncreate: form => props.render({ form }),
             onsubmit: async event => (
                 event.preventDefault(),
-                await render({ value: '' }),
-                redux.actions.add(value)
+                redux.actions.add(todoInput.value),
+                (todoInput.value = '')
             )
         },
         [
-            input(props),
+            h.input('todo', {
+                type: 'text',
+                required: true,
+                autoFocus: 'on',
+                autoComplete: 'off',
+                placeholder: 'What do you need to do?'
+            }),
             button(props),
             h.stylesheet(path('styles/index.css')),
             h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
@@ -24,23 +35,11 @@ const container = ({ value, render, redux, h, props }) =>
         ]
     );
 
-const input = ({ value = '', render, h }) =>
-    h('input', {
-        value,
-        type: 'text',
-        required: true,
-        name: 'todo',
-        autoFocus: 'on',
-        autoComplete: 'off',
-        placeholder: 'What do you need to do?',
-        oninput: ({ target }) => render({ value: target.value })
-    });
-
-const button = ({ form, h }) =>
+const button = ({ defaultForm = document.createElement('form'), h }) =>
     h('button', {
         type: 'submit',
         class: 'add',
-        disabled: !form || !form.checkValidity()
+        disabled: !defaultForm.checkValidity()
     });
 
 export default create('todo-input', store, m.vdom(container));
