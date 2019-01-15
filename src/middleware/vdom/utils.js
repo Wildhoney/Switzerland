@@ -59,31 +59,29 @@ export const bindElements = ({ render }) => {
             children
         );
 
-    const field = (name, attrs = {}, children = []) => {
-        const attributes = {
-            ...attrs,
-            oninput: attrs.name && render,
-            onchange: attrs.name && render,
-            oncreate: !attrs.name
-                ? attrs.oncreate
-                : node => {
-                      node.update = value => {
-                          isCheckable(attrs.type)
-                              ? (node.checked = value)
-                              : (node.value = value);
-                          render();
-                      };
-                      attrs.value && node.update(attrs.value);
-                      render({
-                          [`${attrs.name}${capitalise(name)}`]: node
-                      });
-                  }
-        };
-
-        delete attributes.value
-
-        return h(name, attributes, children);
-    };
+    const field = (name, attrs = {}, children = []) =>
+        h(
+            name,
+            {
+                ...attrs,
+                oninput: attrs.name && render,
+                onchange: attrs.name && render,
+                oncreate: !attrs.name
+                    ? attrs.oncreate
+                    : node => {
+                          node.update = value => {
+                              isCheckable(attrs.type)
+                                  ? (node.checked = value)
+                                  : (node.value = value);
+                              render();
+                          };
+                          render({
+                              [`${attrs.name}${capitalise(name)}`]: node
+                          });
+                      }
+            },
+            children
+        );
 
     return { sheet, vars, form, field };
 };
