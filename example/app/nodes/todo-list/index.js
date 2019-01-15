@@ -7,9 +7,9 @@ const container = ({ redux, h, props }) =>
     h('ul', {}, [
         !!redux.state.list.length && list(props),
         !redux.state.list.length && nothing(props),
-        h.stylesheet(path('styles/index.css')),
-        h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
-        h.stylesheet(path('styles/print.css'), 'print')
+        h.sheet(path('styles/index.css')),
+        h.sheet(path('styles/mobile.css'), '(max-width: 768px)'),
+        h.sheet(path('styles/print.css'), 'print')
     ]);
 
 const list = ({ history, redux, h, props }) => {

@@ -13,15 +13,15 @@ const container = ({ h, props }) =>
         h(todoList),
         header(props),
         list(props),
-        h.variables({
+        h.vars({
             orderPosition: u.isBottom(props) ? 1 : -1,
             borderColour: u.isBottom(props)
                 ? 'transparent'
                 : 'rgba(0, 0, 0, 0.1)'
         }),
-        h.stylesheet(path('styles/index.css')),
-        h.stylesheet(path('styles/mobile.css'), '(max-width: 768px)'),
-        h.stylesheet(path('styles/print.css'), 'print')
+        h.sheet(path('styles/index.css')),
+        h.sheet(path('styles/mobile.css'), '(max-width: 768px)'),
+        h.sheet(path('styles/print.css'), 'print')
     ]);
 
 const header = ({ loader, h }) =>
@@ -103,7 +103,7 @@ const itemFilter = ({ h, history }) =>
 
 const retry = ({ render, h, props, error }) =>
     h('section', { class: 'todo-app' }, [
-        h.stylesheet(path('styles/index.css')),
+        h.sheet(path('styles/index.css')),
         header(props),
         h('div', { class: 'error' }, [
             h('div', { class: 'message' }, error.message),

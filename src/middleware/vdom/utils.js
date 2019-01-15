@@ -16,6 +16,9 @@ export const takeTree = node => {
     return trees.get(node);
 };
 
+export const capitalise = value =>
+    `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+
 /**
  * @function camelToKebab ∷ String → String
  */
@@ -26,14 +29,16 @@ export const camelToKebab = value =>
  * @function bindElements ∷ ∀ a b. → Object String a → Object String b
  */
 export const bindElements = ({ render }) => {
-    const stylesheet = (path, mediaQuery = '') =>
+    const isCheckable = type => ['checkbox', 'radio'].includes(type);
+
+    const sheet = (path, mediaQuery = '') =>
         h(
             'style',
             { key: path, type: 'text/css' },
             `@import "${path}" ${mediaQuery}`.trim() + ';'
         );
 
-    const variables = model => {
+    const vars = model => {
         const vars = Object.entries(model).reduce(
             (accum, [key, value]) =>
                 `${accum} --${camelToKebab(key)}: ${value};`,
@@ -42,32 +47,40 @@ export const bindElements = ({ render }) => {
         return h('style', { type: 'text/css' }, `:host { ${vars} }`);
     };
 
-    const input = (name, attrs = {}) =>
-        h('input', {
-            ...attrs,
-            name,
-            oninput: render,
-            oncreate: node => render({ [`${name}Input`]: node })
-        });
-
-    const textarea = (name, attrs = {}) =>
-        h('textarea', {
-            ...attrs,
-            name,
-            oninput: render,
-            oncreate: node => render({ [`${name}Textarea`]: node })
-        });
-
-    const form = (name, attrs = {}, children = []) =>
+    const form = (attrs = {}, children = []) =>
         h(
             'form',
             {
                 ...attrs,
-                name,
-                oncreate: node => render({ [`${name}Form`]: node })
+                oncreate: !attrs.name
+                    ? attrs.oncreate
+                    : node => render({ [`${attrs.name}Form`]: node })
             },
             children
         );
 
-    return { stylesheet, variables, input, textarea, form };
+    const field = (name, attrs = {}, children = []) =>
+        h(
+            name,
+            {
+                ...attrs,
+                oninput: attrs.name && render,
+                oncreate: !attrs.name
+                    ? attrs.oncreate
+                    : node => {
+                          node.update = value => {
+                              isCheckable(attrs.type)
+                                  ? (node.checked = value)
+                                  : (node.value = value);
+                              render();
+                          };
+                          render({
+                              [`${attrs.name}${capitalise(name)}`]: node
+                          });
+                      }
+            },
+            children
+        );
+
+    return { sheet, vars, form, field };
 };

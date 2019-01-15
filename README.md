@@ -118,14 +118,14 @@ create(
     m.attrs({ values: t.Array(t.String) }),
     m.vdom(({ attrs, h }) =>
         h('section', {}, [
-            h.stylesheet(path('index.css')),
+            h.sheet(path('index.css')),
             h('ul', {}, attrs.values.map(country => h('li', {}, country)))
         ])
     )
 );
 ```
 
-We use the `h.stylesheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. In using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
+We use the `h.sheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. In using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
 
 ```css
 :host {
@@ -149,7 +149,7 @@ create(
     m.attrs({ values: t.Array(t.String) }),
     m.vdom(({ attrs, dispatch, h }) =>
         h('section', {}, [
-            h.stylesheet(path('index.css')),
+            h.sheet(path('index.css')),
             h('ul', {}, attrs.values.map(country => (
                 h('li', {
                     onclick: () => dispatch('clicked-country', { country })
