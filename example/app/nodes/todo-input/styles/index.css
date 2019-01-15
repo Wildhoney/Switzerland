@@ -35,7 +35,7 @@ input[type='text'] {
     font-size: 12px;
     text-overflow: ellipsis;
     box-shadow: inset 5px 0 0 0 white;
-    transition: box-shadow 0.25s;
+    transition: box-shadow 0.5s;
 }
 
 input[type='text']:invalid {
