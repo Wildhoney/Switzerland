@@ -60,9 +60,10 @@ export const bindElements = ({ render }) => {
         );
 
     const field = (name, attrs = {}, children = []) => {
-        const props = {
+        const attributes = {
             ...attrs,
             oninput: attrs.name && render,
+            onchange: attrs.name && render,
             oncreate: !attrs.name
                 ? attrs.oncreate
                 : node => {
@@ -79,7 +80,9 @@ export const bindElements = ({ render }) => {
                   }
         };
 
-        return h(name, props, children);
+        delete attributes.value
+
+        return h(name, attributes, children);
     };
 
     return { sheet, vars, form, field };
