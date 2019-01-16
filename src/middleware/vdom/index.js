@@ -1,7 +1,4 @@
-import {
-    patch,
-    h
-} from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { patch, h } from '../../core/superfine.js';
 import { createShadowRoot } from '../../core/utils.js';
 import * as u from './utils.js';
 

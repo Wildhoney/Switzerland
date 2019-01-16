@@ -1,4 +1,4 @@
-import { h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { h } from '../../core/superfine.js';
 
 const trees = new WeakMap();
 
