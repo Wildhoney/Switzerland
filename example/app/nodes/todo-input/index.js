@@ -17,8 +17,7 @@ const container = ({ redux, e, h, render, props }) =>
             onsubmit: async event => (
                 event.preventDefault(),
                 redux.actions.add(e.input.value),
-                (e.input.value = ''),
-                render()
+                (e.input.value = '')
             )
         },
         [
@@ -29,7 +28,8 @@ const container = ({ redux, e, h, render, props }) =>
                 autoFocus: 'on',
                 autoComplete: 'off',
                 placeholder: 'What do you need to do?',
-                oninput: render
+                oninput: render,
+                onchange: render
             }),
             button(props),
             h.sheet(path('styles/index.css')),
