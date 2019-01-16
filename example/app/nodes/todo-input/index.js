@@ -9,7 +9,7 @@ const initialise = m.once(({ props }) => {
     return { ...props, e: { form, input } };
 });
 
-const container = ({ redux, e, h, render, props }) =>
+const container = ({ redux, e, h, render }) =>
     h(
         e.form,
         {
