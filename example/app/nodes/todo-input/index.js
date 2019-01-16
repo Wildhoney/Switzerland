@@ -4,25 +4,25 @@ import store from '../../utils/store.js';
 const path = init(import.meta.url);
 
 const initialise = m.once(({ props }) => {
-    const defaultForm = document.createElement('form');
-    const todoInput = document.createElement('input');
-    return { ...props, e: { defaultForm, todoInput } };
+    const form = document.createElement('form');
+    const input = document.createElement('input');
+    return { ...props, e: { form, input } };
 });
 
 const container = ({ redux, e, h, render, props }) =>
     h(
-        e.defaultForm,
+        e.form,
         {
             novalidate: true,
             onsubmit: async event => (
                 event.preventDefault(),
-                redux.actions.add(e.todoInput.value),
-                (e.todoInput.value = ''),
+                redux.actions.add(e.input.value),
+                (e.input.value = ''),
                 render()
             )
         },
         [
-            h(e.todoInput, {
+            h(e.input, {
                 type: 'text',
                 required: true,
                 minLength: 5,
@@ -42,7 +42,7 @@ const button = ({ e, h }) =>
     h('button', {
         type: 'submit',
         class: 'add',
-        disabled: !e.defaultForm.checkValidity()
+        disabled: !e.form.checkValidity()
     });
 
 export default create(
