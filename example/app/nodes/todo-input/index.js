@@ -31,19 +31,16 @@ const container = ({ redux, e, h, render, props }) =>
                 oninput: render,
                 onchange: render
             }),
-            button(props),
+            h('button', {
+                type: 'submit',
+                class: 'add',
+                disabled: !e.form.checkValidity()
+            }),
             h.sheet(path('styles/index.css')),
             h.sheet(path('styles/mobile.css'), '(max-width: 768px)'),
             h.sheet(path('styles/print.css'), 'print')
         ]
     );
-
-const button = ({ e, h }) =>
-    h('button', {
-        type: 'submit',
-        class: 'add',
-        disabled: !e.form.checkValidity()
-    });
 
 export default create(
     'todo-input',
