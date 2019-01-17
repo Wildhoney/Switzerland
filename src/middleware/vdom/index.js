@@ -14,14 +14,8 @@ export default function vdom(getView, options = {}) {
         const boundary = createShadowRoot(node, options);
 
         if (props.node.isConnected) {
-            const elements = u.bindElements(props);
-
             // Extend the `h` object with useful functions.
             const extendedH = h;
-
-            Object.entries(elements).forEach(
-                ([name, f]) => (extendedH[name] = f)
-            );
 
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
             // the `props` haven't been shallowly copied.
