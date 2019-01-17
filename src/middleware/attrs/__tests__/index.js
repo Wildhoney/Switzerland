@@ -17,7 +17,7 @@ test.afterEach(() => {
     window.MutationObserver = undefined;
 });
 
-test('It should be able to setup the MutationObserver only once;', t => {
+test.serial('It should be able to setup the MutationObserver only once;', t => {
     const m = attrs();
     [1, 2, 3].map(() => m(defaultProps));
     t.is(t.context.observer.callCount, 1);

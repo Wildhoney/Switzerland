@@ -50,16 +50,22 @@ test('It should be able to handle the absolute paths correctly;', t => {
     );
 });
 
-test('It should yield the defined tag name when creating a custom element;', t => {
-    t.is(create('x-mercury'), 'x-mercury');
-    t.is(t.context.define.callCount, 1);
-    t.true(t.context.define.calledWith('x-mercury', match.any));
-});
+test.serial(
+    'It should yield the defined tag name when creating a custom element;',
+    t => {
+        t.is(create('x-mercury'), 'x-mercury');
+        t.is(t.context.define.callCount, 1);
+        t.true(t.context.define.calledWith('x-mercury', match.any));
+    }
+);
 
-test('It should yield the defined tag name when aliasing an existing element;', t => {
-    t.is(alias('x-neptune', 'x-mars'), 'x-mars');
-    t.is(t.context.get.callCount, 2);
-    t.is(t.context.define.callCount, 1);
-    t.true(t.context.get.calledWith('x-neptune'));
-    t.true(t.context.define.calledWith('x-mars', match.any));
-});
+test.serial(
+    'It should yield the defined tag name when aliasing an existing element;',
+    t => {
+        t.is(alias('x-neptune', 'x-mars'), 'x-mars');
+        t.is(t.context.get.callCount, 2);
+        t.is(t.context.define.callCount, 1);
+        t.true(t.context.get.calledWith('x-neptune'));
+        t.true(t.context.define.calledWith('x-mars', match.any));
+    }
+);

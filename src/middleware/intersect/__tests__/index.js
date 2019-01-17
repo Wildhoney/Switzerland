@@ -25,7 +25,7 @@ test('It should add them to add the node to the set;', t => {
     t.deepEqual(newProps, { ...defaultProps, lifecycle: 'mount' });
 });
 
-test('It should observe only once per instance of node;', t => {
+test.serial('It should observe only once per instance of node;', t => {
     const m = intersect();
     m({ ...defaultProps, lifecycle: 'mount' });
     [1, 2, 3].map(() => m(defaultProps));

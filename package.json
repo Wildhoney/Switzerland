@@ -43,12 +43,12 @@
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
         "@wildhoney/redux": "4.0.1",
-        "hyperhtml": "2.23.0",
+        "hyperhtml": "2.25.4",
         "redux-thunk": "2.3.0",
         "superfine": "6.0.1"
     },
     "devDependencies": {
-        "ava": "^0.25.0",
+        "ava": "^1.1.0",
         "babel-eslint": "^10.0.1",
         "browser-env": "^3.2.5",
         "capitalize": "^2.0.0",
