@@ -1,13 +1,8 @@
+import { createElements } from './middleware.js';
 import { create, init, m } from '/vendor/index.js';
 import store from '../../utils/store.js';
 
 const path = init(import.meta.url);
-
-const initialise = m.once(({ props }) => {
-    const form = document.createElement('form');
-    const input = document.createElement('input');
-    return { ...props, e: { form, input } };
-});
 
 const container = ({ redux, e, h, render }) =>
     h(
@@ -45,6 +40,6 @@ const container = ({ redux, e, h, render }) =>
 export default create(
     'todo-input',
     store,
-    m.once(initialise),
+    m.once(createElements),
     m.vdom(container)
 );
