@@ -19,8 +19,9 @@
       - - - rm -rf es/ 
       - - - - NODE_ENV=production yarn build
       - - - - - rm es/production/core/superfine.js # TODO: Remove when using Superfine directly!
+      - - - - - find es/production/middleware/* -type d | xargs rm -rf
       - - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
-      - - - - - - - fslint --files=build.tar.gz --limit=6120 || rm -rf build.tar.gz es/
+      - - - - - - - fslint --files=build.tar.gz --limit=3500 || rm -rf build.tar.gz es/
       - - - - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
