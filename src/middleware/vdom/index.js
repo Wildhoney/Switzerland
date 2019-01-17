@@ -2,6 +2,11 @@ import { patch, h } from '../../core/superfine.js';
 import { createShadowRoot } from '../../core/utils.js';
 import * as u from './utils.js';
 
+// Extend the `h` object with useful functions.
+const extendedH = h;
+extendedH.vars = u.vars;
+extendedH.sheet = u.sheet;
+
 /**
  * @function vdom ∷ View v, Props p ⇒ (p → v) → (p → p)
  * ---
@@ -14,11 +19,6 @@ export default function vdom(getView, options = {}) {
         const boundary = createShadowRoot(node, options);
 
         if (props.node.isConnected) {
-            // Extend the `h` object with useful functions.
-            const extendedH = h;
-            extendedH.vars = u.vars;
-            extendedH.sheet = u.sheet;
-
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
             // the `props` haven't been shallowly copied.
             props.props.h = extendedH;
