@@ -14,8 +14,8 @@ test.beforeEach(t => {
     const queue = createQueue();
     const state = createState(instance);
     instance.isConnected = true;
-    instance[impl.meta].queue = queue;
-    instance[impl.meta].state = state;
+    instance[u.meta].queue = queue;
+    instance[u.meta].state = state;
     const querySelectorAll = (instance.querySelectorAll = spy());
     const dispatchEvent = (instance.dispatchEvent = spy());
     const classList = (instance.classList = {
@@ -99,7 +99,7 @@ test.serial(
     async t => {
         const { instance, injectors } = t.context;
         const initialPropsStub = stub(u, 'initialProps').throws(
-            () => new impl.CancelError()
+            () => new u.CancelError()
         );
         const setErrorSpy = spy(injectors.state, 'setError');
         await instance.render();

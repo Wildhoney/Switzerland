@@ -1,5 +1,19 @@
 import { handler } from '../middleware/rescue/index.js';
-import { meta, CancelError } from './index.js';
+
+/**
+ * @constant meta ∷ Symbol
+ * ---
+ * Used internally by each Switzerland class to store private data, such as the queue and its current state.
+ */
+export const meta = Symbol('meta');
+
+/**
+ * @class CancelError ∷ Error
+ * ---
+ * Used for the `abort` function which allows the current render of a component to be cancelled, and any
+ * queued items to be processed immediately afterwards.
+ */
+export class CancelError extends Error {}
 
 /**
  * @constant previousProps ∷ HTMLElement e, Props p ⇒ e → p

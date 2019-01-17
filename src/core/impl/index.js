@@ -3,21 +3,6 @@ import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
 
 /**
- * @constant meta ∷ Symbol
- * ---
- * Used internally by each Switzerland class to store private data, such as the queue and its current state.
- */
-export const meta = Symbol('meta');
-
-/**
- * @class CancelError ∷ Error
- * ---
- * Used for the `abort` function which allows the current render of a component to be cancelled, and any
- * queued items to be processed immediately afterwards.
- */
-export class CancelError extends Error {}
-
-/**
  * @function base ∷ Props p ⇒ HTMLElement → [(p → Promise p)] → Class
  * ---
  * The default implementation of the custom element class which contains all of the render logic. Render
@@ -27,7 +12,7 @@ export const base = (extension, middleware) =>
     class Switzerland extends extension {
         constructor() {
             super();
-            this[meta] = {
+            this[u.meta] = {
                 queue: createQueue(),
                 state: createState(this)
             };
@@ -41,7 +26,7 @@ export const base = (extension, middleware) =>
         }
         render(mergeProps = {}) {
             const isRemounting = mergeProps.lifecycle === 'mount';
-            const { queue, state } = this[meta];
+            const { queue, state } = this[u.meta];
 
             if (state.isError() && !isRemounting) {
                 // Cannot process new render cycles until the error has been resolved, unless
@@ -54,7 +39,7 @@ export const base = (extension, middleware) =>
                 const currentTask = queue.current();
                 await currentTask;
 
-                if (this[meta].queue.isInvalid(newTask)) {
+                if (this[u.meta].queue.isInvalid(newTask)) {
                     // If a caught error has removed it from the queue, then we don't go any further.
                     return void resolve();
                 }
@@ -69,7 +54,7 @@ export const base = (extension, middleware) =>
                         middleware
                     ));
                 } catch (error) {
-                    if (error instanceof CancelError) {
+                    if (error instanceof u.CancelError) {
                         return;
                     }
 
@@ -110,7 +95,7 @@ export const alias = (extension, instance) =>
     class Switzerland extends extension {
         constructor() {
             super();
-            this[meta] = {
+            this[u.meta] = {
                 queue: createQueue(),
                 state: createState(this)
             };
