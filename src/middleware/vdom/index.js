@@ -16,6 +16,8 @@ export default function vdom(getView, options = {}) {
         if (props.node.isConnected) {
             // Extend the `h` object with useful functions.
             const extendedH = h;
+            extendedH.vars = u.vars;
+            extendedH.sheet = u.sheet;
 
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
             // the `props` haven't been shallowly copied.
