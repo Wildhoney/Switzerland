@@ -18,9 +18,10 @@
       - - - stylelint "example/**/**.css"
       - - - rm -rf es/ 
       - - - - NODE_ENV=production yarn build
-      - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
-    #   - - - - - - fslint --files=build.tar.gz --limit=7000 || rm -rf build.tar.gz es/
-      - - - - - - - rm -rf build.tar.gz es/
+      - - - - - rm es/production/core/superfine.js # TODO: Remove when using Superfine directly!
+      - - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
+      - - - - - - - fslint --files=build.tar.gz --limit=6120 || rm -rf build.tar.gz es/
+      - - - - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
   task: NODE_ENV=test nyc ava
