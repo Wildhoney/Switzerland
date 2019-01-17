@@ -61,7 +61,7 @@ export const base = (extension, middleware) =>
 
                 try {
                     // Cycle through all of the middleware functions, updating the props as we go.
-                    const props = u.getProps(this, mergeProps, currentTask);
+                    const props = u.initialProps(this, mergeProps, currentTask);
 
                     return void (await u.cycleMiddleware(
                         this,

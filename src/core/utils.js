@@ -130,12 +130,12 @@ export const consoleMessage = (text, type = 'error') =>
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 
 /**
- * @function getProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
+ * @function initialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
  * ---
  * A utility function for setting all of the initial props that are used for each rendering of a component.
  * Takes the `mergeProps` which a developer can pass to the `render` method.
  */
-export const getProps = (node, mergeProps, scheduledTask) => {
+export const initialProps = (node, mergeProps, scheduledTask) => {
     return {
         ...(previousProps.get(node) || {}),
         ...mergeProps,
