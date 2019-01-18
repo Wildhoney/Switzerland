@@ -1,6 +1,6 @@
 import { create, init, m, t } from '/vendor/index.js';
 import store from '../../utils/store.js';
-import { retrieve, serviceWorker } from './middleware.js';
+import { retrieve, serviceWorker, onlineOfflineListener } from './middleware.js';
 import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
@@ -36,7 +36,8 @@ const list = ({ h, props }) =>
         itemCompleted(props),
         itemPosition(props),
         props.adapt && itemDimensions(props),
-        itemFilter(props)
+        itemFilter(props),
+        itemFlag(props)
     ]);
 
 const itemCompleted = ({ redux, h }) =>
@@ -101,6 +102,17 @@ const itemFilter = ({ h, history }) =>
         )
     ]);
 
+const itemFlag = ({ dispatch, h }) =>
+    h(
+        'li',
+        {
+            class: `flag ${navigator.onLine ? 'online' : 'offline'}`,
+            title: "Pretend as though you're a vexillologist.",
+            onclick: navigator.onLine && (() => dispatch('@flag-app/init'))
+        },
+        [h('img', { src: path('images/flag.svg'), alt: '' })]
+    );
+
 const retry = ({ render, h, props, error }) =>
     h('section', { class: 'todo-app' }, [
         h.sheet(path('styles/index.css')),
@@ -113,6 +125,7 @@ const retry = ({ render, h, props, error }) =>
 
 export default create(
     'todo-app',
+    m.once(onlineOfflineListener),
     store,
     serviceWorker(path('../../utils/worker.js'), '/'),
     m.history({

@@ -20,3 +20,9 @@ export const serviceWorker = (path, scope) => {
         }
     });
 };
+
+export const onlineOfflineListener = ({render,props}) => {
+    window.addEventListener('online', render)
+    window.addEventListener('offline', render)
+    return props
+}
