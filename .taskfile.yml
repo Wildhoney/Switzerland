@@ -3,7 +3,7 @@
 
 - name: format
   tasks: 
-    - prettier --write '{src,tests,example}/**/*.{js,css}'
+    - prettier --write '{src,tests,example}/**/*.{mjs,js,css}'
     - prettier --write '*.{js,json}'
 
 - name: build
