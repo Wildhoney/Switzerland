@@ -16,7 +16,7 @@ export default function once(fn) {
         !registry.has(node) && registry.set(node, new WeakMap());
         const functions = registry.get(node);
         const result = functions.has(fn) ? functions.get(fn) : fn(props);
-        functions.set(fn, await result);
+        functions.set(fn, result);
         return { ...(await result), ...props };
     };
 }

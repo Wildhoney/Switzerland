@@ -5,7 +5,7 @@ import once from '../index.js';
 
 test('It should only invoke the function once per node instance;', async t => {
     const fn = spy(() => ({ name: 'Adam' }));
-    const newProps = once(fn)(defaultProps);
+    const newProps = await once(fn)(defaultProps);
 
     t.deepEqual(newProps, { ...defaultProps, name: 'Adam' });
     once(fn)(defaultProps);
