@@ -1,0 +1,9 @@
+dialog {
+    width: 90vw;
+    height: 50vh;
+    top: 2vh;
+}
+
+section.body div.flags ul {
+    grid-template-columns: repeat(2, auto);
+}
