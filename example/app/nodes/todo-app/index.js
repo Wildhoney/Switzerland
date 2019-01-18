@@ -1,6 +1,10 @@
 import { create, init, m, t } from '/vendor/index.js';
 import store from '../../utils/store.js';
-import { retrieve, serviceWorker, onlineOfflineListener } from './middleware.js';
+import {
+    retrieve,
+    serviceWorker,
+    onlineOfflineListener
+} from './middleware.js';
 import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
