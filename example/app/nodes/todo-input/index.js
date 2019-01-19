@@ -9,6 +9,7 @@ const container = ({ redux, e, h, render }) =>
         e.form,
         {
             novalidate: true,
+            oncreate: render,
             onsubmit: async event => (
                 event.preventDefault(),
                 redux.actions.add(e.input.value),

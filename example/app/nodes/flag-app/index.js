@@ -1,4 +1,4 @@
-import { create, init, m } from '/vendor/index.js';
+import { create, init, m, u } from '/vendor/index.js';
 import {
     createElements,
     fetchCountries,
@@ -56,7 +56,7 @@ const flags = ({ countries, render, loader, h, props }) =>
                     h('img', {
                         class: 'flag',
                         src: loader[index],
-                        onclick: () => {
+                        onclick: u.once(() => {
                             const key =
                                 country === countries.answer
                                     ? 'correct'
@@ -75,7 +75,7 @@ const flags = ({ countries, render, loader, h, props }) =>
                                     [key]: props.scores[key] + 1
                                 }
                             });
-                        }
+                        })
                     })
                 ])
             )

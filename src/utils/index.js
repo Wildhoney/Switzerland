@@ -1,5 +1,7 @@
 import { meta } from '../core/index.js';
 
+const functions = new WeakSet();
+
 /**
  * @function validate ∷ ∀ a. Object String a → [String] → Object String a
  * ---
@@ -63,3 +65,11 @@ export const idle = (element, ms = 10) =>
             }
         }, ms);
     });
+
+/**
+ * @function once ∷ ∀ a b. (a → b) → (a → b)
+ * ---
+ * Useful for events which trigger another render pass to prevent multiple render stacks.
+ */
+export const once = f => a =>
+    functions.has(f) ? a => a : (functions.add(f), f(a));
