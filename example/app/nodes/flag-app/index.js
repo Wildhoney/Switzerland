@@ -5,7 +5,7 @@ import {
     handleCountries,
     resolveImages
 } from './middleware.js';
-import { mergeCountries } from './utils.js';
+import { handlers } from './utils.js';
 
 const path = init(import.meta.url);
 
@@ -46,7 +46,7 @@ const header = ({ h, scores, countries, e }) =>
     ]);
 
 const flags = ({ countries, loader, h, props }) => {
-    const handleCountry = mergeCountries(props);
+    const handleAnswer = handlers.answer(props);
 
     return h(
         'div',
@@ -59,7 +59,7 @@ const flags = ({ countries, loader, h, props }) => {
                     h('img', {
                         class: 'flag',
                         src: loader[index],
-                        onclick: u.once(handleCountry(country))
+                        onclick: u.once(handleAnswer(country))
                     })
                 ])
             )
@@ -67,8 +67,10 @@ const flags = ({ countries, loader, h, props }) => {
     );
 };
 
-const congratulations = ({ scores, countries, h, render, props }) =>
-    h('div', { class: 'congrats' }, [
+const congratulations = ({ scores, countries, h, props }) => {
+    const handleReset = handlers.reset(props);
+
+    return h('div', { class: 'congrats' }, [
         h(
             'p',
             {},
@@ -79,15 +81,12 @@ const congratulations = ({ scores, countries, h, render, props }) =>
         h(
             'a',
             {
-                onclick: () =>
-                    render({
-                        scores: { correct: 0, incorrect: 0 },
-                        countries: { ...props.countries, answered: [] }
-                    })
+                onclick: handleReset
             },
             'Play again?'
         )
     ]);
+};
 
 export default create(
     'flag-app',

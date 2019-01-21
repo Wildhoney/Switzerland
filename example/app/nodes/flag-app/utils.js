@@ -15,11 +15,7 @@ export const shuffle = values => {
     return a;
 };
 
-export const mergeCountries = ({
-    countries,
-    render,
-    props
-}) => country => () => {
+const handleAnswer = ({ countries, render, props }) => country => () => {
     const key = country === countries.answer ? 'correct' : 'incorrect';
     render({
         ...props,
@@ -33,3 +29,11 @@ export const mergeCountries = ({
         }
     });
 };
+
+const handleReset = ({ render, props }) => () =>
+    render({
+        scores: { correct: 0, incorrect: 0 },
+        countries: { ...props.countries, answered: [] }
+    });
+
+export const handlers = { answer: handleAnswer, reset: handleReset };
