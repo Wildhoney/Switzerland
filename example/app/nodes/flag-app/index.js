@@ -5,6 +5,7 @@ import {
     handleCountries,
     resolveImages
 } from './middleware.js';
+import { mergeCountries } from './utils.js';
 
 const path = init(import.meta.url);
 
@@ -44,8 +45,10 @@ const header = ({ h, scores, countries, e }) =>
         )
     ]);
 
-const flags = ({ countries, render, loader, h, props }) =>
-    h(
+const flags = ({ countries, loader, h, props }) => {
+    const handleCountry = mergeCountries(props);
+
+    return h(
         'div',
         { class: 'flags' },
         h(
@@ -56,31 +59,13 @@ const flags = ({ countries, render, loader, h, props }) =>
                     h('img', {
                         class: 'flag',
                         src: loader[index],
-                        onclick: u.once(() => {
-                            const key =
-                                country === countries.answer
-                                    ? 'correct'
-                                    : 'incorrect';
-                            render({
-                                ...props,
-                                countries: {
-                                    ...countries,
-                                    answered: [
-                                        ...countries.answered,
-                                        countries.answer.name
-                                    ]
-                                },
-                                scores: {
-                                    ...props.scores,
-                                    [key]: props.scores[key] + 1
-                                }
-                            });
-                        })
+                        onclick: u.once(handleCountry(country))
                     })
                 ])
             )
         )
     );
+};
 
 const congratulations = ({ scores, countries, h, render, props }) =>
     h('div', { class: 'congrats' }, [

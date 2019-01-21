@@ -14,3 +14,22 @@ export const shuffle = values => {
     }
     return a;
 };
+
+export const mergeCountries = ({
+    countries,
+    render,
+    props
+}) => country => () => {
+    const key = country === countries.answer ? 'correct' : 'incorrect';
+    render({
+        ...props,
+        countries: {
+            ...countries,
+            answered: [...countries.answered, countries.answer.name]
+        },
+        scores: {
+            ...props.scores,
+            [key]: props.scores[key] + 1
+        }
+    });
+};
