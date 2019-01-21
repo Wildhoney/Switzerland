@@ -9,7 +9,6 @@ const container = ({ redux, e, h, render }) =>
         e.form,
         {
             novalidate: true,
-            oncreate: render,
             onsubmit: async event => (
                 event.preventDefault(),
                 redux.actions.add(e.input.value),
@@ -30,7 +29,7 @@ const container = ({ redux, e, h, render }) =>
             h('button', {
                 type: 'submit',
                 class: 'add',
-                disabled: !e.form.checkValidity()
+                disabled: !e.form.isConnected || !e.form.checkValidity()
             }),
             h.sheet(path('styles/index.css')),
             h.sheet(path('styles/mobile.css'), '(max-width: 768px)'),
