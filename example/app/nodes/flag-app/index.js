@@ -93,6 +93,7 @@ export default create(
     m.once(({ props }) => ({ ...props, scores: { correct: 0, incorrect: 0 } })),
     m.once(fetchCountries),
     m.once(createElements),
+    m.methods({ open: ({ e }) => e.dialog.showModal() }),
     handleCountries,
     resolveImages,
     m.vdom(container)

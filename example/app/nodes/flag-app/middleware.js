@@ -3,7 +3,6 @@ import * as u from './utils.js';
 
 export const createElements = ({ props }) => {
     const dialog = document.createElement('dialog');
-    document.addEventListener('@flag-app/init', () => dialog.showModal());
     return { ...props, e: { dialog } };
 };
 

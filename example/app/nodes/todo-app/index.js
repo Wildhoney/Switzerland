@@ -3,7 +3,8 @@ import store from '../../utils/store.js';
 import {
     retrieve,
     serviceWorker,
-    onlineOfflineListener
+    onlineOfflineListener,
+    createElements
 } from './middleware.js';
 import * as u from './utils.js';
 import todoInput from '../todo-input/index.js';
@@ -11,10 +12,11 @@ import todoList from '../todo-list/index.js';
 
 const path = init(import.meta.url);
 
-const container = ({ h, props }) =>
+const container = ({ e, h, props }) =>
     h('section', { class: 'todo-app' }, [
         h(todoInput),
         h(todoList),
+        h(e.flag),
         header(props),
         list(props),
         h.vars({
@@ -23,6 +25,7 @@ const container = ({ h, props }) =>
                 ? 'transparent'
                 : 'rgba(0, 0, 0, 0.1)'
         }),
+        h(e.flagApp),
         h.sheet(path('styles/index.css')),
         h.sheet(path('styles/mobile.css'), '(max-width: 768px)'),
         h.sheet(path('styles/print.css'), 'print')
@@ -106,13 +109,13 @@ const itemFilter = ({ h, history }) =>
         )
     ]);
 
-const itemFlag = ({ dispatch, h }) =>
+const itemFlag = ({ e, h }) =>
     h(
         'li',
         {
             class: `flag ${navigator.onLine ? 'online' : 'offline'}`,
             title: "Pretend as though you're a vexillologist.",
-            onclick: navigator.onLine && (() => dispatch('@flag-app/init'))
+            onclick: navigator.onLine && (() => e.flag.open())
         },
         [h('img', { src: path('images/flag.svg'), alt: '' })]
     );
@@ -129,6 +132,7 @@ const retry = ({ render, h, props, error }) =>
 
 export default create(
     'todo-app',
+    m.once(createElements),
     m.once(onlineOfflineListener),
     store,
     serviceWorker(path('../../utils/worker.js'), '/'),

@@ -1,5 +1,12 @@
 import { m } from '/vendor/index.js';
 import db from '../../utils/db.js';
+import flagApp from '../flag-app/index.js';
+
+export const createElements = ({ props }) => {
+    const dialog = document.createElement('dialog');
+    const flag = document.createElement(flagApp);
+    return { ...props, e: { dialog, flag } };
+};
 
 export const retrieve = async props => {
     const { todos } = await db();
