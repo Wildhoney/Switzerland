@@ -1,12 +1,13 @@
 import { m } from '/vendor/index.js';
 import * as u from './utils.js';
+import container from './partials/container.js';
 
-export const createElements = ({ props }) => {
+const createElements = ({ props }) => {
     const dialog = document.createElement('dialog');
     return { ...props, e: { dialog } };
 };
 
-export const fetchCountries = async ({ props }) => ({
+const fetchCountries = async ({ props }) => ({
     ...props,
     countries: {
         all: await fetch('/countries.json').then(response => response.json()),
@@ -16,7 +17,7 @@ export const fetchCountries = async ({ props }) => ({
     }
 });
 
-export const handleCountries = ({ countries, props }) => {
+const handleCountries = ({ countries, props }) => {
     const shuffled = u.shuffle(countries.all);
     const answer = shuffled.find(
         ({ name }) => !countries.answered.includes(name)
@@ -34,9 +35,19 @@ export const handleCountries = ({ countries, props }) => {
     };
 };
 
-export const resolveImages = async ({ countries, props }) => {
+const resolveImages = async ({ countries, props }) => {
     const flags = countries.selection.map(
         ({ flag }) => `/images/flags/${flag}`
     );
     return (await m.loader({ ...flags }))(props);
 };
+
+export default [
+    m.once(({ props }) => ({ ...props, scores: { correct: 0, incorrect: 0 } })),
+    m.once(fetchCountries),
+    m.once(createElements),
+    m.methods({ open: ({ e }) => e.dialog.showModal() }),
+    handleCountries,
+    resolveImages,
+    m.vdom(container)
+];

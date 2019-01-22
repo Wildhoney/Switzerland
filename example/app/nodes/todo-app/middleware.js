@@ -1,20 +1,27 @@
-import { m } from '/vendor/index.js';
+import { init, m, t } from '/vendor/index.js';
 import db from '../../utils/db.js';
+import store from '../../../utils/store.js';
 import flagApp from '../flag-app/index.js';
+import todoInput from '../todo-input/index.js';
+import todoList from '../todo-list/index.js';
+import container from './partials/container.js';
+import retry from './partials/retry.js';
 
-export const createElements = ({ props }) => {
+const path = init(import.meta.url);
+
+const createElements = ({ props }) => {
     const dialog = document.createElement('dialog');
     const flag = document.createElement(flagApp);
     return { ...props, e: { dialog, flag } };
 };
 
-export const retrieve = async props => {
+const retrieve = async props => {
     const { todos } = await db();
     props.redux.actions.put(todos);
     return props;
 };
 
-export const serviceWorker = (path, scope) => {
+const serviceWorker = (path, scope) => {
     return m.once(async props => {
         try {
             navigator.serviceWorker &&
@@ -28,8 +35,26 @@ export const serviceWorker = (path, scope) => {
     });
 };
 
-export const onlineOfflineListener = ({ render, props }) => {
+const onlineOfflineListener = ({ render, props }) => {
     window.addEventListener('online', render);
     window.addEventListener('offline', render);
     return props;
 };
+
+export default [
+    m.once(createElements),
+    m.once(onlineOfflineListener),
+    store,
+    serviceWorker(path('../../../utils/worker.js'), '/'),
+    m.history({
+        filter: [t.Bool, false]
+    }),
+    m.loader({ logo: path('./images/logo.png') }),
+    m.rescue(m.vdom(retry)),
+    m.methods({ insert: (value, { redux }) => redux.actions.add(value) }),
+    m.once(retrieve),
+    m.attrs({ logo: t.String }),
+    m.adapt(),
+    m.vdom(container),
+    m.wait(todoInput, todoList)
+];
