@@ -6,4 +6,5 @@ dialog {
 
 section.body div.flags ul {
     grid-template-columns: repeat(2, auto);
+    grid-template-rows: 50% 50%;
 }

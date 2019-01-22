@@ -73,33 +73,37 @@ section.body {
 
 section.body div.flags {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 0 1 100%;
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 section.body div.flags ul {
     display: grid;
-    grid-template-columns: repeat(4, auto);
-    margin: 0;
-    overflow: hidden;
-    grid-gap: 20px;
-    box-sizing: border-box;
-    height: calc(100% - 40px);
-    padding: 20px;
+    grid-gap: 10px;
+    flex: 1;
+    padding: 10px;
     list-style-type: none;
+    grid-template-columns: repeat(4, auto);
+    grid-template-rows: 100%;
 }
 
 section.body div.flags ul li {
-    align-self: center;
-    min-height: 0;
+    transition: filter 0.5s;
 }
 
 section.body div.flags ul li img {
-    cursor: pointer;
     width: 100%;
     height: 100%;
-    object-position: contain;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+
+section.body div.flags ul li img:hover {
+    transform: scale(1.1);
 }
 
 div.congrats {
