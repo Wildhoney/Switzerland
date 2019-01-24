@@ -2,6 +2,9 @@
     "name": "switzerland",
     "version": "3.7.1",
     "module": "./es/development/index.js",
+    "bin": {
+        "swiss": "./bin/index.mjs"
+    },
     "description": "",
     "directories": {
         "test": "tests"
