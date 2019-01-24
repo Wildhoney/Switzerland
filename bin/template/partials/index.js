@@ -1,9 +1,10 @@
-import { init } from 'https://cdn.jsdelivr.net/npm/switzerland@{version}/es/production/index.js';
+import { init } from '/vendor/index.js';
 
 const path = init(import.meta.url);
 
 export default ({ h }) =>
-    h('section', {}, [
-        h('span', {}, '{name}'),
+    h('main', {}, [
+        h('img', { src: path('../images/html.svg') }),
+        h('p', {}, '{name}'),
         h.sheet(path('../styles/index.css'))
     ]);
