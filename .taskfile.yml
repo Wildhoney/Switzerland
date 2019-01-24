@@ -3,7 +3,7 @@
 
 - name: format
   tasks: 
-    - prettier --write '{src,tests,example}/**/*.{mjs,js,css}'
+    - prettier --write '{bin,src,tests,example}/**/*.{mjs,js,css}'
     - prettier --write '*.{js,json}'
 
 - name: build
@@ -12,9 +12,9 @@
 - name: test/lint
   tasks:
       - readlint
-      - - prettier --list-different '{src,tests,example}/**/*.{js,css}'
-      - - prettier --list-different '*.{js,json}'
-      - - - eslint "{src,tests,example}/**/**.js"
+      - - prettier --list-different '{bin/src,tests,example}/**/*.{mjs,js,css}'
+      - - prettier --list-different '*.{mjs,js,json}'
+      - - - eslint "{bin/src,tests,example}/**/**.js"
       - - - stylelint "example/**/**.css"
       - - - rm -rf es/ 
       - - - - NODE_ENV=production yarn build
