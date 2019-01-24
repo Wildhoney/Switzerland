@@ -4,7 +4,7 @@ import store from '../../../utils/store.js';
 import flagApp from '../flag-app/index.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
-import container from './partials/container.js';
+import index from './partials/index.js';
 import retry from './partials/retry.js';
 
 const path = init(import.meta.url);
@@ -55,6 +55,6 @@ export default [
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
-    m.vdom(container),
+    m.vdom(index),
     m.wait(todoInput, todoList)
 ];

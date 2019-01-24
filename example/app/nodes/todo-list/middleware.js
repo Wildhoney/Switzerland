@@ -1,11 +1,11 @@
 import { m, t } from '/vendor/index.js';
 import store from '../../../utils/store.js';
-import container from './partials/container.js';
+import index from './partials/index.js';
 
 export default [
     store,
     m.history({
         filter: [t.Bool, false]
     }),
-    m.vdom(container)
+    m.vdom(index)
 ];

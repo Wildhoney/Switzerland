@@ -1,6 +1,6 @@
 import { m } from '/vendor/index.js';
 import * as u from './utils.js';
-import container from './partials/container.js';
+import index from './partials/index.js';
 
 const createElements = ({ props }) => {
     const dialog = document.createElement('dialog');
@@ -49,5 +49,5 @@ export default [
     m.methods({ open: ({ e }) => e.dialog.showModal() }),
     handleCountries,
     resolveImages,
-    m.vdom(container)
+    m.vdom(index)
 ];
