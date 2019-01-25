@@ -18,16 +18,16 @@
 <br />
 **cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@latest/es/production/index.js`](https://cdn.jsdelivr.net/npm/switzerland@latest/es/production/index.js)
 
+![Screenshot](media/screenshot.png)
+
+---
+
 ## Contents
 
 1. [Getting Started](#getting-started)
 2. [Philosophy](#philosophy)
 3. [Middleware](#middleware)
 4. [CLI](#cli)
-
-![Screenshot](media/screenshot.png)
-
----
 
 ## Getting Started
 
