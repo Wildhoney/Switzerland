@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import figlet from 'figlet';
-import * as R from "ramda";
+import * as R from 'ramda';
 import capitalise from 'capitalize';
 import makeDir from 'mkdirp';
 import copyDir from 'copy-dir';
@@ -22,7 +22,8 @@ const sourceDir = path.resolve(cwd, 'template');
 const targetDir = path.resolve(cwd, '..', process.argv[2]);
 const model = {
     name: argv.name || path.basename(argv._[0]),
-    version: pkg.version, ...R.omit(['_'], argv)
+    version: pkg.version,
+    ...R.omit(['_'], argv)
 };
 
 async function main() {
@@ -36,7 +37,6 @@ async function main() {
         );
 
         try {
-
             makeDir.sync(targetDir);
             copyDir.sync(sourceDir, targetDir);
             glob.sync(`${targetDir}/**/*.{js,css}`).forEach(file => {
@@ -50,18 +50,14 @@ async function main() {
                 theme.message(model.name),
                 '\n'
             );
-        
         } catch (error) {
-
             return void console.log(
                 theme.status(theme.statusType.error)(' Failed '),
                 theme.separator(':'),
                 theme.message(error.message),
                 '\n'
             );
-
         }
-
     });
 }
 
