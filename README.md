@@ -24,6 +24,7 @@
 2. [Plug & Play](#plug--play)
 3. [Getting Started](#getting-started)
 4. [Middleware](#middleware)
+5. [CLI](#cli)
 
 ![Screenshot](media/screenshot.png)
 
@@ -177,3 +178,20 @@ node.addEventListener('clicked-country', event => (
 * `defer` &ndash; Invokes function after `x` milliseconds if the current render hasn't completed.
 * `delay` &ndash; Awaits by `x` milliseconds before continuing to the next middleware item.
 * [`wait`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/wait) &ndash; Await the resolution of other components to make rendering atmoic.
+
+## CLI
+
+Switzerland provides a simple CLI tool that allows you to quickly create a directory structure for your component. Along with `images`, `styles` and `tests` which are fairly self-explanatory, the CLI also sets up a `middleware` directory that exports an array of middleware functions, both standard ones from the Switzerland library itself, and also custom ones which can either be separate files in the `middleware` directory, or listed individually in the `index.js` based on developer choice. Likewise the CLI tool also creates a `partials` directory that should be used for exporting sub-trees of your component's DOM, allowing you to easily test each segment individually.
+
+Install a version of Switzerland globally, and then use the CLI tool to create your component &ndash; in this case the `x-countries` component in the `packages` directory:
+
+```console
+foo@bar:~$ swiss packages/x-countries
+```
+
+Options supported include:
+
+* `--name` use a different name for the component than is specified using the directory path.
+* `--version` use a specific version of the Switzerland library.
+* `--overwrite` overwrite an existing component when it already exists.
+* `--test-runner` use another test runner instead of the default `ava`.

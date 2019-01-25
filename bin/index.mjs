@@ -25,6 +25,7 @@ const name = path.basename(argv._[0] || '');
 const model = {
     name: argv.name || name,
     version: pkg.version,
+    testRunner: 'ava',
     ...humps.camelizeKeys(R.omit(['_'], argv))
 };
 
