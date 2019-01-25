@@ -21,10 +21,9 @@
 ## Contents
 
 1. [Getting Started](#getting-started)
-2. [Motivation](#motivation)
-3. [Plug & Play](#plug--play)
-4. [Middleware](#middleware)
-5. [CLI](#cli)
+2. [Philosophy](#philosophy)
+3. [Middleware](#middleware)
+4. [CLI](#cli)
 
 ![Screenshot](media/screenshot.png)
 
@@ -146,7 +145,7 @@ node.addEventListener('clicked-country', event => (
 ));
 ```
 
-## Motivation
+## Philosophy
 
 One of the largest downsides to creating components in React, Vue, Ember, etc... is that we re-invent the wheel time-and-time again with every new framework that comes about. Although their components _may_ rely on more generic modules, we are still writing components specific to a certain framework, and typically within a certain version range &mdash; if our setup lies outside of those constraints then we need to continue our search.
 
@@ -154,7 +153,7 @@ For example, if somebody writes a `<mayan-calendar />` component that works nice
 
 Thankfully by utilising custom elements which are native to the browser, we can write interoperable components that can be used **anywhere** &mdash; on their own or in a framework. In addition we inherit other benefits, such as style encapsulation to prevent cross-contamination, and relative loading of CSS documents and associated images.
 
-## Plug & Play
+### Plug & Play
 
 Switzerland is capable of being integrated into any website or app without any formal installation or build process if you wish. Thanks to shadow DOM technology, all styles are also applied since Switzerland detects which host the JS originated from; if the origin and the JS host differ, then absolute paths to the domain are used when loading assets, such as CSS documents and images.
 
