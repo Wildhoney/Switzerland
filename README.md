@@ -36,7 +36,7 @@ As Switzerland is functional its components simply take `props` and yield `props
 ```javascript
 import { create, m } from 'switzerland';
 
-create('x-countries', m.vdom(({ h }) =>
+create('x-countries', m.html(({ h }) =>
     h('ul', {}, [
         h('li', {}, 'United Kingdom'),
         h('li', {}, 'Russian Federation'),
@@ -51,7 +51,7 @@ We now have a usable custom element called `x-countries` which can be used anywh
 <x-countries />
 ```
 
-For the `x-countries` component we only have one middleware function &ndash; the `vdom` middleware which takes `props` and yields `props` but has a side-effect of writing to the DOM using [`superfine`](https://github.com/jorgebucaran/superfine)'s implementation of virtual DOM. It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
+For the `x-countries` component we only have one middleware function &ndash; the `html` middleware which takes `props` and yields `props` but has a side-effect of writing to the DOM using [`superfine`](https://github.com/jorgebucaran/superfine)'s implementation of virtual DOM. It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
 
 Let's take the next step and supply the list of countries via HTML attributes. For this example we'll use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
@@ -61,13 +61,13 @@ import { create, m, t } from 'switzerland';
 create(
     'x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom(({ attrs, h }) =>
+    m.html(({ attrs, h }) =>
         h('ul', {}, attrs.values.map(country => h('li', {}, country)))
     )
 );
 ```
 
-Notice that we've now introduced the `attrs` middleware before the `vdom` middleware; we have a guarantee that `attrs` has completed its work before passing the baton to `vdom`. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
+Notice that we've now introduced the `attrs` middleware before the `html` middleware; we have a guarantee that `attrs` has completed its work before passing the baton to `html`. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
 
 ```html
 <x-countries values="United Kingdom,Russian Federation,Republic of Indonesia" />
@@ -82,7 +82,7 @@ node.attributes.values = `${node.attributes.values},Hungary,Cuba`;
 
 Switzerland components only take string values as their attributes as that's all the HTML spec allows. Using the types we can transform those string values into JS values, and with this approach we allow for greater interoperability. Components can be used as pure HTML, using vanilla JS, or inside React, Vue, Angular, etc... Passing complex state to components only reduces their reusability.
 
-Where other JS libraries fall short, Switzerland considers all web assets to be within its remit. For example in React it is fairly common to use a third-party, non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the `vdom` middleware &ndash; or the `template` middleware if we choose to use JS template literals:
+Where other JS libraries fall short, Switzerland considers all web assets to be within its remit. For example in React it is fairly common to use a third-party, non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the `html` middleware &ndash; or the `template` middleware if we choose to use JS template literals:
 
 ```javascript
 import { create, init, m, t } from 'switzerland';
@@ -92,7 +92,7 @@ const path = init(import.meta.url);
 create(
     'x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom(({ attrs, h }) =>
+    m.html(({ attrs, h }) =>
         h('section', {}, [
             h.sheet(path('index.css')),
             h('ul', {}, attrs.values.map(country => h('li', {}, country)))
@@ -123,7 +123,7 @@ const path = init(import.meta.url);
 create(
     'x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.vdom(({ attrs, dispatch, h }) =>
+    m.html(({ attrs, dispatch, h }) =>
         h('section', {}, [
             h.sheet(path('index.css')),
             h('ul', {}, attrs.values.map(country => (

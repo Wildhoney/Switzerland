@@ -14,7 +14,7 @@ By using the `wait` middleware you can instruct the `profile-card` component to 
 ```javascript
 create(
     'profile-card',
-    m.vdom(() => h('div', {}, [
+    m.html(() => h('div', {}, [
         h('user-name'),
         h('user-location')
     ])),
@@ -27,7 +27,7 @@ It's important the `wait` middleware appears after the middleware function that 
 ```javascript
 create(
     'profile-card',
-    m.vdom(({ showName }) => h('div', {}, [
+    m.html(({ showName }) => h('div', {}, [
         showName && h('user-name'),
         h('user-location')
     ])),

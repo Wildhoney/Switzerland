@@ -20,5 +20,5 @@ export const once = load('once');
 export const redux = load('redux');
 export const rescue = load('rescue');
 export const template = load('template');
-export const vdom = load('vdom');
+export const html = load('html');
 export const wait = load('wait');

@@ -5,4 +5,4 @@ import {
 import { roll } from './middleware/index.js';
 import { container } from './partials/index.js';
 
-export default create('{name}', roll, m.vdom(container));
+export default create('{name}', roll, m.html(container));

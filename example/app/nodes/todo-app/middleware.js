@@ -50,11 +50,11 @@ export default [
         filter: [t.Bool, false]
     }),
     m.loader({ logo: path('./images/logo.png') }),
-    m.rescue(m.vdom(retry)),
+    m.rescue(m.html(retry)),
     m.methods({ insert: (value, { redux }) => redux.actions.add(value) }),
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
-    m.vdom(index),
+    m.html(index),
     m.wait(todoInput, todoList)
 ];

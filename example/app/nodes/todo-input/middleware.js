@@ -8,4 +8,4 @@ const createElements = ({ props }) => {
     return { ...props, e: { form, input } };
 };
 
-export default [store, m.once(createElements), m.vdom(index)];
+export default [store, m.once(createElements), m.html(index)];

@@ -7,5 +7,5 @@ export default [
     m.history({
         filter: [t.Bool, false]
     }),
-    m.vdom(index)
+    m.html(index)
 ];

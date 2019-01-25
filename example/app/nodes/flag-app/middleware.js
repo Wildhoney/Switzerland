@@ -49,5 +49,5 @@ export default [
     m.methods({ open: ({ e }) => e.dialog.showModal() }),
     handleCountries,
     resolveImages,
-    m.vdom(index)
+    m.html(index)
 ];
