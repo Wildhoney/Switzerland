@@ -4,7 +4,7 @@ const path = init(import.meta.url);
 
 export default ({ h }) =>
     h('main', {}, [
-        h('img', { src: path('../images/html.svg') }),
+        h('img', { src: path('../images/icon.svg') }),
         h('p', {}, '{name}'),
         h.sheet(path('../styles/index.css'))
     ]);
