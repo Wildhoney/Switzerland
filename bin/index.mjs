@@ -35,20 +35,33 @@ async function main() {
             '\n\n'
         );
 
-        makeDir(targetDir, () => {
+        try {
+
+            makeDir.sync(targetDir);
             copyDir.sync(sourceDir, targetDir);
             glob.sync(`${targetDir}/**/*.{js,css}`).forEach(file => {
                 const content = fmt(fs.readFileSync(file, 'utf8'), model);
                 fs.writeFileSync(file, content);
             });
 
-            console.log(
+            return void console.log(
                 theme.status(theme.statusType.success)(' Created '),
                 theme.separator(':'),
                 theme.message(model.name),
                 '\n'
             );
-        });
+        
+        } catch (error) {
+
+            return void console.log(
+                theme.status(theme.statusType.error)(' Failed '),
+                theme.separator(':'),
+                theme.message(error.message),
+                '\n'
+            );
+
+        }
+
     });
 }
 
