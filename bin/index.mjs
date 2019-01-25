@@ -4,13 +4,16 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import figlet from 'figlet';
+import * as R from "ramda";
 import capitalise from 'capitalize';
 import makeDir from 'mkdirp';
 import copyDir from 'copy-dir';
 import glob from 'glob';
 import fmt from 'string-template';
+import minimist from 'minimist';
 import * as theme from './theme.mjs';
 
+const argv = minimist(process.argv.slice(2));
 const cwd = path.dirname(new URL(import.meta.url).pathname);
 const pkg = JSON.parse(
     fs.readFileSync(path.resolve(`${cwd}/../package.json`), 'utf8')
@@ -18,8 +21,8 @@ const pkg = JSON.parse(
 const sourceDir = path.resolve(cwd, 'template');
 const targetDir = path.resolve(cwd, '..', process.argv[2]);
 const model = {
-    name: path.basename(process.argv[2]),
-    version: pkg.version
+    name: argv.name || path.basename(argv._[0]),
+    version: pkg.version, ...R.omit(['_'], argv)
 };
 
 async function main() {
