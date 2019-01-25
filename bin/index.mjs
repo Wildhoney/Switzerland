@@ -20,8 +20,9 @@ const pkg = JSON.parse(
 );
 const sourceDir = path.resolve(cwd, 'template');
 const targetDir = path.resolve(cwd, '..', process.argv[2]);
+const name = path.basename(argv._[0]);
 const model = {
-    name: argv.name || path.basename(argv._[0]),
+    name: argv.name || name,
     version: pkg.version,
     ...R.omit(['_'], argv)
 };
@@ -37,6 +38,12 @@ async function main() {
         );
 
         try {
+            if (fs.existsSync(targetDir) && !argv.overwrite) {
+                throw new Error(
+                    `${name} already exists in location, use '--overwrite'.`
+                );
+            }
+
             makeDir.sync(targetDir);
             copyDir.sync(sourceDir, targetDir);
             glob.sync(`${targetDir}/**/*.{js,css}`).forEach(file => {
