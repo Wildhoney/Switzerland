@@ -11,6 +11,7 @@ import copyDir from 'copy-dir';
 import glob from 'glob';
 import fmt from 'string-template';
 import minimist from 'minimist';
+import humps from 'humps';
 import * as theme from './theme.mjs';
 
 const argv = minimist(process.argv.slice(2));
@@ -20,11 +21,11 @@ const pkg = JSON.parse(
 );
 const sourceDir = path.resolve(cwd, 'template');
 const targetDir = path.resolve(cwd, '..', process.argv[2]);
-const name = path.basename(argv._[0]);
+const name = path.basename(argv._[0] || '');
 const model = {
     name: argv.name || name,
     version: pkg.version,
-    ...R.omit(['_'], argv)
+    ...humps.camelizeKeys(R.omit(['_'], argv))
 };
 
 async function main() {
@@ -42,6 +43,10 @@ async function main() {
                 throw new Error(
                     `${name} already exists in location, use '--overwrite'.`
                 );
+            }
+
+            if (!name) {
+                throw new Error('You must specify a name for the node.');
             }
 
             makeDir.sync(targetDir);
