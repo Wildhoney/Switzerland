@@ -20,39 +20,15 @@
 
 ## Contents
 
-1. [Motivation](#motivation)
-2. [Plug & Play](#plug--play)
-3. [Getting Started](#getting-started)
+1. [Getting Started](#getting-started)
+2. [Motivation](#motivation)
+3. [Plug & Play](#plug--play)
 4. [Middleware](#middleware)
 5. [CLI](#cli)
 
 ![Screenshot](media/screenshot.png)
 
 ---
-
-## Motivation
-
-One of the largest downsides to creating components in React, Vue, Ember, etc... is that we re-invent the wheel time-and-time again with every new framework that comes about. Although their components _may_ rely on more generic modules, we are still writing components specific to a certain framework, and typically within a certain version range &mdash; if our setup lies outside of those constraints then we need to continue our search.
-
-For example, if somebody writes a `<mayan-calendar />` component that works nicely with Mayan dates, wouldn't it be nice if we could use that component wherever, irrespective of our chosen framework and version? If there was a `ReactMayanCalendar` that works with React `15.x` then we'd be out of luck if our setup was Ember based &mdash; or React `16.x` based.
-
-Thankfully by utilising custom elements which are native to the browser, we can write interoperable components that can be used **anywhere** &mdash; on their own or in a framework. In addition we inherit other benefits, such as style encapsulation to prevent cross-contamination, and relative loading of CSS documents and associated images.
-
-## Plug & Play
-
-Switzerland is capable of being integrated into any website or app without any formal installation or build process if you wish. Thanks to shadow DOM technology, all styles are also applied since Switzerland detects which host the JS originated from; if the origin and the JS host differ, then absolute paths to the domain are used when loading assets, such as CSS documents and images.
-
-As a little teaser, navigate to [Google.com](https://www.google.com/) and paste the following snippet of code into the console:
-
-```javascript
-const node = document.createElement('script');
-node.type = 'module';
-node.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
-document.head.append(node);
-document.body.append(document.createElement('todo-app'));
-```
-
-After a couple of milliseconds you *should* see the todo app embedded into Google with all of the styles applied. If you have any todos in your list then you will also see those due to the IndexedDb that the example utilises. It's worth noting that for this example to work correctly, the host &mdash; in the above case `switzerland.herokuapp.com` &mdash; needs the CORS headers configured correctly.
 
 ## Getting Started
 
@@ -169,6 +145,30 @@ node.addEventListener('clicked-country', event => (
     console.log(`Country: ${event.detail.country}!`)
 ));
 ```
+
+## Motivation
+
+One of the largest downsides to creating components in React, Vue, Ember, etc... is that we re-invent the wheel time-and-time again with every new framework that comes about. Although their components _may_ rely on more generic modules, we are still writing components specific to a certain framework, and typically within a certain version range &mdash; if our setup lies outside of those constraints then we need to continue our search.
+
+For example, if somebody writes a `<mayan-calendar />` component that works nicely with Mayan dates, wouldn't it be nice if we could use that component wherever, irrespective of our chosen framework and version? If there was a `ReactMayanCalendar` that works with React `15.x` then we'd be out of luck if our setup was Ember based &mdash; or React `16.x` based.
+
+Thankfully by utilising custom elements which are native to the browser, we can write interoperable components that can be used **anywhere** &mdash; on their own or in a framework. In addition we inherit other benefits, such as style encapsulation to prevent cross-contamination, and relative loading of CSS documents and associated images.
+
+## Plug & Play
+
+Switzerland is capable of being integrated into any website or app without any formal installation or build process if you wish. Thanks to shadow DOM technology, all styles are also applied since Switzerland detects which host the JS originated from; if the origin and the JS host differ, then absolute paths to the domain are used when loading assets, such as CSS documents and images.
+
+As a little teaser, navigate to [Google.com](https://www.google.com/) and paste the following snippet of code into the console:
+
+```javascript
+const node = document.createElement('script');
+node.type = 'module';
+node.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
+document.head.append(node);
+document.body.append(document.createElement('todo-app'));
+```
+
+After a couple of milliseconds you *should* see the todo app embedded into Google with all of the styles applied. If you have any todos in your list then you will also see those due to the IndexedDb that the example utilises. It's worth noting that for this example to work correctly, the host &mdash; in the above case `switzerland.herokuapp.com` &mdash; needs the CORS headers configured correctly.
 
 ## Middleware
 
