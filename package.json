@@ -51,6 +51,7 @@
         "superfine": "6.0.1"
     },
     "devDependencies": {
+        "@babel/plugin-syntax-import-meta": "^7.2.0",
         "ava": "^1.1.0",
         "babel-eslint": "^10.0.1",
         "browser-env": "^3.2.5",
@@ -87,6 +88,9 @@
         "nyc": "^13.1.0",
         "prettier": "^1.16.1",
         "readlint": "^0.7.0",
+        "rollup": "^1.1.2",
+        "rollup-plugin-babel": "^4.3.2",
+        "rollup-plugin-replace": "^2.1.0",
         "shortid": "^2.2.14",
         "sinon": "^7.2.3",
         "starwars": "^1.0.0",

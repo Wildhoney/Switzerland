@@ -10,8 +10,4 @@ export const status = type =>
 
 export const separator = chalk.gray;
 
-export const label = chalk.underline.white;
-
-export const value = chalk.redBright;
-
 export const message = chalk.whiteBright;

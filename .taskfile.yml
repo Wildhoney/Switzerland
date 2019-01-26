@@ -48,14 +48,12 @@
 - name: prepublish
   tasks:
     - rm -rf es
+    - rollup -c bin/rollup.config.js
     - - mkdir -p es/production
     - - mkdir -p es/development
     - - - taskfile build
-    - cp bin/index.mjs bin/backup.mjs
-    - - rollup -c bin/rollup.config.js
 
 - name: postpublish
   tasks:
-    - mv bin/backup.mjs bin/index.mjs
-    - rm -rf es
+    - rm -rf es bin/index.js
     - - taskfile docker
