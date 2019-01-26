@@ -57,6 +57,7 @@
         "mkdirp": "^0.5.1",
         "ramda": "^0.26.1",
         "redux-thunk": "2.3.0",
+        "rimraf": "^2.6.3",
         "string-template": "^1.0.0",
         "superfine": "6.0.1"
     },

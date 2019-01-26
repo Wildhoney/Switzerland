@@ -8,6 +8,7 @@ import * as R from 'ramda';
 import capitalise from 'capitalize';
 import makeDir from 'mkdirp';
 import copyDir from 'copy-dir';
+import rmDir from 'rimraf';
 import glob from 'glob';
 import fmt from 'string-template';
 import minimist from 'minimist';
@@ -20,14 +21,14 @@ const bin = path.dirname(new URL(import.meta.url).pathname);
 const pkg = JSON.parse(
     fs.readFileSync(path.resolve(`${bin}/../package.json`), 'utf8')
 );
-const sourceDir = path.resolve(bin, 'template');
+const sourceDir = path.resolve(bin, 'templates', argv.style || 'basic');
 const targetDir = path.resolve(cwd, process.argv[2] || '');
 const name = path.basename(argv._[0] || '');
 const model = {
     name: argv.name || name,
     version: pkg.version,
     testRunner: 'ava',
-    ...humps.camelizeKeys(R.omit(['_'], argv))
+    ...humps.camelizeKeys(R.omit(['_', 'style'], argv))
 };
 
 async function main() {
@@ -51,6 +52,7 @@ async function main() {
                 );
             }
 
+            fs.existsSync(targetDir) && rmDir.sync(targetDir);
             makeDir.sync(targetDir);
             copyDir.sync(sourceDir, targetDir);
             glob.sync(`${targetDir}/**/*.{js,css}`).forEach(file => {
