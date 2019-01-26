@@ -15,12 +15,13 @@ import humps from 'humps';
 import * as theme from './theme.mjs';
 
 const argv = minimist(process.argv.slice(2));
-const cwd = path.dirname(new URL(import.meta.url).pathname);
+const cwd = process.cwd();
+const bin = path.dirname(new URL(import.meta.url).pathname);
 const pkg = JSON.parse(
-    fs.readFileSync(path.resolve(`${cwd}/../package.json`), 'utf8')
+    fs.readFileSync(path.resolve(`${bin}/../package.json`), 'utf8')
 );
-const sourceDir = path.resolve(cwd, 'template');
-const targetDir = path.resolve(cwd, '..', process.argv[2]);
+const sourceDir = path.resolve(bin, 'template');
+const targetDir = path.resolve(cwd, process.argv[2] || '');
 const name = path.basename(argv._[0] || '');
 const model = {
     name: argv.name || name,
@@ -40,14 +41,14 @@ async function main() {
         );
 
         try {
+            if (!name || !process.argv[2]) {
+                throw new Error('You must specify a name for the node.');
+            }
+
             if (fs.existsSync(targetDir) && !argv.overwrite) {
                 throw new Error(
                     `${name} already exists in location, use '--overwrite'.`
                 );
-            }
-
-            if (!name) {
-                throw new Error('You must specify a name for the node.');
             }
 
             makeDir.sync(targetDir);
