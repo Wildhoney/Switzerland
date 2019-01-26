@@ -5,7 +5,6 @@
 }
 
 main {
-    background-color: rgba(0, 0, 0, 0.15);
     cursor: pointer;
     user-select: none;
     padding: 0 10px;
@@ -14,11 +13,12 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.25s;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: white;
 }
 
-main:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+main:active {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
 }
 
 div {
@@ -33,4 +33,10 @@ strong {
 img {
     width: 25px;
     margin-right: 10px;
+    opacity: 0.5;
+    transition: opacity 0.25s;
+}
+
+main:hover img {
+    opacity: 1;
 }
