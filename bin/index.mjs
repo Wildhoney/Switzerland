@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from 'fs';
+import assert from 'assert';
 import path from 'path';
 import chalk from 'chalk';
 import figlet from 'figlet';
@@ -22,7 +23,7 @@ const pkg = JSON.parse(
     fs.readFileSync(path.resolve(`${bin}/../package.json`), 'utf8')
 );
 const sourceDir = path.resolve(bin, 'templates', argv.style || 'basic');
-const targetDir = path.resolve(cwd, process.argv[2] || '');
+const targetDir = path.resolve(cwd, argv._[0] || '');
 const name = path.basename(argv._[0] || '');
 const model = {
     name: argv.name || name,
@@ -42,15 +43,11 @@ async function main() {
         );
 
         try {
-            if (!name || !process.argv[2]) {
-                throw new Error('You must specify a name for the node.');
-            }
-
-            if (fs.existsSync(targetDir) && !argv.overwrite) {
-                throw new Error(
-                    `${name} already exists in location, use '--overwrite'.`
-                );
-            }
+            assert(name.length > 0, 'You must specify a name for the node.');
+            assert(
+                !fs.existsSync(targetDir) || argv.overwrite,
+                `${name} already exists in location, use '--overwrite'.`
+            );
 
             fs.existsSync(targetDir) && rmDir.sync(targetDir);
             makeDir.sync(targetDir);
