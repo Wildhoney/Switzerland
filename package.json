@@ -1,9 +1,9 @@
 {
     "name": "switzerland",
     "version": "3.8.0",
-    "module": "./es/development/index.js",
+    "module": "es/development/index.js",
     "bin": {
-        "swiss": "./bin/index.mjs"
+        "swiss": "bin/index.js"
     },
     "description": "",
     "directories": {
