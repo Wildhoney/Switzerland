@@ -194,4 +194,5 @@ Options supported include:
 * `--name` use a different name for the component than is specified using the directory path.
 * `--version` use a specific version of the Switzerland library.
 * `--overwrite` overwrite an existing component when it already exists.
+* `--novalidate` prevent the validation of custom element names.
 * `--test-runner` use another test runner instead of the default `ava`.

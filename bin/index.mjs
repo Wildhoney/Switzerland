@@ -14,6 +14,7 @@ import glob from 'glob';
 import fmt from 'string-template';
 import minimist from 'minimist';
 import humps from 'humps';
+import validateName from 'validate-element-name';
 import * as theme from './theme.mjs';
 
 const argv = minimist(process.argv.slice(2));
@@ -46,7 +47,11 @@ async function main() {
             assert(name.length > 0, 'You must specify a name for the node.');
             assert(
                 !fs.existsSync(targetDir) || argv.overwrite,
-                `${name} already exists in location, use '--overwrite'.`
+                `${name} already exists in location, use '--overwrite' to proceed anyway.`
+            );
+            assert(
+                !validateName(name) || argv.novalidate,
+                `${name} is an invalid custom element name, use '--novalidate' to ignore.`
             );
 
             fs.existsSync(targetDir) && rmDir.sync(targetDir);

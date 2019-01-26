@@ -59,7 +59,8 @@
         "redux-thunk": "2.3.0",
         "rimraf": "^2.6.3",
         "string-template": "^1.0.0",
-        "superfine": "6.0.1"
+        "superfine": "6.0.1",
+        "validate-element-name": "^2.1.1"
     },
     "devDependencies": {
         "@babel/plugin-syntax-import-meta": "^7.2.0",
