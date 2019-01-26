@@ -56,4 +56,4 @@
 - name: postpublish
   tasks:
     - rm -rf es bin/index.js
-    - - taskfile docker
+    # - - taskfile docker
