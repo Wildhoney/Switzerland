@@ -2,6 +2,7 @@ dialog {
     width: 90vw;
     height: 50vh;
     top: 2vh;
+    display: none;
 }
 
 section.body div.flags ul {
