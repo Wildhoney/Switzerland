@@ -1,6 +1,6 @@
 {
     "name": "switzerland",
-    "version": "3.8.5",
+    "version": "3.8.6",
     "module": "es/development/index.js",
     "bin": {
         "swiss": "bin/index.js"
