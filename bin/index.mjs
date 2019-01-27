@@ -50,7 +50,7 @@ async function main() {
                 `${name} already exists in location, use '--overwrite' to proceed anyway.`
             );
             assert(
-                !validateName(name) || argv.novalidate,
+                validateName(name).isValid || argv.novalidate,
                 `${name} is an invalid custom element name, use '--novalidate' to ignore.`
             );
 
