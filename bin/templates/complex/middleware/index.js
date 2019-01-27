@@ -1,4 +1,6 @@
+import * as u from '../utils/index.js';
+
 export const roll = ({ props }) => ({
     ...props,
-    rolled: Math.ceil(Math.random() * 6)
+    rolled: u.roll()
 });
