@@ -180,7 +180,7 @@ After a couple of milliseconds you *should* see the todo app embedded into Googl
 
 ## CLI
 
-Switzerland provides a simple CLI tool that allows you to quickly create a directory structure for your component. Along with `images`, `styles` and `tests` which are fairly self-explanatory, the CLI also sets up a `middleware` directory that exports an array of middleware functions, both standard ones from the Switzerland library itself, and also custom ones which can either be separate files in the `middleware` directory, or listed individually in the `index.js` based on developer choice. Likewise the CLI tool also creates a `partials` directory that should be used for exporting sub-trees of your component's DOM, allowing you to easily test each segment individually.
+Switzerland provides a simple CLI tool that allows you to quickly create a file and directory structure for your component. There are currently two flavours of hierarchies which you can specify by using the `style` option.
 
 Install a version of Switzerland globally, and then use the CLI tool to create your component &ndash; in this case the `x-countries` component in the `packages` directory:
 
@@ -190,9 +190,9 @@ foo@bar:~$ swiss packages/x-countries
 
 Options supported include:
 
-* `--style basic|complex` use the `complex` style over the default `basic`.
 * `--name` use a different name for the component than is specified using the directory path.
 * `--version` use a specific version of the Switzerland library.
+* `--style basic|complex` use the `complex` style over the default `basic`.
 * `--overwrite` overwrite an existing component when it already exists.
 * `--novalidate` prevent the validation of custom element names.
 * `--test-runner` use another test runner instead of the default `ava`.
