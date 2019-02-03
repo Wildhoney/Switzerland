@@ -89,7 +89,7 @@
         "node-mkdirp": "^0.0.1",
         "nodemon": "^1.18.9",
         "nyc": "^13.2.0",
-        "prettier": "^1.16.3",
+        "prettier": "^1.16.4",
         "readlint": "^0.7.1",
         "rollup": "^1.1.2",
         "rollup-plugin-babel": "^4.3.2",
