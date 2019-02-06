@@ -12,7 +12,7 @@
 - name: test/lint
   tasks:
       - readlint
-      - - prettier --list-different '{bin/src,tests,example}/**/*.{mjs,js,css}'
+      - - prettier --list-different '{bin,src,tests,example}/**/*.{mjs,js,css}'
       - - prettier --list-different '*.{mjs,js,json}'
       - - - eslint "{bin,src,tests,example}/**/**.js"
       - - - stylelint "example/**/**.css"
