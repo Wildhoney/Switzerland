@@ -64,7 +64,7 @@
     },
     "devDependencies": {
         "@babel/plugin-syntax-import-meta": "^7.2.0",
-        "ava": "^1.2.0",
+        "ava": "^1.2.1",
         "babel-eslint": "^10.0.1",
         "browser-env": "^3.2.5",
         "change-case": "^3.1.0",
