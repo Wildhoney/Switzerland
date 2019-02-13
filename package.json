@@ -87,7 +87,7 @@
         "fslint": "^1.1.0",
         "node-glob": "^1.2.0",
         "node-mkdirp": "^0.0.1",
-        "nodemon": "^1.18.9",
+        "nodemon": "^1.18.10",
         "nyc": "^13.2.0",
         "prettier": "^1.16.4",
         "readlint": "^0.7.1",
@@ -100,7 +100,7 @@
         "stylelint": "^9.10.1",
         "stylelint-config-prettier": "^4.0.0",
         "taskfile": "^0.8.5",
-        "terser": "^3.16.0",
+        "terser": "^3.16.1",
         "testcafe": "^0.23.3"
     }
 }
