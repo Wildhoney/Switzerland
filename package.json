@@ -88,7 +88,7 @@
         "node-glob": "^1.2.0",
         "node-mkdirp": "^0.0.1",
         "nodemon": "^1.18.10",
-        "nyc": "^13.2.0",
+        "nyc": "^13.3.0",
         "prettier": "^1.16.4",
         "readlint": "^0.7.1",
         "rollup": "^1.1.2",
@@ -101,6 +101,6 @@
         "stylelint-config-prettier": "^4.0.0",
         "taskfile": "^0.8.5",
         "terser": "^3.16.1",
-        "testcafe": "^0.23.3"
+        "testcafe": "^1.0.1"
     }
 }
