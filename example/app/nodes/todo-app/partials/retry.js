@@ -5,7 +5,7 @@ const path = init(import.meta.url);
 
 export default ({ render, h, props, error }) =>
     h('section', { class: 'todo-app' }, [
-        h.sheet(path('styles/index.css')),
+        h.sheet(path('../styles/index.css')),
         header(props),
         h('div', { class: 'error' }, [
             h('div', { class: 'message' }, error.message),
