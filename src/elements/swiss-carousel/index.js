@@ -1,4 +1,4 @@
-import { create, init, m } from '/vendor/index.js';
+import { create, init, m, t } from '/vendor/index.js';
 import { importTemplate, observeTemplate } from './middleware.js';
 import * as u from './utils.js';
 
@@ -7,12 +7,13 @@ const path = init(import.meta.url);
 export default create(
     'swiss-carousel',
     m.adapt(),
-    m.html(({ index = 0, adapt, props, h }) => {
+    m.attrs({ direction: [t.String, 'horizontal'] }),
+    m.html(({ index = 0, adapt, attrs, props, h }) => {
         const count = u.getImages(props).length;
-        const width = adapt ? adapt.width : 0;
-        const height = adapt ? adapt.height : 0;
+        const width = Math.ceil(adapt ? adapt.width : 0);
+        const height = Math.ceil(adapt ? adapt.height : 0);
 
-        return h('section', {}, [
+        return h('section', { class: attrs.direction }, [
             h('div', { class: 'track' }),
             !u.isTouchable() && controls({ ...props, index, count }),
             h.vars({

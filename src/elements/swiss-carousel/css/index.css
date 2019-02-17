@@ -6,28 +6,46 @@
 
 section {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
-    overflow-x: var(--overflow);
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
     height: 100%;
     width: 100%;
 }
 
+section.horizontal {
+    overflow-x: var(--overflow);
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+}
+
+section.vertical {
+    overflow-x: hidden;
+    overflow-y: var(--overflow);
+    scroll-snap-type: y mandatory;
+}
+
 section div.track {
     display: flex;
+    transform: translate(var(--left), 0);
+    transition: transform var(--animation-duration, 0.55s);
+}
+
+section.horizontal div.track {
     flex-direction: row;
     height: 100%;
     width: calc(var(--width) * var(--count) * 1px);
-    transform: translate(var(--left), 0);
-    transition: transform 0.55s;
+}
+
+section.vertical div.track {
+    flex-direction: column;
+    height: calc(var(--height) * var(--count) * 1px);
+    width: 100%;
 }
 
 section div.track img {
+    scroll-snap-align: start;
     width: calc(var(--width) * 1px);
     height: calc(var(--height) * 1px);
-    object-fit: cover;
-    object-position: center;
-    scroll-snap-align: start;
+    object-fit: var(--image-fit, cover);
+    object-position: var(--image-position, center);
 }
 
 div.controls {
