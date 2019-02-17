@@ -24,7 +24,6 @@ section.vertical {
 
 section div.track {
     display: flex;
-    transform: translate(var(--left), 0);
     transition: transform var(--animation-duration, 0.55s);
 }
 
@@ -32,12 +31,14 @@ section.horizontal div.track {
     flex-direction: row;
     height: 100%;
     width: calc(var(--width) * var(--count) * 1px);
+    transform: translate(var(--left), 0);
 }
 
 section.vertical div.track {
     flex-direction: column;
     height: calc(var(--height) * var(--count) * 1px);
     width: 100%;
+    transform: translate(0, var(--top));
 }
 
 section div.track img {
@@ -50,12 +51,20 @@ section div.track img {
 
 div.controls {
     position: absolute;
+    display: flex;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 101;
-    display: flex;
+}
+
+section.horizontal div.controls {
+    flex-direction: row;
+}
+
+section.vertical div.controls {
+    flex-direction: column;
 }
 
 div.controls a {
