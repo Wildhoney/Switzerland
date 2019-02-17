@@ -25,9 +25,10 @@
 ## Contents
 
 1. [Getting Started](#getting-started)
-2. [Philosophy](#philosophy)
-3. [Middleware](#middleware)
-4. [CLI](#cli)
+2. [Elements](#elements)
+3. [Philosophy](#philosophy)
+4. [Middleware](#middleware)
+5. [CLI](#cli)
 
 ## Getting Started
 
@@ -144,6 +145,12 @@ node.addEventListener('clicked-country', event => (
     console.log(`Country: ${event.detail.country}!`)
 ));
 ```
+
+## Elements
+
+Helpfully provided in the library are a set of custom elements that you can use in your own projects.
+
+* [`swiss-carousel`](src/elements/swiss-carousel)
 
 ## Philosophy
 

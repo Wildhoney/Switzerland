@@ -21,7 +21,8 @@ export default create(
                 width,
                 height,
                 overflow: u.isTouchable() ? 'scroll' : 'hidden',
-                left: `-${width * index}px`
+                left: `-${width * index}px`,
+                top: `-${height * index}px`
             }),
             h.sheet(path('./css/index.css'))
         ]);
