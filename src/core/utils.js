@@ -157,6 +157,7 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
         render: node.render.bind(node),
         lifecycle: mergeProps.lifecycle || 'update',
         dispatch: dispatchEvent(node),
+        latest: () => previousProps.get(node) || null,
         prevProps: previousProps.get(node) || null,
         isIdle: () => node[meta].queue.size() <= 1,
         resolved: async () => {
