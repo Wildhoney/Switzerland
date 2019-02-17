@@ -6,6 +6,10 @@ export const importTemplate = ({ node, boundary, props }) => {
     const template = node.querySelector('template');
     const content = document.importNode(template.content, true);
     track.appendChild(content);
+
+    const images = Array.from(track.querySelectorAll('img'));
+    images.forEach(node => node.setAttribute('part', 'image'));
+
     return props;
 };
 

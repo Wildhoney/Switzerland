@@ -38,10 +38,12 @@ const controls = ({ index, count, render, h }) => {
         'div',
         { class: 'controls' },
         h('a', {
+            part: 'previous-link',
             class: `previous ${isStart && 'disabled'}`,
             onclick: isStart ? identity : () => render({ index: index - 1 })
         }),
         h('a', {
+            part: 'next-link',
             class: `next ${isEnd && 'disabled'}`,
             onclick: isEnd ? identity : () => render({ index: index + 1 })
         })
