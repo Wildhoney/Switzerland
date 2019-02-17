@@ -1,6 +1,7 @@
 :host {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
     width: 100vw;
+    height: 100vh;
 }
 
 todo-list {

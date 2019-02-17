@@ -1,0 +1,50 @@
+:host {
+    all: initial;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+section {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    overflow-x: var(--overflow);
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    height: 100%;
+    width: 100%;
+}
+
+section div.track {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: calc(var(--width) * var(--count) * 1px);
+    transform: translate(var(--left), 0);
+    transition: transform 0.55s;
+}
+
+section div.track img {
+    width: calc(var(--width) * 1px);
+    height: calc(var(--height) * 1px);
+    object-fit: cover;
+    object-position: center;
+    scroll-snap-align: start;
+}
+
+div.controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 101;
+    display: flex;
+}
+
+div.controls a {
+    flex: 1;
+    cursor: pointer;
+}
+
+div.controls a.disabled {
+    cursor: not-allowed;
+}
