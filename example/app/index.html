@@ -1,26 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Switzerland</title>
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/core.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"
+        ></script>
+        <script
+            type="module"
+            src="/nodes/todo-app/index.js"
+            async
+            defer
+        ></script>
+        <script
+            type="module"
+            src="/nodes/swiss-carousel/index.js"
+            async
+            defer
+        ></script>
+        <link rel="stylesheet" type="text/css" href="/styles.css" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Switzerland</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/core.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"></script>
-    <script type="module" src="/nodes/todo-app/index.js" async defer></script>
-    <script type="module" src="/nodes/todo-input/index.js" async defer></script>
-    <script type="module" src="/nodes/todo-list/index.js" async defer></script>
-    <script type="module" src="/nodes/flag-app/index.js" async defer></script>
-    <link rel="stylesheet" type="text/css" href="/styles.css" />
-</head>
+    <body>
+        <article>
+            <todo-app logo="bottom"></todo-app>
+        </article>
 
-<body>
-    <todo-app logo="bottom"></todo-app>
-
-    <noscript class="todo-app">
-        Unfortunately you need JavaScript enabled to view the <code>&lt;todo-app /&gt;</code> component.
-    </noscript>
-</body>
-
+        <article>
+            <swiss-carousel>
+                <template>
+                    <img
+                        src="http://hdqwalls.com/wallpapers/london-lights-4k-ap.jpg"
+                    />
+                    <img
+                        src="https://ak2.picdn.net/shutterstock/videos/8016412/thumb/1.jpg"
+                    />
+                    <img src="https://i.imgur.com/sasYjHE.gif" />
+                    <img
+                        src="https://free4kwallpapers.com/no-watermarks/originals/2018/06/27/london-city--wallpaper.jpg"
+                    />
+                    <img
+                        src="https://besthqwallpapers.com/Uploads/16-10-2017/24338/thumb2-tower-bridge-4k-sunset-river-thames-london.jpg"
+                    />
+                </template>
+            </swiss-carousel>
+        </article>
+    </body>
 </html>
