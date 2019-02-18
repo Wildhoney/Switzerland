@@ -2,21 +2,26 @@
   task: nodemon --experimental-modules ./example/server/index.mjs
 
 - name: format
-  tasks: 
-    - prettier --write '{bin,src,tests,example}/**/*.{mjs,js,css,html}'
-    - prettier --write '*.{js,json,html}'
+  tasks:
+      - prettier --write '{bin,src,tests,example}/**/*.{mjs,js,css,html,yml,json}'
+      - prettier --write '*.{mjs,js,css,html,yml,json}'
 
 - name: build
-  task: node terser.config.js
+  tasks:
+      - mkdir -p es/production
+      - mkdir -p es/development
+      - - cp -r src es/production
+      - - cp -r src es/development
+      - - - node terser.config.js
 
 - name: test/lint
   tasks:
       - readlint
-      - - prettier --list-different '{bin,src,tests,example}/**/*.{mjs,js,css,html}'
-      - - prettier --list-different '*.{mjs,js,json}'
+      - - prettier --list-different '{bin,src,tests,example}/**/*.{mjs,js,css,html,yml,json}'
+      - - prettier --list-different '*.{mjs,js,css,html,yml,json}'
       - - - eslint "{bin,src,tests,example}/**/**.js"
       - - - stylelint "example/**/**.css"
-      - - - rm -rf es/ 
+      - - - rm -rf es/
       - - - - NODE_ENV=production yarn build
       - - - - - rm es/production/core/superfine.js # TODO: Remove when using Superfine directly!
       - - - - - find es/production/middleware/* -type d | xargs rm -rf
@@ -41,19 +46,19 @@
 
 - name: docker
   tasks:
-    - docker build -t wildhoney/switzerland:latest .
-    - - docker tag wildhoney/switzerland wildhoney/switzerland:$npm_package_version
-    - - - docker push wildhoney/switzerland
+      - docker build -t wildhoney/switzerland:latest .
+      - - docker tag wildhoney/switzerland wildhoney/switzerland:$npm_package_version
+      - - - docker push wildhoney/switzerland
 
 - name: prepublish
   tasks:
-    - rm -rf es
-    - rollup -c bin/rollup.config.js
-    - - mkdir -p es/production
-    - - mkdir -p es/development
-    - - - taskfile build
+      - rm -rf es
+      - rollup -c bin/rollup.config.js
+      - - mkdir -p es/production
+      - - mkdir -p es/development
+      - - - taskfile build
 
 - name: postpublish
   tasks:
-    - rm -rf es bin/index.js
-    # - - taskfile docker
+      - rm -rf es bin/index.js
+      # - - taskfile docker
