@@ -100,7 +100,7 @@ export const getRandomId = () => {
  */
 export const parseTagName = name => {
     const parts = name.split('/');
-    return [findFreeTagName(parts[0]), determinePrototype(parts[1])];
+    return [findFreeTagName(parts[0]), determinePrototype(parts[1]), parts[1]];
 };
 
 /**
