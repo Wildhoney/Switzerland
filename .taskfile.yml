@@ -10,8 +10,8 @@
   tasks:
       - mkdir -p es/production
       - mkdir -p es/development
-      - - cp -r src es/production
-      - - cp -r src es/development
+      - - cp -r src/ es/production
+      - - cp -r src/ es/development
       - - - node terser.config.js
 
 - name: test/lint
