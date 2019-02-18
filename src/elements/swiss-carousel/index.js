@@ -1,4 +1,4 @@
-import { create, init, m, t } from '/vendor/index.js';
+import { create, init, m, t } from '../../index.js';
 import { importTemplate, observeTemplate } from './middleware.js';
 import * as u from './utils.js';
 
