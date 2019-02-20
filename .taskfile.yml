@@ -10,8 +10,8 @@
   tasks:
       - mkdir -p es/production
       - mkdir -p es/development
-      - - cp -r src/ es/production
-      - - cp -r src/ es/development
+      - - cp -r src/elements/ es/production/elements/
+      - - cp -r src/elements/ es/development/elements/
       - - - node terser.config.js
 
 - name: test/lint
@@ -25,6 +25,7 @@
       - - - - NODE_ENV=production yarn build
       - - - - - rm es/production/core/superfine.js # TODO: Remove when using Superfine directly!
       - - - - - find es/production/middleware/* -type d | xargs rm -rf
+      - - - - - rm -rf es/production/elements
       - - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
       - - - - - - - fslint --files=build.tar.gz --limit=3500 || rm -rf build.tar.gz es/
       - - - - - - - - rm -rf build.tar.gz es/
