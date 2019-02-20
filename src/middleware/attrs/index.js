@@ -27,7 +27,7 @@ export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
             const observer = new window.MutationObserver(
                 mutations =>
                     u.hasApplicableMutations(node, mutations, exclude) &&
-                    render()
+                    render({ mutations })
             );
 
             observer.observe(node, {
