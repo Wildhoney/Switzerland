@@ -114,7 +114,7 @@ We use the `h.sheet` helper function that uses `@import` to import a CSS documen
 
 By utilising [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) you're able to keep your CSS documents as general as possible, since none of the styles defined within it will leak into other elements or components. As the CSS document is imported, all assets referenced inside the CSS document are resolved relative to it. Switzerland also has a special function before a component is resolved to ensure all imported CSS files have been loaded into the DOM.
 
-Adding events to a component is achieved through the `dispatch` function which is passed through the `props`. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
+Adding events to a component is achieved through the `utils.dispatch` function which is passed through the `props`. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
 
 ```javascript
 import { create, init, m, t } from 'switzerland';
@@ -124,12 +124,12 @@ const path = init(import.meta.url);
 create(
     'x-countries',
     m.attrs({ values: t.Array(t.String) }),
-    m.html(({ attrs, dispatch, h }) =>
+    m.html(({ attrs, utils, h }) =>
         h('section', {}, [
             h.sheet(path('index.css')),
             h('ul', {}, attrs.values.map(country => (
                 h('li', {
-                    onclick: () => dispatch('clicked-country', { country })
+                    onclick: () => utils.dispatch('clicked-country', { country })
                 }, country)
             )))
         ])
@@ -137,7 +137,7 @@ create(
 );
 ```
 
-Interestingly it's possible to use any valid event name for the `dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our event all set up we can attach the listener by using the native `addEventListener` method on the custom element itself:
+Interestingly it's possible to use any valid event name for the `utils.dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our event all set up we can attach the listener by using the native `addEventListener` method on the custom element itself:
 
 ```javascript
 const node = document.querySelector('x-countries');

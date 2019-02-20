@@ -10,7 +10,7 @@ export const createPatch = (getF, types, defaults) => {
     };
 };
 
-export const changeState = ({ dispatch }, fName) => (...params) => {
+export const changeState = ({ utils }, fName) => (...params) => {
     window.history[fName](...params);
-    dispatch(eventName, { params });
+    utils.dispatch(eventName, { params });
 };

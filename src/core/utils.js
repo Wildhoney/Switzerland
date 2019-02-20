@@ -150,15 +150,12 @@ export const consoleMessage = (text, type = 'error') =>
  * Takes the `mergeProps` which a developer can pass to the `render` method.
  */
 export const initialProps = (node, mergeProps, scheduledTask) => {
-    return {
-        ...(previousProps.get(node) || {}),
-        ...mergeProps,
-        node,
-        render: node.render.bind(node),
-        lifecycle: mergeProps.lifecycle || 'update',
+    const utils = {
         dispatch: dispatchEvent(node),
+        abort: () => {
+            throw new CancelError();
+        },
         latest: () => previousProps.get(node) || null,
-        prevProps: previousProps.get(node) || null,
         isIdle: () => node[meta].queue.size() <= 1,
         resolved: async () => {
             const resolution = await Promise.race([
@@ -166,10 +163,17 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
                 Promise.resolve(false)
             ]);
             return resolution !== false;
-        },
-        abort: () => {
-            throw new CancelError();
         }
+    };
+
+    return {
+        ...(previousProps.get(node) || {}),
+        ...mergeProps,
+        node,
+        utils,
+        render: node.render.bind(node),
+        prevProps: previousProps.get(node) || null,
+        lifecycle: mergeProps.lifecycle || 'update'
     };
 };
 

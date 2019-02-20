@@ -9,13 +9,13 @@ export const importTemplate = ({ node, boundary, props }) => {
     return props;
 };
 
-export const observeTemplate = ({ node, render, props }) => {
+export const observeTemplate = ({ node, render, utils, props }) => {
     const template = node.querySelector('template');
     const config = { attributes: true, childList: true, subtree: true };
     const observer = new MutationObserver(() => {
         importTemplate(props);
         const count = u.getImages(props).length;
-        const index = props.latest().index || 0;
+        const index = utils.latest().index || 0;
         render({ index: index === count ? count - 1 : index });
     });
     observer.observe(template.content, config);
