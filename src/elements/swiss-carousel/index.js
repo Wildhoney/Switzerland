@@ -1,5 +1,10 @@
 import { create, init, m, t } from '../../index.js';
-import { importTemplate, observeTemplate } from './middleware.js';
+import {
+    importTemplate,
+    observeTemplate,
+    gatherVariables,
+    updatePosition
+} from './middleware.js';
 import * as u from './utils.js';
 
 const path = init(import.meta.url);
@@ -7,13 +12,10 @@ const path = init(import.meta.url);
 export default create(
     'swiss-carousel',
     m.adapt(),
-    m.attrs({ direction: [t.String, 'horizontal'] }),
-    m.html(({ index = 0, adapt, attrs, props, h }) => {
-        const count = u.getImages(props).length;
-        const width = Math.ceil(adapt ? adapt.width : 0);
-        const height = Math.ceil(adapt ? adapt.height : 0);
-
-        return h('section', { class: attrs.direction }, [
+    m.attrs({ direction: [t.String, 'horizontal'], index: [t.Int, 0] }),
+    gatherVariables,
+    m.html(({ attrs, props, index = attrs.index, count, width, height, h }) =>
+        h('section', { class: attrs.direction }, [
             h('div', { class: 'track' }),
             !u.isTouchable() && controls({ ...props, index, count }),
             h.vars({
@@ -21,14 +23,15 @@ export default create(
                 width,
                 height,
                 overflow: u.isTouchable() ? 'scroll' : 'hidden',
-                left: `-${width * index}px`,
-                top: `-${height * index}px`
+                left: u.isTouchable() ? 0 : `-${width * index}px`,
+                top: u.isTouchable() ? 0 : `-${height * index}px`
             }),
             h.sheet(path('./css/index.css'))
-        ]);
-    }),
+        ])
+    ),
     m.once(importTemplate),
-    m.once(observeTemplate)
+    m.once(observeTemplate),
+    updatePosition
 );
 
 const controls = ({ index, count, render, h }) => {
