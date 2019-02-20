@@ -15,8 +15,8 @@ export const observeTemplate = ({ node, render, utils, props }) => {
     const observer = new MutationObserver(() => {
         importTemplate(props);
         const count = u.getImages(props).length;
-        const index = utils.latest().index || 0;
-        render({ index: index === count ? count - 1 : index });
+        const index = utils.latest().attrs.index || 0;
+        node.setAttribute('index', index === count ? count - 1 : index);
     });
     observer.observe(template.content, config);
 };
@@ -34,18 +34,15 @@ export const updatePosition = ({
     attrs,
     boundary,
     mutations = [],
-    render,
     props
 }) => {
-    u.isTouchable() &&
-        (attrs.direction === 'horizontal'
-            ? boundary.firstChild.scroll(width * attrs.index, 0)
-            : boundary.firstChild.scroll(0, height * attrs.index));
     const isChangingIndex = mutations.some(
         mutation => mutation.attributeName === 'index'
     );
-    !u.isTouchable() &&
+    u.isTouchable() &&
         isChangingIndex &&
-        render({ index: attrs.index, mutations: [] });
+        (attrs.direction === 'horizontal'
+            ? boundary.firstChild.scroll(width * attrs.index, 0)
+            : boundary.firstChild.scroll(0, height * attrs.index));
     return props;
 };
