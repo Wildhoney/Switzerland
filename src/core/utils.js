@@ -166,8 +166,13 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
         }
     };
 
+    // Signals are used for temporary data for a single render-pass.
+    const prevProps = { ...(previousProps.get(node) || {}) };
+    delete prevProps.signal;
+
     return {
-        ...(previousProps.get(node) || {}),
+        ...prevProps,
+        signal: {},
         ...mergeProps,
         node,
         utils,
