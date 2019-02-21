@@ -8,7 +8,7 @@ test('It should not invoke the function as the component is resolved;', async t 
     const identity = spy();
     const resolved = () => Promise.resolve();
     const m = defer(identity, 100);
-    m({ ...defaultProps, resolved });
+    m({ ...defaultProps, utils: { resolved } });
     await delay(5);
     t.is(identity.callCount, 0);
 });
@@ -17,11 +17,11 @@ test('It should invoke the function as the component is unresolved;', async t =>
     const identity = spy();
     const resolved = () => Promise.resolve();
     const m = defer(identity, 10);
-    const newProps = m({ ...defaultProps, resolved });
+    const newProps = m({ ...defaultProps, utils: { resolved } });
 
     // Required because `identity` is invoked asynchronously by the `defer` middleware.
     await delay(100);
 
     t.is(identity.callCount, 1);
-    t.deepEqual(newProps, { ...defaultProps, resolved });
+    t.deepEqual(newProps, { ...defaultProps, utils: { resolved } });
 });
