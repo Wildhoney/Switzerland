@@ -9,7 +9,7 @@ export const importTemplate = ({ node, boundary, props }) => {
     return props;
 };
 
-export const observeTemplate = ({ node, render, utils, props }) => {
+export const observeTemplate = ({ node, utils, props }) => {
     const template = node.querySelector('template');
     const config = { attributes: true, childList: true, subtree: true };
     const observer = new MutationObserver(() => {
@@ -21,24 +21,24 @@ export const observeTemplate = ({ node, render, utils, props }) => {
     observer.observe(template.content, config);
 };
 
-export const gatherVariables = ({ adapt, props }) => {
+export const computeVariables = ({ adapt, signal: {mutations=[]},props }) => {
     const count = u.getImages(props).length;
     const width = Math.ceil(adapt ? adapt.width : 0);
     const height = Math.ceil(adapt ? adapt.height : 0);
-    return { ...props, count, width, height };
+    const isChangingIndex = mutations.some(
+        mutation => mutation.attributeName === 'index'
+    );
+    return { ...props, count, width, height, isChangingIndex };
 };
 
 export const updatePosition = ({
     width,
     height,
+    isChangingIndex,
     attrs,
     boundary,
-    mutations = [],
     props
 }) => {
-    const isChangingIndex = mutations.some(
-        mutation => mutation.attributeName === 'index'
-    );
     u.isTouchable() &&
         isChangingIndex &&
         (attrs.direction === 'horizontal'
@@ -46,3 +46,8 @@ export const updatePosition = ({
             : boundary.firstChild.scroll(0, height * attrs.index));
     return props;
 };
+
+export const dispatchEvent = ({attrs, isChangingIndex, utils,props}) => {
+    isChangingIndex && utils.dispatch('change', attrs.index);
+    return props
+}
