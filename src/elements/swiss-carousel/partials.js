@@ -10,14 +10,14 @@ export const controls = ({ attrs, count, node, h }) => {
         { class: 'controls' },
         h('a', {
             part: 'previous-link',
-            class: `previous ${isStart && 'disabled'}`,
+            class: `previous ${isStart ? 'disabled' : ''}`.trim(),
             onclick: isStart
                 ? identity
                 : () => node.setAttribute('index', attrs.index - 1)
         }),
         h('a', {
             part: 'next-link',
-            class: `next ${isEnd && 'disabled'}`,
+            class: `next ${isEnd ? 'disabled' : ''}`.trim(),
             onclick: isEnd
                 ? identity
                 : () => node.setAttribute('index', attrs.index + 1)

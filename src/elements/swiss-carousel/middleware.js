@@ -21,37 +21,30 @@ export const observeTemplate = ({ node, utils, props }) => {
     observer.observe(template.content, config);
 };
 
-export const computeVariables = ({
-    adapt,
-    signal: { mutations = [] },
-    props
-}) => {
+export const computeVariables = ({ adapt, props }) => {
     const count = u.getImages(props).length;
     const width = Math.ceil(adapt ? adapt.width : 0);
     const height = Math.ceil(adapt ? adapt.height : 0);
-    const isChangingIndex = mutations.some(
-        mutation => mutation.attributeName === 'index'
-    );
-    return { ...props, count, width, height, isChangingIndex };
+    return { ...props, count, width, height };
 };
 
-export const updatePosition = ({
-    width,
-    height,
-    isChangingIndex,
-    attrs,
-    boundary,
-    props
-}) => {
+export const updatePosition = ({ width, height, attrs, boundary, props }) => {
     u.isTouchable() &&
-        isChangingIndex &&
         (attrs.direction === 'horizontal'
             ? boundary.firstChild.scroll(width * attrs.index, 0)
             : boundary.firstChild.scroll(0, height * attrs.index));
     return props;
 };
 
-export const dispatchEvent = ({ attrs, isChangingIndex, utils, props }) => {
-    isChangingIndex && utils.dispatch('change', attrs.index);
+export const dispatchEvent = ({
+    attrs,
+    signal: { mutations = [] },
+    utils,
+    props
+}) => {
+    const indexModified = mutations.some(
+        mutation => mutation.attributeName === 'index'
+    );
+    indexModified && utils.dispatch('change', attrs.index);
     return props;
 };
