@@ -21,7 +21,11 @@ export const observeTemplate = ({ node, utils, props }) => {
     observer.observe(template.content, config);
 };
 
-export const computeVariables = ({ adapt, signal: {mutations=[]},props }) => {
+export const computeVariables = ({
+    adapt,
+    signal: { mutations = [] },
+    props
+}) => {
     const count = u.getImages(props).length;
     const width = Math.ceil(adapt ? adapt.width : 0);
     const height = Math.ceil(adapt ? adapt.height : 0);
@@ -47,7 +51,7 @@ export const updatePosition = ({
     return props;
 };
 
-export const dispatchEvent = ({attrs, isChangingIndex, utils,props}) => {
+export const dispatchEvent = ({ attrs, isChangingIndex, utils, props }) => {
     isChangingIndex && utils.dispatch('change', attrs.index);
-    return props
-}
+    return props;
+};

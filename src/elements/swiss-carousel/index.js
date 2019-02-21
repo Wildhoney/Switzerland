@@ -3,7 +3,8 @@ import {
     importTemplate,
     observeTemplate,
     computeVariables,
-    updatePosition,dispatchEvent
+    updatePosition,
+    dispatchEvent
 } from './middleware.js';
 import * as u from './utils.js';
 import * as p from './partials.js';

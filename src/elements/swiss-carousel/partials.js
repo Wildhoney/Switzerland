@@ -1,4 +1,4 @@
-import * as u from "./utils.js"
+import * as u from './utils.js';
 
 export const controls = ({ attrs, count, node, h }) => {
     const identity = () => {};
@@ -25,11 +25,17 @@ export const controls = ({ attrs, count, node, h }) => {
     );
 };
 
-export const variables = ({ attrs, count, width, height, h}) => h.vars({
-    count,
-    width,
-    height,
-    overflow: u.isTouchable() ? 'scroll' : 'hidden',
-    left: u.isTouchable() ? 0 : `-${width * attrs.index}px`,
-    top: u.isTouchable() ? 0 : `-${height * attrs.index}px`
-})
+export const variables = ({ attrs, count, width, height, prevProps, h }) => {
+    const isAnimated = prevProps ? prevProps.lifecycle === 'update' : false;
+    const variables = {
+        count,
+        width,
+        height,
+        overflow: u.isTouchable() ? 'scroll' : 'hidden',
+        left: u.isTouchable() ? 0 : `-${width * attrs.index}px`,
+        top: u.isTouchable() ? 0 : `-${height * attrs.index}px`,
+        animationDuration: 0
+    };
+    isAnimated && delete variables.animationDuration;
+    return h.vars(variables);
+};
