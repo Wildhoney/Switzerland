@@ -1,5 +1,12 @@
 import * as u from './utils.js';
 
+export const computeVariables = ({ adapt, props }) => {
+    const count = u.getImages(props).length;
+    const width = Math.ceil(adapt ? adapt.width : 0);
+    const height = Math.ceil(adapt ? adapt.height : 0);
+    return { ...props, count, width, height };
+};
+
 export const importTemplate = ({ node, boundary, props }) => {
     const track = boundary.querySelector('div.track');
     track.innerHTML = '';
@@ -15,17 +22,11 @@ export const observeTemplate = ({ node, utils, props }) => {
     const observer = new MutationObserver(() => {
         importTemplate(props);
         const count = u.getImages(props).length;
-        const index = utils.latest().attrs.index || 0;
+        const index = utils.latestProps().attrs.index || 0;
         node.setAttribute('index', index === count ? count - 1 : index);
     });
     observer.observe(template.content, config);
-};
-
-export const computeVariables = ({ adapt, props }) => {
-    const count = u.getImages(props).length;
-    const width = Math.ceil(adapt ? adapt.width : 0);
-    const height = Math.ceil(adapt ? adapt.height : 0);
-    return { ...props, count, width, height };
+    return props;
 };
 
 export const updatePosition = ({ width, height, attrs, boundary, props }) => {
@@ -42,9 +43,8 @@ export const dispatchEvent = ({
     utils,
     props
 }) => {
-    const indexModified = mutations.some(
-        mutation => mutation.attributeName === 'index'
-    );
+    const isIndex = mutation => mutation.attributeName === 'index';
+    const indexModified = mutations.some(isIndex);
     indexModified && utils.dispatch('change', attrs.index);
     return props;
 };
