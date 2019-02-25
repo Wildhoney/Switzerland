@@ -155,7 +155,7 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
         abort: () => {
             throw new CancelError();
         },
-        latest: () => previousProps.get(node) || null,
+        latestProps: () => previousProps.get(node) || null,
         isIdle: () => node[meta].queue.size() <= 1,
         resolved: async () => {
             const resolution = await Promise.race([
