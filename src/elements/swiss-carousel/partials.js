@@ -26,7 +26,7 @@ export const controls = ({ attrs, count, node, h }) => {
 };
 
 export const variables = ({ attrs, count, width, height, prevProps, h }) => {
-    const isAnimated = prevProps ? prevProps.lifecycle === 'update' : false;
+    const isAnimated = prevProps ? Boolean(prevProps.height) : false;
     const variables = {
         count,
         width,
