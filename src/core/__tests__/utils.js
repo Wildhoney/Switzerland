@@ -25,15 +25,18 @@ test('It should be able to recursively determine the component name;', t => {
 
 test('It should be able to attach the shadow boundary to an element;', t => {
     const element = document.createElement('section');
-    const sameElement = u.createShadowRoot(element);
-    t.is(element, sameElement);
-    const attachShadow = spy(() =>
-        document.createElement('fake-shadow-boundary')
-    );
+    const attachShadow = spy(element.attachShadow);
     element.attachShadow = attachShadow;
     const shadowBoundary = u.createShadowRoot(element);
     t.is(attachShadow.callCount, 1);
-    t.is(shadowBoundary.nodeName.toLowerCase(), 'fake-shadow-boundary');
+    t.true(shadowBoundary instanceof window.ShadowRoot);
+});
+
+test('It should be able to return the element when attaching the shadow errors;', t => {
+    const element = document.createElement('section');
+    element.attachShadow = null;
+    const sameElement = u.createShadowRoot(element);
+    t.is(element, sameElement);
 });
 
 test('It should be able to determine the prototype of a given element;', t => {
