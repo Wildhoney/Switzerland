@@ -1,4 +1,5 @@
-import { h } from '../../core/superfine.js';
+import { h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import * as u from '../../core/utils.js';
 
 const trees = new WeakMap();
 
@@ -43,3 +44,25 @@ export const vars = model => {
     );
     return h('style', { type: 'text/css' }, `:host { ${vars} }`);
 };
+
+/**
+ * @function treeContainsForm ∷ Tree t ⇒ t → Boolean
+ */
+export const treeContainsForm = tree => {
+    const tree_ = Object(tree);
+    const isForm = tree_.name === 'form';
+    return isForm
+        ? true
+        : tree.children.some(subTree => treeContainsForm(subTree) === true);
+};
+
+/**
+//  * @function isMultiplePass ∷ Number → Boolean
+ */
+export const parseForms = forms =>
+    [...forms].reduce((accum, form) => {
+        const name = u.toCamelcase(form.getAttribute('name')).fromKebab();
+        return { ...accum, [name]: form };
+    }, {});
+
+export const isFirst = a => a === 1;
