@@ -65,13 +65,13 @@ const filter = ({ h, history }) =>
         )
     ]);
 
-const flag = ({ e, h }) =>
+const flag = ({ modal, h }) =>
     h(
         'li',
         {
             class: `flag ${navigator.onLine ? 'online' : 'offline'}`,
             title: "Pretend as though you're a vexillologist.",
-            onclick: navigator.onLine && (() => e.flag.open())
+            onclick: navigator.onLine && (() => modal.open())
         },
         [h('img', { src: path('../images/flag.svg'), alt: '' })]
     );

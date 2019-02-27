@@ -8,11 +8,11 @@ import list from './list.js';
 
 const path = init(import.meta.url);
 
-export default ({ e, h, props }) =>
+export default ({ modal, h, render, props }) =>
     h('section', { class: 'todo-app' }, [
         h(todoInput),
         h(todoList),
-        h(flagApp),
+        h(flagApp, { oncreate: modal => render({ modal }) }),
         header(props),
         list(props),
         h.vars({

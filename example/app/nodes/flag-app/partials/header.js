@@ -1,4 +1,4 @@
-export default ({ h, scores, countries, e }) =>
+export default ({ h, boundary, scores, countries }) =>
     h('header', {}, [
         h('div', { class: 'scores' }, [
             h('span', { class: 'correct' }, scores.correct),
@@ -14,7 +14,7 @@ export default ({ h, scores, countries, e }) =>
             'a',
             {
                 class: 'close',
-                onclick: () => e.dialog.close()
+                onclick: () => boundary.querySelector('dialog').close()
             },
             String.fromCharCode(215)
         )

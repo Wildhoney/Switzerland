@@ -5,7 +5,7 @@ import images from './images.js';
 
 const path = init(import.meta.url);
 
-export default ({ countries, e, h, props }) => {
+export default ({ countries, h, props }) => {
     const isComplete = countries.answered.length === countries.all.length;
 
     return h('dialog', { class: 'flag-app' }, [
