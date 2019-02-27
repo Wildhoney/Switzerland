@@ -22,7 +22,7 @@ export const observeTemplate = ({ node, utils, props }) => {
     const observer = new MutationObserver(() => {
         importTemplate(props);
         const count = u.getImages(props).length;
-        const index = utils.latestProps().attrs.index || 0;
+        const index = utils.getLatestProps().attrs.index || 0;
         node.setAttribute('index', index === count ? count - 1 : index);
     });
     observer.observe(template.content, config);

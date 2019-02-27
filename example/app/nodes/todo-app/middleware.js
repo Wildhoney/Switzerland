@@ -1,19 +1,12 @@
 import { init, m, t } from '/vendor/index.js';
 import db from '../../utils/db.js';
 import store from '../../../utils/store.js';
-import flagApp from '../flag-app/index.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
 import index from './partials/index.js';
 import retry from './partials/retry.js';
 
 const path = init(import.meta.url);
-
-const createElements = ({ props }) => {
-    const dialog = document.createElement('dialog');
-    const flag = document.createElement(flagApp);
-    return { ...props, e: { dialog, flag } };
-};
 
 const retrieve = async props => {
     const { todos } = await db();
@@ -42,7 +35,6 @@ const onlineOfflineListener = ({ render, props }) => {
 };
 
 export default [
-    m.once(createElements),
     m.once(onlineOfflineListener),
     store,
     serviceWorker(path('../../../utils/worker.js'), '/'),

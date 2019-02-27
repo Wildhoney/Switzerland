@@ -2,20 +2,24 @@ import { init } from '/vendor/index.js';
 
 const path = init(import.meta.url);
 
-export default ({ redux, e, h, render }) =>
-    h(
-        e.form,
+export default ({ redux, utils, h, render }) => {
+    const form = utils.form.addTodo;
+    const input = form && form.elements.namedItem('todo');
+
+    return h(
+        'form',
         {
-            novalidate: true,
+            name: 'add-todo',
             onsubmit: async event => (
                 event.preventDefault(),
-                redux.actions.add(e.input.value),
-                (e.input.value = '')
+                redux.actions.add(input.value),
+                (input.value = '')
             )
         },
         [
-            h(e.input, {
+            h('input', {
                 type: 'text',
+                name: 'todo',
                 required: true,
                 minLength: 5,
                 autoFocus: 'on',
@@ -27,10 +31,11 @@ export default ({ redux, e, h, render }) =>
             h('button', {
                 type: 'submit',
                 class: 'add',
-                disabled: !e.form.isConnected || !e.form.checkValidity()
+                disabled: form ? !form.checkValidity() : true
             }),
             h.sheet(path('../styles/index.css')),
             h.sheet(path('../styles/mobile.css'), '(max-width: 768px)'),
             h.sheet(path('../styles/print.css'), 'print')
         ]
     );
+};

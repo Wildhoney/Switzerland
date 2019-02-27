@@ -2,11 +2,6 @@ import { m } from '/vendor/index.js';
 import * as u from './utils.js';
 import index from './partials/index.js';
 
-const createElements = ({ props }) => {
-    const dialog = document.createElement('dialog');
-    return { ...props, e: { dialog } };
-};
-
 const fetchCountries = async ({ props }) => ({
     ...props,
     countries: {
@@ -45,7 +40,6 @@ const resolveImages = async ({ countries, props }) => {
 export default [
     m.once(({ props }) => ({ ...props, scores: { correct: 0, incorrect: 0 } })),
     m.once(fetchCountries),
-    m.once(createElements),
     m.methods({ open: ({ e }) => e.dialog.showModal() }),
     handleCountries,
     resolveImages,

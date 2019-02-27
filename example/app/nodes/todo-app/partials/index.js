@@ -1,6 +1,7 @@
 import { init } from '/vendor/index.js';
 import todoInput from '../../todo-input/index.js';
 import todoList from '../../todo-list/index.js';
+import flagApp from '../../flag-app/index.js';
 import * as u from '../utils.js';
 import header from './header.js';
 import list from './list.js';
@@ -11,7 +12,7 @@ export default ({ e, h, props }) =>
     h('section', { class: 'todo-app' }, [
         h(todoInput),
         h(todoList),
-        h(e.flag),
+        h(flagApp),
         header(props),
         list(props),
         h.vars({
@@ -20,7 +21,6 @@ export default ({ e, h, props }) =>
                 ? 'transparent'
                 : 'rgba(0, 0, 0, 0.1)'
         }),
-        h(e.flagApp),
         h.sheet(path('../styles/index.css')),
         h.sheet(path('../styles/mobile.css'), '(max-width: 768px)'),
         h.sheet(path('../styles/print.css'), 'print')
