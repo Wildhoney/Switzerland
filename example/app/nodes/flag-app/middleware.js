@@ -40,8 +40,10 @@ const resolveImages = async ({ countries, props }) => {
 export default [
     m.once(({ props }) => ({ ...props, scores: { correct: 0, incorrect: 0 } })),
     m.once(fetchCountries),
-    m.methods({ open: ({ e }) => e.dialog.showModal() }),
     handleCountries,
     resolveImages,
-    m.html(index)
+    m.html(index),
+    m.methods({
+        open: ({ boundary }) => boundary.querySelector('dialog').showModal()
+    })
 ];
