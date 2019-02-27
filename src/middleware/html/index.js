@@ -24,13 +24,10 @@ export default function html(getView, options = {}) {
         const boundary = createShadowRoot(node, options);
 
         if (props.node.isConnected) {
-            // Attach `h` to the current set of props, and all of its infinitely nested `props` where
-            // the `props` haven't been shallowly copied.
-            props.props.h = extendedH;
-
             const isMounting = lifecycle === 'mount';
 
             return (async function render(pass, { forms = [] }) {
+                // Define the new props and assign to `props` so it's infinitely nested.
                 const newProps = {
                     ...props,
                     boundary,
@@ -40,6 +37,7 @@ export default function html(getView, options = {}) {
                         form: { ...utils.form, ...u.parseForms(forms) }
                     }
                 };
+                newProps.props = newProps;
 
                 const view = await getView(newProps);
                 const tree = patch(u.takeTree(node), view, boundary);
@@ -54,8 +52,6 @@ export default function html(getView, options = {}) {
                         forms: boundaryForms.get(boundary)
                     });
                 }
-
-                // hasFormAndMounting&&forms.set(boundary, [...boundary.querySelectorAll('form')]);
 
                 return newProps;
             })(1, { forms: boundaryForms.get(boundary) });
