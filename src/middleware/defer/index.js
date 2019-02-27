@@ -9,7 +9,7 @@ export default function defer(fnP, milliseconds) {
     return props => {
         setTimeout(async () => {
             const fn = await fnP;
-            !(await props.utils.resolved()) && (await fn(props));
+            !(await props.utils.isResolved()) && (await fn(props));
         }, milliseconds);
         return props;
     };

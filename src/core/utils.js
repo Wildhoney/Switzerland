@@ -152,12 +152,13 @@ export const consoleMessage = (text, type = 'error') =>
 export const initialProps = (node, mergeProps, scheduledTask) => {
     const utils = {
         dispatch: dispatchEvent(node),
+        form: {},
         abort: () => {
             throw new CancelError();
         },
-        latestProps: () => previousProps.get(node) || null,
+        getLatestProps: () => previousProps.get(node) || null,
         isIdle: () => node[meta].queue.size() <= 1,
-        resolved: async () => {
+        isResolved: async () => {
             const resolution = await Promise.race([
                 scheduledTask,
                 Promise.resolve(false)
