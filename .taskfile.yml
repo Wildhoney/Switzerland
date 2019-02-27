@@ -23,7 +23,6 @@
       - - - stylelint "example/**/**.css"
       - - - rm -rf es/
       - - - - NODE_ENV=production yarn build
-      - - - - - rm es/production/core/superfine.js # TODO: Remove when using Superfine directly!
       - - - - - find es/production/middleware/* -type d | xargs rm -rf
       - - - - - rm -rf es/production/elements
       - - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
