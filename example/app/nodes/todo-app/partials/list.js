@@ -1,7 +1,4 @@
-import { init } from '/vendor/index.js';
 import * as u from '../utils.js';
-
-const path = init(import.meta.url);
 
 const completed = ({ redux, h }) =>
     h('li', {}, [
