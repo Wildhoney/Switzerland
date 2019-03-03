@@ -1,5 +1,5 @@
 import test from 'ava';
-import { stub } from 'sinon';
+// import { stub } from 'sinon';
 import * as m from '../middleware.js';
 
 test.beforeEach(t => {
