@@ -99,7 +99,7 @@
         "starwars": "^1.0.0",
         "stylelint": "^9.10.1",
         "stylelint-config-prettier": "^5.0.0",
-        "taskfile": "^0.8.5",
+        "taskfile": "^0.9.0",
         "terser": "^3.16.1",
         "testcafe": "^1.1.0"
     }
