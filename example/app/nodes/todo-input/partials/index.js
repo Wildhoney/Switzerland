@@ -2,14 +2,13 @@ import { init } from '/vendor/index.js';
 
 const path = init(import.meta.url);
 
-export default ({ redux, utils, h, render }) => {
-    const form = utils.form.addTodo;
+export default ({ form, redux, h, render }) => {
     const input = form && form.elements.namedItem('todo');
 
     return h(
         'form',
         {
-            name: 'add-todo',
+            oncreate: form => render({ form }),
             onsubmit: async event => (
                 event.preventDefault(),
                 redux.actions.add(input.value),
