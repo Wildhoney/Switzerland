@@ -1,4 +1,3 @@
-import flagApp from '../../flag-app/index.js';
 import { init } from '/vendor/index.js';
 import * as u from '../utils.js';
 
@@ -66,24 +65,10 @@ const filter = ({ h, history }) =>
         )
     ]);
 
-const flag = ({ boundary, h }) =>
-    h(
-        'li',
-        {
-            class: `flag ${navigator.onLine ? 'online' : 'offline'}`,
-            title: "Pretend as though you're a vexillologist.",
-            onclick:
-                navigator.onLine &&
-                (() => boundary.querySelector(flagApp).open())
-        },
-        [h('img', { src: path('../images/flag.svg'), alt: '' })]
-    );
-
 export default ({ h, props }) =>
     h('ul', {}, [
         completed(props),
         position(props),
         props.adapt && dimensions(props),
-        filter(props),
-        flag(props)
+        filter(props)
     ]);

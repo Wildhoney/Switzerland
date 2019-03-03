@@ -1,7 +1,6 @@
 import { init } from '/vendor/index.js';
 import todoInput from '../../todo-input/index.js';
 import todoList from '../../todo-list/index.js';
-import flagApp from '../../flag-app/index.js';
 import * as u from '../utils.js';
 import header from './header.js';
 import list from './list.js';
@@ -12,7 +11,6 @@ export default ({ h, props }) =>
     h('section', { class: 'todo-app' }, [
         h(todoInput),
         h(todoList),
-        h(flagApp),
         header(props),
         list(props),
         h.vars({
