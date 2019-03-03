@@ -28,14 +28,7 @@ const serviceWorker = (path, scope) => {
     });
 };
 
-const onlineOfflineListener = ({ render, props }) => {
-    window.addEventListener('online', render);
-    window.addEventListener('offline', render);
-    return props;
-};
-
 export default [
-    m.once(onlineOfflineListener),
     store,
     serviceWorker(path('../../../utils/worker.js'), '/'),
     m.history({
