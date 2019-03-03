@@ -20,7 +20,7 @@ export const importTemplate = ({ node, boundary, props }) => {
 export const observeTemplate = ({ node, utils, props }) => {
     const template = node.querySelector('template');
     const config = { attributes: true, childList: true, subtree: true };
-    const observer = new MutationObserver(() => {
+    const observer = new window.MutationObserver(() => {
         importTemplate(props);
         const count = u.getImages(props).length;
         const index = utils.getLatestProps().attrs.index || 0;
@@ -50,11 +50,11 @@ export const dispatchEvent = ({
     return props;
 };
 
-export default html => [
+export default tree => [
     m.adapt(),
     m.attrs({ direction: [t.String, 'horizontal'], index: [t.Int, 0] }),
     computeVariables,
-    m.html(html),
+    m.html(tree),
     m.once(importTemplate),
     m.once(observeTemplate),
     updatePosition,
