@@ -10,8 +10,6 @@ const extendedH = h;
 extendedH.vars = u.vars;
 extendedH.sheet = u.sheet;
 
-const boundaryForms = new WeakMap();
-
 /**
  * @function html ∷ View v, Props p ⇒ (p → v) → (p → p)
  * ---
@@ -20,41 +18,21 @@ const boundaryForms = new WeakMap();
  */
 export default function html(getView, options = {}) {
     return async props => {
-        const { lifecycle, utils, node } = props;
+        const { node } = props;
         const boundary = createShadowRoot(node, options);
 
         if (props.node.isConnected) {
-            const isMounting = lifecycle === 'mount';
+            // Define the new props and assign to `props` so it's infinitely nested.
+            const newProps = {
+                ...props,
+                boundary,
+                h: extendedH
+            };
+            newProps.props = newProps;
 
-            return (async function render(pass, { forms = [] }) {
-                // Define the new props and assign to `props` so it's infinitely nested.
-                const newProps = {
-                    ...props,
-                    boundary,
-                    h: extendedH,
-                    utils: {
-                        ...utils,
-                        form: { ...utils.form, ...u.parseForms(forms) }
-                    }
-                };
-                newProps.props = newProps;
-
-                const view = await getView(newProps);
-                const tree = patch(u.takeTree(node), view, boundary);
-                u.putTree(node, tree);
-
-                if (isMounting && u.isFirst(pass) && u.treeContainsForm(view)) {
-                    boundaryForms.set(
-                        boundary,
-                        boundary.querySelectorAll('form')
-                    );
-                    return render(pass + 1, {
-                        forms: boundaryForms.get(boundary)
-                    });
-                }
-
-                return newProps;
-            })(1, { forms: boundaryForms.get(boundary) });
+            const view = await getView(newProps);
+            const tree = patch(u.takeTree(node), view, boundary);
+            u.putTree(node, tree);
         }
 
         return { ...props, boundary };
