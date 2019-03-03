@@ -30,10 +30,12 @@
       - - - - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
-  task: NODE_ENV=test nyc ava
+  task: NODE_ENV=test ava
 
 - name: test/coverage
-  task: NODE_ENV=test nyc report --reporter=text-lcov | coveralls
+  tasks:
+      - NODE_ENV=test nyc ava
+      - NODE_ENV=test nyc report --reporter=text-lcov | coveralls
 
 - name: test/integration
   task: concurrently -k -s first 'yarn start' 'testcafe chrome:headless ./tests/integration/*.js'
