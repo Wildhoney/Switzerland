@@ -36,12 +36,12 @@ const resolveImages = async ({ countries, props }) => {
     return (await m.loader({ ...flags }))(props);
 };
 
-export default html => [
+export default tree => [
     m.once(({ props }) => ({ ...props, scores: { correct: 0, incorrect: 0 } })),
     m.once(fetchCountries),
     handleCountries,
     resolveImages,
-    m.html(html),
+    m.html(tree),
     m.methods({
         open: ({ boundary }) => boundary.querySelector('dialog').showModal()
     })

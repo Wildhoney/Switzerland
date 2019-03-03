@@ -27,7 +27,7 @@ const serviceWorker = (path, scope) => {
     });
 };
 
-export default html => [
+export default tree => [
     store,
     serviceWorker(path('../../../utils/worker.js'), '/'),
     m.history({
@@ -39,6 +39,6 @@ export default html => [
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
-    m.html(html),
+    m.html(tree),
     m.wait(todoInput, todoList)
 ];
