@@ -3,7 +3,6 @@ import db from '../../utils/db.js';
 import store from '../../../utils/store.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';
-import index from './partials/index.js';
 import retry from './partials/retry.js';
 
 const path = init(import.meta.url);
@@ -28,7 +27,7 @@ const serviceWorker = (path, scope) => {
     });
 };
 
-export default [
+export default html => [
     store,
     serviceWorker(path('../../../utils/worker.js'), '/'),
     m.history({
@@ -40,6 +39,6 @@ export default [
     m.once(retrieve),
     m.attrs({ logo: t.String }),
     m.adapt(),
-    m.html(index),
+    m.html(html),
     m.wait(todoInput, todoList)
 ];

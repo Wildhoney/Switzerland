@@ -1,11 +1,10 @@
 import { m, t } from '/vendor/index.js';
 import store from '../../../utils/store.js';
-import index from './partials/index.js';
 
-export default [
+export default html => [
     store,
     m.history({
         filter: [t.Bool, false]
     }),
-    m.html(index)
+    m.html(html)
 ];

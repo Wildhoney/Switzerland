@@ -1,4 +1,19 @@
-import { create } from '/vendor/index.js';
+import { create, init } from '/vendor/index.js';
 import middleware from './middleware.js';
+import list from './partials/list.js';
+import nothing from './partials/nothing.js';
 
-export default create('todo-list', ...middleware);
+const path = init(import.meta.url);
+
+export default create(
+    'todo-list',
+    ...middleware(({ redux, h, props }) =>
+        h('ul', {}, [
+            !!redux.state.list.length && list(props),
+            !redux.state.list.length && nothing(props),
+            h.sheet(path('./styles/index.css')),
+            h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
+            h.sheet(path('./styles/print.css'), 'print')
+        ])
+    )
+);

@@ -1,6 +1,5 @@
 import { m } from '/vendor/index.js';
 import * as u from './utils.js';
-import index from './partials/index.js';
 
 const fetchCountries = async ({ props }) => ({
     ...props,
@@ -37,12 +36,12 @@ const resolveImages = async ({ countries, props }) => {
     return (await m.loader({ ...flags }))(props);
 };
 
-export default [
+export default html => [
     m.once(({ props }) => ({ ...props, scores: { correct: 0, incorrect: 0 } })),
     m.once(fetchCountries),
     handleCountries,
     resolveImages,
-    m.html(index),
+    m.html(html),
     m.methods({
         open: ({ boundary }) => boundary.querySelector('dialog').showModal()
     })
