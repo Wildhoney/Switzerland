@@ -1,3 +1,4 @@
+import { m, t } from '../../index.js';
 import * as u from './utils.js';
 
 export const computeVariables = ({ adapt, props }) => {
@@ -48,3 +49,14 @@ export const dispatchEvent = ({
     indexModified && utils.dispatch('change', attrs.index);
     return props;
 };
+
+export default html => [
+    m.adapt(),
+    m.attrs({ direction: [t.String, 'horizontal'], index: [t.Int, 0] }),
+    computeVariables,
+    m.html(html),
+    m.once(importTemplate),
+    m.once(observeTemplate),
+    updatePosition,
+    dispatchEvent
+];
