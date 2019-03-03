@@ -9,13 +9,5 @@ export default ({ h, boundary, scores, countries }) =>
             'div',
             { class: 'country' },
             countries.answer ? countries.answer.name : 'Voila...'
-        ),
-        h(
-            'a',
-            {
-                class: 'close',
-                onclick: () => boundary.querySelector('dialog').close()
-            },
-            String.fromCharCode(215)
         )
     ]);

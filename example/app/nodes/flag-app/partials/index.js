@@ -8,7 +8,7 @@ const path = init(import.meta.url);
 export default ({ countries, h, props }) => {
     const isComplete = countries.answered.length === countries.all.length;
 
-    return h('dialog', { class: 'flag-app' }, [
+    return h('section', { class: 'flag-app container' }, [
         h.sheet(path('../styles/index.css')),
         h.sheet(path('../styles/mobile.css'), '(max-width: 768px)'),
         h('section', { class: 'body' }, [

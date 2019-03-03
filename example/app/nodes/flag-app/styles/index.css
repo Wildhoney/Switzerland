@@ -4,7 +4,7 @@
     font-family: Arial, Tahoma, Helvetica, sans-serif;
 }
 
-dialog {
+section.container {
     border: 0;
     padding: 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.055), 0 0 125px rgba(0, 0, 0, 0.1),
@@ -13,10 +13,6 @@ dialog {
     height: 30vh;
     border-radius: 3px;
     border-bottom: 5px solid rgba(0, 0, 0, 0.025);
-}
-
-dialog::backdrop {
-    backdrop-filter: blur(1px);
 }
 
 header {
@@ -30,22 +26,6 @@ header div.country {
     font-size: 14px;
     display: flex;
     align-items: center;
-}
-
-header a.close {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    border-left: 1px solid rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    color: rgba(0, 0, 0, 0.5);
-    transition: 0.25s color;
-    margin-left: auto;
-}
-
-header a.close:hover {
-    color: black;
 }
 
 header div.scores {
