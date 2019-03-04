@@ -1,9 +1,8 @@
 import test from 'ava';
 import { spy } from 'sinon';
-import * as R from 'ramda';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import * as type from '../../../types/index.js';
-import attrs from '../index.js';
+import attrs, { nodes } from '../index.js';
 
 test.beforeEach(t => {
     const observe = (t.context.observer = spy());
@@ -14,10 +13,12 @@ test.beforeEach(t => {
     };
 
     t.context.mockObserver = mutations => {
+        const observeSpy = spy();
         window.MutationObserver = function(f) {
             f(mutations);
         };
-        window.MutationObserver.prototype.observe = R.identity;
+        window.MutationObserver.prototype.observe = observeSpy;
+        return { observeSpy };
     };
 });
 
@@ -73,7 +74,7 @@ test('It should be able to define defaults using a tuple;', t => {
     });
 });
 
-test.only('It should invoke the `render` function if the mutations are considered applicable;', t => {
+test('It should invoke the `render` function if the mutations are considered applicable;', t => {
     const node = defaultProps.node.cloneNode(true);
     const renderSpy = spy();
     node.setAttribute('name', 'Adam');
@@ -99,4 +100,32 @@ test.only('It should invoke the `render` function if the mutations are considere
         m({ node: node.cloneNode(true), render: renderSpy });
         t.is(renderSpy.callCount, 1);
     }
+
+    {
+        t.context.mockObserver([{ attributeName: 'age', oldValue: '34' }]);
+        const m = attrs({ name: type.String });
+        m({ node: node.cloneNode(true), render: renderSpy });
+        t.is(renderSpy.callCount, 2);
+    }
+});
+
+test('It should be able to skip the instantiation of a new observer if node seen before;', t => {
+    const node = defaultProps.node.cloneNode(true);
+    const { observeSpy } = t.context.mockObserver([]);
+    attrs({ name: type.String });
+    nodes.add(node);
+    t.is(observeSpy.callCount, 0);
+});
+
+test('It should be able to skip mutations if the attribute is in excluded list;', t => {
+    const node = defaultProps.node.cloneNode(true);
+    const renderSpy = spy();
+    node.setAttribute('name', 'Adam');
+    node.setAttribute('age', '33');
+    node.classList.add('something');
+
+    t.context.mockObserver([{ attributeName: 'class', oldValue: 'nothing' }]);
+    const m = attrs({ name: type.String, age: type.Int }, ['class']);
+    m({ node: node.cloneNode(true), render: renderSpy });
+    t.is(renderSpy.callCount, 0);
 });

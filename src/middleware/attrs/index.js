@@ -4,7 +4,7 @@ import * as u from './utils.js';
 /**
  * @constant nodes ∷ Set
  */
-const nodes = new Set();
+export const nodes = new Set();
 
 /**
  * @function attrs ∷ ∀ a b c. Props p ⇒ Object a (b → c) [String] → (p → p)
