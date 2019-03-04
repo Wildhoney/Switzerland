@@ -8,9 +8,9 @@ const getObserver = () =>
     });
 
 /**
- * @constant observers ∷ WeakSet
+ * @constant nodes ∷ WeakSet
  */
-export const observers = new WeakSet();
+export const nodes = new WeakSet();
 
 /**
  * @function intersect ∷ Props p ⇒ (p → p)
@@ -28,11 +28,11 @@ export default function intersect() {
 
         switch (lifecycle) {
             case 'mount':
-                observers.add(props.node);
+                nodes.add(props.node);
                 observer && observer.observe(props.node);
                 break;
             case 'unmount':
-                observers.delete(props.node);
+                nodes.delete(props.node);
                 observer && observer.unobserve(props.node);
                 break;
         }
