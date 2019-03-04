@@ -13,7 +13,7 @@ test.beforeEach(t => {
         }
     };
 
-    t.context.mockObserver = (mutations) => {
+    t.context.mockObserver = mutations => {
         window.MutationObserver = function(f) {
             f(mutations);
         };
