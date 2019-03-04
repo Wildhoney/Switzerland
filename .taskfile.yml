@@ -35,7 +35,7 @@
 - name: test/coverage
   tasks:
       - NODE_ENV=test nyc ava
-      - NODE_ENV=test nyc report --reporter=text-lcov | coveralls
+      - - NODE_ENV=test nyc report --reporter=text-lcov | coveralls
 
 - name: test/integration
   task: concurrently -k -s first 'yarn start' 'testcafe chrome:headless ./tests/integration/*.js'
