@@ -7,10 +7,10 @@ const path = init(import.meta.url);
 
 export default create(
     'swiss-carousel',
-    ...middleware(({ attrs, props, count, h }) =>
+    ...middleware(({ attrs, props, h }) =>
         h('section', { class: attrs.direction }, [
             h('div', { class: 'track' }),
-            !u.isTouchable() && p.controls({ ...props, count }),
+            !u.isTouchable() && p.controls(props),
             p.variables(props),
             h.sheet(path('./css/index.css'))
         ])
