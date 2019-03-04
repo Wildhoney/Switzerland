@@ -29,3 +29,10 @@ test('It should be able to determine if the current task has become invalid;', t
     queue.push(mockTask);
     t.false(queue.isInvalid(mockTask));
 });
+
+test('It should be able to calculate the size of the queue;', t => {
+    const queue = createQueue();
+    t.is(queue.size(), 0);
+    queue.push(mockTask);
+    t.is(queue.size(), 1);
+});
