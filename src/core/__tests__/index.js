@@ -11,7 +11,8 @@ test.beforeEach(t => {
             t.context.get(tag);
             return tag === 'x-neptune' ? class {} : null;
         },
-        define: (tag, blueprint) => t.context.define(tag, blueprint)
+        define: (tag, blueprint, extend) =>
+            t.context.define(tag, blueprint, extend)
     };
 });
 
@@ -30,6 +31,12 @@ test('It should be able to handle the relative paths correctly;', t => {
     t.is(path('jupiter.js'), '/nodes/earth/jupiter.js');
     t.is(path('saturn/uranus.js'), '/nodes/earth/saturn/uranus.js');
     t.is(path('../saturn/neptune/pluto.js'), '/nodes/saturn/neptune/pluto.js');
+});
+
+test('It should be able to handle paths correct using `window.location.host` directly;', t => {
+    window.location.host = 'localhost:3000';
+    const path = init('https://localhost:3000/nodes/earth/planets.js');
+    t.is(path('../mercury.js'), 'https://localhost:3000/nodes/mercury.js');
 });
 
 test('It should be able to handle the absolute paths correctly;', t => {
@@ -56,6 +63,19 @@ test.serial(
         t.is(create('x-mercury'), 'x-mercury');
         t.is(t.context.define.callCount, 1);
         t.true(t.context.define.calledWith('x-mercury', match.any));
+    }
+);
+
+test.serial(
+    'It should yield the defined tag name when extending a native element;',
+    t => {
+        t.is(create('x-jupiter/input'), 'x-jupiter');
+        t.is(t.context.define.callCount, 1);
+        t.true(
+            t.context.define.calledWith('x-jupiter', match.any, {
+                extends: 'input'
+            })
+        );
     }
 );
 
