@@ -1,4 +1,5 @@
 import { handler } from '../middleware/rescue/index.js';
+import { styles } from '../middleware/html/utils.js';
 
 /**
  * @constant meta ∷ Symbol
@@ -243,28 +244,8 @@ export const handleException = (node, error) => {
  * Finds all of the component's `HTMLStyleElement` nodes and extracts the `CSSImportRule` rules, awaiting
  * the resolution of each one before resolving the yielded promise.
  */
-export const cssImports = node => {
-    const styles = createShadowRoot(node).querySelectorAll('style');
-
-    return new Promise(resolve => {
-        try {
-            const isLoaded = rules =>
-                rules.every(a => a.styleSheet)
-                    ? resolve()
-                    : 'requestIdleCallback' in window
-                    ? requestIdleCallback(() => isLoaded(rules))
-                    : setTimeout(() => isLoaded(rules), 10);
-
-            const importRules = [...styles].flatMap(({ sheet }) =>
-                [...sheet.rules].filter(a => a instanceof CSSImportRule)
-            );
-
-            return isLoaded(importRules);
-        } catch (error) {
-            resolve();
-        }
-    });
-};
+export const cssImports = node =>
+    styles.has(node) ? Promise.all([...styles.get(node)]) : Promise.resolve();
 
 /**
  * @function getDefaults ∷ ∀ a. Object String (String → a)

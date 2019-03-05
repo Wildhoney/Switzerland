@@ -5,11 +5,6 @@ import {
 import { createShadowRoot } from '../../core/utils.js';
 import * as u from './utils.js';
 
-// Extend the `h` object with useful functions.
-const extendedH = h;
-extendedH.vars = u.vars;
-extendedH.sheet = u.sheet;
-
 /**
  * @function html ∷ View v, Props p ⇒ (p → v) → (p → p)
  * ---
@@ -20,6 +15,14 @@ export default function html(getView, options = {}) {
     return async props => {
         const { node } = props;
         const boundary = createShadowRoot(node, options);
+
+        // Remove any previous style resolutions.
+        u.styles.has(node) && u.styles.delete(node);
+
+        // Extend the `h` object with useful functions.
+        const extendedH = h;
+        extendedH.vars = u.vars;
+        extendedH.sheet = u.sheet(node);
 
         if (props.node.isConnected) {
             // Define the new props and assign to `props` so it's infinitely nested.
