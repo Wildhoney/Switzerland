@@ -47,10 +47,22 @@ test('It should be able to determine the prototype of a given element;', t => {
 
 test('It should be able to dispatch the event with the node and version;', t => {
     const node = document.createElement('div');
-    const dispatchEvent = spy();
-    node.dispatchEvent = dispatchEvent;
+    const constructorSpy = spy();
+    const dispatchEventSpy = spy();
+    window.CustomEvent = function(name, options) {
+        constructorSpy(name, options);
+    };
+
+    node.dispatchEvent = dispatchEventSpy;
     u.dispatchEvent(node)('test', { data: 'abc' });
-    t.is(dispatchEvent.callCount, 1);
+    t.is(dispatchEventSpy.callCount, 1);
+    t.true(
+        constructorSpy.calledWith('test', {
+            bubbles: true,
+            composed: true,
+            detail: { data: 'abc', version: 4 }
+        })
+    );
 });
 
 test('It should be able to yield an object of defaults;', t => {
