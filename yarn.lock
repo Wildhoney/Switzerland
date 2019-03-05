@@ -6110,6 +6110,11 @@ node-releases@^1.0.0-alpha.11:
   dependencies:
     semver "^5.3.0"
 
+node-url-imports@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/node-url-imports/-/node-url-imports-0.3.0.tgz#38340f0fbf3c342e9a32984da82301f240fc9dbf"
+  integrity sha512-d5lQwsZ4+C2VrXd5Puew1rsUS+poq5zDHMijn4Tb9R2Wq3eQNurW784H+bKMAtRB0oId7IQXKIRt2u1T9bT1RA==
+
 node-version@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/node-version/-/node-version-1.2.0.tgz#34fde3ffa8e1149bd323983479dda620e1b5060d"

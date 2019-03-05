@@ -39,6 +39,7 @@
         "failFast": true,
         "require": [
             "esm",
+            "node-url-imports",
             "core-js",
             "./tests/helpers/browser-env.js"
         ]
@@ -87,6 +88,7 @@
         "fslint": "^1.1.0",
         "node-glob": "^1.2.0",
         "node-mkdirp": "^0.0.1",
+        "node-url-imports": "^0.3.0",
         "nodemon": "^1.18.10",
         "nyc": "^13.3.0",
         "prettier": "^1.16.4",
