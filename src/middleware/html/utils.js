@@ -29,16 +29,20 @@ const toKebab = value => {
  * @function sheet ∷ HTMLElement e, View v ⇒ e → String → String → v
  */
 export const sheet = node => (path, mediaQuery = '') => {
-    let setLoaded;
-    !styles.has(node) && styles.set(node, new Set());
-    styles.get(node).add(new Promise(resolve => (setLoaded = resolve)));
+    let setLoaded = () => {};
 
     return h(
         'style',
         {
             key: path,
             type: 'text/css',
-            onload: setLoaded
+            oncreate: () => {
+                !styles.has(node) && styles.set(node, new Set());
+                styles
+                    .get(node)
+                    .add(new Promise(resolve => (setLoaded = resolve)));
+            },
+            onload: () => setLoaded()
         },
         `@import "${path}" ${mediaQuery}`.trim() + ';'
     );
