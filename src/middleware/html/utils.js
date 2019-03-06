@@ -26,14 +26,15 @@ const toKebab = value => {
 };
 
 /**
- * @function sheet ∷ HTMLElement e, View v ⇒ e → String → String → v
+ * @function sheet ∷ ∀ a. HTMLElement e, View v ⇒ e → String → String → v → Object String a
  */
-export const sheet = node => (path, mediaQuery = '') => {
+export const sheet = node => (path, mediaQuery = '', attrs = {}) => {
     let setLoaded = () => {};
 
     return h(
         'style',
         {
+            ...attrs,
             key: path,
             type: 'text/css',
             oncreate: () => {
@@ -42,7 +43,8 @@ export const sheet = node => (path, mediaQuery = '') => {
                     .get(node)
                     .add(new Promise(resolve => (setLoaded = resolve)));
             },
-            onload: () => setLoaded()
+            onerror: () => setLoaded(),
+            onload: () =>  setLoaded()
         },
         `@import "${path}" ${mediaQuery}`.trim() + ';'
     );
