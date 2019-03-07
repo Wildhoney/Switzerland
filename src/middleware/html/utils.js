@@ -44,7 +44,7 @@ export const sheet = node => (path, mediaQuery = '', attrs = {}) => {
                     .add(new Promise(resolve => (setLoaded = resolve)));
             },
             onerror: () => setLoaded(),
-            onload: () =>  setLoaded()
+            onload: () => setLoaded()
         },
         `@import "${path}" ${mediaQuery}`.trim() + ';'
     );
