@@ -47,6 +47,9 @@ todo-app::part(header):hover {
 }
 
 swiss-carousel {
+    --swiss-carousel-transition-duration: 0.35s;
+    --swiss-carousel-transition-timing-function: ease-in-out;
+
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
     width: 80vw;
     height: 80vh;

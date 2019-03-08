@@ -25,17 +25,25 @@ export const controls = ({ attrs, count, node, h }) => {
     );
 };
 
-export const variables = ({ attrs, count, width, height, prevProps, h }) => {
+export const variables = ({
+    attrs,
+    count,
+    width,
+    height,
+    prevProps = {},
+    h
+}) => {
     const isAnimated = prevProps ? Boolean(prevProps.height) : false;
-    const variables = {
+
+    const vars = {
         count,
         width,
         height,
         overflow: u.isTouchable() ? 'scroll' : 'hidden',
         left: u.isTouchable() ? 0 : `-${width * attrs.index}px`,
         top: u.isTouchable() ? 0 : `-${height * attrs.index}px`,
-        animationDuration: 0
+        animationDuration: 'var(--swiss-carousel-transition-duration)'
     };
-    isAnimated && delete variables.animationDuration;
-    return h.vars(variables);
+
+    return h.vars(isAnimated ? vars : { ...vars, animationDuration: 0 });
 };

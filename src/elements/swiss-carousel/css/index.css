@@ -23,7 +23,8 @@ section.vertical {
 
 section div.track {
     display: flex;
-    transition: transform var(--animation-duration, 0.55s);
+    transition: transform var(--animation-duration, 0.35s)
+        var(--swiss-carousel-transition-timing-function, ease);
 }
 
 section.horizontal div.track {
