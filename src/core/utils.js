@@ -179,7 +179,7 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
         node,
         utils,
         render: node.render.bind(node),
-        prevProps: previousProps.get(node) || null,
+        prevProps: previousProps.get(node),
         lifecycle: mergeProps.lifecycle || 'update'
     };
 };
