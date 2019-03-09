@@ -49,6 +49,7 @@ export const Bool = type => {
         case 'yes':
         case 'active':
         case 'enabled':
+        case '':
             return true;
         case '0':
         case 'false':
