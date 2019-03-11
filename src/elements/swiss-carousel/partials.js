@@ -33,9 +33,7 @@ export const variables = ({
     prevProps = { height: 0 },
     h
 }) => {
-    const isAnimated = prevProps.height > 0;
-
-    const vars = {
+    const config = {
         count,
         width,
         height,
@@ -45,5 +43,6 @@ export const variables = ({
         animationDuration: 'var(--swiss-carousel-transition-duration)'
     };
 
-    return h.vars(isAnimated ? vars : { ...vars, animationDuration: 0 });
+    const isAnimated = prevProps.height > 0;
+    return h.vars(isAnimated ? config : { ...config, animationDuration: 0 });
 };
