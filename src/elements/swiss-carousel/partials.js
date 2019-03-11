@@ -30,10 +30,10 @@ export const variables = ({
     count,
     width,
     height,
-    prevProps = {},
+    prevProps = { height: 0 },
     h
 }) => {
-    const isAnimated = prevProps ? Boolean(prevProps.height) : false;
+    const isAnimated = prevProps.height > 0;
 
     const vars = {
         count,
