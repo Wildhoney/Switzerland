@@ -9,12 +9,12 @@ import { styles } from '../middleware/html/utils.js';
 export const meta = Symbol('meta');
 
 /**
- * @class CancelError ∷ Error
+ * @class Cancel ∷ Error
  * ---
  * Used for the `abort` function which allows the current render of a component to be cancelled, and any
  * queued items to be processed immediately afterwards.
  */
-export class CancelError extends Error {}
+export class Cancel extends Error {}
 
 /**
  * @constant previousProps ∷ HTMLElement e, Props p ⇒ e → p
@@ -57,12 +57,12 @@ export const dispatchEvent = node => (name, payload, options = {}) => {
 };
 
 /**
- * @function createShadowRoot ∷ ∀ a. ShadowRoot s, HTMLElement e ⇒ e → Object String a → s|e
+ * @function createBoundary ∷ ∀ a. ShadowRoot s, HTMLElement e ⇒ e → Object String a → s|e
  * ---
  * Takes the node element and attaches the shadow boundary to it if it doesn't exist
  * already. Returns the node if a shadow boundary cannot be attached to the element.
  */
-export const createShadowRoot = (node, options = {}) => {
+export const createBoundary = (node, options = {}) => {
     const defaultOptions = { mode: 'open', delegatesFocus: false };
 
     if (shadowBoundaries.has(node)) {
@@ -70,12 +70,14 @@ export const createShadowRoot = (node, options = {}) => {
     }
 
     try {
-        const root = node.attachShadow({
+        const boundary = node.attachShadow({
             ...defaultOptions,
             ...options
         });
-        shadowBoundaries.set(node, root);
-        return root;
+        options.sheets &&
+            (boundary.adoptedStyleSheets = [].concat(options.sheets));
+        shadowBoundaries.set(node, boundary);
+        return boundary;
     } catch (_) {
         return node;
     }
@@ -155,7 +157,7 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
         dispatch: dispatchEvent(node),
         form: {},
         abort: () => {
-            throw new CancelError();
+            throw new Cancel();
         },
         getLatestProps: () => previousProps.get(node) || null,
         isIdle: () => node[meta].queue.size() <= 1,
