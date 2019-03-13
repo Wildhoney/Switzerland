@@ -1,13 +1,13 @@
 import hyper from 'https://cdn.jsdelivr.net/npm/hyperhtml@2.17.1/esm/index.js';
-import { createShadowRoot } from '../../core/utils.js';
+import { createBoundary } from '../../core/utils.js';
 
 /**
  * @function template ∷ Template t, Props p ⇒ (p → t) → (p → p)
  */
-export default function template(getView, options = {}) {
+export default function template(getView) {
     return async props => {
         const { node } = props;
-        const boundary = createShadowRoot(node, options);
+        const boundary = createBoundary(node);
         const h = hyper(boundary);
 
         if (props.node.isConnected) {
