@@ -1,7 +1,7 @@
 import * as u from './utils.js';
 import * as impl from './impl/index.js';
 
-export { meta, CancelError } from './utils.js';
+export { meta, Cancel } from './utils.js';
 
 /**
  * @function init ∷ String → String → (String → String)
