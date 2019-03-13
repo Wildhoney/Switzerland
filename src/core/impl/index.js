@@ -54,7 +54,7 @@ export const base = (extension, middleware) =>
                         middleware
                     ));
                 } catch (error) {
-                    if (error instanceof u.CancelError) {
+                    if (error instanceof u.Cancel) {
                         return;
                     }
 

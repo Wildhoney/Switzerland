@@ -99,7 +99,7 @@ test.serial(
     async t => {
         const { instance, injectors } = t.context;
         const initialPropsStub = stub(u, 'initialProps').throws(
-            () => new u.CancelError()
+            () => new u.Cancel()
         );
         const setErrorSpy = spy(injectors.state, 'setError');
         await instance.render();
