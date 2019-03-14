@@ -37,6 +37,7 @@ const resolveImages = async ({ countries, props }) => {
 };
 
 export default tree => [
+    m.boundary(),
     m.once(({ props }) => ({ ...props, scores: { correct: 0, incorrect: 0 } })),
     m.once(fetchCountries),
     handleCountries,

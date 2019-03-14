@@ -37,7 +37,7 @@ As Switzerland is functional its components simply take `props` and yield `props
 ```javascript
 import { create, m } from 'switzerland';
 
-create('x-countries', m.html(({ h }) =>
+create('x-countries', m.boundary(), m.html(({ h }) =>
     h('ul', {}, [
         h('li', {}, 'United Kingdom'),
         h('li', {}, 'Russian Federation'),
@@ -61,6 +61,7 @@ import { create, m, t } from 'switzerland';
 
 create(
     'x-countries',
+    m.boundary(),
     m.attrs({ values: t.Array(t.String) }),
     m.html(({ attrs, h }) =>
         h('ul', {}, attrs.values.map(country => h('li', {}, country)))
@@ -92,6 +93,7 @@ const path = init(import.meta.url);
 
 create(
     'x-countries',
+    m.boundary(),
     m.attrs({ values: t.Array(t.String) }),
     m.html(({ attrs, h }) =>
         h('section', {}, [
@@ -123,6 +125,7 @@ const path = init(import.meta.url);
 
 create(
     'x-countries',
+    m.boundary(),
     m.attrs({ values: t.Array(t.String) }),
     m.html(({ attrs, utils, h }) =>
         h('section', {}, [

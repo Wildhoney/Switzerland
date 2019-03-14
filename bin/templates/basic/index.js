@@ -10,6 +10,7 @@ const path = init(import.meta.url);
 export default create(
     '{name}',
     roll,
+    m.boundary(),
     m.html(({ rolled, render, h }) =>
         h('main', { title: 'Click to roll the dice again!', onclick: render }, [
             h('img', { src: path('./images/dice.svg') }),

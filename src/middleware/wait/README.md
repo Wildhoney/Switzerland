@@ -14,6 +14,7 @@ By using the `wait` middleware you can instruct the `profile-card` component to 
 ```javascript
 create(
     'profile-card',
+    m.boundary(),
     m.html(() => h('div', {}, [
         h('user-name'),
         h('user-location')
@@ -27,6 +28,7 @@ It's important the `wait` middleware appears after the middleware function that 
 ```javascript
 create(
     'profile-card',
+    m.boundary(),
     m.html(({ showName }) => h('div', {}, [
         showName && h('user-name'),
         h('user-location')

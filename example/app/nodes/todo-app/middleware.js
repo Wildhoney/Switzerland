@@ -30,6 +30,7 @@ const serviceWorker = (path, scope) => {
 export default tree => [
     store,
     serviceWorker(path('../../../utils/worker.js'), '/'),
+    m.boundary(),
     m.history({
         filter: [t.Bool, false]
     }),

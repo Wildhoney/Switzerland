@@ -51,6 +51,7 @@ export const dispatchEvent = ({
 };
 
 export default tree => [
+    m.boundary(),
     m.adapt(),
     m.attrs({ direction: [t.String, 'horizontal'], index: [t.Int, 0] }),
     computeVariables,
