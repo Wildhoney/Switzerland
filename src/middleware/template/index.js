@@ -1,14 +1,12 @@
 import hyper from 'https://cdn.jsdelivr.net/npm/hyperhtml@2.17.1/esm/index.js';
-import { createBoundary } from '../../core/utils.js';
 
 /**
  * @function template ∷ Template t, Props p ⇒ (p → t) → (p → p)
  */
 export default function template(getView) {
     return async props => {
-        const { node } = props;
-        const boundary = createBoundary(node);
-        const h = hyper(boundary);
+        const { node, boundary } = props;
+        const h = hyper(boundary || node);
 
         if (props.node.isConnected) {
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
@@ -17,6 +15,6 @@ export default function template(getView) {
             await getView({ ...props, h });
         }
 
-        return { ...props, boundary };
+        return props;
     };
 }

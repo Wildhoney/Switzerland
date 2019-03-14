@@ -2,7 +2,6 @@ import {
     patch,
     h
 } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
-import { createBoundary } from '../../core/utils.js';
 import * as u from './utils.js';
 
 /**
@@ -13,8 +12,7 @@ import * as u from './utils.js';
  */
 export default function html(getView) {
     return async props => {
-        const { node } = props;
-        const boundary = createBoundary(node);
+        const { node, boundary } = props;
 
         // Remove any previous style resolutions.
         u.styles.has(node) && u.styles.delete(node);
@@ -28,16 +26,15 @@ export default function html(getView) {
             // Define the new props and assign to `props` so it's infinitely nested.
             const newProps = {
                 ...props,
-                boundary,
                 h: extendedH
             };
             newProps.props = newProps;
 
             const view = await getView(newProps);
-            const tree = patch(u.takeTree(node), view, boundary);
+            const tree = patch(u.takeTree(node), view, boundary || node);
             u.putTree(node, tree);
         }
 
-        return { ...props, boundary };
+        return props;
     };
 }
