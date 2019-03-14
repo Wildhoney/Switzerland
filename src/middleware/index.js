@@ -9,6 +9,7 @@ const load = name => async (...args) => {
 export const adapt = load('adapt');
 export const attrs = load('attrs');
 export const blend = load('blend');
+export const boundary = load('boundary');
 export const defer = load('defer');
 export const delay = load('delay');
 export const history = load('history');
