@@ -21,7 +21,7 @@ const serviceWorker = (path, scope) => {
                     scope
                 }));
             return props;
-        } catch (_) {
+        } catch {
             return props;
         }
     });

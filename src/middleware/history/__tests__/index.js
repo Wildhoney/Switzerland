@@ -26,7 +26,7 @@ test('It should register the events to notify changes only once;', async t => {
                 resolve();
             });
         });
-    } catch (_) {
+    } catch {
     } finally {
         window.dispatchEvent(
             new window.CustomEvent(eventName, {

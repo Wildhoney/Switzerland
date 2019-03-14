@@ -33,7 +33,7 @@ export const createBoundary = (node, options = {}) => {
         node[boundary] = root;
 
         return root;
-    } catch (_) {
+    } catch {
         return node;
     }
 };
