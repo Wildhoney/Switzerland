@@ -23,22 +23,6 @@ test('It should be able to recursively determine the component name;', t => {
     t.is(u.findFreeTagName('x-example'), 'x-example-0');
 });
 
-test('It should be able to attach the shadow boundary to an element;', t => {
-    const element = document.createElement('section');
-    const attachShadow = spy(element.attachShadow);
-    element.attachShadow = attachShadow;
-    const shadowBoundary = u.createBoundary(element);
-    t.is(attachShadow.callCount, 1);
-    t.true(shadowBoundary instanceof window.ShadowRoot);
-});
-
-test('It should be able to return the element when attaching the shadow errors;', t => {
-    const element = document.createElement('section');
-    element.attachShadow = null;
-    const sameElement = u.createBoundary(element);
-    t.is(element, sameElement);
-});
-
 test('It should be able to determine the prototype of a given element;', t => {
     t.is(u.determinePrototype('div'), window.HTMLDivElement);
     t.is(u.determinePrototype('span'), window.HTMLSpanElement);
