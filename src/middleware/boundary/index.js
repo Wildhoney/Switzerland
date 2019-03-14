@@ -1,4 +1,4 @@
-import * as u from '../../core/utils.js';
+import * as u from './utils.js';
 
 /**
  * @function boundary ∷ ∀ a. Props p ⇒ Object String a → (p → p)
