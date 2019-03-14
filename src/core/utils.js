@@ -24,14 +24,6 @@ export class Cancel extends Error {}
 const previousProps = new WeakMap();
 
 /**
- * @constant shadowBoundaries ∷ HTMLElement e, ShadowRoot s ⇒ e → s
- * ---
- * Elements and their corresponding shadow boundaries, as `e.shadowRoot` is unreliable due to closed
- * shadow boundaries that make that prop always `null`.
- */
-const shadowBoundaries = new WeakMap();
-
-/**
  * @constant errorHandlers ∷ HTMLElement e, Props p ⇒ e → p
  * ---
  * An incomplete set of props for a component that are used in the error recovery handler.
@@ -54,33 +46,6 @@ export const dispatchEvent = node => (name, payload, options = {}) => {
             detail: { ...model, version: 4 }
         })
     );
-};
-
-/**
- * @function createBoundary ∷ ∀ a. ShadowRoot s, HTMLElement e ⇒ e → Object String a → s|e
- * ---
- * Takes the node element and attaches the shadow boundary to it if it doesn't exist
- * already. Returns the node if a shadow boundary cannot be attached to the element.
- */
-export const createBoundary = (node, options = {}) => {
-    const defaultOptions = { mode: 'open', delegatesFocus: false };
-
-    if (shadowBoundaries.has(node)) {
-        return shadowBoundaries.get(node);
-    }
-
-    try {
-        const boundary = node.attachShadow({
-            ...defaultOptions,
-            ...options
-        });
-        options.sheets &&
-            (boundary.adoptedStyleSheets = [].concat(options.sheets));
-        shadowBoundaries.set(node, boundary);
-        return boundary;
-    } catch (_) {
-        return node;
-    }
 };
 
 /**
