@@ -14,7 +14,7 @@ export default ({ countries, loader, h, props }) => {
                 h('li', {}, [
                     h('img', {
                         class: 'flag',
-                        src: loader[index],
+                        src: loader[index]
                         // onclick: u.once(handleAnswer(country))
                     })
                 ])

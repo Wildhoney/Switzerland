@@ -26,7 +26,7 @@
       - - - - - find es/production/middleware/* -type d | xargs rm -rf
       - - - - - rm -rf es/production/elements
       - - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
-      - - - - - - - fslint --files=build.tar.gz --limit=3500 || rm -rf build.tar.gz es/
+      - - - - - - - fslint --files=build.tar.gz --limit=3000 || rm -rf build.tar.gz es/
       - - - - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
