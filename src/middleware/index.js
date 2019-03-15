@@ -20,6 +20,7 @@ export const methods = load('methods');
 export const once = load('once');
 export const redux = load('redux');
 export const rescue = load('rescue');
+export const state = load('state');
 export const template = load('template');
 export const html = load('html');
 export const wait = load('wait');
