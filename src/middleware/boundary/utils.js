@@ -7,7 +7,7 @@ import { meta } from '../../core/utils.js';
  * already. Returns the node if a shadow boundary cannot be attached to the element.
  */
 export const createBoundary = (node, options = {}) => {
-    if (node[meta].boundary) {
+    if (node[meta] && node[meta].boundary) {
         return node[meta].boundary;
     }
 
@@ -28,7 +28,7 @@ export const createBoundary = (node, options = {}) => {
             (boundary.adoptedStyleSheets = [].concat(options.sheets));
 
         // Memorise the shadow boundary for next time the function is invoked.
-        node[meta].boundary = boundary;
+        node[meta] && (node[meta].boundary = boundary);
 
         return boundary;
     } catch {
