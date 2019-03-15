@@ -1,5 +1,10 @@
 import * as u from './utils.js';
 
-export default () => {
+/**
+ * @function state ∷ void → (p → p)
+ * ---
+ * Provides a local state that is very similar to React's `useState` hook.
+ */
+export default function state() {
     return props => ({ ...props, state: u.useState(props) });
-};
+}
