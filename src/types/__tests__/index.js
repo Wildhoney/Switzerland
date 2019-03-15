@@ -39,10 +39,10 @@ test('It should be able to parse Float.DP types;', t => {
 });
 
 test('It should be able to parse Bool types;', t => {
-    t.plan(37);
+    t.plan(25);
 
-    const truthies = ['true', '1', 'yes', 'on', 'active', 'enabled'];
-    const falsies = ['false', '0', 'no', 'off', 'inactive', 'disabled'];
+    const truthies = ['true', '1', 'yes', 'on'];
+    const falsies = ['false', '0', 'no', 'off'];
 
     truthies.forEach(value => {
         t.true(type.Bool(value));
