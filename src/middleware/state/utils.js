@@ -1,4 +1,4 @@
-const values = new WeakMap();
+export const values = new WeakMap();
 
 export const useState = ({ node, render }) => value => {
     !values.has(node) && values.set(node, new Map());
