@@ -6,8 +6,8 @@ test('It should be able to set the `useState` function and behave as expected;',
     const boundUseState = u.useState(defaultProps);
 
     function run(expectedName, expectedAge) {
-        // There's no denying that hooks are weird, because by default each invocation will return
-        // a different object, and there's no good way of keep track of state between renders. Instead
+        // There's no denying that hooks are peculiar, because by default each invocation will return
+        // the default value since there's no good way of keeping track of state between renders. Instead
         // the `useState` is tracked by its position in the file using a try-catch. Hence why we have
         // this test written in a function that invokes itself. Also hence why hooks should NEVER be wrapped
         // in conditionals.
