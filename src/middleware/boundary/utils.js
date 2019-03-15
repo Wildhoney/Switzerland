@@ -1,7 +1,4 @@
-/**
- * @constant boundary ∷ Symbol
- */
-const boundary = Symbol('boundary');
+import { meta } from '../../core/utils.js';
 
 /**
  * @function createBoundary ∷ ∀ a. ShadowRoot s, HTMLElement e ⇒ e → Object String a → s|e
@@ -10,8 +7,8 @@ const boundary = Symbol('boundary');
  * already. Returns the node if a shadow boundary cannot be attached to the element.
  */
 export const createBoundary = (node, options = {}) => {
-    if (node[boundary]) {
-        return node[boundary];
+    if (node[meta].boundary) {
+        return node[meta].boundary;
     }
 
     const defaultOptions = {
@@ -21,18 +18,19 @@ export const createBoundary = (node, options = {}) => {
     };
 
     try {
-        const root = node.attachShadow({
+        const boundary = node.attachShadow({
             ...defaultOptions,
             ...options
         });
 
         // Attached any adopted stylesheets if any have been passed.
-        options.sheets && (root.adoptedStyleSheets = [].concat(options.sheets));
+        options.sheets &&
+            (boundary.adoptedStyleSheets = [].concat(options.sheets));
 
         // Memorise the shadow boundary for next time the function is invoked.
-        node[boundary] = root;
+        node[meta].boundary = boundary;
 
-        return root;
+        return boundary;
     } catch {
         return node;
     }

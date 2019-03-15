@@ -14,7 +14,8 @@ export const base = (extension, middleware) =>
             super();
             this[u.meta] = {
                 queue: createQueue(),
-                state: createState(this)
+                state: createState(this),
+                boundary: null
             };
         }
         connectedCallback() {
