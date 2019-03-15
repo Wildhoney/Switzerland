@@ -43,20 +43,16 @@ Float.DP = dp => a => {
  */
 export const Bool = type => {
     switch (type.toLowerCase()) {
+        case '':
         case '1':
         case 'true':
         case 'on':
         case 'yes':
-        case 'active':
-        case 'enabled':
-        case '':
             return true;
         case '0':
         case 'false':
         case 'off':
         case 'no':
-        case 'inactive':
-        case 'disabled':
             return false;
     }
     return null;
