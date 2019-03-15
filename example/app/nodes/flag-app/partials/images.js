@@ -1,8 +1,8 @@
-import { u } from '/vendor/index.js';
-import { handlers } from '../utils.js';
+// import { u } from '/vendor/index.js';
+// import { handlers } from '../utils.js';
 
 export default ({ countries, loader, h, props }) => {
-    const handleAnswer = handlers.answer(props);
+    // const handleAnswer = handlers.answer(props);
 
     return h(
         'div',
@@ -15,7 +15,7 @@ export default ({ countries, loader, h, props }) => {
                     h('img', {
                         class: 'flag',
                         src: loader[index],
-                        onclick: u.once(handleAnswer(country))
+                        // onclick: u.once(handleAnswer(country))
                     })
                 ])
             )
