@@ -41,10 +41,10 @@ export const create = (name, ...middleware) => {
  * to find a unique name takes place in this function, and so if the new custom component name already exists, a
  * native ungraceful `customElements` exception will be thrown.
  */
-export const alias = (name, newName) => {
+export const alias = (name, alias) => {
     const CustomElement = window.customElements.get(name);
     const instance = new CustomElement();
-    const [, extension] = u.parseTagName(newName);
-    window.customElements.define(newName, impl.alias(extension, instance));
-    return newName;
+    const [, extension] = u.parseTagName(alias);
+    window.customElements.define(alias, impl.alias(extension, instance));
+    return alias;
 };
