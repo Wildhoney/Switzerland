@@ -12,7 +12,7 @@ export default function rename(name, middleware) {
                 return newProps;
                 case 1:
                     return { ...drop(newProps), [name]: newProps[diff[0]] };
-                    case 2:
+                    default:
                         return { ...drop(newProps), [name]: take(newProps) };
         }
     };
