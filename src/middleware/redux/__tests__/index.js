@@ -51,7 +51,8 @@ test.serial(
     t => {
         nodes.add = spy(nodes.add);
 
-        for (let index = 0; index <= 3; index++) {
+        const iterations = Math.floor(Math.random() * 5) + 5;
+        for (let index = 0; index <= iterations; index++) {
             const { reducer, actions } = t.context;
             const m = redux(reducer, actions);
             m(defaultProps);
