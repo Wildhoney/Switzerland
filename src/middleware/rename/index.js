@@ -1,5 +1,8 @@
 import * as u from './utils.js';
 
+/**
+ * @function rename ∷ Props p ⇒ String → (p → p) → p
+ */
 export default function rename(name, middleware) {
     return async props => {
         const newProps = (await middleware)(props);
@@ -10,10 +13,10 @@ export default function rename(name, middleware) {
         switch (diff.length) {
             case 0:
                 return newProps;
-                case 1:
-                    return { ...drop(newProps), [name]: newProps[diff[0]] };
-                    default:
-                        return { ...drop(newProps), [name]: take(newProps) };
+            case 1:
+                return { ...drop(newProps), [name]: newProps[diff[0]] };
+            default:
+                return { ...drop(newProps), [name]: take(newProps) };
         }
     };
 }
