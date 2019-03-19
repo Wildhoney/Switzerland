@@ -2,7 +2,7 @@ import test from 'ava';
 import { spy, match } from 'sinon';
 import * as R from 'ramda';
 import defaultProps from '../../../../tests/helpers/default-props.js';
-import redux, { nodes } from '../';
+import redux, { nodes } from '../index.js';
 
 test.beforeEach(t => {
     t.context.reducer = spy();
