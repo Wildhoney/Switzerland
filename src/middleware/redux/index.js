@@ -14,7 +14,7 @@ export default function redux(reducer, actions) {
         reducer,
         r.applyMiddleware(thunk)
     );
-    const actions_ = r.bindActionCreators(actions, dispatch);
+    const actions_ = actions && r.bindActionCreators(actions, dispatch);
 
     return props => {
         const state = getState();
