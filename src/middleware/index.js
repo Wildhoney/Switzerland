@@ -19,6 +19,7 @@ export const loader = load('loader');
 export const methods = load('methods');
 export const once = load('once');
 export const redux = load('redux');
+export const rename = load('rename');
 export const rescue = load('rescue');
 export const state = load('state');
 export const template = load('template');
