@@ -2,9 +2,9 @@ import * as r from 'https://cdn.jsdelivr.net/npm/@wildhoney/redux@4.0.1/es/redux
 import thunk from 'https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js';
 
 /**
- * @function redux ∷ ∀ a b c d. { (String (a → b), (c → { action: String, payload: d } → c) }
+ * @function redux ∷ ∀ a b c d. (a → Object String b) → Object String c → d
  */
-export default function redux({ actions, reducer }) {
+export default function redux(reducer, actions) {
     const subscriptions = new WeakSet();
     const { dispatch, getState, subscribe } = r.createStore(
         reducer,

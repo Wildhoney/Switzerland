@@ -70,4 +70,4 @@ const actions = {
     }
 };
 
-export default m.redux({ reducer, actions });
+export default m.redux(reducer, actions);
