@@ -239,3 +239,9 @@ export const toCamelcase = value => {
         fromSnake: f('_')
     };
 };
+
+/**
+ * @function findBoundary ∷ { HTMLElement, ShadowRoot|void } → ShadowRoot|HTMLElement
+ */
+export const findBoundary = ({ node, boundary }) =>
+    boundary || (node[meta] && node[meta].boundary) || node;

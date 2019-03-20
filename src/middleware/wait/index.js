@@ -1,4 +1,4 @@
-import { getEventName } from '../../core/utils.js';
+import { getEventName, findBoundary } from '../../core/utils.js';
 
 /**
  * @function wait ∷ Props p ⇒ [String] → (p → Promise p)
@@ -17,7 +17,6 @@ export default function wait(...names) {
     const eventName = getEventName('resolved');
 
     return async props => {
-        const { node, boundary } = props;
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 
@@ -27,7 +26,9 @@ export default function wait(...names) {
                 ...names.reduce(
                     (accum, name) => [
                         ...accum,
-                        ...Array.from((boundary || node).querySelectorAll(name))
+                        ...Array.from(
+                            findBoundary(props).querySelectorAll(name)
+                        )
                     ],
                     []
                 )

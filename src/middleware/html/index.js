@@ -2,6 +2,7 @@ import {
     patch,
     h
 } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { findBoundary } from '../../core/utils.js';
 import * as u from './utils.js';
 
 /**
@@ -12,7 +13,7 @@ import * as u from './utils.js';
  */
 export default function html(getView) {
     return async props => {
-        const { node, boundary } = props;
+        const { node } = props;
 
         // Remove any previous style resolutions.
         u.styles.has(node) && u.styles.delete(node);
@@ -31,7 +32,7 @@ export default function html(getView) {
             newProps.props = newProps;
 
             const view = await getView(newProps);
-            const tree = patch(u.takeTree(node), view, boundary || node);
+            const tree = patch(u.takeTree(node), view, findBoundary(props));
             u.putTree(node, tree);
         }
 

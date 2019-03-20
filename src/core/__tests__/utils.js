@@ -65,3 +65,15 @@ test('It should be able to transform into camelCase from snake and kebab;', t =>
     t.is(u.toCamelcase('one').fromKebab(), 'one');
     t.is(u.toCamelcase('one+two').fromSnake(), 'one+two');
 });
+
+test('It should be able to find the boundary or node depending on their existence;', t => {
+    const node = document.createElement('div');
+    t.is(u.findBoundary({ node }), node);
+
+    const boundary = node.attachShadow({ mode: 'open' });
+    node[u.meta] = { boundary };
+    t.is(u.findBoundary({ node }), boundary);
+
+    delete node[u.meta].boundary;
+    t.is(u.findBoundary({ node, boundary }), boundary);
+});
