@@ -17,7 +17,8 @@ export const takeTree = node => trees.get(node);
 /**
  * @function toKebab ∷ String → String
  */
-export const toKebab = value => value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+export const toKebab = value =>
+    value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
 /**
  * @function sheet ∷ ∀ a. HTMLElement e, View v ⇒ e → String → String → v → Object String a

@@ -15,15 +15,15 @@ export default function html(getView) {
     return async props => {
         const { node } = props;
 
-        // Remove any previous style resolutions.
-        u.styles.has(node) && u.styles.delete(node);
-
-        // Extend the `h` object with useful functions.
-        const extendedH = h;
-        extendedH.vars = u.vars;
-        extendedH.sheet = u.sheet(node);
-
         if (props.node.isConnected) {
+            // Remove any previous style resolutions.
+            u.styles.has(node) && u.styles.delete(node);
+
+            // Extend the `h` object with useful functions.
+            const extendedH = h;
+            extendedH.vars = u.vars;
+            extendedH.sheet = u.sheet(node);
+
             // Define the new props and assign to `props` so it's infinitely nested.
             const newProps = {
                 ...props,
