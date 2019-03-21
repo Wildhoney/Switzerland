@@ -12,7 +12,6 @@ test('It should be able to find the applicable nodes;', t => {
         h('todo-body'),
         h('todo-foot')
     ]);
-
     const node = document.createElement('main');
     patch(undefined, tree, node);
 
