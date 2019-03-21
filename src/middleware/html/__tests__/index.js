@@ -5,9 +5,13 @@ import defaultProps from '../../../../tests/helpers/default-props.js';
 import html from '../index.js';
 import * as u from '../utils.js';
 
-test.before(t => {
+test.beforeEach(t => {
     t.context.viewSpy = spy(() => sf.h('div'));
     t.context.patchStub = stub(sf, 'patch');
+});
+
+test.afterEach(t => {
+    t.context.patchStub.restore();
 });
 
 test.serial(
