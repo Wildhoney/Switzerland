@@ -1,4 +1,5 @@
-import { getEventName, findBoundary } from '../../core/utils.js';
+import { getEventName } from '../../core/utils.js';
+import * as u from './utils.js';
 
 /**
  * @function wait ∷ Props p ⇒ [String] → (p → Promise p)
@@ -22,30 +23,11 @@ export default function wait(...names) {
 
         await new Promise(resolve => {
             // Find all of the nodes to wait upon, minus those that have already been resolved.
-            const nodes = [
-                ...names.reduce(
-                    (accum, name) => [
-                        ...accum,
-                        ...Array.from(
-                            findBoundary(props).querySelectorAll(name)
-                        )
-                    ],
-                    []
-                )
-            ].filter(node => !node.classList.contains('resolved'));
+            const nodes = u.findApplicableNodes(names, props);
 
             nodes.length === 0
                 ? resolve()
-                : document.addEventListener(eventName, function listener({
-                      detail: { node }
-                  }) {
-                      nodes.includes(node) && resolved.add(node);
-                      if (resolved.size === nodes.length) {
-                          document.removeEventListener(eventName, listener);
-                          resolve();
-                          resolved.clear();
-                      }
-                  });
+                : u.attachEventListener(eventName, nodes, resolved, resolve);
         });
 
         return props;

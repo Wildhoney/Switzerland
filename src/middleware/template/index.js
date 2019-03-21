@@ -6,9 +6,9 @@ import { findBoundary } from '../../core/utils.js';
  */
 export default function template(getView) {
     return async props => {
-        const h = hyper(findBoundary(props));
-
         if (props.node.isConnected) {
+            const h = hyper(findBoundary(props));
+
             // Attach `h` to the current set of props, and all of its infinitely nested `props` where
             // the `props` haven't been shallowly copied.
             props.props.h = h;
