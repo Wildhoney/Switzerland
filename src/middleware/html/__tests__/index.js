@@ -10,7 +10,7 @@ test.before(t => {
     t.context.patchStub = stub(sf, 'patch');
 });
 
-test.serial.skip(
+test.serial(
     'It should only patch the tree when the node is connected to the DOM;',
     async t => {
         return Promise.all(
@@ -34,7 +34,7 @@ test.serial.skip(
     }
 );
 
-test.serial.skip(
+test.serial(
     'It should be able to pass the necessary props to the `getView` function;',
     async t => {
         const m = html(t.context.viewSpy);
@@ -52,7 +52,7 @@ test.serial.skip(
     }
 );
 
-test.serial.skip(
+test.serial(
     'It should be able to remove previous style resolutions;',
     async t => {
         const m = html(t.context.viewSpy);
