@@ -17,11 +17,13 @@ test.afterEach(t => {
 test.serial(
     'It should only patch the tree when the node is connected to the DOM;',
     async t => {
+        const assertions = [
+            { isConnected: true, callCount: 1 },
+            { isConnected: false, callCount: 0 }
+        ];
+
         return Promise.all(
-            [
-                { isConnected: true, callCount: 1 },
-                { isConnected: false, callCount: 0 }
-            ].map(async ({ isConnected, callCount }) => {
+            assertions.map(async ({ isConnected, callCount }) => {
                 const m = html(t.context.viewSpy);
                 const props = {
                     ...defaultProps,
