@@ -18,14 +18,15 @@ export const findApplicableNodes = (names, props) => {
 /**
  * @function attachEventListener ∷ String → [HTMLElement] → Set → (void → void) → void
  */
-export const attachEventListener = (eventName, nodes, resolved, resolve) =>
-    void document.addEventListener(eventName, function listener({
-        detail: { node }
-    }) {
+export const attachEventListener = (eventName, nodes, resolved, resolve) => {
+    function listener({ detail: { node } }) {
         nodes.includes(node) && resolved.add(node);
         if (resolved.size === nodes.length) {
             document.removeEventListener(eventName, listener);
             resolve();
             resolved.clear();
         }
-    });
+    }
+
+    document.addEventListener(eventName, listener);
+};
