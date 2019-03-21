@@ -23,8 +23,8 @@ export const attachEventListener = (eventName, nodes, resolved, resolve) => {
         nodes.includes(node) && resolved.add(node);
         if (resolved.size === nodes.length) {
             document.removeEventListener(eventName, listener);
-            resolve();
             resolved.clear();
+            resolve();
         }
     }
 
