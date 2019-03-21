@@ -1,5 +1,4 @@
-import { h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
-import * as superfine from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import * as sf from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import test from 'ava';
 import { spy, stub, match } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
@@ -7,8 +6,8 @@ import html from '../index.js';
 import * as u from '../utils.js';
 
 test.before(t => {
-    t.context.viewSpy = spy(() => h('div'));
-    t.context.patchStub = stub(superfine, 'patch');
+    t.context.viewSpy = spy(() => sf.h('div'));
+    t.context.patchStub = stub(sf, 'patch');
 });
 
 test.serial.skip(
