@@ -152,18 +152,27 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
 };
 
 /**
- * @function cycleMiddleware ∷ HTMLElement e, Props p ⇒ e → p → [(p → Promise p|p)] → p
+ * @function cycleMiddleware ∷ HTMLElement e, Timings t, Props p ⇒ e → p → [(p → Promise p|p)] → { p, t }
  * ---
  * Iterates over the defined middleware for a component, detecting if any error handlers have been
  * defined, and if so storing the current set of props up to that point. Yields the props that were
  * returned by cycling through each of the middleware functions.
  */
 export const cycleMiddleware = async (node, initialProps, middleware) => {
+    const records = new Set();
+    const timeStart = window.performance.now();
+
     const props = await middleware.reduce(async (accumP, middlewareP) => {
         const props = { ...(await accumP) };
         props.props = props;
+
+        const timeStart = window.performance.now();
+
         const middleware = await middlewareP;
-        const newProps = middleware(Object.freeze({ ...props }));
+        const newProps = await middleware(Object.freeze({ ...props }));
+
+        const timeEnd = window.performance.now();
+        records.add({ name: middleware.name, duration: timeEnd - timeStart });
 
         // Determine if there's an error handler in the current set of props. If there is then
         // set the handler function as the default to be used if an error is subsequently thrown.
@@ -172,7 +181,8 @@ export const cycleMiddleware = async (node, initialProps, middleware) => {
     }, initialProps);
 
     previousProps.set(node, props);
-    return props;
+    const timeEnd = window.performance.now();
+    return { props, timings: { total: timeEnd - timeStart, records } };
 };
 
 /**
