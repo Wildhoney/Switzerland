@@ -52,9 +52,16 @@ test('It should not render the component when in an error state;', async t => {
 test.serial(
     'It should be able to enqueue render passes and process them consecutively;',
     async t => {
+        const returns = {
+            props: {},
+            timings: new Set()
+        };
+
         const { instance, spies } = t.context;
         const renderSpy = spy(instance, 'render');
-        const cycleMiddlewareStub = stub(u, 'cycleMiddleware').resolves();
+        const cycleMiddlewareStub = stub(u, 'cycleMiddleware').resolves(
+            returns
+        );
         const firstTask = instance.render();
         const secondTask = instance.render();
         const thirdTask = instance.render();
