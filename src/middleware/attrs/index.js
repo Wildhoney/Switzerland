@@ -17,7 +17,7 @@ export const nodes = new Set();
  * their values. It also observes the attributes using the 'MutationObserver' to re-render the component when any
  * of the non-excluded attributes are modified.
  */
-export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
+export default (types = {}, exclude = ['class', 'id', 'style']) => {
     const defaults = getDefaults(types);
 
     return function attrs(props) {
@@ -42,4 +42,4 @@ export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
             attrs: u.transformAttributes(node.attributes, types, defaults)
         };
     };
-}
+};

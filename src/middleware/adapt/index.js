@@ -22,7 +22,7 @@ export const nodes = new WeakSet();
  * responsiveness on an element-level, where for example an element is placed in a 200px space it can render
  * differently than when it's placed in a 400px space.
  */
-export default function adapt() {
+export default () => {
     const observer = getObserver();
 
     return function adapt(props) {
@@ -41,4 +41,4 @@ export default function adapt() {
 
         return props;
     };
-}
+};

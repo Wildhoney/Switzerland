@@ -16,7 +16,7 @@ export const nodes = new Set();
  * set by passing the params and their associated types. Useful for whenever you're managing state by
  * using the browser's URL params.
  */
-export default function history(types = {}, location = window.location) {
+export default (types = {}, location = window.location) => {
     const defaults = getDefaults(types);
 
     return function history(props) {
@@ -37,4 +37,4 @@ export default function history(types = {}, location = window.location) {
             }
         };
     };
-}
+};

@@ -20,7 +20,7 @@ export const nodes = new WeakSet();
  * and pause depending on the amount of the video is visible (think Facebook). You can also use it to lazy-load
  * images based on the intersection details.
  */
-export default function intersect() {
+export default () => {
     const observer = getObserver();
 
     return function intersect(props) {
@@ -39,4 +39,4 @@ export default function intersect() {
 
         return props;
     };
-}
+};

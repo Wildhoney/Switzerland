@@ -9,7 +9,7 @@ export const nodes = new WeakSet();
 /**
  * @function redux ∷ ∀ a b c d. (a → Object String b) → Object String c → d
  */
-export default function redux(reducer, actions) {
+export default (reducer, actions) => {
     const { dispatch, getState, subscribe } = r.createStore(
         reducer,
         r.applyMiddleware(thunk)
@@ -27,4 +27,4 @@ export default function redux(reducer, actions) {
 
         return { ...props, redux };
     };
-}
+};

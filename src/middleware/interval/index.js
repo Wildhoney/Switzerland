@@ -3,7 +3,7 @@
  * ---
  * Re-renders the component specified by the milliseconds.
  */
-export default function interval(milliseconds) {
+export default milliseconds => {
     const nodes = new WeakMap();
 
     return function interval(props) {
@@ -23,4 +23,4 @@ export default function interval(milliseconds) {
 
         return props;
     };
-}
+};

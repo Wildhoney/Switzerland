@@ -10,7 +10,7 @@ const registry = new Map();
  * of the component, which is useful for one-off functionality, such as being used as a constructor or initialiser, or
  * cleaning up when the node is removed from DOM.
  */
-export default function once(fn) {
+export default fn => {
     return async function once(props) {
         const { node } = props;
         !registry.has(node) && registry.set(node, new WeakMap());
@@ -19,4 +19,4 @@ export default function once(fn) {
         functions.set(fn, result);
         return { ...(await result), ...props };
     };
-}
+};

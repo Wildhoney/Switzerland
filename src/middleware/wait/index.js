@@ -14,7 +14,7 @@ import * as u from './utils.js';
  * It's worth noting that the 'wait' middleware will not await a node that is not in the DOM, therefore it's acceptable
  * to list nodes that may or may not be in the DOM, depending on conditionals.
  */
-export default function wait(...names) {
+export default (...names) => {
     const eventName = getEventName('resolved');
 
     return async function wait(props) {
@@ -32,4 +32,4 @@ export default function wait(...names) {
 
         return props;
     };
-}
+};
