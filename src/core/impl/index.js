@@ -1,6 +1,8 @@
 import * as u from '../utils.js';
 import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
+import * as debug from '../debug/index.js';
+import { printTimings } from './utils.js';
 
 /**
  * @function base ∷ Props p ⇒ HTMLElement → [(p → Promise p)] → Class
@@ -27,7 +29,8 @@ export const base = (extension, middleware) =>
         }
         render(mergeProps = {}) {
             const isRemounting = mergeProps.lifecycle === 'mount';
-            const { queue, state } = this[u.meta];
+            const node = this;
+            const { queue, state } = node[u.meta];
 
             if (state.isError() && !isRemounting) {
                 // Cannot process new render cycles until the error has been resolved, unless
@@ -40,20 +43,21 @@ export const base = (extension, middleware) =>
                 const currentTask = queue.current();
                 await currentTask;
 
-                if (this[u.meta].queue.isInvalid(newTask)) {
+                if (node[u.meta].queue.isInvalid(newTask)) {
                     // If a caught error has removed it from the queue, then we don't go any further.
                     return void resolve();
                 }
 
                 try {
                     // Cycle through all of the middleware functions, updating the props as we go.
-                    const props = u.initialProps(this, mergeProps, currentTask);
+                    const props = u.initialProps(node, mergeProps, currentTask);
 
-                    return void (await u.cycleMiddleware(
-                        this,
+                    const { timings } = await u.cycleMiddleware(
+                        node,
                         props,
                         middleware
-                    ));
+                    );
+                    debug.options.get('enabled') && printTimings(node, timings);
                 } catch (error) {
                     if (error instanceof u.Cancel) {
                         return;
@@ -63,18 +67,18 @@ export const base = (extension, middleware) =>
                     // Errors should cancel any enqueued middleware.
                     return void (queue.dropAll(),
                     state.setError(),
-                    u.handleException(this, error));
+                    u.handleException(node, error));
                 } finally {
                     // Await the resolution of all the CSS import rules.
-                    await u.cssImports(this);
+                    await u.cssImports(node);
 
                     // Always dispatch the "resolved" event regardless of success or failure. We also apply
                     // the "resolved" class name to the element.
-                    const dispatchEvent = u.dispatchEvent(this);
+                    const dispatchEvent = u.dispatchEvent(node);
                     dispatchEvent(u.getEventName('resolved'), {
-                        node: this
+                        node
                     });
-                    this.isConnected && this.classList.add('resolved');
+                    node.isConnected && node.classList.add('resolved');
                     queue.drop(newTask);
                     resolve();
                 }
