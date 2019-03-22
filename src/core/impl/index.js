@@ -56,6 +56,8 @@ export const base = (extension, middleware) =>
                         props,
                         middleware
                     );
+
+                    // Print the timings information if the debugger is enabled.
                     debug.print(node, timings);
                 } catch (error) {
                     if (error instanceof u.Cancel) {

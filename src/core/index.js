@@ -1,11 +1,8 @@
 import * as u from './utils.js';
 import * as impl from './impl/index.js';
-import * as debug from './debug/index.js';
+import './debug/index.js';
 
 export { meta, Cancel } from './utils.js';
-
-// Attach the Switzerland debugger to the `window` object.
-debug.setup();
 
 /**
  * @function init ∷ String → String → (String → String)
