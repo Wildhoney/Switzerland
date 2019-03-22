@@ -1,20 +1,20 @@
 /**
- * @constant options ∷ Map
+ * @function print ∷ HTMLElement → Timings → void
  */
-const options = new Map([['enabled', false]]);
-
-/**
- * @function print ∷ HTMLElement → Timings → Promise void
- */
-export const print = async (...args) => {
-    if (options.get('enabled')) {
-        const debug = await import('./utils.js');
-        debug.print(...args);
+export const print = (node, timings) => {
+    if (typeof window.SWISS_DEBUG === 'undefined') {
+        return;
     }
-};
 
-// Attach the Switzerland debugger to the `window` object.
-window.swiss = {
-    enable: () => void options.set('enabled', true),
-    disable: () => void options.set('enabled', false)
+    const group = `${node.nodeName.toLowerCase()} %c(${timings.total.toFixed(
+        3
+    )}ms)`;
+    console.groupCollapsed(group, 'font-weight: normal; color: darkgray');
+    console.groupCollapsed('meta');
+    console.trace();
+    console.groupEnd('meta');
+    timings.records.forEach(({ name, duration }) => {
+        console.log(`${name} %c(${duration.toFixed(3)}ms)`, `color: darkgray`);
+    });
+    console.groupEnd(group);
 };

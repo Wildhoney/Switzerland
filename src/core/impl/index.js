@@ -1,7 +1,6 @@
 import * as u from '../utils.js';
 import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
-import * as debug from '../debug/index.js';
 
 /**
  * @function base ∷ Props p ⇒ HTMLElement → [(p → Promise p)] → Class
@@ -43,7 +42,8 @@ export const base = (extension, middleware) =>
                 await currentTask;
 
                 // Enable to the debugging if `DEBUG` is undefined.
-                typeof OPTIMISED === 'undefined' &&
+                const debug =
+                    typeof OPTIMISED === 'undefined' &&
                     (await import('../debug/index.js'));
 
                 if (node[u.meta].queue.isInvalid(newTask)) {
@@ -62,7 +62,8 @@ export const base = (extension, middleware) =>
                     );
 
                     // Print the timings information if the debugger is enabled.
-                    debug.print(node, timings);
+                    typeof OPTIMISED === 'undefined' &&
+                        debug.print(node, timings);
                 } catch (error) {
                     if (error instanceof u.Cancel) {
                         return;
