@@ -2,7 +2,6 @@ import * as u from '../utils.js';
 import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
 import * as debug from '../debug/index.js';
-import { printTimings } from './utils.js';
 
 /**
  * @function base ∷ Props p ⇒ HTMLElement → [(p → Promise p)] → Class
@@ -57,7 +56,7 @@ export const base = (extension, middleware) =>
                         props,
                         middleware
                     );
-                    debug.options.get('enabled') && printTimings(node, timings);
+                    debug.print(node, timings);
                 } catch (error) {
                     if (error instanceof u.Cancel) {
                         return;
