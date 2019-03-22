@@ -17,7 +17,7 @@ import * as u from './utils.js';
 export default function wait(...names) {
     const eventName = getEventName('resolved');
 
-    return async props => {
+    return async function wait(props) {
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 

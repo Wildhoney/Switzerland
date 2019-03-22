@@ -7,7 +7,7 @@ import * as u from './utils.js';
  * open, delegates focus, and also the chance to include adopted stylesheets.
  */
 export default function boundary(options) {
-    return props => {
+    return function boundary(props) {
         const { node } = props;
         const boundary = u.createBoundary(node, options);
         return { ...props, boundary };

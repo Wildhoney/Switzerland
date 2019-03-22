@@ -8,7 +8,7 @@ export const handler = Symbol('error');
  * defined on the component, then a console error will be rendered instead, but only in development mode.
  */
 export default function rescue(getView) {
-    return async props => {
+    return async function rescue(props) {
         return { ...props, [handler]: await getView };
     };
 }

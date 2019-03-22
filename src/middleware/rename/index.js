@@ -4,7 +4,7 @@ import * as u from './utils.js';
  * @function rename ∷ Props p ⇒ String → (p → p) → p
  */
 export default function rename(name, middleware) {
-    return async props => {
+    return async function rename(props) {
         const newProps = await (await middleware)(props);
         const diff = u.difference(Object.keys(props), Object.keys(newProps));
         const take = u.take(diff);

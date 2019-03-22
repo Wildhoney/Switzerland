@@ -20,7 +20,7 @@ export const nodes = new Set();
 export default function attrs(types = {}, exclude = ['class', 'id', 'style']) {
     const defaults = getDefaults(types);
 
-    return props => {
+    return function attrs(props) {
         const { node, render } = props;
 
         if (!nodes.has(node)) {

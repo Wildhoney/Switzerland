@@ -5,7 +5,7 @@
  * the promise yielded from the user function has been resolved.
  */
 export default function blend(fn) {
-    return props => {
+    return function blend(props) {
         const { render } = props;
         const future = fn(props);
         const isPromise = future instanceof Promise;

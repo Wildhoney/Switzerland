@@ -6,7 +6,7 @@
  * taking a while to load for improved perception of speed.
  */
 export default function defer(fnP, milliseconds) {
-    return props => {
+    return function defer(props) {
         setTimeout(async () => {
             const fn = await fnP;
             !(await props.utils.isResolved()) && (await fn(props));

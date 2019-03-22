@@ -19,7 +19,7 @@ export const nodes = new Set();
 export default function history(types = {}, location = window.location) {
     const defaults = getDefaults(types);
 
-    return props => {
+    return function history(props) {
         const { node } = props;
         !nodes.has(node) && nodes.add(node);
 

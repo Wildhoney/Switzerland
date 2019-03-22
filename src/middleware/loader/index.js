@@ -7,7 +7,7 @@ const cache = new Map();
  * handing over to the subsequent middleware. Appends the "src" object to the props for consumption by the component.
  */
 export default function loader(sources) {
-    return async props => {
+    return async function loader(props) {
         await Promise.all(
             Object.values(sources).map(src => {
                 return (

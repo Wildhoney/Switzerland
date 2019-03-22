@@ -6,7 +6,7 @@
  * as-is, but also passes the current set of props as the final argument.
  */
 export default function methods(fns) {
-    return props => {
+    return function methods(props) {
         const { node } = props;
 
         Object.entries(fns).forEach(([name, fn]) => {

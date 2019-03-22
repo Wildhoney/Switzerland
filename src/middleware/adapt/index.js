@@ -25,7 +25,7 @@ export const nodes = new WeakSet();
 export default function adapt() {
     const observer = getObserver();
 
-    return props => {
+    return function adapt(props) {
         const { lifecycle } = props;
 
         switch (lifecycle) {

@@ -12,7 +12,7 @@ import * as u from './utils.js';
  * uses Picodom over VirtualDOM, and as such you can use the Picodom documentation for reference.
  */
 export default function html(getView) {
-    return async props => {
+    return async function html(props) {
         const { node } = props;
 
         if (props.node.isConnected) {

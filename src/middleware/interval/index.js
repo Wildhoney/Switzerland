@@ -4,23 +4,20 @@
  * Re-renders the component specified by the milliseconds.
  */
 export default function interval(milliseconds) {
-    const interval = new WeakMap();
+    const nodes = new WeakMap();
 
-    return props => {
+    return function interval(props) {
         const { lifecycle } = props;
 
         switch (lifecycle) {
             case 'mount':
                 // Use the `setInterval` to re-render the component every X milliseconds.
-                interval.set(
-                    props.node,
-                    setInterval(props.render, milliseconds)
-                );
+                nodes.set(props.node, setInterval(props.render, milliseconds));
                 break;
 
             case 'unmount':
                 // Stop the interval when the node is unmounted from the DOM.
-                clearInterval(interval.get(props.node));
+                clearInterval(nodes.get(props.node));
                 break;
         }
 

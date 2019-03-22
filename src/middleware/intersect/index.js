@@ -23,7 +23,7 @@ export const nodes = new WeakSet();
 export default function intersect() {
     const observer = getObserver();
 
-    return props => {
+    return function intersect(props) {
         const { lifecycle } = props;
 
         switch (lifecycle) {
