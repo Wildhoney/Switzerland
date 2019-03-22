@@ -170,10 +170,13 @@ export const cycleMiddleware = async (node, initialProps, middleware) => {
         const timeStart = performance.now();
         const middleware = await middlewareP;
         const newProps = await middleware(Object.freeze({ ...props }));
-        records.add({
-            name: middleware.name,
-            duration: performance.now() - timeStart
-        });
+
+        if (typeof OPTIMISED === 'undefined') {
+            records.add({
+                name: middleware.name,
+                duration: performance.now() - timeStart
+            });
+        }
 
         // Determine if there's an error handler in the current set of props. If there is then
         // set the handler function as the default to be used if an error is subsequently thrown.
@@ -182,10 +185,12 @@ export const cycleMiddleware = async (node, initialProps, middleware) => {
     }, initialProps);
 
     previousProps.set(node, props);
-    return {
-        props,
-        timings: { total: performance.now() - timeStart, records }
-    };
+    return typeof OPTIMISED === 'undefined'
+        ? {
+              props,
+              timings: { total: performance.now() - timeStart, records }
+          }
+        : { props };
 };
 
 /**

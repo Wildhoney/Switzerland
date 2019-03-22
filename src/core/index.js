@@ -1,6 +1,5 @@
 import * as u from './utils.js';
 import * as impl from './impl/index.js';
-import './debug/index.js';
 
 export { meta, Cancel } from './utils.js';
 

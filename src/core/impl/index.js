@@ -42,6 +42,10 @@ export const base = (extension, middleware) =>
                 const currentTask = queue.current();
                 await currentTask;
 
+                // Enable to the debugging if `DEBUG` is undefined.
+                typeof OPTIMISED === 'undefined' &&
+                    (await import('../debug/index.js'));
+
                 if (node[u.meta].queue.isInvalid(newTask)) {
                     // If a caught error has removed it from the queue, then we don't go any further.
                     return void resolve();
