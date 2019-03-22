@@ -14,14 +14,14 @@ const exceptions = name => {
 };
 
 /**
- * @method isImage
+ * @function isImage
  * @param {String} filename
  * @return {Boolean}
  */
 const isImage = filename => /svg$/i.test(filename);
 
 /**
- * @method fetch
+ * @function fetch
  * @return {Array}
  */
 export const fetch = () => {
