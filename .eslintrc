@@ -17,6 +17,7 @@
         "Image": true,
         "IntersectionObserver": true,
         "MutationObserver": true,
+        "performance": true,
         "requestIdleCallback": true,
         "ResizeObserver": true,
         "Response": true,
