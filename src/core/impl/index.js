@@ -41,11 +41,6 @@ export const base = (extension, middleware) =>
                 const currentTask = queue.current();
                 await currentTask;
 
-                // Enable to the debugging if `DEBUG` is undefined.
-                const debug =
-                    typeof OPTIMISED === 'undefined' &&
-                    (await import('../debug/index.js'));
-
                 if (node[u.meta].queue.isInvalid(newTask)) {
                     // If a caught error has removed it from the queue, then we don't go any further.
                     return void resolve();
@@ -53,17 +48,14 @@ export const base = (extension, middleware) =>
 
                 try {
                     // Cycle through all of the middleware functions, updating the props as we go.
-                    const props = u.initialProps(node, mergeProps, currentTask);
-
-                    const { timings } = await u.cycleMiddleware(
+                    const props = u.initialProps(
                         node,
-                        props,
-                        middleware
+                        middleware,
+                        mergeProps,
+                        currentTask
                     );
 
-                    // Print the timings information if the debugger is enabled.
-                    typeof OPTIMISED === 'undefined' &&
-                        debug.print(node, timings);
+                    return await u.cycleMiddleware(node, props, middleware);
                 } catch (error) {
                     if (error instanceof u.Cancel) {
                         return;
