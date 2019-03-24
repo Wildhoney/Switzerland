@@ -21,10 +21,7 @@ function main() {
                     ecma: 8,
                     module: true,
                     compress: {
-                        passes: 2,
-                        global_defs: {
-                            OPTIMISED: true
-                        }
+                        passes: 2
                     }
                 }).code
             );
