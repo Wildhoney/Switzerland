@@ -157,7 +157,12 @@ test.serial(
         const initialPropsStub = stub(u, 'initialProps');
         await instance.render(mergeProps);
         t.true(
-            initialPropsStub.calledWith(instance, mergeProps, match.promise)
+            initialPropsStub.calledWith(
+                instance,
+                match.array,
+                mergeProps,
+                match.promise
+            )
         );
         initialPropsStub.restore();
     }
