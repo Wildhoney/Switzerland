@@ -12,17 +12,22 @@ export default () => {
         if (isFirst)
             return {
                 ...props,
-                debug: { start: u.now(), previous: u.now(), records: [] }
+                debug: { start: u.now(), previous: u.now(), index, records: [] }
             };
+
+        const names = middleware
+            .slice(props.debug.index + 1, index)
+            .map(({ name }, index) => name || `ƒ[${index}]`);
 
         const records = {
             ...props.debug,
             end: u.now(),
             previous: u.now(),
+            index,
             records: [
                 ...props.debug.records,
                 {
-                    name: middleware[index - 1].name || 'unknown',
+                    name: names.join(' → '),
                     duration: u.now() - props.debug.previous
                 }
             ]
