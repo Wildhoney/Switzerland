@@ -41,9 +41,12 @@ export const getMetric = () => window.performance.now();
  * Initiates a record which will eventually contain all of the measurements for the current
  * middleware cycle.
  */
-export const newRecord = index => {
-    return { start: getMetric(), previous: getMetric(), index, records: [] };
-};
+export const newRecord = index => ({
+    start: getMetric(),
+    previous: getMetric(),
+    index,
+    records: []
+});
 
 /**
  * @function appendRecord ∷ ∀ a. Props p ⇒ p → Number → [String] → Object String a
@@ -52,21 +55,19 @@ export const newRecord = index => {
  * repeatedly for each `debug` function that is encountered. Also holds the measurements for the
  * total time elapsed between the start and end `debug` functions.
  */
-export const appendRecord = (props, index, names) => {
-    return {
-        ...props.debug,
-        index,
-        records: [
-            ...props.debug.records,
-            {
-                name: names.join(' → '),
-                duration: getMetric() - props.debug.previous
-            }
-        ],
-        end: getMetric(),
-        previous: getMetric()
-    };
-};
+export const appendRecord = (props, index, names) => ({
+    ...props.debug,
+    index,
+    records: [
+        ...props.debug.records,
+        {
+            name: names.join(' → '),
+            duration: getMetric() - props.debug.previous
+        }
+    ],
+    end: getMetric(),
+    previous: getMetric()
+});
 
 /**
  * @function extractNames ∷ ∀ a. Props p ⇒ p → Number → [p → p] → [String]
@@ -74,26 +75,23 @@ export const appendRecord = (props, index, names) => {
  * Utility function for extracting the function names from the middleware in between the last
  * `debug` function, and the current `debug` function.
  */
-export const extractNames = (props, index, middleware) => {
-    return middleware
+export const extractNames = (props, index, middleware) =>
+    middleware
         .slice(props.debug.index + 1, index)
-        .map(({ name }, index) => name || `ƒ[${index}]`);
-};
+        .map(({ name }) => name || 'ƒ');
 
 /**
  * @function isFirst ∷ ∀ a. Props p ⇒ (p → p) → [(p → p)] → Boolean
  * ---
  * Determines whether the current `debug` function is the first in the middleware list.
  */
-export const isFirst = (debug, middleware) => {
-    return debug === middleware.find(m => m[meta] === ident);
-};
+export const isFirst = (debug, middleware) =>
+    debug === middleware.find(m => m[meta] === ident);
 
 /**
  * @function isLast ∷ ∀ a. Props p ⇒ (p → p) → [(p → p)] → Boolean
  * ---
  * Determines whether the current `debug` function is the last in the middleware list.
  */
-export const isLast = (debug, middleware) => {
-    return debug === [...middleware].reverse().find(m => m[meta] === ident);
-};
+export const isLast = (debug, middleware) =>
+    debug === [...middleware].reverse().find(m => m[meta] === ident);
