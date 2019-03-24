@@ -112,18 +112,19 @@ export const consoleMessage = (text, type = 'error') =>
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 
 /**
- * @function initialProps ∷ HTMLElement e, Props p ⇒ e → p → Promise (void) → p
+ * @function initialProps ∷ HTMLElement e, Props p ⇒ e → [(p → p)] → p → Promise (void) → p
  * ---
  * A utility function for setting all of the initial props that are used for each rendering of a component.
  * Takes the `mergeProps` which a developer can pass to the `render` method.
  */
-export const initialProps = (node, mergeProps, scheduledTask) => {
+export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
     const utils = {
         dispatch: dispatchEvent(node),
         form: {},
         abort: () => {
             throw new Cancel();
         },
+        getMiddleware: () => Promise.all(middleware),
         getLatestProps: () => previousProps.get(node) || null,
         isIdle: () => node[meta].queue.size() <= 1,
         isResolved: async () => {
@@ -152,31 +153,19 @@ export const initialProps = (node, mergeProps, scheduledTask) => {
 };
 
 /**
- * @function cycleMiddleware ∷ HTMLElement e, Timings t, Props p ⇒ e → p → [(p → Promise p|p)] → { p, t }
+ * @function cycleMiddleware ∷ HTMLElement e, Timings t, Props p ⇒ e → p → [(p → Promise p|p)] → p
  * ---
  * Iterates over the defined middleware for a component, detecting if any error handlers have been
  * defined, and if so storing the current set of props up to that point. Yields the props that were
  * returned by cycling through each of the middleware functions.
  */
-export const cycleMiddleware = async (node, initialProps, middleware) => {
-    const { performance = { now: () => {} } } = window;
-    const records = new Set();
-    const timeStart = performance.now();
-
-    const props = await middleware.reduce(async (accumP, middlewareP) => {
+export const cycleMiddleware = async (node, initialProps, middlewares) => {
+    const props = await middlewares.reduce(async (accumP, middlewareP) => {
         const props = { ...(await accumP) };
         props.props = props;
 
-        const timeStart = performance.now();
         const middleware = await middlewareP;
         const newProps = await middleware(Object.freeze({ ...props }));
-
-        if (typeof OPTIMISED === 'undefined') {
-            records.add({
-                name: middleware.name,
-                duration: performance.now() - timeStart
-            });
-        }
 
         // Determine if there's an error handler in the current set of props. If there is then
         // set the handler function as the default to be used if an error is subsequently thrown.
@@ -185,12 +174,7 @@ export const cycleMiddleware = async (node, initialProps, middleware) => {
     }, initialProps);
 
     previousProps.set(node, props);
-    return typeof OPTIMISED === 'undefined'
-        ? {
-              props,
-              timings: { total: performance.now() - timeStart, records }
-          }
-        : { props };
+    return props;
 };
 
 /**
