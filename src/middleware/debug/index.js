@@ -5,36 +5,19 @@ export default () => {
     const debug = async function debug({ node, utils, props }) {
         const middleware = await utils.getMiddleware();
         const index = middleware.findIndex(m => m === debug);
-        const isFirst = debug === middleware.find(m => m[meta] === u.ident);
-        const isLast =
-            debug === [...middleware].reverse().find(m => m[meta] === u.ident);
+        const isFirst = u.isFirst(debug, middleware);
 
-        if (isFirst)
-            return {
-                ...props,
-                debug: { start: u.now(), previous: u.now(), index, records: [] }
-            };
+        // Extract all of the names from the middleware functions.
+        const names = !isFirst && u.extractNames(props, index, middleware);
 
-        const names = middleware
-            .slice(props.debug.index + 1, index)
-            .map(({ name }, index) => name || `ƒ[${index}]`);
+        // Append the new timing record to the list of existing timing records.
+        const records = !isFirst && u.appendRecord(props, index, names);
 
-        const records = {
-            ...props.debug,
-            end: u.now(),
-            previous: u.now(),
-            index,
-            records: [
-                ...props.debug.records,
-                {
-                    name: names.join(' → '),
-                    duration: u.now() - props.debug.previous
-                }
-            ]
-        };
+        // Print the timings when we have the last `debug` function in the middleware
+        // list.
+        u.isLast(debug, middleware) && u.printTimings(node, records);
 
-        isLast && u.printTimings(node, records);
-        return { ...props, debug: records };
+        return { ...props, debug: isFirst ? u.newRecord(index) : records };
     };
 
     debug[meta] = u.ident;
