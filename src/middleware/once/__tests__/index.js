@@ -23,3 +23,11 @@ test('It should only invoke the function once per node instance even when the fu
     once(fn)(defaultProps);
     t.is(fn.callCount, 1);
 });
+
+test('It should be able to set a prettier name when passed function name is known;', t => {
+    const exampleFn = () => {};
+    const f1 = once(exampleFn);
+    t.is(f1.name, 'once(exampleFn)');
+    const f2 = once(() => {});
+    t.is(f2.name, 'once');
+});

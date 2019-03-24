@@ -11,7 +11,7 @@ const registry = new Map();
  * cleaning up when the node is removed from DOM.
  */
 export default fn => {
-    return async function once(props) {
+    const once = async function once(props) {
         const { node } = props;
         !registry.has(node) && registry.set(node, new WeakMap());
         const functions = registry.get(node);
@@ -19,4 +19,10 @@ export default fn => {
         functions.set(fn, result);
         return { ...(await result), ...props };
     };
+
+    // Enhance the `once` middleware function with the wrapped function name, if available.
+    fn.name &&
+        Object.defineProperty(once, 'name', { value: `once(${fn.name})` });
+
+    return once;
 };
