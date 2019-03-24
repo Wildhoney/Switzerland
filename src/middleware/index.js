@@ -10,6 +10,7 @@ export const adapt = load('adapt');
 export const attrs = load('attrs');
 export const blend = load('blend');
 export const boundary = load('boundary');
+export const debug = load('debug');
 export const defer = load('defer');
 export const delay = load('delay');
 export const history = load('history');
