@@ -92,6 +92,7 @@
         "nodemon": "^1.18.10",
         "nyc": "^13.3.0",
         "prettier": "^1.16.4",
+        "puppeteer": "^1.13.0",
         "readlint": "^0.7.1",
         "redux": "^4.0.1",
         "rollup": "^1.7.2",

@@ -1,7 +1,9 @@
+import path from 'path';
 import * as sf from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import test from 'ava';
 import { spy, stub, match } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import withPage from '../../../../tests/helpers/puppeteer.js';
 import html from '../index.js';
 import * as u from '../utils.js';
 
@@ -73,5 +75,25 @@ test.serial(
         t.is(u.styles.get(props.node), view);
         await m(props);
         t.is(u.styles.get(props.node), undefined);
+    }
+);
+
+test(
+    'It should be able to render the HTML in the browser;',
+    withPage,
+    async (t, page) => {
+        await page.addScriptTag({
+            path: path.resolve(__dirname, 'mock.js'),
+            type: 'module'
+        });
+
+        const content = await page.evaluate(async () => {
+            const el = document.createElement('x-example');
+            document.body.appendChild(el);
+            await el.render();
+            return el.innerHTML;
+        });
+
+        t.is(content, '<div>Hello!</div>');
     }
 );
