@@ -75,27 +75,28 @@ test.serial(
         t.is(u.styles.get(props.node), view);
         await m(props);
         t.is(u.styles.get(props.node), undefined);
-    }    
+    }
 );
 
 test(
     'It should be able to render the node and update with the merge props;',
-    withPage,   
-    async ({t, page, append}) => {
-
+    withPage,
+    async ({ t, page, append }) => {
         await page.addScriptTag({
             path: path.resolve(__dirname, 'mock.js'),
             type: 'module'
         });
 
         await append('x-example');
-        const content = await page.evaluate(() => document.querySelector('x-example').innerHTML);
+        const content = await page.evaluate(
+            () => document.querySelector('x-example').innerHTML
+        );
         t.is(content, '<div>Hello Adam!</div>');
 
         {
-            const content = await page.evaluate(async() => {
+            const content = await page.evaluate(async () => {
                 const node = document.querySelector('x-example');
-                await node.render({ name: "Maria"});
+                await node.render({ name: 'Maria' });
                 return node.innerHTML;
             });
             t.is(content, '<div>Hello Maria!</div>');
