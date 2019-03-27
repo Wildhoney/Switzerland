@@ -1,17 +1,29 @@
 import path from 'path';
 import fs from 'fs';
 import express from 'express';
+import marked from 'marked';
 import puppeteer from 'puppeteer';
 import * as R from 'ramda';
 
 const read = R.curry(async (page, port, path) => {
-    const content = fs
-        .readFileSync(path, 'utf-8')
-        .replace('localhost:{port}', `localhost:${port}`);
+
+    const ast = marked.lexer(fs.readFileSync(path, 'utf-8'));
+    const snippets = await Promise.all(
+        ast.filter(entry => Boolean(entry.lang)).map(R.prop('text'))
+    );
+
+    await Promise.all(snippets.map(async snippet => {
+
+        const content = `
+            import { create, m } from 'http://localhost:${port}/src/index.js';
+            ${snippet}
+        `
     await page.addScriptTag({
         type: 'module',
         content
     });
+        
+    }));
 });
 
 const load = R.curry(async (page, name) => {

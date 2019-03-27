@@ -82,7 +82,7 @@ test(
     'It should be able to render the node and update with the merge props;',
     withPage,
     async ({ t, page, read, load }) => {
-        await read(path.resolve(__dirname, 'mock.js'));
+        await read(path.resolve(__dirname, 'mock.md'));
         await load('x-example');
 
         const content = await page.evaluate(
