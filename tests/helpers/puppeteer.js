@@ -52,7 +52,7 @@ export default async (t, run) => {
     const app = express();
     app.use(express.static(path.resolve('./')));
     const port = await new Promise(resolve => {
-        const listener = app.listen(3001, async () => {
+        const listener = app.listen(async () => {
             const port = listener.address().port;
             await page.goto(`http://localhost:${port}`);
             resolve(port);
