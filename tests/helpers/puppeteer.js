@@ -6,24 +6,23 @@ import puppeteer from 'puppeteer';
 import * as R from 'ramda';
 
 const read = R.curry(async (page, port, path) => {
-
     const ast = marked.lexer(fs.readFileSync(path, 'utf-8'));
     const snippets = await Promise.all(
         ast.filter(entry => Boolean(entry.lang)).map(R.prop('text'))
     );
 
-    await Promise.all(snippets.map(async snippet => {
-
-        const content = `
+    await Promise.all(
+        snippets.map(async snippet => {
+            const content = `
             import { create, m } from 'http://localhost:${port}/src/index.js';
             ${snippet}
-        `
-    await page.addScriptTag({
-        type: 'module',
-        content
-    });
-        
-    }));
+        `;
+            await page.addScriptTag({
+                type: 'module',
+                content
+            });
+        })
+    );
 });
 
 const load = R.curry(async (page, name) => {
@@ -46,7 +45,7 @@ const load = R.curry(async (page, name) => {
 });
 
 export default async (t, run) => {
-    const browser = await puppeteer.launch({ devtools: true, debug: true });
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.setBypassCSP(true);
 
