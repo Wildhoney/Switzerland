@@ -1,23 +1,55 @@
+import path from 'path';
+import fs from "fs"
+import express from 'express';
 import puppeteer from 'puppeteer';
 import * as R from 'ramda';
 
-const append = R.curry(async (page, name) => {
-    await page.waitForFunction(`Boolean(customElements.get('${name}'))`);
-
-    return page.evaluate(async name => {
-        const node = document.createElement(name);
-        document.body.appendChild(node);
-        await node.render();
-        return node.innerHTML;
-    }, name);
+const read = R.curry(async (page, port, path) => {
+    const content = fs.readFileSync(path, "utf-8").replace('localhost:{port}', `localhost:${port}`);
+    await page.addScriptTag({
+        type: 'module',
+        content
+    });
 });
 
-export default async function withPage(t, run) {
-    const browser = await puppeteer.launch();
+const load = R.curry(async (page, name) => {
+
+    await page.evaluate(async (name) => {
+    const node = document.createElement(name);
+    document.body.appendChild(node);
+    },name);
+
+    await page.waitForFunction(`Boolean(customElements.get('${name}'))`);
+
+    const html = await page.evaluate(async (name) => {
+        const node = document.createElement(name);
+        await node.render();
+        return node.innerHTML;
+    },name);
+
+    await page.waitForFunction(`Boolean(customElements.get('${name}'))`);
+    
+    return html;
+})
+
+export default async(t, run)=> {
+    
+    const browser = await puppeteer.launch({ devtools: true, debug: true });
     const page = await browser.newPage();
+    await page.setBypassCSP(true);
+
+    const app = express();
+    app.use(express.static(path.resolve('./')));
+    const port = await new Promise(resolve =>
+        {const listener = app.listen(3001, async () => {
+            const port = listener.address().port
+            await page.goto(`http://localhost:${port}`);
+            resolve(port);
+        })}
+    );
 
     try {
-        await run({ t, page, append: append(page) });
+        await run({ t, page, read: read(page, port), load: load(page) });
     } finally {
         await page.close();
         await browser.close();

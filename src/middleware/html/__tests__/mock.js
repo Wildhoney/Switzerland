@@ -1,7 +1,7 @@
 import {
     create,
     m
-} from 'https://cdn.jsdelivr.net/npm/switzerland@latest/es/production/index.js';
+} from 'http://localhost:{port}/src/index.js';
 
 create(
     'x-example',

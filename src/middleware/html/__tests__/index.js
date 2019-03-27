@@ -81,13 +81,11 @@ test.serial(
 test(
     'It should be able to render the node and update with the merge props;',
     withPage,
-    async ({ t, page, append }) => {
-        await page.addScriptTag({
-            path: path.resolve(__dirname, 'mock.js'),
-            type: 'module'
-        });
+    async ({ t, page, read, load }) => {
 
-        await append('x-example');
+        await read(path.resolve(__dirname, 'mock.js'));
+        await load('x-example');
+
         const content = await page.evaluate(
             () => document.querySelector('x-example').innerHTML
         );
