@@ -1,8 +1,8 @@
 ```javascript
 create(
     'x-example',
-    m.html(({ name = 'Adam', form, render, h }) => {
-        return h('main', { onclick: () => render({ name: 'Adam' }) }, [
+    m.html(({ name = 'Adam', form, render, h }) =>
+        h('main', { onclick: () => render({ name: 'Adam' }) }, [
             h('div', {}, `Hello ${name}!`),
             h(
                 'form',
@@ -18,7 +18,7 @@ create(
                     h('button', { type: 'submit' })
                 ]
             )
-        ]);
-    })
+        ])
+    )
 );
 ```

@@ -79,7 +79,7 @@ test.serial(
 );
 
 test(
-    'It should be able to render the node and update with the merge props;',
+    'It should be able to render the node and update with the merge props and respond to events;',
     withPage,
     async (t, puppeteer) => {
         const getMarkup = name =>
