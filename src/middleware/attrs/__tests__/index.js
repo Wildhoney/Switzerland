@@ -1,7 +1,6 @@
 import test from 'ava';
 import path from 'path';
 import { spy } from 'sinon';
-import delay from 'delay';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import withPage from '../../../../tests/helpers/puppeteer.js';
 import * as type from '../../../types/index.js';
@@ -133,7 +132,7 @@ test('It should be able to skip mutations if the attribute is in excluded list;'
     t.is(renderSpy.callCount, 0);
 });
 
-test.only(
+test(
     'It should be able to attach methods to the element and then invoke them;',
     withPage,
     async (t, puppeteer) => {

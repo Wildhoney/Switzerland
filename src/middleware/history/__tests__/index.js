@@ -1,6 +1,8 @@
+import path from 'path';
 import test from 'ava';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import withPage from '../../../../tests/helpers/puppeteer.js';
 import { getEventName } from '../../../core/utils.js';
 import * as type from '../../../types/index.js';
 import history from '../index.js';
@@ -72,3 +74,25 @@ test('It should be able to push and replace the URL state;', t => {
     t.is(window.history.pushState.callCount, 1);
     t.is(window.history.replaceState.callCount, 1);
 });
+
+test(
+    'It should be able to render the node and update with the merge props and respond to events;',
+    withPage,
+    async (t, puppeteer) => {
+        const getMarkup = (name, age) =>
+            `<main><div>Hola ${name}! You are ${age}.</div><a>Click!</a></main>`;
+
+        const getHTML = () =>
+            puppeteer.page.evaluate(
+                () => document.querySelector('x-example').innerHTML
+            );
+
+        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
+        await puppeteer.load('x-example');
+
+        t.is(await getHTML(), getMarkup('Adam', 'old'));
+
+        await puppeteer.page.click('x-example a');
+        t.is(await getHTML(), getMarkup('Maria', 'young'));
+    }
+);
