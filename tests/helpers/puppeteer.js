@@ -58,7 +58,7 @@ export default async (t, run) => {
     });
 
     try {
-        await run(t,  { page, read: read(page, port), load: load(page) });
+        await run(t, { page, read: read(page, port), load: load(page) });
     } finally {
         await page.close();
         await browser.close();
