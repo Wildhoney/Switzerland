@@ -96,7 +96,17 @@ test(
                 await node.render({ name: 'Maria' });
                 return node.innerHTML;
             });
+
             t.is(content, '<div>Hello Maria!</div>');
+
+            {
+                await page.click('x-example div');
+                const content = await page.evaluate(
+                    () => document.querySelector('x-example').innerHTML
+                );
+
+                t.is(content, '<div>Hello Adam!</div>');
+            }
         }
     }
 );
