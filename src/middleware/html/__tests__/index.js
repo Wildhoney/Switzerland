@@ -81,32 +81,34 @@ test.serial(
 test(
     'It should be able to render the node and update with the merge props;',
     withPage,
-    async ({ t, page, read, load }) => {
-        await read(path.resolve(__dirname, 'mock.md'));
-        await load('x-example');
+    async (t, puppeteer) => {
+        const getMarkup = name =>
+            `<main><div>Hello ${name}!</div><form><input type="text" name="value"><button type="submit"></button></form></main>`;
 
-        const content = await page.evaluate(
-            () => document.querySelector('x-example').innerHTML
-        );
-        t.is(content, '<div>Hello Adam!</div>');
+        const getHTML = () =>
+            puppeteer.page.evaluate(
+                () => document.querySelector('x-example').innerHTML
+            );
+
+        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
+        await puppeteer.load('x-example');
+
+        t.is(await getHTML(), getMarkup('Adam'));
 
         {
-            const content = await page.evaluate(async () => {
+            const content = await puppeteer.page.evaluate(async () => {
                 const node = document.querySelector('x-example');
                 await node.render({ name: 'Maria' });
                 return node.innerHTML;
             });
-
-            t.is(content, '<div>Hello Maria!</div>');
-
-            {
-                await page.click('x-example div');
-                const content = await page.evaluate(
-                    () => document.querySelector('x-example').innerHTML
-                );
-
-                t.is(content, '<div>Hello Adam!</div>');
-            }
+            t.is(content, getMarkup('Maria'));
         }
+
+        await puppeteer.page.click('x-example div');
+        t.is(await getHTML(), getMarkup('Adam'));
+
+        await puppeteer.page.type('x-example input', 'Maria');
+        await puppeteer.page.click('x-example button');
+        t.is(await getHTML(), getMarkup('Maria'));
     }
 );
