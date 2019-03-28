@@ -107,7 +107,7 @@ test(
         await puppeteer.page.click('x-example div');
         t.is(await getHTML(), getMarkup('Adam'));
 
-        await puppeteer.page.type('x-example input', 'Maria');
+        await puppeteer.page.type('x-example input', 'Maria', { delay: 15 });
         await puppeteer.page.click('x-example button');
         t.is(await getHTML(), getMarkup('Maria'));
     }
