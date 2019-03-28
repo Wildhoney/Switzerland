@@ -39,8 +39,6 @@ const load = R.curry(async (page, name) => {
         return node.innerHTML;
     }, name);
 
-    await page.waitForFunction(`Boolean(customElements.get('${name}'))`);
-
     return html;
 });
 
