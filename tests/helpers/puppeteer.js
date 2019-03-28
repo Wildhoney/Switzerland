@@ -14,7 +14,7 @@ const read = R.curry(async (page, port, path) => {
     await Promise.all(
         snippets.map(async snippet => {
             const content = `
-            import { create, m } from 'http://localhost:${port}/src/index.js';
+            import { create, m, t } from 'http://localhost:${port}/src/index.js';
             ${snippet}
         `;
             await page.addScriptTag({
