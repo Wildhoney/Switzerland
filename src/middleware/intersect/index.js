@@ -1,11 +1,13 @@
 /**
  * @function getObserver ∷ IntersectionObserver|void
  */
-const getObserver = () =>
+const getObserver = options =>
     'IntersectionObserver' in window &&
-    new window.IntersectionObserver(entries => {
-        entries.forEach(entry => entry.target.render({ intersect: entry }));
-    });
+    new window.IntersectionObserver(
+        entries =>
+            entries.forEach(entry => entry.target.render({ intersect: entry })),
+        options
+    );
 
 /**
  * @constant nodes ∷ WeakSet
@@ -13,15 +15,15 @@ const getObserver = () =>
 export const nodes = new WeakSet();
 
 /**
- * @function intersect ∷ Props p ⇒ (p → p)
+ * @function intersect ∷ ∀ a. Props p ⇒ Object String a → (p → p)
  * ---
  * Hooks up the host node to the `IntersectionObserver` which determines how much of the node is currently
  * visible in the DOM. This allows for clever adaptations, such as a video changing its state between play
  * and pause depending on the amount of the video is visible (think Facebook). You can also use it to lazy-load
  * images based on the intersection details.
  */
-export default () => {
-    const observer = getObserver();
+export default options => {
+    const observer = getObserver(options);
 
     return function intersect(props) {
         const { lifecycle } = props;
