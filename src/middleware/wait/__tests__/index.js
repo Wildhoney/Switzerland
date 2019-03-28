@@ -1,8 +1,10 @@
+import path from 'path';
 import test from 'ava';
 import {
     patch,
     h
 } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import withPage from '../../../../tests/helpers/puppeteer.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { getEventName } from '../../../core/utils.js';
 import wait from '../index.js';
@@ -33,3 +35,22 @@ test('It should be able to wait for the resolution of applicable nodes;', async 
 
     t.deepEqual(defaultProps, await newProps);
 });
+
+test(
+    'It should be able to wait for the child nodes to render;',
+    withPage,
+    async (t, puppeteer) => {
+        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
+        await puppeteer.load('x-example');
+
+        const content = await puppeteer.page.evaluate(async () => {
+            const node = document.querySelector('x-example');
+            return node.innerHTML;
+        });
+
+        t.is(
+            content,
+            '<main><x-adam class="resolved"><div>Adam</div></x-adam><x-maria class="resolved"><div>Maria</div></x-maria></main>'
+        );
+    }
+);
