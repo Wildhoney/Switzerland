@@ -1,7 +1,7 @@
 ```javascript
 create(
     'x-example',
-    m.html(({ name = 'Adam', form, render, h }) =>
+    m.html(({ name = 'Adam', render, h }) =>
         h('main', { onclick: () => render({ name: 'Adam' }) }, [
             h('div', {}, `Hello ${name}!`),
             h(
@@ -10,7 +10,7 @@ create(
                     oncreate: form => render({ form }),
                     onsubmit: event => (
                         event.preventDefault(),
-                        render({ name: form.elements.namedItem('value').value })
+                        render({ name: event.target.elements.namedItem('value').value })
                     )
                 },
                 [
