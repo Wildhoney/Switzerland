@@ -3,11 +3,11 @@
  */
 const getObserver = () =>
     'ResizeObserver' in window &&
-    new window.ResizeObserver(entries => {
+    new window.ResizeObserver(entries =>
         entries.forEach(entry =>
             entry.target.render({ adapt: entry.contentRect })
-        );
-    });
+        )
+    );
 
 /**
  * @constant nodes ∷ WeakSet

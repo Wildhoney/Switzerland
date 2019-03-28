@@ -1,5 +1,5 @@
-import path from 'path';
 import test from 'ava';
+import path from 'path';
 import delay from 'delay';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
@@ -81,7 +81,7 @@ test.serial(
     }
 );
 
-test.only(
+test(
     'It should be able to fire the `render` function each time the dimensions change;',
     withPage,
     async (t, puppeteer) => {
