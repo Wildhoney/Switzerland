@@ -1,8 +1,9 @@
 ```javascript
 create(
     'x-example',
-    m.methods({ setName: (name, props) => props.render({name}) }),
+    m.methods({ setName: (name, props) => props.render({ name }) }),
     m.html(({ name = 'Adam', h }) =>
-         h('div', { class: name.toLowerCase() }, `Hey ${name}!`)
-));
+        h('div', { class: name.toLowerCase() }, `Hey ${name}!`)
+    )
+);
 ```

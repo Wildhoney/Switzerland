@@ -10,7 +10,9 @@ create(
                     oncreate: form => render({ form }),
                     onsubmit: event => (
                         event.preventDefault(),
-                        render({ name: event.target.elements.namedItem('value').value })
+                        render({
+                            name: event.target.elements.namedItem('value').value
+                        })
                     )
                 },
                 [
