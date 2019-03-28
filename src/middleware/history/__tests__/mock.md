@@ -1,22 +1,38 @@
 ```javascript
+const isShowingAge = hash => hash === '#showAge';
+
 create(
     'x-example',
     m.history({ name: [t.String, 'Adam'], age: [t.Int, 33] }),
-    m.html(({ history, h }) =>
-        h('main', {}, [
+    m.html(({ history, h }) => {
+        const name = history.params.get('name');
+        const age = history.params.get('age');
+
+        return h('main', {}, [
             h(
                 'div',
                 {},
-                `Hola ${history.params.get('name')}! You are ${
-                    history.params.get('age') > 30 ? 'old' : 'young'
+                `Hola ${name}! You are ${age > 30 ? 'old' : 'young'}${
+                    isShowingAge(location.hash) ? ` at ${age}` : ''
                 }.`
             ),
             h(
                 'a',
-                { onclick: () => history.push({}, '', '?name=Maria&age=28') },
+                {
+                    class: 'params',
+                    onclick: () => history.push({}, '', '?name=Maria&age=28')
+                },
+                'Click!'
+            ),
+            h(
+                'a',
+                {
+                    class: 'hash',
+                    onclick: () => (window.location.hash = '#showAge')
+                },
                 'Click!'
             )
-        ])
-    )
+        ]);
+    })
 );
 ```

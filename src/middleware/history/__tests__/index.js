@@ -79,8 +79,10 @@ test(
     'It should be able to render the node and update with the merge props and respond to events;',
     withPage,
     async (t, puppeteer) => {
-        const getMarkup = (name, age) =>
-            `<main><div>Hola ${name}! You are ${age}.</div><a>Click!</a></main>`;
+        const getMarkup = (name, ageDescription, age) => {
+            const ageText = age ? ` at ${age}` : '';
+            return `<main><div>Hola ${name}! You are ${ageDescription}${ageText}.</div><a class="params">Click!</a><a class="hash">Click!</a></main>`;
+        };
 
         const getHTML = () =>
             puppeteer.page.evaluate(
@@ -89,10 +91,15 @@ test(
 
         await puppeteer.read(path.resolve(__dirname, 'mock.md'));
         await puppeteer.load('x-example');
-
         t.is(await getHTML(), getMarkup('Adam', 'old'));
 
-        await puppeteer.page.click('x-example a');
+        await puppeteer.page.click('x-example a.params');
         t.is(await getHTML(), getMarkup('Maria', 'young'));
+
+        await puppeteer.page.goBack();
+        t.is(await getHTML(), getMarkup('Adam', 'old'));
+
+        await puppeteer.page.click('x-example a.hash');
+        t.is(await getHTML(), getMarkup('Adam', 'old', 33));
     }
 );
