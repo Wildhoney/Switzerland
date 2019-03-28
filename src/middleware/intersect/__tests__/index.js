@@ -81,7 +81,7 @@ test.serial(
     }
 );
 
-test.only(
+test(
     'It should be able to fire the `render` function each time the intersections change;',
     withPage,
     async (t, puppeteer) => {
