@@ -1,7 +1,7 @@
 import test from 'ava';
-import path from "path"
+import path from 'path';
 import { spy } from 'sinon';
-import delay from "delay"
+import delay from 'delay';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import withPage from '../../../../tests/helpers/puppeteer.js';
 import * as type from '../../../types/index.js';
@@ -137,7 +137,6 @@ test.only(
     'It should be able to attach methods to the element and then invoke them;',
     withPage,
     async (t, puppeteer) => {
-
         const getHTML = () =>
             puppeteer.page.evaluate(
                 () => document.querySelector('x-example').innerHTML
@@ -151,15 +150,13 @@ test.only(
             const node = document.querySelector('x-example');
             node.setAttribute('name', 'Maria');
             node.setAttribute('age', 28);
-        })
+        });
         t.is(await getHTML(), '<div>Privet Maria! You are young.</div>');
 
         await puppeteer.page.evaluate(async () => {
             const node = document.querySelector('x-example');
             node.removeAttribute('name');
-        })
+        });
         t.is(await getHTML(), '<div>Privet Adam! You are young.</div>');
-
     }
 );
-
