@@ -82,7 +82,7 @@ test.serial(
 
 test(
     'It should be able to fire the `render` function each time the dimensions change;',
-    withComponent(`${__dirname}/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
         const getMarkup = () =>
             page.evaluate(async () => {
@@ -90,11 +90,11 @@ test(
                 return node.innerHTML;
             });
 
+        await utils.waitForUpgrade('x-example');
         await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
         });
-        await utils.waitForUpgrade('x-example');
 
         await page.evaluate(() => {
             const node = document.querySelector('x-example');

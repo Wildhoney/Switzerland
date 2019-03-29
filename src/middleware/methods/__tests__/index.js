@@ -19,16 +19,16 @@ test('It should be able to attach methods to the node;', t => {
 
 test(
     'It should be able to attach methods to the element and then invoke them;',
-    withComponent(`${__dirname}/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
         const getHTML = () =>
             page.evaluate(() => document.querySelector('x-example').innerHTML);
 
+        await utils.waitForUpgrade('x-example');
         await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
         });
-        await utils.waitForUpgrade('x-example');
         t.is(await getHTML(), '<div class="adam">Hey Adam!</div>');
 
         await page.evaluate(async () => {

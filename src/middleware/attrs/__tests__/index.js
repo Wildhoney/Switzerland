@@ -133,16 +133,16 @@ test('It should be able to skip mutations if the attribute is in excluded list;'
 
 test(
     'It should be able to attach methods to the element and then invoke them;',
-    withComponent(`${__dirname}/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
         const getHTML = () =>
             page.evaluate(() => document.querySelector('x-example').innerHTML);
 
+        await utils.waitForUpgrade('x-example');
         await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
         });
-        await utils.waitForUpgrade('x-example');
 
         t.is(await getHTML(), '<div>Privet Adam! You are old.</div>');
 

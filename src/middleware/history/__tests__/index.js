@@ -76,7 +76,7 @@ test('It should be able to push and replace the URL state;', t => {
 
 test(
     'It should be able to render the node and update with the merge props and respond to events;',
-    withComponent(`${__dirname}/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
         const getMarkup = (name, ageDescription, age) => {
             const ageText = age ? ` at ${age}` : '';
@@ -86,12 +86,12 @@ test(
         const getHTML = () =>
             page.evaluate(() => document.querySelector('x-example').innerHTML);
 
+        await utils.waitForUpgrade('x-example');
         await page.evaluate(async () => {
             const node = document.createElement('x-example');
             document.body.append(node);
         });
 
-        await utils.waitForUpgrade('x-example');
         t.is(await getHTML(), getMarkup('Adam', 'old'));
 
         await page.click('x-example a.params');

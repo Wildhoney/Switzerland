@@ -37,13 +37,13 @@ test('It should be able to wait for the resolution of applicable nodes;', async 
 
 test(
     'It should be able to wait for the child nodes to render;',
-    withComponent(`${__dirname}/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
+        await utils.waitForUpgrade('x-example');
         await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
         });
-        await utils.waitForUpgrade('x-example');
 
         const content = await page.evaluate(async () => {
             const node = document.querySelector('x-example');

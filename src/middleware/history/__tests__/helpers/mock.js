@@ -1,4 +1,4 @@
-import { create, m, t } from '../../../../src/index.js';
+import { create, m, t } from '../../../../../src/index.js';
 
 const isShowingAge = hash => hash === '#showAge';
 
@@ -14,7 +14,7 @@ create(
                 'div',
                 {},
                 `Hola ${name}! You are ${age > 30 ? 'old' : 'young'}${
-                    isShowingAge(location.hash) ? ` at ${age}` : ''
+                    isShowingAge(window.location.hash) ? ` at ${age}` : ''
                 }.`
             ),
             h(

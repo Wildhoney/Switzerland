@@ -1,4 +1,4 @@
-import { create, m, t } from '../../../../src/index.js';
+import { create, m, t } from '../../../../../src/index.js';
 
 create(
     'x-example',
