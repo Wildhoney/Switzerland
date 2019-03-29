@@ -1,4 +1,5 @@
-```javascript
+import { create, m, t } from '../../../../src/index.js';
+
 const isShowingAge = hash => hash === '#showAge';
 
 create(
@@ -35,4 +36,3 @@ create(
         ]);
     })
 );
-```

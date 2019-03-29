@@ -1,4 +1,5 @@
-```javascript
+import { create, m, t } from '../../../../src/index.js';
+
 create(
     'x-example',
     m.attrs({ name: [t.String, 'Adam'], age: [t.Int, 33] }),
@@ -10,4 +11,3 @@ create(
         )
     )
 );
-```

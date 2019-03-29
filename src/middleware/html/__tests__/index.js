@@ -1,9 +1,8 @@
-import path from 'path';
-import * as sf from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import test from 'ava';
+import withComponent from 'ava-webcomponents';
+import * as sf from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import { spy, stub, match } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
-import withPage from '../../../../tests/helpers/puppeteer.js';
 import html from '../index.js';
 import * as u from '../utils.js';
 
@@ -80,23 +79,24 @@ test.serial(
 
 test(
     'It should be able to render the node and update with the merge props and respond to events;',
-    withPage,
-    async (t, puppeteer) => {
+    withComponent(`${__dirname}/mock.js`),
+    async (t, { page, utils }) => {
         const getMarkup = name =>
             `<main><div>Hello ${name}!</div><form><input type="text" name="value"><button type="submit"></button></form></main>`;
 
         const getHTML = () =>
-            puppeteer.page.evaluate(
-                () => document.querySelector('x-example').innerHTML
-            );
+            page.evaluate(() => document.querySelector('x-example').innerHTML);
 
-        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
-        await puppeteer.load('x-example');
+        await page.evaluate(() => {
+            const node = document.createElement('x-example');
+            document.body.append(node);
+        });
+        await utils.waitForUpgrade('x-example');
 
         t.is(await getHTML(), getMarkup('Adam'));
 
         {
-            const content = await puppeteer.page.evaluate(async () => {
+            const content = await page.evaluate(async () => {
                 const node = document.querySelector('x-example');
                 await node.render({ name: 'Maria' });
                 return node.innerHTML;
@@ -104,11 +104,11 @@ test(
             t.is(content, getMarkup('Maria'));
         }
 
-        await puppeteer.page.click('x-example div');
+        await page.click('x-example div');
         t.is(await getHTML(), getMarkup('Adam'));
 
-        await puppeteer.page.type('x-example input', 'Maria', { delay: 15 });
-        await puppeteer.page.click('x-example button');
+        await page.type('x-example input', 'Maria', { delay: 15 });
+        await page.click('x-example button');
         t.is(await getHTML(), getMarkup('Maria'));
     }
 );

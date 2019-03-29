@@ -1,9 +1,8 @@
 import test from 'ava';
-import path from 'path';
+import withComponent from 'ava-webcomponents';
 import delay from 'delay';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
-import withPage from '../../../../tests/helpers/puppeteer.js';
 import adapt, { nodes } from '../index.js';
 
 test.beforeEach(t => {
@@ -83,18 +82,21 @@ test.serial(
 
 test(
     'It should be able to fire the `render` function each time the dimensions change;',
-    withPage,
-    async (t, puppeteer) => {
+    withComponent(`${__dirname}/mock.js`),
+    async (t, { page, utils }) => {
         const getMarkup = () =>
-            puppeteer.page.evaluate(async () => {
+            page.evaluate(async () => {
                 const node = document.querySelector('x-example');
                 return node.innerHTML;
             });
 
-        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
-        await puppeteer.load('x-example');
+        await page.evaluate(() => {
+            const node = document.createElement('x-example');
+            document.body.append(node);
+        });
+        await utils.waitForUpgrade('x-example');
 
-        await puppeteer.page.evaluate(() => {
+        await page.evaluate(() => {
             const node = document.querySelector('x-example');
             node.style.display = 'block';
             node.style.width = '200px';
@@ -104,7 +106,7 @@ test(
         await delay(100);
         t.is(await getMarkup(), '<main>200×150</main>');
 
-        await puppeteer.page.evaluate(() => {
+        await page.evaluate(() => {
             const node = document.querySelector('x-example');
             node.style.width = '500px';
             node.style.height = '350px';

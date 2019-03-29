@@ -1,8 +1,7 @@
-import path from 'path';
 import test from 'ava';
+import withComponent from 'ava-webcomponents';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
-import withPage from '../../../../tests/helpers/puppeteer.js';
 import { getEventName } from '../../../core/utils.js';
 import * as type from '../../../types/index.js';
 import history from '../index.js';
@@ -77,29 +76,31 @@ test('It should be able to push and replace the URL state;', t => {
 
 test(
     'It should be able to render the node and update with the merge props and respond to events;',
-    withPage,
-    async (t, puppeteer) => {
+    withComponent(`${__dirname}/mock.js`),
+    async (t, { page, utils }) => {
         const getMarkup = (name, ageDescription, age) => {
             const ageText = age ? ` at ${age}` : '';
             return `<main><div>Hola ${name}! You are ${ageDescription}${ageText}.</div><a class="params">Click!</a><a class="hash">Click!</a></main>`;
         };
 
         const getHTML = () =>
-            puppeteer.page.evaluate(
-                () => document.querySelector('x-example').innerHTML
-            );
+            page.evaluate(() => document.querySelector('x-example').innerHTML);
 
-        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
-        await puppeteer.load('x-example');
+        await page.evaluate(async () => {
+            const node = document.createElement('x-example');
+            document.body.append(node);
+        });
+
+        await utils.waitForUpgrade('x-example');
         t.is(await getHTML(), getMarkup('Adam', 'old'));
 
-        await puppeteer.page.click('x-example a.params');
+        await page.click('x-example a.params');
         t.is(await getHTML(), getMarkup('Maria', 'young'));
 
-        await puppeteer.page.goBack();
+        await page.goBack();
         t.is(await getHTML(), getMarkup('Adam', 'old'));
 
-        await puppeteer.page.click('x-example a.hash');
+        await page.click('x-example a.hash');
         t.is(await getHTML(), getMarkup('Adam', 'old', 33));
     }
 );

@@ -1,8 +1,7 @@
 import test from 'ava';
-import path from 'path';
+import withComponent from 'ava-webcomponents';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
-import withPage from '../../../../tests/helpers/puppeteer.js';
 import * as type from '../../../types/index.js';
 import attrs, { nodes } from '../index.js';
 
@@ -134,25 +133,27 @@ test('It should be able to skip mutations if the attribute is in excluded list;'
 
 test(
     'It should be able to attach methods to the element and then invoke them;',
-    withPage,
-    async (t, puppeteer) => {
+    withComponent(`${__dirname}/mock.js`),
+    async (t, { page, utils }) => {
         const getHTML = () =>
-            puppeteer.page.evaluate(
-                () => document.querySelector('x-example').innerHTML
-            );
+            page.evaluate(() => document.querySelector('x-example').innerHTML);
 
-        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
-        await puppeteer.load('x-example');
+        await page.evaluate(() => {
+            const node = document.createElement('x-example');
+            document.body.append(node);
+        });
+        await utils.waitForUpgrade('x-example');
+
         t.is(await getHTML(), '<div>Privet Adam! You are old.</div>');
 
-        await puppeteer.page.evaluate(async () => {
+        await page.evaluate(async () => {
             const node = document.querySelector('x-example');
             node.setAttribute('name', 'Maria');
             node.setAttribute('age', 28);
         });
         t.is(await getHTML(), '<div>Privet Maria! You are young.</div>');
 
-        await puppeteer.page.evaluate(async () => {
+        await page.evaluate(async () => {
             const node = document.querySelector('x-example');
             node.removeAttribute('name');
         });

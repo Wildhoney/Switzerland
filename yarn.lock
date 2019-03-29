@@ -251,7 +251,7 @@
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.3.4.tgz#a43357e4bbf4b92a437fb9e465c192848287f27c"
   integrity sha512-tXZCqWtlOOP4wgCp6RjRvLmfuhnqTLy9VHwRochJBCP2nDm27JnnuFEnXFASVyQNHk36jD1tAammsCEEqgscIQ==
 
-"@babel/parser@^7.4.0":
+"@babel/parser@^7.4.0", "@babel/parser@^7.4.2":
   version "7.4.2"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.4.2.tgz#b4521a400cb5a871eab3890787b4bc1326d38d91"
   integrity sha512-9fJTDipQFvlfSVdD/JBtkiY0br9BtfvW2R8wo6CX/Ej2eMuV0gWPk1M67Mt3eggQvBqYW1FCEk8BN7WvGm/g5g==
@@ -947,6 +947,17 @@ autoprefixer@^9.0.0:
     num2fraction "^1.2.2"
     postcss "^7.0.14"
     postcss-value-parser "^3.3.1"
+
+ava-webcomponents@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/ava-webcomponents/-/ava-webcomponents-0.1.1.tgz#dc3ea4dc211d55cd62aab5b6e3c50e1b3c4931f9"
+  integrity sha512-jH0TtddQ4GybHiJ1nM+oovIwhn6LxCB9WbH7kZU3RcTPDzeJPw3W8u4IchpxtqLUqEL6Ln663FFC39WpTcaUaA==
+  dependencies:
+    "@babel/generator" "^7.4.0"
+    "@babel/parser" "^7.4.2"
+    express "^4.16.4"
+    pkg-up "^3.0.1"
+    puppeteer "^1.14.0"
 
 ava@^1.4.1:
   version "1.4.1"
@@ -6465,6 +6476,13 @@ pkg-dir@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-3.0.0.tgz#2749020f239ed990881b1f71210d51eb6523bea3"
   integrity sha512-/E57AYkoeQ25qkxMj5PBOVgF8Kiu/h7cYS30Z5+R7WaiCCBfLq58ZI/dSeaEKb9WVJV5n/03QwrN3IeWIFllvw==
+  dependencies:
+    find-up "^3.0.0"
+
+pkg-up@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/pkg-up/-/pkg-up-3.0.1.tgz#91ea5597c5585fe438d32689ac8943f1b5f17900"
+  integrity sha512-M8N4levGL4P4tHD+l9/glzZuRJqDhwnL5hAMoz7dIpgHhw0NmOjrcvF2plRCy/c7hkylftdehtnJZNkkBeKpzQ==
   dependencies:
     find-up "^3.0.0"
 

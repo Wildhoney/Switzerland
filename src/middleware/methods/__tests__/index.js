@@ -1,8 +1,7 @@
 import test from 'ava';
-import path from 'path';
+import withComponent from 'ava-webcomponents';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
-import withPage from '../../../../tests/helpers/puppeteer.js';
 import methods from '../index.js';
 
 test('It should be able to attach methods to the node;', t => {
@@ -20,18 +19,19 @@ test('It should be able to attach methods to the node;', t => {
 
 test(
     'It should be able to attach methods to the element and then invoke them;',
-    withPage,
-    async (t, puppeteer) => {
+    withComponent(`${__dirname}/mock.js`),
+    async (t, { page, utils }) => {
         const getHTML = () =>
-            puppeteer.page.evaluate(
-                () => document.querySelector('x-example').innerHTML
-            );
+            page.evaluate(() => document.querySelector('x-example').innerHTML);
 
-        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
-        await puppeteer.load('x-example');
+        await page.evaluate(() => {
+            const node = document.createElement('x-example');
+            document.body.append(node);
+        });
+        await utils.waitForUpgrade('x-example');
         t.is(await getHTML(), '<div class="adam">Hey Adam!</div>');
 
-        await puppeteer.page.evaluate(async () => {
+        await page.evaluate(async () => {
             const node = document.querySelector('x-example');
             await node.setName('Maria');
         });

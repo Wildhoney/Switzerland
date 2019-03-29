@@ -1,4 +1,5 @@
-```javascript
+import { create, m } from '../../../../src/index.js';
+
 create(
     'x-example',
     m.adapt(),
@@ -6,4 +7,3 @@ create(
         h('main', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)
     )
 );
-```

@@ -1,10 +1,9 @@
-import path from 'path';
 import test from 'ava';
+import withComponent from 'ava-webcomponents';
 import {
     patch,
     h
 } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
-import withPage from '../../../../tests/helpers/puppeteer.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { getEventName } from '../../../core/utils.js';
 import wait from '../index.js';
@@ -38,12 +37,15 @@ test('It should be able to wait for the resolution of applicable nodes;', async 
 
 test(
     'It should be able to wait for the child nodes to render;',
-    withPage,
-    async (t, puppeteer) => {
-        await puppeteer.read(path.resolve(__dirname, 'mock.md'));
-        await puppeteer.load('x-example');
+    withComponent(`${__dirname}/mock.js`),
+    async (t, { page, utils }) => {
+        await page.evaluate(() => {
+            const node = document.createElement('x-example');
+            document.body.append(node);
+        });
+        await utils.waitForUpgrade('x-example');
 
-        const content = await puppeteer.page.evaluate(async () => {
+        const content = await page.evaluate(async () => {
             const node = document.querySelector('x-example');
             return node.innerHTML;
         });
