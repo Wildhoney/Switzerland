@@ -25,6 +25,9 @@ export const base = (extension, middleware) =>
             this.classList.remove('resolved');
             return this.render({ lifecycle: 'unmount' });
         }
+        idle() {
+            return this[u.meta].queue.current();
+        }
         render(mergeProps = {}) {
             const isRemounting = mergeProps.lifecycle === 'mount';
             const node = this;
