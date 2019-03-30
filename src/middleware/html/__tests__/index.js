@@ -81,35 +81,31 @@ test(
     'It should be able to render the node and update with the merge props and respond to events;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
-        const getMarkup = name =>
-            `<main><div>Hello ${name}!</div><form><input type="text" name="value"><button type="submit"></button></form></main>`;
+        const name = 'x-example';
 
-        const getHTML = () =>
-            page.evaluate(() => document.querySelector('x-example').innerHTML);
-
-        await utils.waitForUpgrade('x-example');
-        await page.evaluate(() => {
-            const node = document.createElement('x-example');
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => {
+            const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
-        });
+        }, name);
 
-        t.is(await getHTML(), getMarkup('Adam'));
+        t.snapshot(await utils.innerHTML(name));
 
         {
-            const content = await page.evaluate(async () => {
-                const node = document.querySelector('x-example');
+            const content = await page.evaluate(async name => {
+                const node = document.querySelector(name);
                 await node.render({ name: 'Maria' });
                 return node.innerHTML;
-            });
-            t.is(content, getMarkup('Maria'));
+            }, name);
+            t.snapshot(content, utils.innerHTML(name));
         }
 
-        await page.click('x-example div');
-        t.is(await getHTML(), getMarkup('Adam'));
+        await page.click(`${name} div`);
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.type('x-example input', 'Maria', { delay: 15 });
-        await page.click('x-example button');
-        t.is(await getHTML(), getMarkup('Maria'));
+        await page.type(`${name} input`, 'Maria', { delay: 15 });
+        await page.click(`${name} button`);
+        t.snapshot(await utils.innerHTML(name));
     }
 );

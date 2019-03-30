@@ -135,29 +135,28 @@ test(
     'It should be able to attach methods to the element and then invoke them;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
-        const getHTML = () =>
-            page.evaluate(() => document.querySelector('x-example').innerHTML);
+        const name = 'x-example';
 
-        await utils.waitForUpgrade('x-example');
-        await page.evaluate(() => {
-            const node = document.createElement('x-example');
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => {
+            const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
-        });
+        }, name);
 
-        t.is(await getHTML(), '<div>Privet Adam! You are old.</div>');
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(async () => {
-            const node = document.querySelector('x-example');
+        await page.evaluate(async name => {
+            const node = document.querySelector(name);
             node.setAttribute('name', 'Maria');
             node.setAttribute('age', 28);
-        });
-        t.is(await getHTML(), '<div>Privet Maria! You are young.</div>');
+        }, name);
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(async () => {
-            const node = document.querySelector('x-example');
+        await page.evaluate(async name => {
+            const node = document.querySelector(name);
             node.removeAttribute('name');
-        });
-        t.is(await getHTML(), '<div>Privet Adam! You are young.</div>');
+        }, name);
+        t.snapshot(await utils.innerHTML(name));
     }
 );

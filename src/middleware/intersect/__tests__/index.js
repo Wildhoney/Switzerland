@@ -84,37 +84,33 @@ test(
     'It should be able to fire the `render` function each time the intersections change;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
-        const getMarkup = () =>
-            page.evaluate(async () => {
-                const node = document.querySelector('x-example');
-                return node.innerHTML;
-            });
+        const name = 'x-example';
 
-        await utils.waitForUpgrade('x-example');
-        await page.evaluate(() => {
-            const node = document.createElement('x-example');
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => {
+            const node = document.createElement(name);
             node.style.display = 'block';
             node.style.width = '200px';
             node.style.height = '300px';
             node.style.transform = 'translate(0, -250px)';
             document.body.append(node);
             return node.idle();
-        });
+        }, name);
         await delay(100);
-        t.is(await getMarkup(), '<main>0.30</main>');
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(() => {
-            const node = document.querySelector('x-example');
+        await page.evaluate(name => {
+            const node = document.querySelector(name);
             node.style.transform = 'translate(0, -100px)';
-        });
+        }, name);
         await delay(100);
-        t.is(await getMarkup(), '<main>0.80</main>');
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(() => {
-            const node = document.querySelector('x-example');
+        await page.evaluate(name => {
+            const node = document.querySelector(name);
             node.style.transform = 'translate(0, 0)';
-        });
+        }, name);
         await delay(100);
-        t.is(await getMarkup(), '<main>1.00</main>');
+        t.snapshot(await utils.innerHTML(name));
     }
 );

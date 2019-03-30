@@ -84,35 +84,31 @@ test(
     'It should be able to fire the `render` function each time the dimensions change;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
-        const getMarkup = () =>
-            page.evaluate(async () => {
-                const node = document.querySelector('x-example');
-                return node.innerHTML;
-            });
+        const name = 'x-example';
 
-        await utils.waitForUpgrade('x-example');
-        await page.evaluate(() => {
-            const node = document.createElement('x-example');
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => {
+            const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
-        });
+        }, name);
 
-        await page.evaluate(() => {
-            const node = document.querySelector('x-example');
+        await page.evaluate(name => {
+            const node = document.querySelector(name);
             node.style.display = 'block';
             node.style.width = '200px';
             node.style.height = '150px';
             return node.render();
-        });
+        }, name);
         await delay(100);
-        t.is(await getMarkup(), '<main>200×150</main>');
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(() => {
-            const node = document.querySelector('x-example');
+        await page.evaluate(name => {
+            const node = document.querySelector(name);
             node.style.width = '500px';
             node.style.height = '350px';
-        });
+        }, name);
         await delay(100);
-        t.is(await getMarkup(), '<main>500×350</main>');
+        t.snapshot(await utils.innerHTML(name));
     }
 );

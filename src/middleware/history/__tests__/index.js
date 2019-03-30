@@ -78,30 +78,24 @@ test(
     'It should be able to render the node and update with the merge props and respond to events;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
-        const getMarkup = (name, ageDescription, age) => {
-            const ageText = age ? ` at ${age}` : '';
-            return `<main><div>Hola ${name}! You are ${ageDescription}${ageText}.</div><a class="params">Click!</a><a class="hash">Click!</a></main>`;
-        };
+        const name = 'x-example';
 
-        const getHTML = () =>
-            page.evaluate(() => document.querySelector('x-example').innerHTML);
-
-        await utils.waitForUpgrade('x-example');
-        await page.evaluate(() => {
-            const node = document.createElement('x-example');
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => {
+            const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
-        });
+        }, name);
 
-        t.is(await getHTML(), getMarkup('Adam', 'old'));
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.click('x-example a.params');
-        t.is(await getHTML(), getMarkup('Maria', 'young'));
+        await page.click(`${name} a.params`);
+        t.snapshot(await utils.innerHTML(name));
 
         await page.goBack();
-        t.is(await getHTML(), getMarkup('Adam', 'old'));
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.click('x-example a.hash');
-        t.is(await getHTML(), getMarkup('Adam', 'old', 33));
+        await page.click(`${name} a.hash`);
+        t.snapshot(await utils.innerHTML(name));
     }
 );

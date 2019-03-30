@@ -39,21 +39,15 @@ test(
     'It should be able to wait for the child nodes to render;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
-        await utils.waitForUpgrade('x-example');
-        await page.evaluate(() => {
-            const node = document.createElement('x-example');
+        const name = 'x-example';
+
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => {
+            const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
-        });
+        }, name);
 
-        const content = await page.evaluate(async () => {
-            const node = document.querySelector('x-example');
-            return node.innerHTML;
-        });
-
-        t.is(
-            content,
-            '<main><x-adam class="resolved"><div>Adam</div></x-adam><x-maria class="resolved"><div>Maria</div></x-maria></main>'
-        );
+        t.snapshot(await utils.innerHTML(name));
     }
 );

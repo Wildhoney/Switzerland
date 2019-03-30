@@ -21,21 +21,20 @@ test(
     'It should be able to attach methods to the element and then invoke them;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
-        const getHTML = () =>
-            page.evaluate(() => document.querySelector('x-example').innerHTML);
+        const name = 'x-example';
 
-        await utils.waitForUpgrade('x-example');
-        await page.evaluate(() => {
-            const node = document.createElement('x-example');
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => {
+            const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
-        });
-        t.is(await getHTML(), '<div class="adam">Hey Adam!</div>');
+        }, name);
+        t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(async () => {
-            const node = document.querySelector('x-example');
+        await page.evaluate(async name => {
+            const node = document.querySelector(name);
             await node.setName('Maria');
-        });
-        t.is(await getHTML(), '<div class="maria">Hey Maria!</div>');
+        }, name);
+        t.snapshot(await utils.innerHTML(name));
     }
 );
