@@ -37,7 +37,7 @@ As Switzerland is functional its components simply take `props` and yield `props
 ```javascript
 import { create, m } from 'switzerland';
 
-create('x-countries', m.boundary(), m.html(({ h }) =>
+create('x-countries', m.html(({ h }) =>
     h('ul', {}, [
         h('li', {}, 'United Kingdom'),
         h('li', {}, 'Russian Federation'),
@@ -61,7 +61,6 @@ import { create, m, t } from 'switzerland';
 
 create(
     'x-countries',
-    m.boundary(),
     m.attrs({ values: t.Array(t.String) }),
     m.html(({ attrs, h }) =>
         h('ul', {}, attrs.values.map(country => h('li', {}, country)))
@@ -103,6 +102,8 @@ create(
     )
 );
 ```
+
+Notice that we've also added the `m.boundary` middleware function which attached a shadow boundary to our custom element. We do this so that our applied styles are encapsulated to the component itself, rather than bleeding into other elements on the page.
 
 We use the `h.sheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. In using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
 
