@@ -94,6 +94,7 @@ test(
         await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
+            return node.idle();
         });
 
         await page.evaluate(() => {

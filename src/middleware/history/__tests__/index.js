@@ -87,9 +87,10 @@ test(
             page.evaluate(() => document.querySelector('x-example').innerHTML);
 
         await utils.waitForUpgrade('x-example');
-        await page.evaluate(async () => {
+        await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
+            return node.idle();
         });
 
         t.is(await getHTML(), getMarkup('Adam', 'old'));

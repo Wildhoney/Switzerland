@@ -43,6 +43,7 @@ test(
         await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
+            return node.idle();
         });
 
         const content = await page.evaluate(async () => {

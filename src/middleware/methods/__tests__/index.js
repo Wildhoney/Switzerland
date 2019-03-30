@@ -28,6 +28,7 @@ test(
         await page.evaluate(() => {
             const node = document.createElement('x-example');
             document.body.append(node);
+            return node.idle();
         });
         t.is(await getHTML(), '<div class="adam">Hey Adam!</div>');
 
