@@ -103,7 +103,7 @@ create(
 );
 ```
 
-Notice that we've also added the `m.boundary` middleware function which attached a shadow boundary to our custom element. We do this so that our applied styles are encapsulated to the component itself, rather than bleeding into other elements on the page.
+Notice that we've also added the `m.boundary` middleware function which attaches a shadow boundary to our custom element. We do this so that our applied styles are encapsulated to the component itself, rather than bleeding into other elements on the page.
 
 We use the `h.sheet` helper function that uses `@import` to import a CSS document into the DOM, which also specifies a static `key` based on the path to prevent the CSS from being constantly downloaded on re-render. In using the `init` function we have a function that allows us to resolve assets relative to the current JS file:
 
