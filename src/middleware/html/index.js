@@ -3,16 +3,21 @@ import { findBoundary } from '../../core/utils.js';
 import * as u from './utils.js';
 
 /**
- * @function html ∷ View v, Props p ⇒ (p → v) → (p → p)
+ * @function html ∷ ∀ a. View v, Props p ⇒ (p → v) → (p → p) → Object String a
  * ---
  * Takes a virtual DOM representation that will render to the node's shadow boundary. For size reasons, Switzerland
  * uses Picodom over VirtualDOM, and as such you can use the Picodom documentation for reference.
  */
-export default function html(getView) {
+export default function html(getView, options = { recycle: false }) {
     return async function html(props) {
         const { node } = props;
 
         if (props.node.isConnected) {
+            // Recycle the node if the node's content is empty.
+            options.recycle &&
+                !u.takeTree(node) &&
+                u.putTree(node, superfine.recycle(node));
+
             // Remove any previous style resolutions.
             u.styles.has(node) && u.styles.delete(node);
 
@@ -34,22 +39,10 @@ export default function html(getView) {
                 view,
                 findBoundary(props)
             );
+
             u.putTree(node, tree);
         }
 
         return props;
     };
 }
-
-/**
- * @function html.recycle ∷ View v, Props p ⇒ (p → v) → (p → p)
- * ---
- * Allows the recycling of the existing HTML in the current node.
- */
-html.recycle = function recycle(getView) {
-    return function htmlRecycle(props) {
-        const { node } = props;
-        !u.takeTree(node) && u.putTree(node, superfine.recycle(node));
-        return html(getView)(props);
-    };
-};

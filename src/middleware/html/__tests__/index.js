@@ -82,7 +82,7 @@ test.serial(
 test.serial(
     'It should be able to recycle the existing node content;',
     async t => {
-        const m = html.recycle(t.context.viewSpy);
+        const m = html(t.context.viewSpy, { recycle: true });
         const props = {
             ...defaultProps,
             node: Object.create(defaultProps.node, {
