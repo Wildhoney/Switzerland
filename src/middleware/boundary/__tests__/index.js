@@ -12,28 +12,30 @@ test('It should be able to invoke the `createBoundary` function;', t => {
     t.is(createBoundarySpy.callCount, 1);
 });
 
-test("It should be able to attach and reuse the shadow boundary;",
-withComponent(`${__dirname}/helpers/mock.js`),async (t, { page, utils })  => {
-    const name = 'x-example';
+test(
+    'It should be able to attach and reuse the shadow boundary;',
+    withComponent(`${__dirname}/helpers/mock.js`),
+    async (t, { page, utils }) => {
+        const name = 'x-example';
 
-    await utils.waitForUpgrade(name);
+        await utils.waitForUpgrade(name);
 
-    const hasBoundary = await page.evaluate(async name => {
-        const node = document.createElement(name);
-        document.body.append(node);
-        await node.idle();
-        window.lastShadowRoot = node.shadowRoot;
-        return Boolean(node.shadowRoot);
-    }, name);
+        const hasBoundary = await page.evaluate(async name => {
+            const node = document.createElement(name);
+            document.body.append(node);
+            await node.idle();
+            window.lastShadowRoot = node.shadowRoot;
+            return Boolean(node.shadowRoot);
+        }, name);
 
-    t.true(hasBoundary);
+        t.true(hasBoundary);
 
-    const hasSameBoundary = await page.evaluate(async name => {
-        const node = document.querySelector(name);
-        await node.render();
-        return node.shadowRoot===window.lastShadowRoot;
-    }, name);
+        const hasSameBoundary = await page.evaluate(async name => {
+            const node = document.querySelector(name);
+            await node.render();
+            return node.shadowRoot === window.lastShadowRoot;
+        }, name);
 
-    t.true(hasSameBoundary);
-    
-})
+        t.true(hasSameBoundary);
+    }
+);
