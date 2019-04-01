@@ -10,13 +10,14 @@ import * as u from './utils.js';
  */
 export default function html(getView, options = { recycle: false }) {
     return async function html(props) {
-        const { node } = props;
+        const { boundary, node } = props;
 
         if (props.node.isConnected) {
-            // Recycle the node if the node's content is empty.
-            options.recycle &&
-                !u.takeTree(node) &&
-                u.putTree(node, superfine.recycle(node));
+            if (options.recycle && !u.takeTree(node)) {
+                // Recycle the node if the node's content is empty.
+                boundary && boundary.appendChild(node.firstChild);
+                u.putTree(node, superfine.recycle(findBoundary(props)));
+            }
 
             // Remove any previous style resolutions.
             u.styles.has(node) && u.styles.delete(node);
