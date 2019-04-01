@@ -1,7 +1,4 @@
-import {
-    patch,
-    h
-} from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import * as superfine from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import { findBoundary } from '../../core/utils.js';
 import * as u from './utils.js';
 
@@ -11,7 +8,7 @@ import * as u from './utils.js';
  * Takes a virtual DOM representation that will render to the node's shadow boundary. For size reasons, Switzerland
  * uses Picodom over VirtualDOM, and as such you can use the Picodom documentation for reference.
  */
-export default getView => {
+export default function html(getView) {
     return async function html(props) {
         const { node } = props;
 
@@ -20,7 +17,7 @@ export default getView => {
             u.styles.has(node) && u.styles.delete(node);
 
             // Extend the `h` object with useful functions.
-            const extendedH = h;
+            const extendedH = superfine.h;
             extendedH.vars = u.vars;
             extendedH.sheet = u.sheet(node);
 
@@ -32,10 +29,27 @@ export default getView => {
             newProps.props = newProps;
 
             const view = await getView(newProps);
-            const tree = patch(u.takeTree(node), view, findBoundary(props));
+            const tree = superfine.patch(
+                u.takeTree(node),
+                view,
+                findBoundary(props)
+            );
             u.putTree(node, tree);
         }
 
         return props;
+    };
+}
+
+/**
+ * @function html.recycle ∷ View v, Props p ⇒ (p → v) → (p → p)
+ * ---
+ * Allows the recycling of the existing HTML in the current node.
+ */
+html.recycle = function recycle(getView) {
+    return function htmlRecycle(props) {
+        const { node } = props;
+        !u.takeTree(node) && u.putTree(node, superfine.recycle(node));
+        return html(getView)(props);
     };
 };

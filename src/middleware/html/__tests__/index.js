@@ -1,18 +1,20 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import * as sf from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import * as superfine from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import { spy, stub, match } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import html from '../index.js';
 import * as u from '../utils.js';
 
 test.beforeEach(t => {
-    t.context.viewSpy = spy(() => sf.h('div'));
-    t.context.patchStub = stub(sf, 'patch');
+    t.context.viewSpy = spy(() => superfine.h('div'));
+    t.context.patchStub = stub(superfine, 'patch');
+    t.context.recycleStub = stub(superfine, 'recycle');
 });
 
 test.afterEach(t => {
     t.context.patchStub.restore();
+    t.context.recycleStub.restore();
 });
 
 test.serial(
@@ -74,6 +76,22 @@ test.serial(
         t.is(u.styles.get(props.node), view);
         await m(props);
         t.is(u.styles.get(props.node), undefined);
+    }
+);
+
+test.serial(
+    'It should be able to recycle the existing node content;',
+    async t => {
+        const m = html.recycle(t.context.viewSpy);
+        const props = {
+            ...defaultProps,
+            node: Object.create(defaultProps.node, {
+                isConnected: { value: true }
+            })
+        };
+        await m(props);
+        t.is(t.context.recycleStub.callCount, 1);
+        t.is(t.context.viewSpy.callCount, 1);
     }
 );
 
