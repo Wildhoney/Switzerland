@@ -112,6 +112,9 @@ export const alias = (extension, instance) =>
         disconnectedCallback() {
             return instance.disconnectedCallback.call(this);
         }
+        idle() {
+            return instance.idle.call(this);
+        }
         render() {
             return instance.render.call(this);
         }
