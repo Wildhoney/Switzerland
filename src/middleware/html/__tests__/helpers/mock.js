@@ -24,3 +24,8 @@ create(
         ])
     )
 );
+
+create(
+    'x-example-recycled',
+    m.html(({ h }) => h('div', {}, 'Hello Adam!'), { recycle: true })
+);

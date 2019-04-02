@@ -127,3 +127,21 @@ test(
         t.snapshot(await utils.innerHTML(name));
     }
 );
+
+test.serial(
+    'It should be able to recycle the HTML from a node if specified in the options;',
+    withComponent(`${__dirname}/helpers/mock.js`),
+    async (t, { page, utils }) => {
+        const name = 'x-example-recycled';
+
+        await page.evaluate(name => {
+            const node = document.createElement(name);
+            node.innerHTML = '<div>Hello Maria!</div>';
+            document.body.append(node);
+        }, name);
+        await utils.waitForUpgrade(name);
+        await page.evaluate(name => document.querySelector(name).idle(), name);
+
+        t.snapshot(await utils.innerHTML(name));
+    }
+);
