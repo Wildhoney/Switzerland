@@ -136,8 +136,8 @@ test(
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
         const name = 'x-example';
-
         await utils.waitForUpgrade(name);
+
         await page.evaluate(name => {
             const node = document.createElement(name);
             document.body.append(node);

@@ -1,4 +1,5 @@
 import test from 'ava';
+import withComponent from 'ava-webcomponents';
 import { spy, match } from 'sinon';
 import { init, create, alias } from '../index.js';
 
@@ -87,5 +88,63 @@ test.serial(
         t.is(t.context.define.callCount, 1);
         t.true(t.context.get.calledWith('x-neptune'));
         t.true(t.context.define.calledWith('x-mars', match.any));
+    }
+);
+
+test.serial(
+    'It should be able to create the element;',
+    withComponent.debug(`${__dirname}/helpers/mock.js`),
+    async (t, { page, utils }) => {
+        const name = 'x-create';
+        await utils.waitForUpgrade(name);
+
+        const content = await page.evaluate(async () => {
+            const node = document.createElement('x-create');
+            document.body.append(node);
+            await node.idle();
+            return node.innerHTML;
+        }, name);
+        t.is(content, '<div>Hello Adam!</div>');
+    }
+);
+
+test.serial(
+    'It should be able to alias a custom element;',
+    withComponent.debug(`${__dirname}/helpers/mock.js`),
+    async (t, { page, utils }) => {
+        const name = await page.evaluate(() => window.renamedElementName);
+        await utils.waitForUpgrade(name);
+
+        const content = await page.evaluate(async name => {
+            const node = document.createElement(name);
+            document.body.append(node);
+            await node.idle();
+            return node.innerHTML;
+        }, name);
+        t.is(content, '<div>Hello Adam!</div>');
+        t.true(/x-create-[a-z0-9]/.test(name));
+    }
+);
+
+test.serial.skip(
+    'It should be able to extend a native element;',
+    withComponent.debug(`${__dirname}/helpers/mock.js`),
+    async (t, { page, utils }) => {
+        const name = 'x-native';
+        await utils.waitForUpgrade(name);
+
+        await page.evaluate(async name => {
+            const node = document.createElement('input');
+            node.setAttribute('is', name);
+            document.body.append(node);
+        }, name);
+
+        await page.type('input', 'Hello Maria!', { delay: 1500 });
+
+        const content = await page.evaluate(async name => {
+            const node = document.querySelector(`input[is="${name}"]`);
+            return node.innerHTML;
+        }, name);
+        t.is(content, 'HELLO MARIA!');
     }
 );
