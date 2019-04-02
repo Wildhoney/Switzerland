@@ -93,7 +93,7 @@ test.serial(
 
 test.serial(
     'It should be able to create the element;',
-    withComponent.debug(`${__dirname}/helpers/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
         const name = 'x-create';
         await utils.waitForUpgrade(name);
@@ -110,8 +110,9 @@ test.serial(
 
 test.serial(
     'It should be able to alias a custom element;',
-    withComponent.debug(`${__dirname}/helpers/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
+        await page.waitForFunction('Boolean(window.renamedElementName)');
         const name = await page.evaluate(() => window.renamedElementName);
         await utils.waitForUpgrade(name);
 
@@ -126,25 +127,25 @@ test.serial(
     }
 );
 
-test.serial.skip(
+test.serial(
     'It should be able to extend a native element;',
-    withComponent.debug(`${__dirname}/helpers/mock.js`),
+    withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {
         const name = 'x-native';
         await utils.waitForUpgrade(name);
 
         await page.evaluate(async name => {
-            const node = document.createElement('input');
-            node.setAttribute('is', name);
+            const node = document.createElement('input', { is: name });
+            node.setAttribute('type', 'text');
             document.body.append(node);
         }, name);
 
-        await page.type('input', 'Hello Maria!', { delay: 1500 });
+        await page.type('input', 'Hello Maria!', { delay: 15 });
 
-        const content = await page.evaluate(async name => {
-            const node = document.querySelector(`input[is="${name}"]`);
-            return node.innerHTML;
-        }, name);
+        const content = await page.evaluate(() => {
+            const node = document.querySelector(`input`);
+            return node.value;
+        });
         t.is(content, 'HELLO MARIA!');
     }
 );
