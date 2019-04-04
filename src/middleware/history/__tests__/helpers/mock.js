@@ -14,14 +14,15 @@ create(
                 'div',
                 {},
                 `Hola ${name}! You are ${age > 30 ? 'old' : 'young'}${
-                    isShowingAge(window.location.hash) ? ` at ${age}` : ''
+                    isShowingAge(history.location.hash) ? ` at ${age}` : ''
                 }.`
             ),
             h(
                 'a',
                 {
                     class: 'params',
-                    onclick: () => history.push({}, '', '?name=Maria&age=28')
+                    onclick: () =>
+                        history.pushState({}, '', '?name=Maria&age=28')
                 },
                 'Click!'
             ),

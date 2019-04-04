@@ -51,7 +51,7 @@ test('It should be able to parse params/hash and set defaults;', t => {
         mockLocation
     );
     const props = m(defaultProps);
-    t.is(props.history.hash, '#test-me');
+    t.is(props.history.location.hash, '#test-me');
     t.is(props.history.params.get('name'), 'Adam');
     t.is(props.history.params.get('age'), 33);
     t.is(props.history.params.get('location'), 'Watford');
@@ -66,10 +66,10 @@ test('It should be able to push and replace the URL state;', t => {
     window.history.replaceState = spy();
     const m = history();
     const props = m(defaultProps);
-    props.history.push();
+    props.history.pushState();
     t.is(window.history.pushState.callCount, 1);
     t.is(window.history.replaceState.callCount, 0);
-    props.history.replace();
+    props.history.replaceState();
     t.is(window.history.pushState.callCount, 1);
     t.is(window.history.replaceState.callCount, 1);
 });
