@@ -33,10 +33,10 @@ export default (types = {}, location = window.location) => {
         return {
             ...props,
             history: {
-                hash: location.hash,
+                location: { ...location },
                 params,
-                push: u.changeState(props, 'pushState'),
-                replace: u.changeState(props, 'replaceState')
+                pushState: u.changeState(props, 'pushState'),
+                replaceState: u.changeState(props, 'replaceState')
             }
         };
     };
