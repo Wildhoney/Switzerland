@@ -47,7 +47,7 @@ const filter = ({ h, history }) =>
             'a',
             {
                 class: history.params.get('filter') ? '' : 'active',
-                onclick: () => history.replace({}, '', '?filter=no')
+                onclick: () => history.replaceState({}, '', '?filter=no')
             },
             'Show'
         ),
@@ -56,7 +56,7 @@ const filter = ({ h, history }) =>
             'a',
             {
                 class: !history.params.get('filter') ? '' : 'active',
-                onclick: () => history.replace({}, '', '?filter=yes')
+                onclick: () => history.replaceState({}, '', '?filter=yes')
             },
             'Hide'
         )
