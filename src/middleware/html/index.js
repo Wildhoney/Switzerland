@@ -12,29 +12,30 @@ export default function html(getView, options = { recycle: false }) {
     return async function html(props) {
         const { boundary, node } = props;
 
+        if (options.recycle && !u.takeTree(node)) {
+            // Recycle the node if the node's content is empty.
+            boundary && boundary.appendChild(node.firstChild);
+            u.putTree(node, superfine.recycle(findBoundary(props)));
+        }
+
+        // Remove any previous style resolutions.
+        u.styles.has(node) && u.styles.delete(node);
+
+        // Extend the `h` object with useful functions.
+        const extendedH = superfine.h;
+        extendedH.vars = u.vars;
+        extendedH.sheet = u.sheet(node);
+
+        // Define the new props and assign to `props` so it's infinitely nested.
+        const newProps = {
+            ...props,
+            h: extendedH
+        };
+        newProps.props = newProps;
+
+        const view = await getView(newProps);
+
         if (props.node.isConnected) {
-            if (options.recycle && !u.takeTree(node)) {
-                // Recycle the node if the node's content is empty.
-                boundary && boundary.appendChild(node.firstChild);
-                u.putTree(node, superfine.recycle(findBoundary(props)));
-            }
-
-            // Remove any previous style resolutions.
-            u.styles.has(node) && u.styles.delete(node);
-
-            // Extend the `h` object with useful functions.
-            const extendedH = superfine.h;
-            extendedH.vars = u.vars;
-            extendedH.sheet = u.sheet(node);
-
-            // Define the new props and assign to `props` so it's infinitely nested.
-            const newProps = {
-                ...props,
-                h: extendedH
-            };
-            newProps.props = newProps;
-
-            const view = await getView(newProps);
             const tree = superfine.patch(
                 u.takeTree(node),
                 view,
