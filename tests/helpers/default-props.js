@@ -1,13 +1,14 @@
 import { spy } from 'sinon';
-import { dispatchEvent } from '../../src/core/utils.js';
+import { initialProps } from '../../src/core/utils.js';
 
 const node = document.createElement('div');
+node.render = spy();
 
 const props = {
+    ...initialProps(node, [], {}, Promise.resolve()),
     node,
     render: spy(),
-    lifecycle: 'render',
-    utils: { dispatch: dispatchEvent(node) }
+    lifecycle: 'render'
 };
 
 props.props = props;
