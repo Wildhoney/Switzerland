@@ -14,7 +14,7 @@ create(
                 'div',
                 {},
                 `Hola ${name}! You are ${age > 30 ? 'old' : 'young'}${
-                    isShowingAge(history.location.hash) ? ` at ${age}` : ''
+                    isShowingAge(window.location.hash) ? ` at ${age}` : ''
                 }.`
             ),
             h(

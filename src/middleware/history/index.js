@@ -12,10 +12,12 @@ export const nodes = new Map();
             const { types, defaults, location, utils } = nodes.get(node);
             node.render({
                 signal: {
-                    ...utils.getLatestProps(node).signal,
-                    params: u.getParams(types, defaults, location),
-                    pathname: location.pathname,
-                    hash: location.hash
+                    ...(utils.getLatestProps(node) || {}).signal,
+                    history: {
+                        params: u.getParams(types, defaults, location),
+                        pathname: location.pathname,
+                        hash: location.hash
+                    }
                 }
             });
         })

@@ -1,13 +1,13 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import { spy } from 'sinon';
+import { spy, match } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { getEventName } from '../../../core/utils.js';
 import * as type from '../../../types/index.js';
-import history from '../index.js';
+import history, { nodes } from '../index.js';
 
 test('It should register the events to notify changes only once;', async t => {
-    t.plan(1);
+    t.plan(2);
 
     const { node } = defaultProps;
     node.render = spy();
@@ -24,10 +24,20 @@ test('It should register the events to notify changes only once;', async t => {
         return new Promise(resolve => {
             window.addEventListener(eventName, () => {
                 t.is(node.render.callCount, 1);
+                t.true(
+                    node.render.calledWith({
+                        signal: {
+                            history: {
+                                params: match.any,
+                                pathname: match.string,
+                                hash: match.string
+                            }
+                        }
+                    })
+                );
                 resolve();
             });
         });
-    } catch {
     } finally {
         window.dispatchEvent(
             new window.CustomEvent(eventName, {
@@ -51,7 +61,6 @@ test('It should be able to parse params/hash and set defaults;', t => {
         mockLocation
     );
     const props = m(defaultProps);
-    t.is(props.history.location.hash, '#test-me');
     t.is(props.history.params.get('name'), 'Adam');
     t.is(props.history.params.get('age'), 33);
     t.is(props.history.params.get('location'), 'Watford');
@@ -72,6 +81,14 @@ test('It should be able to push and replace the URL state;', t => {
     props.history.replaceState();
     t.is(window.history.pushState.callCount, 1);
     t.is(window.history.replaceState.callCount, 1);
+});
+
+test('It should be able to remove the node from the map when unmounting;', t => {
+    const m = history();
+    m(defaultProps);
+    t.true(nodes.has(defaultProps.node));
+    m({ ...defaultProps, lifecycle: 'unmount' });
+    t.false(nodes.has(defaultProps.node));
 });
 
 test(
