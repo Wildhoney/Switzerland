@@ -29,7 +29,7 @@ export default (types = {}, exclude = ['class', 'id', 'style']) => {
                     u.hasApplicableMutations(node, mutations, exclude) &&
                     render({
                         signal: {
-                            ...utils.getLatestProps(node).signal,
+                            ...(utils.getLatestProps(node) || {}).signal,
                             mutations
                         }
                     })
