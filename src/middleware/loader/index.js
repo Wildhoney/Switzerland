@@ -1,3 +1,6 @@
+/**
+ * @function cache ∷ Map
+ */
 const cache = new Map();
 
 /**
