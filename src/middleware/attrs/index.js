@@ -21,13 +21,18 @@ export default (types = {}, exclude = ['class', 'id', 'style']) => {
     const defaults = getDefaults(types);
 
     return function attrs(props) {
-        const { node, render } = props;
+        const { node, utils, render } = props;
 
         if (!nodes.has(node)) {
             const observer = new window.MutationObserver(
                 mutations =>
                     u.hasApplicableMutations(node, mutations, exclude) &&
-                    render({ signal: { ...props.signal, mutations } })
+                    render({
+                        signal: {
+                            ...utils.getLatestProps(node).signal,
+                            mutations
+                        }
+                    })
             );
 
             observer.observe(node, {
