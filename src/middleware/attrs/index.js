@@ -21,7 +21,7 @@ export default (types = {}, exclude = ['class', 'id', 'style']) => {
     const defaults = getDefaults(types);
 
     return function attrs(props) {
-        const { node, utils, render } = props;
+        const { node, utils, lifecycle, render } = props;
 
         if (!nodes.has(node)) {
             const observer = new window.MutationObserver(
@@ -41,6 +41,7 @@ export default (types = {}, exclude = ['class', 'id', 'style']) => {
             });
             nodes.add(node);
         }
+        lifecycle === 'unmount' && nodes.delete(node);
 
         return {
             ...props,
