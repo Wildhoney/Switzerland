@@ -75,6 +75,14 @@ test('It should be able to define defaults using a tuple;', t => {
     });
 });
 
+test('It should be able to remove the node from the map when unmounting;', t => {
+    const m = attrs();
+    m(defaultProps);
+    t.true(nodes.has(defaultProps.node));
+    m({ ...defaultProps, lifecycle: 'unmount' });
+    t.false(nodes.has(defaultProps.node));
+});
+
 test('It should invoke the `render` function if the mutations are considered applicable;', t => {
     const node = defaultProps.node.cloneNode(true);
     const renderSpy = spy();
@@ -84,28 +92,28 @@ test('It should invoke the `render` function if the mutations are considered app
     {
         t.context.mockObserver([{ attributeName: 'age', oldValue: '33' }]);
         const m = attrs({ name: type.String });
-        m({ node: node.cloneNode(true), render: renderSpy });
+        m({ ...defaultProps, node: node.cloneNode(true), render: renderSpy });
         t.is(renderSpy.callCount, 0);
     }
 
     {
         t.context.mockObserver([{ attributeName: 'name', oldValue: 'Adam' }]);
         const m = attrs({ name: type.String });
-        m({ node: node.cloneNode(true), render: renderSpy });
+        m({ ...defaultProps, node: node.cloneNode(true), render: renderSpy });
         t.is(renderSpy.callCount, 0);
     }
 
     {
         t.context.mockObserver([{ attributeName: 'name', oldValue: 'Maria' }]);
         const m = attrs({ name: type.String });
-        m({ node: node.cloneNode(true), render: renderSpy });
+        m({ ...defaultProps, node: node.cloneNode(true), render: renderSpy });
         t.is(renderSpy.callCount, 1);
     }
 
     {
         t.context.mockObserver([{ attributeName: 'age', oldValue: '34' }]);
         const m = attrs({ name: type.String });
-        m({ node: node.cloneNode(true), render: renderSpy });
+        m({ ...defaultProps, node: node.cloneNode(true), render: renderSpy });
         t.is(renderSpy.callCount, 2);
     }
 });
