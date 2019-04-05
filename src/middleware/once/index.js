@@ -1,7 +1,7 @@
 /**
- * @constant registry ∷ Map
+ * @constant nodes ∷ Map
  */
-const registry = new Map();
+const nodes = new Map();
 
 /**
  * @function once ∷ Props p ⇒ (p → p) → (p → Promise p)
@@ -13,8 +13,8 @@ const registry = new Map();
 export default fn => {
     const once = async function once(props) {
         const { node } = props;
-        !registry.has(node) && registry.set(node, new WeakMap());
-        const functions = registry.get(node);
+        !nodes.has(node) && nodes.set(node, new WeakMap());
+        const functions = nodes.get(node);
         const result = functions.has(fn) ? functions.get(fn) : fn(props);
         functions.set(fn, result);
         return { ...(await result), ...props };
