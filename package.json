@@ -94,7 +94,7 @@
         "nyc": "^13.3.0",
         "prettier": "^1.16.4",
         "readlint": "^0.7.2",
-        "rollup": "^1.8.0",
+        "rollup": "^1.9.0",
         "rollup-plugin-babel": "^4.3.2",
         "rollup-plugin-replace": "^2.1.1",
         "shortid": "^2.2.14",
@@ -104,6 +104,6 @@
         "stylelint-config-prettier": "^5.0.0",
         "taskfile": "^0.10.0",
         "terser": "^3.17.0",
-        "testcafe": "^1.1.0"
+        "testcafe": "^1.1.1"
     }
 }
