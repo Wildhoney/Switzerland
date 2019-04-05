@@ -2,13 +2,23 @@ import { getDefaults } from '../../core/utils.js';
 import * as u from './utils.js';
 
 /**
- * @function nodes ∷ Set
+ * @function nodes ∷ Map
  */
-export const nodes = new Set();
+export const nodes = new Map();
 
 [u.eventName, 'popstate', 'hashchange'].forEach(eventName =>
     window.addEventListener(eventName, () =>
-        nodes.forEach(node => node.render())
+        [...nodes.keys()].forEach(node => {
+            const { types, defaults, location, utils } = nodes.get(node);
+            node.render({
+                signal: {
+                    ...utils.getLatestProps(node).signal,
+                    params: u.getParams(types, defaults, location),
+                    pathname: location.pathname,
+                    hash: location.hash
+                }
+            });
+        })
     )
 );
 
@@ -23,18 +33,15 @@ export default (types = {}, location = window.location) => {
     const defaults = getDefaults(types);
 
     return function history(props) {
-        const { node } = props;
-        !nodes.has(node) && nodes.add(node);
-
-        const params = new URLSearchParams(location.search);
-        const get = params.get.bind(params);
-        params.get = u.createPatch(get, types, defaults);
+        const { node, utils, lifecycle } = props;
+        !nodes.has(node) &&
+            nodes.set(node, { types, defaults, location, utils });
+        lifecycle === 'unmount' && nodes.delete(node);
 
         return {
             ...props,
             history: {
-                location: { ...location },
-                params,
+                params: u.getParams(types, defaults, location),
                 pushState: u.changeState(props, 'pushState'),
                 replaceState: u.changeState(props, 'replaceState')
             }
