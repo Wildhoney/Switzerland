@@ -35,15 +35,6 @@
     "bugs": {
         "url": "https://github.com/Wildhoney/Switzerland/issues"
     },
-    "ava": {
-        "failFast": true,
-        "require": [
-            "esm",
-            "node-url-imports",
-            "core-js",
-            "./tests/helpers/browser-env.js"
-        ]
-    },
     "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
         "capitalize": "^2.0.0",

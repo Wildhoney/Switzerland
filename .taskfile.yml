@@ -30,12 +30,14 @@
       - - - - - - - - rm -rf build.tar.gz es/
 
 - name: test/spec
-  task: NODE_ENV=test ava
+  task: ava
 
 - name: test/coverage
   tasks:
-      - NODE_ENV=test nyc ava
-      - - NODE_ENV=test nyc report --reporter=text-lcov | coveralls
+      - mv ava.config.js ava.config.tmp
+      - - nyc --require esm --require node-url-imports --require core-js --require ./tests/helpers/browser-env.js ava || mv ava.config.tmp ava.config.js 2>/dev/null
+      - - - NODE_ENV=test nyc report --reporter=text-lcov | coveralls || mv ava.config.tmp ava.config.js 2>/dev/null
+      - - - - mv ava.config.tmp ava.config.js 2>/dev/null
 
 - name: test/integration
   task: concurrently -k -s first 'yarn start' 'testcafe chrome:headless ./tests/integration/*.js'
