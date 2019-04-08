@@ -12,12 +12,6 @@ export default function html(getView, options = { recycle: false }) {
     return async function html(props) {
         const { boundary, node } = props;
 
-        if (options.recycle && !u.takeTree(node)) {
-            // Recycle the node if the node's content is empty.
-            boundary && boundary.appendChild(node.firstChild);
-            u.putTree(node, superfine.recycle(findBoundary(props)));
-        }
-
         // Remove any previous style resolutions.
         u.styles.has(node) && u.styles.delete(node);
 
@@ -34,6 +28,12 @@ export default function html(getView, options = { recycle: false }) {
         newProps.props = newProps;
 
         const view = await getView(newProps);
+
+        if (options.recycle && !u.takeTree(node)) {
+            // Recycle the node if the node's content is empty.
+            boundary && boundary.appendChild(node.firstChild);
+            u.putTree(node, superfine.recycle(findBoundary(props)));
+        }
 
         if (props.node.isConnected) {
             const tree = superfine.patch(
