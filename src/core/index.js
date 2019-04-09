@@ -12,9 +12,7 @@ export { meta, Cancel } from './utils.js';
  * of relative ones to allow components to be rendered cross-domain.
  */
 export const init = (url, host = window.location.host) => path => {
-    const a = document.createElement('a');
-    a.href = url;
-    const key = a.host === host ? 'pathname' : 'href';
+    const key = new URL(url).host === host ? 'pathname' : 'href';
     return new URL(path, url)[key];
 };
 
