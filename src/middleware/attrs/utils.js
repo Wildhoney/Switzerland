@@ -23,7 +23,6 @@ export const transformAttributes = (attrs, types, defaults) =>
 export const hasApplicableMutations = (node, mutations, exclude = []) =>
     mutations.some(mutation => {
         const isObserved = !exclude.includes(mutation.attributeName);
-        const isModified =
-            mutation.oldValue !== node.getAttribute(mutation.attributeName);
+        const isModified = mutation.oldValue !== node.getAttribute(mutation.attributeName);
         return isObserved && isModified;
     });

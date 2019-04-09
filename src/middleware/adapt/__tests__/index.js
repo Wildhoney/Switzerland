@@ -43,42 +43,36 @@ test.serial('It should observe only once per instance of node;', t => {
     t.is(observeSpy.callCount, 1);
 });
 
-test.serial(
-    'It should be able to toggle the observerable depending on the lifecycle;',
-    t => {
-        t.context.mockObserver([]);
-        const { observeSpy, unobserveSpy } = t.context.spies;
-        const m = adapt();
-        m({ ...defaultProps, lifecycle: 'mount' });
-        t.is(observeSpy.callCount, 1);
-        m({ ...defaultProps, lifecycle: 'unmount' });
-        t.is(unobserveSpy.callCount, 1);
-    }
-);
+test.serial('It should be able to toggle the observerable depending on the lifecycle;', t => {
+    t.context.mockObserver([]);
+    const { observeSpy, unobserveSpy } = t.context.spies;
+    const m = adapt();
+    m({ ...defaultProps, lifecycle: 'mount' });
+    t.is(observeSpy.callCount, 1);
+    m({ ...defaultProps, lifecycle: 'unmount' });
+    t.is(unobserveSpy.callCount, 1);
+});
 
-test.serial(
-    'It should be able to invoke `render` for each observed component;',
-    t => {
-        const firstMock = document.createElement('div');
-        const secondMock = document.createElement('div');
-        const thirdMock = document.createElement('div');
+test.serial('It should be able to invoke `render` for each observed component;', t => {
+    const firstMock = document.createElement('div');
+    const secondMock = document.createElement('div');
+    const thirdMock = document.createElement('div');
 
-        t.context.mockObserver([
-            { target: firstMock, contentRect: {} },
-            { target: thirdMock, contentRect: {} }
-        ]);
+    t.context.mockObserver([
+        { target: firstMock, contentRect: {} },
+        { target: thirdMock, contentRect: {} }
+    ]);
 
-        firstMock.render = spy();
-        secondMock.render = spy();
-        thirdMock.render = spy();
+    firstMock.render = spy();
+    secondMock.render = spy();
+    thirdMock.render = spy();
 
-        const m = adapt();
-        m({ ...defaultProps, lifecycle: 'mount' });
-        t.is(firstMock.render.callCount, 1);
-        t.is(secondMock.render.callCount, 0);
-        t.is(thirdMock.render.callCount, 1);
-    }
-);
+    const m = adapt();
+    m({ ...defaultProps, lifecycle: 'mount' });
+    t.is(firstMock.render.callCount, 1);
+    t.is(secondMock.render.callCount, 0);
+    t.is(thirdMock.render.callCount, 1);
+});
 
 test(
     'It should be able to fire the `render` function each time the dimensions change;',

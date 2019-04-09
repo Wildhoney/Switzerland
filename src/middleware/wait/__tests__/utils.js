@@ -1,9 +1,6 @@
 import test from 'ava';
 import { spy } from 'sinon';
-import {
-    patch,
-    h
-} from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { patch, h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import * as u from '../utils.js';
 
 test('It should be able to find the applicable nodes;', t => {
@@ -31,31 +28,20 @@ test('It should be able to attach the event listener and handle resolutions;', t
     const todoBody = document.createElement('todo-body');
     const todoFoot = document.createElement('todo-foot');
 
-    u.attachEventListener(
-        eventName,
-        [todoHead, todoFoot],
-        resolutions,
-        resolveSpy
-    );
+    u.attachEventListener(eventName, [todoHead, todoFoot], resolutions, resolveSpy);
     t.is(addEventListenerSpy.callCount, 1);
 
-    document.dispatchEvent(
-        new window.CustomEvent(eventName, { detail: { node: todoFoot } })
-    );
+    document.dispatchEvent(new window.CustomEvent(eventName, { detail: { node: todoFoot } }));
     t.is(removeEventListenerSpy.callCount, 0);
     t.true(resolutions.has(todoFoot));
     t.is(resolutions.size, 1);
 
-    document.dispatchEvent(
-        new window.CustomEvent(eventName, { detail: { node: todoBody } })
-    );
+    document.dispatchEvent(new window.CustomEvent(eventName, { detail: { node: todoBody } }));
     t.is(removeEventListenerSpy.callCount, 0);
     t.false(resolutions.has(todoBody));
     t.is(resolutions.size, 1);
 
-    document.dispatchEvent(
-        new window.CustomEvent(eventName, { detail: { node: todoHead } })
-    );
+    document.dispatchEvent(new window.CustomEvent(eventName, { detail: { node: todoHead } }));
     t.is(removeEventListenerSpy.callCount, 1);
     // When the last node has been resolved, the clear up takes place.
     t.false(resolutions.has(todoHead));

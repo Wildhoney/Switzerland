@@ -25,18 +25,15 @@ test('It should be able to bind the actions to the dispatch;', t => {
     t.true(reducer.calledWith(match.any, { type: 'test' }));
 });
 
-test.serial(
-    'It should be able to invoke the `render` function on update;',
-    t => {
-        const { reducer, actions } = t.context;
-        const m = redux(reducer, actions);
-        const newProps = m(defaultProps);
+test.serial('It should be able to invoke the `render` function on update;', t => {
+    const { reducer, actions } = t.context;
+    const m = redux(reducer, actions);
+    const newProps = m(defaultProps);
 
-        t.is(defaultProps.render.callCount, 0);
-        newProps.redux.actions.test({ type: 'test' });
-        t.is(defaultProps.render.callCount, 1);
-    }
-);
+    t.is(defaultProps.render.callCount, 0);
+    newProps.redux.actions.test({ type: 'test' });
+    t.is(defaultProps.render.callCount, 1);
+});
 
 test('It should be able to yield the necessary props;', t => {
     const { reducer, actions } = t.context;
@@ -46,19 +43,16 @@ test('It should be able to yield the necessary props;', t => {
     t.deepEqual(newProps, { ...defaultProps, redux: newProps.redux });
 });
 
-test.serial(
-    'It should only subscribe once to the updates per node instance;',
-    t => {
-        nodes.add = spy(nodes.add);
+test.serial('It should only subscribe once to the updates per node instance;', t => {
+    nodes.add = spy(nodes.add);
 
-        const iterations = Math.floor(Math.random() * 5) + 5;
-        for (let index = 0; index <= iterations; index++) {
-            const { reducer, actions } = t.context;
-            const m = redux(reducer, actions);
-            m(defaultProps);
-        }
-
-        t.is(nodes.add.callCount, 1);
-        t.true(nodes.has(defaultProps.node));
+    const iterations = Math.floor(Math.random() * 5) + 5;
+    for (let index = 0; index <= iterations; index++) {
+        const { reducer, actions } = t.context;
+        const m = redux(reducer, actions);
+        m(defaultProps);
     }
-);
+
+    t.is(nodes.add.callCount, 1);
+    t.true(nodes.has(defaultProps.node));
+});

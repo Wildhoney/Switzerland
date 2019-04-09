@@ -36,11 +36,7 @@ export default function html(getView, options = { recycle: false }) {
         }
 
         if (props.node.isConnected) {
-            const tree = superfine.patch(
-                u.takeTree(node),
-                view,
-                findBoundary(props)
-            );
+            const tree = superfine.patch(u.takeTree(node), view, findBoundary(props));
 
             u.putTree(node, tree);
         }

@@ -20,9 +20,7 @@ import * as theme from './theme.mjs';
 const argv = minimist(process.argv.slice(2));
 const cwd = process.cwd();
 const bin = path.dirname(new URL(import.meta.url).pathname);
-const pkg = JSON.parse(
-    fs.readFileSync(path.resolve(`${bin}/../package.json`), 'utf8')
-);
+const pkg = JSON.parse(fs.readFileSync(path.resolve(`${bin}/../package.json`), 'utf8'));
 const sourceDir = path.resolve(bin, 'templates', argv.style || 'basic');
 const targetDir = path.resolve(cwd, argv._[0] || '');
 const name = path.basename(argv._[0] || '');
@@ -37,11 +35,7 @@ async function main() {
     figlet(capitalise(pkg.name), { font: 'univers' }, (_, data) => {
         data && console.log(chalk.gray(data));
 
-        console.log(
-            chalk.gray('Version:'.padStart(data ? 115 : 0)),
-            pkg.version,
-            '\n\n'
-        );
+        console.log(chalk.gray('Version:'.padStart(data ? 115 : 0)), pkg.version, '\n\n');
 
         try {
             assert(name.length > 0, 'You must specify a name for the node.');

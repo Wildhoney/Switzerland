@@ -5,9 +5,5 @@ export default ({ h, boundary, scores, countries }) =>
             h('span', {}, '/'),
             h('span', { class: 'incorrect' }, scores.incorrect)
         ]),
-        h(
-            'div',
-            { class: 'country' },
-            countries.answer ? countries.answer.name : 'Voila...'
-        )
+        h('div', { class: 'country' }, countries.answer ? countries.answer.name : 'Voila...')
     ]);

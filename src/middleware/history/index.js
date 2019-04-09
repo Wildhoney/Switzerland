@@ -36,8 +36,7 @@ export default (types = {}, location = window.location) => {
 
     return function history(props) {
         const { node, utils, lifecycle } = props;
-        !nodes.has(node) &&
-            nodes.set(node, { types, defaults, location, utils });
+        !nodes.has(node) && nodes.set(node, { types, defaults, location, utils });
         lifecycle === 'unmount' && nodes.delete(node);
 
         return {

@@ -30,17 +30,12 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         fetch(event.request)
             .then(response => {
-                caches
-                    .open(NAME)
-                    .then(cache => cache.put(event.request, response.clone()));
+                caches.open(NAME).then(cache => cache.put(event.request, response.clone()));
                 return response.clone();
             })
             .catch(() => {
                 return caches.match(event.request).then(response => {
-                    return (
-                        response.clone() ||
-                        new Response('Service Unavailable', { status: 503 })
-                    );
+                    return response.clone() || new Response('Service Unavailable', { status: 503 });
                 });
             })
     );

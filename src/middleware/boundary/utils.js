@@ -24,8 +24,7 @@ export const createBoundary = (node, options = {}) => {
         });
 
         // Attached any adopted stylesheets if any have been passed.
-        options.sheets &&
-            (boundary.adoptedStyleSheets = [].concat(options.sheets));
+        options.sheets && (boundary.adoptedStyleSheets = [].concat(options.sheets));
 
         // Memorise the shadow boundary for next time the function is invoked.
         node[meta] && (node[meta].boundary = boundary);

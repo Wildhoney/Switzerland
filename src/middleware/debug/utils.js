@@ -14,9 +14,9 @@ export const ident = Symbol('@switzerland/debug');
  * finally print out all of the time measurements to the console.
  */
 export const printTimings = (node, timings) => {
-    const group = `${node.nodeName.toLowerCase()} %c(${(
-        timings.end - timings.start
-    ).toFixed(3)}ms)`;
+    const group = `${node.nodeName.toLowerCase()} %c(${(timings.end - timings.start).toFixed(
+        3
+    )}ms)`;
     console.groupCollapsed(group, 'font-weight: normal; color: darkgray');
     console.groupCollapsed('meta');
     console.trace();
@@ -76,17 +76,14 @@ export const appendRecord = (props, index, names) => ({
  * `debug` function, and the current `debug` function.
  */
 export const extractNames = (props, index, middleware) =>
-    middleware
-        .slice(props.debug.index + 1, index)
-        .map(({ name }) => name || 'ƒ');
+    middleware.slice(props.debug.index + 1, index).map(({ name }) => name || 'ƒ');
 
 /**
  * @function isFirst ∷ ∀ a. Props p ⇒ (p → p) → [(p → p)] → Boolean
  * ---
  * Determines whether the current `debug` function is the first in the middleware list.
  */
-export const isFirst = (debug, middleware) =>
-    debug === middleware.find(m => m[meta] === ident);
+export const isFirst = (debug, middleware) => debug === middleware.find(m => m[meta] === ident);
 
 /**
  * @function isLast ∷ ∀ a. Props p ⇒ (p → p) → [(p → p)] → Boolean

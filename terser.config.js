@@ -5,9 +5,7 @@ const path = require('path');
 const terser = require('terser');
 
 function main() {
-    const files = glob
-        .sync('./src/**/**.js')
-        .filter(a => !a.includes('__tests__'));
+    const files = glob.sync('./src/**/**.js').filter(a => !a.includes('__tests__'));
 
     files.forEach(input => {
         const data = fs.readFileSync(input, 'utf-8');

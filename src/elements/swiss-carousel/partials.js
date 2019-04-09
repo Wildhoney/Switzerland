@@ -11,28 +11,17 @@ export const controls = ({ attrs, count, node, h }) => {
         h('a', {
             part: 'previous-link',
             class: `previous ${isStart ? 'disabled' : ''}`.trim(),
-            onclick: isStart
-                ? identity
-                : () => node.setAttribute('index', attrs.index - 1)
+            onclick: isStart ? identity : () => node.setAttribute('index', attrs.index - 1)
         }),
         h('a', {
             part: 'next-link',
             class: `next ${isEnd ? 'disabled' : ''}`.trim(),
-            onclick: isEnd
-                ? identity
-                : () => node.setAttribute('index', attrs.index + 1)
+            onclick: isEnd ? identity : () => node.setAttribute('index', attrs.index + 1)
         })
     );
 };
 
-export const variables = ({
-    attrs,
-    count,
-    width,
-    height,
-    prevProps = { height: 0 },
-    h
-}) => {
+export const variables = ({ attrs, count, width, height, prevProps = { height: 0 }, h }) => {
     const config = {
         count,
         width,

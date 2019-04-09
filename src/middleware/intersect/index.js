@@ -4,8 +4,7 @@
 const getObserver = options =>
     'IntersectionObserver' in window &&
     new window.IntersectionObserver(
-        entries =>
-            entries.forEach(entry => entry.target.render({ intersect: entry })),
+        entries => entries.forEach(entry => entry.target.render({ intersect: entry })),
         options
     );
 

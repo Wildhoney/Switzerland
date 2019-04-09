@@ -38,12 +38,7 @@ export const updatePosition = ({ width, height, attrs, boundary, props }) => {
     return props;
 };
 
-export const dispatchEvent = ({
-    attrs,
-    signal: { mutations = [] },
-    utils,
-    props
-}) => {
+export const dispatchEvent = ({ attrs, signal: { mutations = [] }, utils, props }) => {
     const isIndex = mutation => mutation.attributeName === 'index';
     const indexModified = mutations.some(isIndex);
     indexModified && utils.dispatch('change', attrs.index);

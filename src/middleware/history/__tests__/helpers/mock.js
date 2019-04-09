@@ -21,8 +21,7 @@ create(
                 'a',
                 {
                     class: 'params',
-                    onclick: () =>
-                        history.pushState({}, '', '?name=Maria&age=28')
+                    onclick: () => history.pushState({}, '', '?name=Maria&age=28')
                 },
                 'Click!'
             ),

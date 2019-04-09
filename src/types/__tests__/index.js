@@ -78,11 +78,7 @@ test('It should be able to parse Array types;', t => {
 
 test('It should be able to parse Tuple types;', t => {
     t.deepEqual(type.Tuple(type.String, type.Int)('Adam,32'), ['Adam', 32]);
-    t.deepEqual(type.Tuple(type.String, type.Int, type.Float)('Adam,32,5.10'), [
-        'Adam',
-        32,
-        5.1
-    ]);
+    t.deepEqual(type.Tuple(type.String, type.Int, type.Float)('Adam,32,5.10'), ['Adam', 32, 5.1]);
     t.deepEqual(type.Tuple()('Adam,32'), ['Adam', '32']);
 });
 

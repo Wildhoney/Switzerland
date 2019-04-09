@@ -20,10 +20,7 @@ test('It should be able to handle stylesheets and add promise to map;', async t 
 
     async function isResolved(promise) {
         const unresolved = 'unresolved';
-        const result = await Promise.race([
-            promise,
-            Promise.resolve(unresolved)
-        ]);
+        const result = await Promise.race([promise, Promise.resolve(unresolved)]);
         return result === unresolved;
     }
 
@@ -51,8 +48,5 @@ test('It should be a able to handle the insertion of CSS variables', t => {
         type: 'ease-in'
     };
     const tree = u.vars(config);
-    t.is(
-        tree.children[0].name,
-        ':host {  --animation-duration: 0.5; --type: ease-in; }'
-    );
+    t.is(tree.children[0].name, ':host {  --animation-duration: 0.5; --type: ease-in; }');
 });

@@ -80,9 +80,7 @@ export const parseTagName = name => {
  */
 export const findFreeTagName = (name, suffix = null) => {
     const tag = suffix ? `${name}-${suffix}` : name;
-    return !window.customElements.get(tag)
-        ? tag
-        : findFreeTagName(tag, getRandomId());
+    return !window.customElements.get(tag) ? tag : findFreeTagName(tag, getRandomId());
 };
 
 /**
@@ -128,10 +126,7 @@ export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
         getLatestProps: () => previousProps.get(node) || null,
         isIdle: () => node[meta].queue.size() <= 1,
         isResolved: async () => {
-            const resolution = await Promise.race([
-                scheduledTask,
-                Promise.resolve(false)
-            ]);
+            const resolution = await Promise.race([scheduledTask, Promise.resolve(false)]);
             return resolution !== false;
         }
     };

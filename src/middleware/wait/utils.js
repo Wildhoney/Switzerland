@@ -6,10 +6,7 @@ import { findBoundary } from '../../core/utils.js';
 export const findApplicableNodes = (names, props) => {
     return [
         ...names.reduce(
-            (accum, name) => [
-                ...accum,
-                ...Array.from(findBoundary(props).querySelectorAll(name))
-            ],
+            (accum, name) => [...accum, ...Array.from(findBoundary(props).querySelectorAll(name))],
             []
         )
     ].filter(node => !node.classList.contains('resolved'));

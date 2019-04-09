@@ -13,15 +13,9 @@ const fetchCountries = async ({ props }) => ({
 
 const handleCountries = ({ countries, props }) => {
     const shuffled = u.shuffle(countries.all);
-    const answer = shuffled.find(
-        ({ name }) => !countries.answered.includes(name)
-    );
-    const candidates = answer
-        ? shuffled.filter(country => country !== answer)
-        : [];
-    const selection = answer
-        ? u.shuffle([...candidates.splice(0, 3), answer])
-        : [];
+    const answer = shuffled.find(({ name }) => !countries.answered.includes(name));
+    const candidates = answer ? shuffled.filter(country => country !== answer) : [];
+    const selection = answer ? u.shuffle([...candidates.splice(0, 3), answer]) : [];
 
     return {
         ...props,
@@ -30,9 +24,7 @@ const handleCountries = ({ countries, props }) => {
 };
 
 const resolveImages = async ({ countries, props }) => {
-    const flags = countries.selection.map(
-        ({ flag }) => `/images/flags/${flag}`
-    );
+    const flags = countries.selection.map(({ flag }) => `/images/flags/${flag}`);
     return (await m.loader({ ...flags }))(props);
 };
 

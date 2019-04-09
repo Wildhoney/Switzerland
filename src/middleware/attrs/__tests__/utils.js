@@ -37,11 +37,7 @@ test('It should be able to determine if there are applicable mutations;', t => {
             ['class']
         )
     );
-    t.false(
-        u.hasApplicableMutations(node, [
-            { attributeName: 'persons-age', oldValue: '33' }
-        ])
-    );
+    t.false(u.hasApplicableMutations(node, [{ attributeName: 'persons-age', oldValue: '33' }]));
     t.false(
         u.hasApplicableMutations(
             node,

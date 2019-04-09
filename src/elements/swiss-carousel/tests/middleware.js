@@ -37,10 +37,12 @@ test('It should be able to initialise the variables;', t => {
         height: 0
     });
 
-    t.deepEqual(
-        m.computeVariables({ ...props, adapt: { width: 100, height: 150 } }),
-        { ...props, count: 3, width: 100, height: 150 }
-    );
+    t.deepEqual(m.computeVariables({ ...props, adapt: { width: 100, height: 150 } }), {
+        ...props,
+        count: 3,
+        width: 100,
+        height: 150
+    });
 });
 
 test('It should be able to import the template;', t => {

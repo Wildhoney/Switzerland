@@ -38,9 +38,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.MARK:
             return {
                 list: state.list.map(model =>
-                    model.id === action.payload
-                        ? { ...model, done: !model.done }
-                        : model
+                    model.id === action.payload ? { ...model, done: !model.done } : model
                 )
             };
         default:

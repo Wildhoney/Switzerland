@@ -17,8 +17,7 @@ export const takeTree = node => trees.get(node);
 /**
  * @function toKebab ∷ String → String
  */
-export const toKebab = value =>
-    value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+export const toKebab = value => value.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
 /**
  * @function sheet ∷ ∀ a. HTMLElement e, View v ⇒ e → String → String → v → Object String a
@@ -34,9 +33,7 @@ export const sheet = node => (path, mediaQuery = '', attrs = {}) => {
             type: 'text/css',
             oncreate: () => {
                 !styles.has(node) && styles.set(node, new Set());
-                styles
-                    .get(node)
-                    .add(new Promise(resolve => (setLoaded = resolve)));
+                styles.get(node).add(new Promise(resolve => (setLoaded = resolve)));
             },
             onerror: () => setLoaded(),
             onload: () => setLoaded()

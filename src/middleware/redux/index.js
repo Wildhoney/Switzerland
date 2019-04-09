@@ -10,10 +10,7 @@ export const nodes = new WeakSet();
  * @function redux ∷ ∀ a b c d. (a → Object String b) → Object String c → d
  */
 export default (reducer, actions) => {
-    const { dispatch, getState, subscribe } = r.createStore(
-        reducer,
-        r.applyMiddleware(thunk)
-    );
+    const { dispatch, getState, subscribe } = r.createStore(reducer, r.applyMiddleware(thunk));
     const actions_ = actions && r.bindActionCreators(actions, dispatch);
 
     return function redux(props) {

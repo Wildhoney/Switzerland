@@ -59,9 +59,7 @@ test.serial(
 
         const { instance, spies } = t.context;
         const renderSpy = spy(instance, 'render');
-        const cycleMiddlewareStub = stub(u, 'cycleMiddleware').resolves(
-            returns
-        );
+        const cycleMiddlewareStub = stub(u, 'cycleMiddleware').resolves(returns);
         const firstTask = instance.render();
         const secondTask = instance.render();
         const thirdTask = instance.render();
@@ -101,19 +99,14 @@ test('It should drop the task from the queue upon completion;', async t => {
     t.true(injectors.queue.isEmpty());
 });
 
-test.serial(
-    'It should remain in the normal state when a render pass is cancelled;',
-    async t => {
-        const { instance, injectors } = t.context;
-        const initialPropsStub = stub(u, 'initialProps').throws(
-            () => new u.Cancel()
-        );
-        const setErrorSpy = spy(injectors.state, 'setError');
-        await instance.render();
-        t.is(setErrorSpy.callCount, 0);
-        initialPropsStub.restore();
-    }
-);
+test.serial('It should remain in the normal state when a render pass is cancelled;', async t => {
+    const { instance, injectors } = t.context;
+    const initialPropsStub = stub(u, 'initialProps').throws(() => new u.Cancel());
+    const setErrorSpy = spy(injectors.state, 'setError');
+    await instance.render();
+    t.is(setErrorSpy.callCount, 0);
+    initialPropsStub.restore();
+});
 
 test.serial('It should be able to handle errors gracefully;', async t => {
     const { instance, injectors, spies } = t.context;
@@ -148,34 +141,21 @@ test('It should delegate all method invocations to the instance when aliasing;',
     t.is(renderStub.callCount, 1);
 });
 
-test.serial(
-    'It should be able to use the mergeProps in the render method;',
-    async t => {
-        const { instance } = t.context;
-        const quote = starwars();
-        const mergeProps = { quote };
-        const initialPropsStub = stub(u, 'initialProps');
-        await instance.render(mergeProps);
-        t.true(
-            initialPropsStub.calledWith(
-                instance,
-                match.array,
-                mergeProps,
-                match.promise
-            )
-        );
-        initialPropsStub.restore();
-    }
-);
+test.serial('It should be able to use the mergeProps in the render method;', async t => {
+    const { instance } = t.context;
+    const quote = starwars();
+    const mergeProps = { quote };
+    const initialPropsStub = stub(u, 'initialProps');
+    await instance.render(mergeProps);
+    t.true(initialPropsStub.calledWith(instance, match.array, mergeProps, match.promise));
+    initialPropsStub.restore();
+});
 
-test.serial(
-    'It should not continue if the current task has become invalid',
-    async t => {
-        const { instance, injectors } = t.context;
-        const initialPropsStub = stub(u, 'initialProps');
-        const task = instance.render();
-        injectors.queue.drop(task);
-        await task;
-        t.is(initialPropsStub.callCount, 0);
-    }
-);
+test.serial('It should not continue if the current task has become invalid', async t => {
+    const { instance, injectors } = t.context;
+    const initialPropsStub = stub(u, 'initialProps');
+    const task = instance.render();
+    injectors.queue.drop(task);
+    await task;
+    t.is(initialPropsStub.callCount, 0);
+});

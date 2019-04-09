@@ -16,16 +16,10 @@ create(
                         })
                     )
                 },
-                [
-                    h('input', { type: 'text', name: 'value' }),
-                    h('button', { type: 'submit' })
-                ]
+                [h('input', { type: 'text', name: 'value' }), h('button', { type: 'submit' })]
             )
         ])
     )
 );
 
-create(
-    'x-example-recycled',
-    m.html(({ h }) => h('div', {}, 'Hello Adam!'), { recycle: true })
-);
+create('x-example-recycled', m.html(({ h }) => h('div', {}, 'Hello Adam!'), { recycle: true }));

@@ -13,9 +13,7 @@ export default create(
             {
                 oncreate: form => render({ form }),
                 onsubmit: async event => (
-                    event.preventDefault(),
-                    redux.actions.add(input.value),
-                    (input.value = '')
+                    event.preventDefault(), redux.actions.add(input.value), (input.value = '')
                 )
             },
             [

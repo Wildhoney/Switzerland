@@ -51,12 +51,7 @@ export const base = (extension, middleware) =>
 
                 try {
                     // Cycle through all of the middleware functions, updating the props as we go.
-                    const props = u.initialProps(
-                        node,
-                        middleware,
-                        mergeProps,
-                        currentTask
-                    );
+                    const props = u.initialProps(node, middleware, mergeProps, currentTask);
 
                     return await u.cycleMiddleware(node, props, middleware);
                 } catch (error) {
@@ -66,9 +61,7 @@ export const base = (extension, middleware) =>
 
                     // Handle any errors that were thrown from the processing of the middleware functions.
                     // Errors should cancel any enqueued middleware.
-                    return void (queue.dropAll(),
-                    state.setError(),
-                    u.handleException(node, error));
+                    return void (queue.dropAll(), state.setError(), u.handleException(node, error));
                 } finally {
                     // Await the resolution of all the CSS import rules.
                     await u.cssImports(node);

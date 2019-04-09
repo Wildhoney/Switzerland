@@ -6,19 +6,14 @@ import defaultProps from '../../../../tests/helpers/default-props.js';
 import template from '../index.js';
 
 test.beforeEach(t => {
-    t.context.viewSpy = spy(
-        ({ h }) => h`<section><header>Example</header></section>`
-    );
+    t.context.viewSpy = spy(({ h }) => h`<section><header>Example</header></section>`);
     t.context.hyperStub = stub(hyper, 'default').returns(() => ({
         h: R.identity
     }));
 });
 
 test('It should be able to invoke the view with the required props when connected;', async t => {
-    const assertions = [
-        { isConnected: true, callCount: 1 },
-        { isConnected: false, callCount: 0 }
-    ];
+    const assertions = [{ isConnected: true, callCount: 1 }, { isConnected: false, callCount: 0 }];
 
     return Promise.all(
         assertions.map(async ({ isConnected, callCount }) => {

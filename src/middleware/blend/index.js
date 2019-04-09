@@ -11,9 +11,7 @@ export default fn => {
         const isPromise = future instanceof Promise;
         const isGenerator =
             fn.constructor &&
-            ['AsyncGeneratorFunction', 'GeneratorFunction'].includes(
-                fn.constructor.name
-            );
+            ['AsyncGeneratorFunction', 'GeneratorFunction'].includes(fn.constructor.name);
 
         switch (true) {
             case isPromise:

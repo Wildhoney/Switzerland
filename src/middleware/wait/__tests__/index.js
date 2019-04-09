@@ -1,9 +1,6 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import {
-    patch,
-    h
-} from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { patch, h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { getEventName } from '../../../core/utils.js';
 import wait from '../index.js';
@@ -28,9 +25,7 @@ test('It should be able to wait for the resolution of applicable nodes;', async 
 
     const m = wait('todo-head', 'todo-foot');
     const newProps = m(defaultProps);
-    document.dispatchEvent(
-        new window.CustomEvent(eventName, { detail: { node: todoFoot } })
-    );
+    document.dispatchEvent(new window.CustomEvent(eventName, { detail: { node: todoFoot } }));
 
     t.deepEqual(defaultProps, await newProps);
 });

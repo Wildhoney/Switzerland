@@ -64,10 +64,7 @@ test('It should be able to parse params/hash and set defaults;', t => {
     t.is(props.history.params.get('name'), 'Adam');
     t.is(props.history.params.get('age'), 33);
     t.is(props.history.params.get('location'), 'Watford');
-    t.is(
-        props.history.params.get('date_of_birth').toLocaleDateString('en-GB'),
-        '10/10/1985'
-    );
+    t.is(props.history.params.get('date_of_birth').toLocaleDateString('en-GB'), '10/10/1985');
 });
 
 test('It should be able to push and replace the URL state;', t => {

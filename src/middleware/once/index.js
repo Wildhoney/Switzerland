@@ -21,8 +21,7 @@ export default fn => {
     };
 
     // Enhance the `once` middleware function with the wrapped function name, if available.
-    fn.name &&
-        Object.defineProperty(once, 'name', { value: `once(${fn.name})` });
+    fn.name && Object.defineProperty(once, 'name', { value: `once(${fn.name})` });
 
     return once;
 };
