@@ -6,19 +6,18 @@ import images from './partials/images.js';
 
 const path = init(import.meta.url);
 
-export default create(
-    'flag-app',
-    ...middleware(({ countries, h, props }) => {
-        const isComplete = countries.answered.length === countries.all.length;
+const tree = ({ countries, h, props }) => {
+    const isComplete = countries.answered.length === countries.all.length;
 
-        return h('section', { class: 'flag-app container' }, [
-            h.sheet(path('./styles/index.css')),
-            h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-            h('section', { class: 'body' }, [
-                header(props),
-                isComplete && result(props),
-                !isComplete && images(props)
-            ])
-        ]);
-    })
-);
+    return h('section', { class: 'flag-app container' }, [
+        h.sheet(path('./styles/index.css')),
+        h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
+        h('section', { class: 'body' }, [
+            header(props),
+            isComplete && result(props),
+            !isComplete && images(props)
+        ])
+    ]);
+};
+
+export default create('flag-app', ...middleware(tree));

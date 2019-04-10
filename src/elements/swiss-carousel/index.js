@@ -5,14 +5,12 @@ import * as p from './partials.js';
 
 const path = init(import.meta.url);
 
-export default create(
-    'swiss-carousel',
-    ...middleware(({ attrs, props, h }) =>
-        h('section', { class: attrs.direction }, [
-            h('div', { class: 'track' }),
-            !u.isTouchable() && p.controls(props),
-            p.variables(props),
-            h.sheet(path('./css/index.css'))
-        ])
-    )
-);
+const tree = ({ attrs, props, h }) =>
+    h('section', { class: attrs.direction }, [
+        h('div', { class: 'track' }),
+        !u.isTouchable() && p.controls(props),
+        p.variables(props),
+        h.sheet(path('./css/index.css'))
+    ]);
+
+export default create('swiss-carousel', ...middleware(tree));
