@@ -20,21 +20,20 @@ test.afterEach(t => {
 test.serial('It should only patch the tree when the node is connected to the DOM;', async t => {
     const assertions = [{ isConnected: true, callCount: 1 }, { isConnected: false, callCount: 0 }];
 
-    return Promise.all(
-        assertions.map(async ({ isConnected, callCount }) => {
-            const m = html(t.context.viewSpy);
-            const props = {
-                ...defaultProps,
-                node: Object.create(defaultProps.node, {
-                    isConnected: { value: isConnected }
-                })
-            };
-            const newProps = await m(props);
-            t.is(t.context.patchStub.callCount, callCount);
-            t.deepEqual(newProps, props);
-            t.context.patchStub.resetHistory();
-        })
-    );
+    for (const assertion of assertions) {
+        const { isConnected, callCount } = assertion;
+        const m = html(t.context.viewSpy);
+        const props = {
+            ...defaultProps,
+            node: Object.create(defaultProps.node, {
+                isConnected: { value: isConnected }
+            })
+        };
+        const newProps = await m(props);
+        t.is(t.context.patchStub.callCount, callCount);
+        t.deepEqual(newProps, props);
+        t.context.patchStub.resetHistory();
+    }
 });
 
 test.serial('It should be able to pass the necessary props to the `getView` function;', async t => {
