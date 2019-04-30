@@ -15,19 +15,18 @@ test.beforeEach(t => {
 test('It should be able to invoke the view with the required props when connected;', async t => {
     const assertions = [{ isConnected: true, callCount: 1 }, { isConnected: false, callCount: 0 }];
 
-    return Promise.all(
-        assertions.map(async ({ isConnected, callCount }) => {
-            const m = template(t.context.viewSpy);
-            const props = {
-                ...defaultProps,
-                node: Object.create(defaultProps.node, {
-                    isConnected: { value: isConnected }
-                })
-            };
-            const newProps = await m(props);
-            t.is(t.context.hyperStub.callCount, callCount);
-            t.deepEqual(newProps, props);
-            t.context.hyperStub.resetHistory();
-        })
-    );
+    for (const assertion of assertions) {
+        const { isConnected, callCount } = assertion;
+        const m = template(t.context.viewSpy);
+        const props = {
+            ...defaultProps,
+            node: Object.create(defaultProps.node, {
+                isConnected: { value: isConnected }
+            })
+        };
+        const newProps = await m(props);
+        t.is(t.context.hyperStub.callCount, callCount);
+        t.deepEqual(newProps, props);
+        t.context.hyperStub.resetHistory();
+    }
 });
