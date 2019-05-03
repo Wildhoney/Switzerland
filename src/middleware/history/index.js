@@ -36,6 +36,7 @@ export default (types = {}, location = window.location) => {
 
     return function history(props) {
         const { node, utils, lifecycle } = props;
+        const { isHeadless } = utils;
         !nodes.has(node) && nodes.set(node, { types, defaults, location, utils });
         lifecycle === 'unmount' && nodes.delete(node);
 
@@ -43,8 +44,8 @@ export default (types = {}, location = window.location) => {
             ...props,
             history: {
                 params: u.getParams(types, defaults, location),
-                pushState: u.changeState(props, 'pushState'),
-                replaceState: u.changeState(props, 'replaceState')
+                pushState: isHeadless ? () => {} : u.changeState(props, 'pushState'),
+                replaceState: isHeadless ? () => {} : u.changeState(props, 'replaceState')
             }
         };
     };

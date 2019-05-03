@@ -35,6 +35,20 @@ test.serial(
     }
 );
 
+test.serial(
+    'It should be able to render a shallow component with URL params to string;',
+    async t => {
+        const search = { name: 'Adam' };
+        const location = { search };
+        const component = create(
+            'x-example',
+            m.history({ name: type.String }, location),
+            m.html(({ history, h }) => h('div', {}, `Hello ${history.params.get('name')}!`))
+        );
+        t.snapshot(await render(component));
+    }
+);
+
 test.serial('It should be able to render a nested component to string;', async t => {
     const child = create('x-child', m.html(({ h }) => h('div', {}, 'Adam')));
     const parent = create(
