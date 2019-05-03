@@ -22,7 +22,7 @@ test.afterEach(() => {
 });
 
 test('It should be able to handle the relative paths correctly;', t => {
-    const path = init('https://localhost:3000/nodes/earth/planets.js', 'localhost:3000');
+    const path = init('https://localhost:3000/nodes/earth/planets.js', 'localhost:3000', false);
     t.is(path('../mercury.js'), '/nodes/mercury.js');
     t.is(path('../../venus.js'), '/venus.js');
     t.is(path('jupiter.js'), '/nodes/earth/jupiter.js');
@@ -32,12 +32,16 @@ test('It should be able to handle the relative paths correctly;', t => {
 
 test('It should be able to handle paths correct using `window.location.host` directly;', t => {
     window.location.host = 'localhost:3000';
-    const path = init('https://localhost:3000/nodes/earth/planets.js');
+    const path = init('https://localhost:3000/nodes/earth/planets.js', undefined, false);
     t.is(path('../mercury.js'), 'https://localhost:3000/nodes/mercury.js');
 });
 
 test('It should be able to handle the absolute paths correctly;', t => {
-    const path = init('https://localhost:3000/nodes/earth/planets.js', 'switzerland.herokuapp.com');
+    const path = init(
+        'https://localhost:3000/nodes/earth/planets.js',
+        'switzerland.herokuapp.com',
+        false
+    );
     t.is(path('../mercury.js'), 'https://localhost:3000/nodes/mercury.js');
     t.is(path('../../venus.js'), 'https://localhost:3000/venus.js');
     t.is(path('jupiter.js'), 'https://localhost:3000/nodes/earth/jupiter.js');

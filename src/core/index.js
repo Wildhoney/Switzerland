@@ -9,15 +9,19 @@ export { meta, Cancel } from './utils.js';
 export const elements = new Map();
 
 /**
- * @function init ∷ String → String → (String → String)
+ * @function init ∷ String → String → Boolean → (String → String)
  * ---
  * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
  * the components by using the `import.meta.url` (or `document.currentScript` for non-module includes).
  * Detects when the component is being used on a different host where absolute paths will be used instead
  * of relative ones to allow components to be rendered cross-domain.
  */
-export const init = (url, host = window.location.host) => path => {
-    if (typeof require !== 'undefined') {
+export const init = (
+    url,
+    host = window.location.host,
+    isHeadless = typeof require !== 'undefined'
+) => path => {
+    if (isHeadless) {
         return new URL(path, host);
     }
     const key = new URL(url).host === host ? 'pathname' : 'href';
