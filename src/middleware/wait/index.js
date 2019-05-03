@@ -33,5 +33,7 @@ export default (...names) => {
                 ? resolve()
                 : u.attachEventListener(eventName, nodes, resolved, resolve);
         });
+
+        return props;
     };
 };
