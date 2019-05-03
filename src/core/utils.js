@@ -159,13 +159,17 @@ export const cycleMiddleware = async (node, initialProps, middlewares) => {
         const props = { ...(await accumP) };
         props.props = props;
 
-        const middleware = await middlewareP;
-        const newProps = await middleware(Object.freeze({ ...props }));
+        try {
+            const middleware = await middlewareP;
+            const newProps = await middleware(Object.freeze({ ...props }));
 
-        // Determine if there's an error handler in the current set of props. If there is then
-        // set the handler function as the default to be used if an error is subsequently thrown.
-        handler in newProps && errorHandlers.set(node, newProps);
-        return newProps;
+            // Determine if there's an error handler in the current set of props. If there is then
+            // set the handler function as the default to be used if an error is subsequently thrown.
+            handler in newProps && errorHandlers.set(node, newProps);
+            return newProps;
+        } catch (error) {
+            handleException(node, error);
+        }
     }, initialProps);
 
     previousProps.set(node, props);
