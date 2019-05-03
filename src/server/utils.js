@@ -3,13 +3,13 @@
  */
 export const initialProps = (node, middleware) => {
     const utils = {
-        dispatch: ()=>{},
-        abort:  ()=>{},
+        dispatch: () => {},
+        abort: () => {},
         getMiddleware: () => Promise.all(middleware),
         getLatestProps: () => undefined,
         isHeadless: true,
         isIdle: () => false,
-        isResolved:  () => true
+        isResolved: () => true
     };
 
     return {

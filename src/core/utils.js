@@ -79,8 +79,8 @@ export const parseTagName = name => {
  * to the end of the node name until we find a node that isn't registered.
  */
 export const findFreeTagName = (name, suffix = null) => {
-        const tag = suffix ? `${name}-${suffix}` : name;
-        return !window.customElements.get(tag) ? tag : findFreeTagName(tag, getRandomId());
+    const tag = suffix ? `${name}-${suffix}` : name;
+    return !window.customElements.get(tag) ? tag : findFreeTagName(tag, getRandomId());
 };
 
 /**

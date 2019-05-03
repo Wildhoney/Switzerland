@@ -10,7 +10,7 @@ import * as u from './utils.js';
  */
 export default function html(getView, options = { recycle: false }) {
     return async function html(props) {
-        const { boundary, utils,node } = props;
+        const { boundary, utils, node } = props;
 
         // Remove any previous style resolutions.
         u.styles.has(node) && u.styles.delete(node);
