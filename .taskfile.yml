@@ -24,7 +24,7 @@
       - - - rm -rf es/
       - - - - NODE_ENV=production yarn build
       - - - - - find es/production/middleware/* -type d | xargs rm -rf
-      - - - - - rm -rf es/production/elements
+      - - - - - rm -rf es/production/{elements,server}
       - - - - - - (cd es/production && tar -zcf ../../build.tar.gz .)
       - - - - - - - fslint --files=build.tar.gz --limit=3072 || rm -rf build.tar.gz es/
       - - - - - - - - rm -rf build.tar.gz es/
