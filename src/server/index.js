@@ -1,4 +1,3 @@
-// import { patch } from
 import browserEnv from 'browser-env';
 import * as u from '../core/utils.js';
 import { initialProps } from './utils.js';
