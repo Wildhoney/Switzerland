@@ -17,6 +17,9 @@ export const elements = new Map();
  * of relative ones to allow components to be rendered cross-domain.
  */
 export const init = (url, host = window.location.host) => path => {
+    if (typeof require !== 'undefined') {
+        return new URL(path, host);
+    }
     const key = new URL(url).host === host ? 'pathname' : 'href';
     return new URL(path, url)[key];
 };

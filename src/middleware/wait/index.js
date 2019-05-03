@@ -18,6 +18,10 @@ export default (...names) => {
     const eventName = getEventName('resolved');
 
     return async function wait(props) {
+        if (props.utils.isHeadless) {
+            return props;
+        }
+
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 
@@ -29,7 +33,5 @@ export default (...names) => {
                 ? resolve()
                 : u.attachEventListener(eventName, nodes, resolved, resolve);
         });
-
-        return props;
     };
 };

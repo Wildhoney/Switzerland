@@ -1,10 +1,21 @@
 import test from 'ava';
-import { create, m, t as type } from '../../index.js';
+import { create, init, m, t as type } from '../../index.js';
 import { render } from '../index.js';
 
 test.serial('It should be able to render a shallow component to string;', async t => {
     const component = create('x-example', m.html(({ h }) => h('div', {}, 'Hello Adam!')));
-    t.is(await render(component), '<x-example class="resolved"><div>Hello Adam!</div></x-example>');
+    t.snapshot(await render(component));
+});
+
+test.serial('It should be able to render a shallow component with styles to string;', async t => {
+    const path = init(import.meta.url, 'https://www.example.org');
+    const component = create(
+        'x-example',
+        m.html(({ h }) =>
+            h('section', {}, [h('div', {}, 'Hello Adam!'), h.sheet(path('styles/index.css'))])
+        )
+    );
+    t.snapshot(await render(component));
 });
 
 test.serial(
@@ -12,15 +23,15 @@ test.serial(
     async t => {
         const component = create(
             'x-example',
-            m.attrs({ name: type.String, age: type.Int }),
+            m.attrs({ name: type.String, age: [type.Int, null] }),
             m.html(({ attrs, h }) =>
-                h('div', {}, `Hello ${attrs.name} you are ${attrs.age + 1} next!`)
+                attrs.age === null
+                    ? h('div', {}, `Hello ${attrs.name} we don't know old you are next!`)
+                    : h('div', {}, `Hello ${attrs.name} you are ${attrs.age + 1} next!`)
             )
         );
-        t.is(
-            await render(component, { name: 'Maria', age: 28 }),
-            '<x-example name="Maria" age="28" class="resolved"><div>Hello Maria you are 29 next!</div></x-example>'
-        );
+        t.snapshot(await render(component, { name: 'Adam' }));
+        t.snapshot(await render(component, { name: 'Maria', age: 28 }));
     }
 );
 
@@ -30,10 +41,7 @@ test.serial('It should be able to render a nested component to string;', async t
         'x-parent',
         m.html(({ h }) => h('div', {}, [h('span', {}, 'Hello'), h(child), h('span', {}, '!')]))
     );
-    t.is(
-        await render(parent),
-        '<x-parent class="resolved"><div><span>Hello</span><x-child class="resolved"><div>Adam</div></x-child><span>!</span></div></x-parent>'
-    );
+    t.snapshot(await render(parent));
 });
 
 test.serial(
@@ -46,7 +54,7 @@ test.serial(
         );
         const parent = create(
             'x-parent',
-            m.attrs({ name: type.String }),
+            m.attrs({ name: [type.String, 'Adam'] }),
             m.html(({ attrs, h }) =>
                 h('div', {}, [
                     h('span', {}, 'Hello'),
@@ -55,9 +63,7 @@ test.serial(
                 ])
             )
         );
-        t.is(
-            await render(parent, { name: 'Maria' }),
-            '<x-parent name="Maria" class="resolved"><div><span>Hello</span><x-child name="Maria" class="resolved"><div>Maria</div></x-child><span>!</span></div></x-parent>'
-        );
+        t.snapshot(await render(parent));
+        t.snapshot(await render(parent, { name: 'Maria' }));
     }
 );

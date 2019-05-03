@@ -1,9 +1,11 @@
-import browserEnv from 'browser-env';
 import { elements } from '../core/index.js';
 import * as u from '../core/utils.js';
 import { initialProps } from './utils.js';
 
-browserEnv(['window', 'document', 'navigator']);
+if (typeof require !== 'undefined') {
+    const browserEnv = require('browser-env');
+    browserEnv(['window', 'document', 'navigator']);
+}
 
 export async function render([name, middleware], attrs = {}, node = document.createElement(name)) {
     // Attach any custom attributes to the host element.
