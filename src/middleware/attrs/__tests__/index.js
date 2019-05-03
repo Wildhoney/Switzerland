@@ -2,6 +2,7 @@ import test from 'ava';
 import withComponent from 'ava-webcomponents';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import * as type from '../../../types/index.js';
 import attrs, { nodes } from '../index.js';
 
@@ -137,6 +138,18 @@ test('It should be able to skip mutations if the attribute is in excluded list;'
     const m = attrs({ name: type.String, age: type.Int }, ['class']);
     m({ node: node.cloneNode(true), render: renderSpy });
     t.is(renderSpy.callCount, 0);
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const component = create(
+        'x-example',
+        attrs({ message: type.String }),
+        m.html(({ attrs, h }) => h('div', {}, attrs.message))
+    );
+    t.is(
+        await render(component, { message: 'Example' }),
+        '<x-example message="Example" class="resolved"><div>Example</div></x-example>'
+    );
 });
 
 test(

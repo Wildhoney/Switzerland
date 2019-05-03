@@ -1,6 +1,7 @@
 import test from 'ava';
 import { useFakeTimers } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import interval from '../index.js';
 
 test.beforeEach(t => {
@@ -29,4 +30,9 @@ test('It should invoke `render` every 10 milliseconds until unmounted;', async t
         ...defaultProps,
         lifecycle: 'unmount'
     });
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const component = create('x-example', interval(10), m.html(({ h }) => h('div', {}, 'Example')));
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });

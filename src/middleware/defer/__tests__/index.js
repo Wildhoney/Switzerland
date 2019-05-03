@@ -2,6 +2,7 @@ import test from 'ava';
 import { spy } from 'sinon';
 import delay from 'delay';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import defer from '../index.js';
 
 test('It should not invoke the function as the component is resolved;', async t => {
@@ -24,4 +25,14 @@ test('It should invoke the function as the component is unresolved;', async t =>
 
     t.is(identity.callCount, 1);
     t.deepEqual(newProps, { ...defaultProps, utils: { isResolved } });
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const identity = spy();
+    const component = create(
+        'x-example',
+        defer(identity, 10),
+        m.html(({ h }) => h('div', {}, 'Example'))
+    );
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });

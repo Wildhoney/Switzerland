@@ -2,6 +2,7 @@ import test from 'ava';
 import withComponent from 'ava-webcomponents';
 import { spy, match } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import { getEventName } from '../../../core/utils.js';
 import * as type from '../../../types/index.js';
 import history, { nodes } from '../index.js';
@@ -86,6 +87,17 @@ test('It should be able to remove the node from the map when unmounting;', t => 
     t.true(nodes.has(defaultProps.node));
     m({ ...defaultProps, lifecycle: 'unmount' });
     t.false(nodes.has(defaultProps.node));
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const search = { message: 'Example' };
+    const location = { search };
+    const component = create(
+        'x-example',
+        history({ example: type.String }, location),
+        m.html(({ history, h }) => h('div', {}, history.params.get('message')))
+    );
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
 test(

@@ -2,6 +2,7 @@ import test from 'ava';
 import { spy, match } from 'sinon';
 import * as R from 'ramda';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import redux, { nodes } from '../index.js';
 
 test.beforeEach(t => {
@@ -55,4 +56,15 @@ test.serial('It should only subscribe once to the updates per node instance;', t
 
     t.is(nodes.add.callCount, 1);
     t.true(nodes.has(defaultProps.node));
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const { actions } = t.context;
+    const reducer = () => ({ message: 'Example' });
+    const component = create(
+        'x-example',
+        redux(reducer, actions),
+        m.html(({ redux, h }) => h('div', {}, redux.state.message))
+    );
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });

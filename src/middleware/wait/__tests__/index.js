@@ -2,6 +2,7 @@ import test from 'ava';
 import withComponent from 'ava-webcomponents';
 import { patch, h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import { getEventName } from '../../../core/utils.js';
 import wait from '../index.js';
 
@@ -28,6 +29,15 @@ test('It should be able to wait for the resolution of applicable nodes;', async 
     document.dispatchEvent(new window.CustomEvent(eventName, { detail: { node: todoFoot } }));
 
     t.deepEqual(defaultProps, await newProps);
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const component = create(
+        'x-example',
+        wait('x-another-example', 'x-and-yet-another-example'),
+        m.html(({ h }) => h('div', {}, 'Example'))
+    );
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
 test(

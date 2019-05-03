@@ -2,6 +2,7 @@ import test from 'ava';
 import withComponent from 'ava-webcomponents';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import methods from '../index.js';
 
 test('It should be able to attach methods to the node;', t => {
@@ -15,6 +16,15 @@ test('It should be able to attach methods to the node;', t => {
     t.is(add.callCount, 1);
     t.is(remove.callCount, 1);
     t.deepEqual(newProps, { node });
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const component = create(
+        'x-example',
+        methods({ getExample: () => 'Example' }),
+        m.html(({ node, h }) => h('div', {}, node.getExample()))
+    );
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
 test(

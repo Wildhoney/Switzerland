@@ -3,6 +3,7 @@
  */
 const getObserver = () =>
     'ResizeObserver' in window &&
+    window.ResizeObserver &&
     new window.ResizeObserver(entries =>
         entries.forEach(entry => entry.target.render({ adapt: entry.contentRect }))
     );
@@ -24,7 +25,11 @@ export default () => {
     const observer = getObserver();
 
     return function adapt(props) {
-        const { lifecycle } = props;
+        const { lifecycle, utils } = props;
+
+        if (utils.isHeadless) {
+            return props;
+        }
 
         switch (lifecycle) {
             case 'mount':

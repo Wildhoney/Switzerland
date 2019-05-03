@@ -3,6 +3,7 @@ import withComponent from 'ava-webcomponents';
 import * as superfine from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import { spy, stub, match } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render } from '../../../index.js';
 import html from '../index.js';
 import * as u from '../utils.js';
 
@@ -79,7 +80,14 @@ test.serial('It should be able to recycle the existing node content;', async t =
     t.is(t.context.viewSpy.callCount, 1);
 });
 
-test(
+test.serial('It should be able to gracefully handle being rendered to a string;', async t => {
+    t.context.patchStub.restore();
+    t.context.recycleStub.restore();
+    const component = create('x-example', html(({ h }) => h('div', {}, 'Example')));
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
+});
+
+test.serial(
     'It should be able to render the node and update with the merge props and respond to events;',
     withComponent(`${__dirname}/helpers/mock.js`),
     async (t, { page, utils }) => {

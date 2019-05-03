@@ -3,6 +3,7 @@ import withComponent from 'ava-webcomponents';
 import delay from 'delay';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import adapt, { nodes } from '../index.js';
 
 test.beforeEach(t => {
@@ -72,6 +73,11 @@ test.serial('It should be able to invoke `render` for each observed component;',
     t.is(firstMock.render.callCount, 1);
     t.is(secondMock.render.callCount, 0);
     t.is(thirdMock.render.callCount, 1);
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const component = create('x-example', adapt(), m.html(({ h }) => h('div', {}, 'Example')));
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
 test(

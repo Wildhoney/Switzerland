@@ -11,6 +11,12 @@ const cache = new Map();
  */
 export default sources => {
     return async function loader(props) {
+        const { utils } = props;
+
+        if (utils.isHeadless) {
+            return { ...props, loader: sources };
+        }
+
         await Promise.all(
             Object.values(sources).map(src => {
                 return (

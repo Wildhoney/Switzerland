@@ -8,7 +8,12 @@ import * as u from './utils.js';
  */
 export default options => {
     return function boundary(props) {
-        const { node } = props;
+        const { node, utils } = props;
+
+        if (utils.isHeadless) {
+            return { ...props, boundary: null };
+        }
+
         const boundary = u.createBoundary(node, options);
         return { ...props, boundary };
     };

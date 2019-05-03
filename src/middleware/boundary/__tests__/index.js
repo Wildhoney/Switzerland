@@ -2,6 +2,7 @@ import test from 'ava';
 import withComponent from 'ava-webcomponents';
 import { spy } from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import * as u from '../utils.js';
 import boundary from '../index.js';
 
@@ -38,3 +39,8 @@ test(
         t.true(hasSameBoundary);
     }
 );
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const component = create('x-example', boundary(), m.html(({ h }) => h('div', {}, 'Example')));
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
+});

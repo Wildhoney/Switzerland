@@ -1,13 +1,14 @@
 import test from 'ava';
 import defaultProps from '../../../../tests/helpers/default-props.js';
+import { create, render, m } from '../../../index.js';
 import blend from '../index.js';
 
-test('It should be able to invoke the `render` function for promises;', async t => {
-    const promise = () =>
-        new Promise(resolve => {
-            resolve({ name: 'Adam' });
-        });
+const promise = () =>
+    new Promise(resolve => {
+        resolve({ name: 'Adam' });
+    });
 
+test('It should be able to invoke the `render` function for promises;', async t => {
     const m = blend(promise);
     m({ ...defaultProps, name: 'Maria' });
 
@@ -30,4 +31,13 @@ test('It should be able to invoke the `render` function for observables;', async
 
     t.is(defaultProps.render.callCount, 1);
     t.true(defaultProps.render.calledWith({ name: 'Adam' }));
+});
+
+test('It should be able to gracefully handle being rendered to a string;', async t => {
+    const component = create(
+        'x-example',
+        blend(promise),
+        m.html(({ h }) => h('div', {}, 'Example'))
+    );
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });

@@ -3,6 +3,7 @@
  */
 const getObserver = options =>
     'IntersectionObserver' in window &&
+    window.IntersectionObserver &&
     new window.IntersectionObserver(
         entries => entries.forEach(entry => entry.target.render({ intersect: entry })),
         options
@@ -25,7 +26,11 @@ export default options => {
     const observer = getObserver(options);
 
     return function intersect(props) {
-        const { lifecycle } = props;
+        const { lifecycle, utils } = props;
+
+        if (utils.isHeadless) {
+            return props;
+        }
 
         switch (lifecycle) {
             case 'mount':
