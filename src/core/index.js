@@ -23,13 +23,17 @@ export const init = (url, host = window.location.host) => path => {
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
 export const create = (name, ...middleware) => {
-    const [tag, extension, tagExtend] = u.parseTagName(name);
-    window.customElements.define(
-        tag,
-        impl.base(extension, middleware),
-        tagExtend && { extends: tagExtend }
-    );
-    return tag;
+    try {
+        const [tag, extension, tagExtend] = u.parseTagName(name);
+        window.customElements.define(
+            tag,
+            impl.base(extension, middleware),
+            tagExtend && { extends: tagExtend }
+        );
+        return tag;
+    } catch {
+        return [name, middleware];
+    }
 };
 
 /**

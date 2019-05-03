@@ -10,7 +10,7 @@ import * as u from './utils.js';
  */
 export default function html(getView, options = { recycle: false }) {
     return async function html(props) {
-        const { boundary, node } = props;
+        const { boundary, utils,node } = props;
 
         // Remove any previous style resolutions.
         u.styles.has(node) && u.styles.delete(node);
@@ -35,9 +35,8 @@ export default function html(getView, options = { recycle: false }) {
             u.putTree(node, superfine.recycle(findBoundary(props)));
         }
 
-        if (props.node.isConnected) {
+        if (props.node.isConnected || utils.isHeadless) {
             const tree = superfine.patch(u.takeTree(node), view, findBoundary(props));
-
             u.putTree(node, tree);
         }
 

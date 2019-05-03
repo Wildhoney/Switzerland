@@ -79,8 +79,8 @@ export const parseTagName = name => {
  * to the end of the node name until we find a node that isn't registered.
  */
 export const findFreeTagName = (name, suffix = null) => {
-    const tag = suffix ? `${name}-${suffix}` : name;
-    return !window.customElements.get(tag) ? tag : findFreeTagName(tag, getRandomId());
+        const tag = suffix ? `${name}-${suffix}` : name;
+        return !window.customElements.get(tag) ? tag : findFreeTagName(tag, getRandomId());
 };
 
 /**
@@ -118,12 +118,12 @@ export const consoleMessage = (text, type = 'error') =>
 export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
     const utils = {
         dispatch: dispatchEvent(node),
-        form: {},
         abort: () => {
             throw new Cancel();
         },
         getMiddleware: () => Promise.all(middleware),
-        getLatestProps: () => previousProps.get(node) || null,
+        getLatestProps: () => previousProps.get(node),
+        isHeadless: false,
         isIdle: () => node[meta].queue.size() <= 1,
         isResolved: async () => {
             const resolution = await Promise.race([scheduledTask, Promise.resolve(false)]);
