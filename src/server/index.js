@@ -10,6 +10,9 @@ const isHeadless = typeof window === 'undefined' && typeof document === 'undefin
  */
 const Window = isHeadless && (() => require('window'))();
 
+/**
+ * @function render ∷ ∀ a. [String, [(p → p)]] → Object String a → HTMLElement → String
+ */
 export async function render([name, middleware], attrs = {}, node) {
     if (isHeadless) {
         // Define the JSDOM globals if the current environment doesn't have them.

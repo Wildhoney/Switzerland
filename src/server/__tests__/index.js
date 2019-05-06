@@ -1,5 +1,6 @@
 import test from 'ava';
 import axios from 'axios';
+import capitalise from 'capitalize';
 import { create, init, m, t as type } from '../../index.js';
 import { render } from '../index.js';
 
@@ -12,13 +13,13 @@ test.serial(
     'It should be able to render a shallow component with a HTTP request to string;',
     async t => {
         const fetch = async props => {
-            const data = await axios.get('http://www.example.org/');
-            return { ...props, status: data.status };
+            const { data } = await axios.get('https://randomuser.me/api/?seed=24541ccf67bc0aa2');
+            return { ...props, name: capitalise(data.results[0].name.first) };
         };
         const component = create(
             'x-example',
             fetch,
-            m.html(({ status, h }) => h('div', {}, `Hello ${status}!`))
+            m.html(({ name, h }) => h('div', {}, `Hello ${name}!`))
         );
         t.snapshot(await render(component));
     }
