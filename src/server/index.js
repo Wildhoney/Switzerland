@@ -1,21 +1,20 @@
-import Window from 'window';
 import { elements } from '../core/index.js';
 import * as u from '../core/utils.js';
 import { initialProps } from './utils.js';
 
+// Determine whether we're in headless mode or not.
+const isHeadless = typeof window === 'undefined' && typeof document === 'undefined';
+
 /**
  * @constant window ∷ Window
  */
-const window = new Window();
-
-// Determine whether we're in headless mode or not.
-const isHeadless = typeof window === 'undefined' && typeof document === 'undefined';
+const Window = isHeadless && (() => require('window'))();
 
 export async function render([name, middleware], attrs = {}, node) {
     if (isHeadless) {
         // Define the JSDOM globals if the current environment doesn't have them.
-        global.window = window;
-        global.document = window.document;
+        global.window = new Window();
+        global.document = global.window.document;
     }
 
     // Either use the passed node or create from the passed name.
