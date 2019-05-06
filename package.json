@@ -95,6 +95,7 @@
         "stylelint-config-prettier": "^5.1.0",
         "taskfile": "^0.10.0",
         "terser": "^3.17.0",
-        "testcafe": "^1.1.3"
+        "testcafe": "^1.1.3",
+        "window": "^4.2.6"
     }
 }
