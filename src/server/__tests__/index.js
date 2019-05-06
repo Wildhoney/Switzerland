@@ -1,4 +1,5 @@
 import test from 'ava';
+import axios from 'axios';
 import { create, init, m, t as type } from '../../index.js';
 import { render } from '../index.js';
 
@@ -6,6 +7,22 @@ test.serial('It should be able to render a shallow component to string;', async 
     const component = create('x-example', m.html(({ h }) => h('div', {}, 'Hello Adam!')));
     t.snapshot(await render(component));
 });
+
+test.serial(
+    'It should be able to render a shallow component with a HTTP request to string;',
+    async t => {
+        const fetch = async props => {
+            const data = await axios.get('http://www.example.org/');
+            return { ...props, status: data.status };
+        };
+        const component = create(
+            'x-example',
+            fetch,
+            m.html(({ status, h }) => h('div', {}, `Hello ${status}!`))
+        );
+        t.snapshot(await render(component));
+    }
+);
 
 test.serial('It should be able to render a shallow component with styles to string;', async t => {
     const path = init(import.meta.url, 'https://www.example.org');
