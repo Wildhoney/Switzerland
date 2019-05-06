@@ -10,6 +10,14 @@ test.serial('It should be able to render a shallow component to string;', async 
 });
 
 test.serial(
+    'It should be able to render a shallow component to string by passing pure HTML;',
+    async t => {
+        create('x-example', m.html(({ h }) => h('div', {}, 'Hello Adam!')));
+        t.snapshot(await render('<div><x-example name="Adam"></x-example></div>'));
+    }
+);
+
+test.serial(
     'It should be able to render a shallow component with a HTTP request to string;',
     async t => {
         const fetch = async props => {
