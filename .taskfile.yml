@@ -39,14 +39,10 @@
       - - - NODE_ENV=test nyc report --reporter=text-lcov | coveralls || mv ava.config.tmp ava.config.js 2>/dev/null
       - - - - mv ava.config.tmp ava.config.js 2>/dev/null
 
-- name: test/integration
-  task: concurrently -k -s first 'yarn start' 'testcafe chrome:headless ./tests/integration/*.js'
-
 - name: test
   tasks:
       - taskfile test/spec
       - - taskfile test/lint
-      # - - - taskfile test/integration
 
 - name: docker
   tasks:
