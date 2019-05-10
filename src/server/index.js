@@ -5,14 +5,13 @@ import * as u from './utils.js';
 const isHeadless = typeof window === 'undefined' && typeof document === 'undefined';
 
 /**
- * @constant window ∷ Window
+ * @constant dom ∷ JSDOM
  */
-const Window =
+const dom =
     isHeadless &&
     (() => {
         const { JSDOM } = require('jsdom');
-        const dom = new JSDOM();
-        return dom.window;
+        return new JSDOM();
     })();
 
 /**
@@ -21,8 +20,8 @@ const Window =
 export async function render(component, attrs = {}, node) {
     if (isHeadless) {
         // Define the JSDOM globals if the current environment doesn't have them.
-        global.window = new Window();
-        global.document = global.window.document;
+        global.window = dom.window;
+        global.document = dom.document;
     }
 
     // Either use the passed node or create from the passed name.
