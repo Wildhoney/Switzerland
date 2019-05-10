@@ -37,18 +37,19 @@ test.serial('It should be able to render a shallow component with styles to stri
     const url = 'https://www.example.org?name=Adam';
     const path = init(import.meta.url, {
         url,
-        rootPath: () => require('path').resolve('../../../')
+        rootPath: () => require('path').resolve('./')
     });
 
     const component = create(
         'x-example',
         m.window(url),
-        m.html(({ h }) => {
-            return h('section', {}, [
+        m.html(({ h }) =>
+            h('section', {}, [
                 h('div', {}, 'Hello Adam!'),
+                h('img', { src: path('../images/profile.png'), alt: 'Profile' }),
                 h.sheet(path('styles/index.css'))
-            ]);
-        })
+            ])
+        )
     );
     t.snapshot(await render(component));
 });
