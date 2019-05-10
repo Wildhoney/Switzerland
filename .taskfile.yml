@@ -45,12 +45,6 @@
       - taskfile test/spec
       - - taskfile test/lint
 
-- name: docker
-  tasks:
-      - docker build -t wildhoney/switzerland:latest .
-      - - docker tag wildhoney/switzerland wildhoney/switzerland:$npm_package_version
-      - - - docker push wildhoney/switzerland
-
 - name: prepublish
   tasks:
       - rm -rf es
@@ -62,4 +56,3 @@
 - name: postpublish
   tasks:
       - rm -rf es bin/index.js
-      # - - taskfile docker
