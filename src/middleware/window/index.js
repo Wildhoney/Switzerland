@@ -1,7 +1,9 @@
 export default url => {
+    const ref = window;
+
     return function window(props) {
         if (typeof require === 'undefined') {
-            return { ...props, window };
+            return { ...props, window: ref };
         }
 
         const { JSDOM } = require('jsdom');

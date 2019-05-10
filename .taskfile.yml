@@ -42,8 +42,8 @@
 
 - name: test
   tasks:
-      - taskfile test/spec
-      - - taskfile test/lint
+      - taskfile test/lint
+      - - taskfile test/spec
 
 - name: prepublish
   tasks:
