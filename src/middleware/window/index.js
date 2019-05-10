@@ -5,7 +5,7 @@ export default url => {
         }
 
         const { JSDOM } = require('jsdom');
-        const dom = new JSDOM(``, { url });
+        const dom = new JSDOM('', { url });
         return { ...props, window: dom.window };
     };
 };
