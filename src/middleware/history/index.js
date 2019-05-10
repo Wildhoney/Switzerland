@@ -31,12 +31,13 @@ export const nodes = new Map();
  * set by passing the params and their associated types. Useful for whenever you're managing state by
  * using the browser's URL params.
  */
-export default (types = {}, location = window.location) => {
+export default (types = {}, locationParams) => {
     const defaults = getDefaults(types);
 
     return function history(props) {
         const { node, utils, lifecycle } = props;
         const { isHeadless } = utils;
+        const location = locationParams || (props.window || window).document.location;
         !nodes.has(node) && nodes.set(node, { types, defaults, location, utils });
         lifecycle === 'unmount' && nodes.delete(node);
 

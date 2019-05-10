@@ -68,11 +68,10 @@ test.serial(
 test.serial(
     'It should be able to render a shallow component with URL params to string;',
     async t => {
-        const search = { name: 'Adam' };
-        const location = { search };
         const component = create(
             'x-example',
-            m.history({ name: type.String }, location),
+            m.window('https://www.example.org?name=Adam'),
+            m.history({ name: type.String }),
             m.html(({ history, h }) => h('div', {}, `Hello ${history.params.get('name')}!`))
         );
         t.snapshot(await render(component));

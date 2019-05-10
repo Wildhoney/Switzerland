@@ -89,12 +89,22 @@ test('It should be able to remove the node from the map when unmounting;', t => 
     t.false(nodes.has(defaultProps.node));
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
+test('It should be able to gracefully handle being rendered to a string by passing explicit params;', async t => {
     const search = { message: 'Example' };
     const location = { search };
     const component = create(
         'x-example',
         history({ example: type.String }, location),
+        m.html(({ history, h }) => h('div', {}, history.params.get('message')))
+    );
+    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
+});
+
+test('It should be able to gracefully handle being rendered to a string from the URL parameters;', async t => {
+    const component = create(
+        'x-example',
+        m.window('https://www.example.org?message=Example'),
+        history({ example: type.String }),
         m.html(({ history, h }) => h('div', {}, history.params.get('message')))
     );
     t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
