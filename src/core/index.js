@@ -10,23 +10,20 @@ export const elements = new Map();
 
 /**
  * @function init ∷ String → String → Boolean → (String → String)
- * @deprecated
  * ---
  * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
  * the components by using the `import.meta.url` (or `document.currentScript` for non-module includes).
  * Detects when the component is being used on a different host where absolute paths will be used instead
  * of relative ones to allow components to be rendered cross-domain.
  */
-export const init = (
-    url,
-    host = window.location.host,
-    isHeadless = typeof require !== 'undefined'
-) => path => {
-    if (isHeadless) {
-        return new URL(path, host);
+export const init = (componentUrl, pathConfig) => resourcePath => {
+    if (typeof require === 'undefined' || !pathConfig || pathConfig.forceBrowser) {
+        return new URL(resourcePath, componentUrl).href;
     }
-    const key = new URL(url).host === host ? 'pathname' : 'href';
-    return new URL(path, url)[key];
+    const componentPath = new URL(componentUrl).pathname;
+    const relativePath = require('path').relative(pathConfig.rootPath(), componentPath);
+    const urlPath = new URL(relativePath, pathConfig.url);
+    return new URL(resourcePath, urlPath).href;
 };
 
 /**
