@@ -7,7 +7,13 @@ const isHeadless = typeof window === 'undefined' && typeof document === 'undefin
 /**
  * @constant window ∷ Window
  */
-const Window = isHeadless && (() => require('window'))();
+const Window =
+    isHeadless &&
+    (() => {
+        const { JSDOM } = require('jsdom');
+        const dom = new JSDOM();
+        return dom.window;
+    })();
 
 /**
  * @function render ∷ ∀ a. [String, [(p → p)]]|String → Object String a → HTMLElement → String
