@@ -78,6 +78,7 @@
         "esm": "^3.2.22",
         "express": "^4.16.4",
         "fslint": "^1.1.0",
+        "jsdom": "^15.0.0",
         "node-glob": "^1.2.0",
         "node-mkdirp": "^0.0.1",
         "node-url-imports": "^0.3.0",
@@ -94,7 +95,6 @@
         "stylelint": "^10.0.1",
         "stylelint-config-prettier": "^5.1.0",
         "taskfile": "^0.10.0",
-        "terser": "^3.17.0",
-        "window": "^4.2.6"
+        "terser": "^3.17.0"
     }
 }

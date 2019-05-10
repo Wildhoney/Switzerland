@@ -1,7 +1,7 @@
 import test from 'ava';
 import axios from 'axios';
 import capitalise from 'capitalize';
-import { create, init, m, t as type } from '../../index.js';
+import { create, m, t as type } from '../../index.js';
 import { render } from '../index.js';
 
 test.serial('It should be able to render a shallow component to string;', async t => {
@@ -34,12 +34,16 @@ test.serial(
 );
 
 test.serial('It should be able to render a shallow component with styles to string;', async t => {
-    const path = init(import.meta.url, 'https://www.example.org');
     const component = create(
         'x-example',
-        m.html(({ h }) =>
-            h('section', {}, [h('div', {}, 'Hello Adam!'), h.sheet(path('styles/index.css'))])
-        )
+        m.window('https://www.example.org?name=Adam'),
+        m.path(import.meta.url, () => require('path').resolve('./')),
+        m.html(({ path, h }) => {
+            return h('section', {}, [
+                h('div', {}, 'Hello Adam!'),
+                h.sheet(path('styles/index.css'))
+            ]);
+        })
     );
     t.snapshot(await render(component));
 });

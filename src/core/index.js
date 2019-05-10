@@ -10,6 +10,7 @@ export const elements = new Map();
 
 /**
  * @function init ∷ String → String → Boolean → (String → String)
+ * @deprecated
  * ---
  * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
  * the components by using the `import.meta.url` (or `document.currentScript` for non-module includes).
