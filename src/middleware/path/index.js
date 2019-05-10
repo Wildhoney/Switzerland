@@ -1,17 +1,10 @@
-export default (componentUrl, rootPath) => {
+import * as utils from './utils';
+
+export default (componentUrl, rootPath = null) => {
     return async function path(props) {
         return {
             ...props,
-            path: resourcePath => {
-                if (typeof require === 'undefined') {
-                    return new URL(resourcePath, componentUrl).href;
-                }
-
-                const componentPath = new URL(componentUrl).pathname;
-                const relativePath = require('path').relative(rootPath(), componentPath);
-                const urlPath = new URL(relativePath, (props.window || window).location.href);
-                return new URL(resourcePath, urlPath).href;
-            }
+            path: utils.getPath(componentUrl, rootPath, props.window || window)
         };
     };
 };
