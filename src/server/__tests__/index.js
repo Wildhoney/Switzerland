@@ -37,7 +37,7 @@ test.serial('It should be able to render a shallow component with styles to stri
     const url = 'https://www.example.org?name=Adam';
     const path = init(import.meta.url, {
         url,
-        rootPath: () => require('path').resolve('./')
+        rootPath: () => require('path').resolve('../../../')
     });
 
     const component = create(
