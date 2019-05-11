@@ -20,6 +20,7 @@ export const init = (componentUrl, pathConfig) => resourcePath => {
     if (typeof require === 'undefined' || !pathConfig || pathConfig.forceBrowser) {
         return new URL(resourcePath, componentUrl).href;
     }
+
     const componentPath = new URL(componentUrl).pathname;
     const relativePath = require('path').relative(pathConfig.rootPath(), componentPath);
     const urlPath = new URL(relativePath, pathConfig.url);

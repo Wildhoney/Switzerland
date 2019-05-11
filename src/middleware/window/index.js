@@ -1,3 +1,6 @@
+/**
+ * @function window ∷ String → (Props → Props)
+ */
 export default url => {
     const ref = window;
 
