@@ -22,7 +22,8 @@ export const init = (componentUrl, pathConfig) => resourcePath => {
     }
 
     const componentPath = new URL(componentUrl).pathname;
-    const relativePath = require('path').relative(pathConfig.rootPath(), componentPath);
+    const path = require('path');
+    const relativePath = path.relative(pathConfig.rootPath(path.resolve), componentPath);
     const urlPath = new URL(relativePath, pathConfig.url);
     return new URL(resourcePath, urlPath).href;
 };
