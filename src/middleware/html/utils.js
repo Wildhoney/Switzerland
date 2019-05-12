@@ -1,7 +1,13 @@
 import { h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 
+/**
+ * @constant trees ∷ WeakMap
+ */
 const trees = new WeakMap();
 
+/**
+ * @constant styles ∷ WeakMap
+ */
 export const styles = new WeakMap();
 
 /**
