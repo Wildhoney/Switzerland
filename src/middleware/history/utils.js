@@ -1,6 +1,4 @@
-import { toCamelcase, getEventName } from '../../core/utils.js';
-
-export const eventName = getEventName('update-state');
+import { toCamelcase } from '../../core/utils.js';
 
 /**
  * @function createPatch ∷ ∀ a b. (String → String) → Object String a → Object String a → (String → a)
@@ -14,11 +12,12 @@ export const createPatch = (getF, types, defaults) => {
 };
 
 /**
- * @function changeState ∷ ∀ a b. Object String a → String → [b]
+ * @function changeState ∷ ∀ a b. String → [b]
  */
-export const changeState = ({ utils }, fName) => (...params) => {
-    window.history[fName](...params);
-    utils.dispatch(eventName, { params });
+export const changeState = f => (...params) => {
+    window.history[f](...params);
+    var popStateEvent = new PopStateEvent('popstate');
+    window.dispatchEvent(popStateEvent);
 };
 
 /**

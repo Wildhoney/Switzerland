@@ -18,6 +18,7 @@
         "IntersectionObserver": true,
         "MutationObserver": true,
         "performance": true,
+        "PopStateEvent": true,
         "requestIdleCallback": true,
         "ResizeObserver": true,
         "Response": true,

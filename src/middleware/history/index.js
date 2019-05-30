@@ -6,7 +6,7 @@ import * as u from './utils.js';
  */
 export const nodes = new Map();
 
-[u.eventName, 'popstate', 'hashchange'].forEach(eventName =>
+['popstate', 'hashchange'].forEach(eventName =>
     window.addEventListener(eventName, () =>
         [...nodes.keys()].forEach(node => {
             const { types, defaults, location, utils } = nodes.get(node);
@@ -45,8 +45,8 @@ export default (types = {}, locationParams) => {
             ...props,
             history: {
                 params: u.getParams(types, defaults, location),
-                pushState: isHeadless ? () => {} : u.changeState(props, 'pushState'),
-                replaceState: isHeadless ? () => {} : u.changeState(props, 'replaceState')
+                pushState: isHeadless ? () => {} : u.changeState('pushState'),
+                replaceState: isHeadless ? () => {} : u.changeState('replaceState')
             }
         };
     };
