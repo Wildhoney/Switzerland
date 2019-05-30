@@ -14,11 +14,8 @@ test('It should be able to create a patch `get` method for the `URLSearchParams`
 
 test('It should be able to dispatch the event on the node;', t => {
     window.history.pushState = spy();
-    const props = { utils: { dispatch: spy() } };
     const params = [1, 2, 3];
     u.changeState('pushState')(...params);
     t.is(window.history.pushState.callCount, 1);
     t.true(window.history.pushState.calledWith(...params));
-    t.is(props.utils.dispatch.callCount, 1);
-    t.true(props.utils.dispatch.calledWith(u.eventName, { params }));
 });
