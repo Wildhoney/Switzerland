@@ -16,8 +16,8 @@ export const createPatch = (getF, types, defaults) => {
  */
 export const changeState = f => (...params) => {
     window.history[f](...params);
-    var popStateEvent = new PopStateEvent('popstate');
-    window.dispatchEvent(popStateEvent);
+    const event = new window.PopStateEvent('popstate');
+    window.dispatchEvent(event);
 };
 
 /**
