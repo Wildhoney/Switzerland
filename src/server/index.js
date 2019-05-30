@@ -21,7 +21,7 @@ export async function render(component, attrs = {}, node) {
     if (isHeadless) {
         // Define the JSDOM globals if the current environment doesn't have them.
         global.window = dom.window;
-        global.document = dom.document;
+        global.document = dom.window.document;
     }
 
     // Either use the passed node or create from the passed name.

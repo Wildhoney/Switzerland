@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
-import { fetch, cryptr } from './helpers/countries.mjs';
+import { fetch, cryptr } from './helpers/countries.js';
 
 const app = express();
 app.use(cors());

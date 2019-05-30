@@ -1,8 +1,10 @@
+import * as utils from './utils.js';
+
 /**
  * @function window ∷ String → (Props → Props)
  */
 export default url => {
-    const ref = window;
+    const ref = typeof window === 'undefined' ? null : window;
 
     return function window(props) {
         if (typeof require === 'undefined') {
@@ -10,7 +12,7 @@ export default url => {
         }
 
         const { JSDOM } = require('jsdom');
-        const dom = new JSDOM('', { url });
+        const dom = new JSDOM('', { url: utils.normaliseUrl(url) });
         return { ...props, window: dom.window };
     };
 };

@@ -6,22 +6,24 @@ import * as u from './utils.js';
  */
 export const nodes = new Map();
 
-['popstate', 'hashchange'].forEach(eventName =>
-    window.addEventListener(eventName, () =>
-        [...nodes.keys()].forEach(node => {
-            const { types, defaults, location, utils } = nodes.get(node);
-            node.render({
-                signal: {
-                    ...(utils.getLatestProps(node) || {}).signal,
-                    history: {
-                        params: u.getParams(types, defaults, location),
-                        pathname: location.pathname,
-                        hash: location.hash
+['popstate', 'hashchange'].forEach(
+    eventName =>
+        typeof window !== 'undefined' &&
+        window.addEventListener(eventName, () =>
+            [...nodes.keys()].forEach(node => {
+                const { types, defaults, location, utils } = nodes.get(node);
+                node.render({
+                    signal: {
+                        ...(utils.getLatestProps(node) || {}).signal,
+                        history: {
+                            params: u.getParams(types, defaults, location),
+                            pathname: location.pathname,
+                            hash: location.hash
+                        }
                     }
-                }
-            });
-        })
-    )
+                });
+            })
+        )
 );
 
 /**

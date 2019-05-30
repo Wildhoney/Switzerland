@@ -28,7 +28,7 @@ export const initialProps = (node, middleware) => {
  * @function parseHtml ∷ String → String
  */
 export const parseHtml = html => {
-    const host = document.createElement('div');
+    const host = global.document.createElement('div');
     host.innerHTML = html;
     return host;
 };
@@ -37,7 +37,7 @@ export const parseHtml = html => {
  * @function parseComponent ∷ [String, [(p → p)]] → Object String a → HTMLElement → String
  */
 export const parseComponent = async ([name, middleware], node, attrs) => {
-    const host = node || document.createElement(name);
+    const host = node || global.document.createElement(name);
     // Attach any custom attributes to the host element.
     Object.entries(attrs).forEach(([name, value]) => host.setAttribute(name, value));
     // Cycle through the middleware and append the "resolved" class name.
