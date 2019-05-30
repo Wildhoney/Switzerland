@@ -6,7 +6,7 @@ import { create, render, m } from '../../../index.js';
 import * as type from '../../../types/index.js';
 import history, { nodes } from '../index.js';
 
-test.skip('It should register the events to notify changes only once;', async t => {
+test.serial('It should register the events to notify changes only once;', async t => {
     t.plan(2);
 
     const { node } = defaultProps;
