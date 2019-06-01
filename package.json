@@ -87,7 +87,7 @@
         "nyc": "^14.1.1",
         "prettier": "^1.17.1",
         "readlint": "^0.7.2",
-        "rollup": "^1.12.5",
+        "rollup": "^1.13.1",
         "rollup-plugin-babel": "^4.3.2",
         "rollup-plugin-replace": "^2.2.0",
         "shortid": "^2.2.14",
