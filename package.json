@@ -46,7 +46,7 @@
         "humps": "^2.0.1",
         "hyperhtml": "2.29.0",
         "jsdom": "^15.1.1",
-        "minimist": "^1.2.0",
+        "minimist": "^1.2.3",
         "mkdirp": "^0.5.1",
         "ramda": "^0.26.1",
         "redux": "^4.0.1",
