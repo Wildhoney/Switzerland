@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { Tree, Properties, Tag, ChildNode } from '../../core/h';
-import { Swiss, SwissComponent, InitialProperties } from '../../core/create';
+import { Swiss, SwissComponent } from '../../core/create';
 
 declare global {
     interface Window {
