@@ -1,7 +1,7 @@
 import { Middleware } from '../../core/create';
 import * as utils from './utils';
 
-export type Attributes = { [key: string]: string };
+export type Attributes = { [key: string]: string | null };
 
 export type Types = {
     [key: string]: ((string) => any) | [(string) => any, any];

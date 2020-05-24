@@ -5,6 +5,8 @@ import { Swiss, SwissComponent } from '../../core/create';
 declare global {
     interface Window {
         HTMLElement: typeof HTMLElement;
+        BigInt: typeof BigInt;
+        Date: typeof Date;
     }
 }
 
