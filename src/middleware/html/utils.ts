@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { Tree, Properties, Tag, ChildNode } from '../../core/h';
-import { Swiss, Blueprint, InitialProperties } from '../../core/create';
+import { Swiss, SwissComponent, InitialProperties } from '../../core/create';
 
 declare global {
     interface Window {
@@ -9,7 +9,7 @@ declare global {
 }
 
 function isSwiss(tag: Tag): tag is Swiss {
-    return tag instanceof Blueprint;
+    return tag instanceof SwissComponent;
 }
 
 function isChildNode(tag: Tag): tag is ChildNode {

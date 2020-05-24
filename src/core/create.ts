@@ -1,11 +1,5 @@
 import { Attributes } from '../middleware/attrs';
 
-export type Swiss = {
-    name: string;
-    middleware: Middleware[];
-    render: (props: InitialProperties) => Promise<Properties>;
-};
-
 export type InitialProperties = { [key: string]: any } | { [key: string]: { [key: string]: any } };
 
 export type Properties = {
@@ -17,7 +11,13 @@ export type Properties = {
 
 export type Middleware = (props: Properties) => Properties | Promise<Properties>;
 
-export class Blueprint {
+export type Swiss = {
+    name: string;
+    middleware: Middleware[];
+    render: (props: InitialProperties) => Promise<Properties>;
+};
+
+export class SwissComponent {
     name: string;
     middleware: Middleware[];
 
@@ -28,7 +28,7 @@ export class Blueprint {
 
     async render(props: Properties): Promise<Properties> {
         async function cycle(props: Properties | Promise<Properties>, middleware: Middleware) {
-            return await middleware(await props);
+            return middleware(await props);
         }
 
         return this.middleware.reduce(cycle, { ...props, server: true });
@@ -36,5 +36,5 @@ export class Blueprint {
 }
 
 export default function create(name: string, ...middleware: Middleware[]): Swiss {
-    return new Blueprint(name, middleware);
+    return new SwissComponent(name, middleware);
 }

@@ -11,5 +11,4 @@ node_modules
 yarn-error.log
 
 # build
-es
-bin/index.js
+dist/

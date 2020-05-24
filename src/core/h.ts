@@ -1,7 +1,5 @@
 import { Swiss } from './create';
 
-export type Tag = string | Node | ChildNode | Swiss;
-
 export type ChildNode = (props: Properties) => HTMLElement;
 
 export type Tree = [Tag, Properties, Tree[]];
@@ -10,9 +8,7 @@ export type Properties = { [key: string]: string };
 
 type Children = number | string | ((props: Properties) => Tree) | Text | Tree;
 
-export type Component = {
-    name: string;
-};
+export type Tag = string | Node | ChildNode | Swiss;
 
 class Node {
     name: string;

@@ -6,8 +6,11 @@
     "module": "./es/development/index.js",
     "license": "MIT",
     "scripts": {
+        "build": "tsc",
+        "test": "yarn spec",
+        "format": "prettier --write '{src,tests}/**/**.ts'",
         "spec": "ava",
-        "format": "prettier --write '{src,tests}/**/**.ts'"
+        "lint": "eslint '{src,tests}/**/**.ts'"
     },
     "repository": {
         "type": "git",
@@ -33,6 +36,15 @@
         "esm": "^3.2.25",
         "prettier": "^2.0.5",
         "ts-node": "^8.10.1",
-        "typescript": "^3.9.3"
+        "typescript": "^3.9.3",
+        "eslint": "^5.16.0",
+        "eslint-config-prettier": "^4.3.0",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-plugin-import": "^2.17.3",
+        "babel-eslint": "^10.0.1",
+        "eslint-plugin-node": "^9.1.0",
+        "eslint-plugin-promise": "^4.1.1",
+        "eslint-plugin-react": "^7.13.0",
+        "eslint-plugin-standard": "^4.0.0"
     }
 }
