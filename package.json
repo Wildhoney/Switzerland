@@ -1,29 +1,22 @@
 {
     "name": "switzerland",
-    "version": "3.13.0",
+    "version": "0.1.0",
+    "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+    "main": "./src/index.ts",
     "module": "./es/development/index.js",
-    "type": "module",
-    "bin": {
-        "swiss": "bin/index.js"
-    },
-    "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
-    "directories": {
-        "test": "tests"
-    },
+    "license": "MIT",
     "scripts": {
-        "build": "taskfile build",
-        "coverage": "taskfile test/coverage",
-        "docker": "taskfile docker",
-        "format": "taskfile format",
-        "postpublish": "taskfile postpublish",
-        "prepublishOnly": "taskfile prepublish",
-        "start": "taskfile start",
-        "test": "taskfile test"
+        "spec": "ava",
+        "format": "prettier --write '{src,tests}/**/**.ts'"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Wildhoney/Switzerland.git"
     },
+    "bugs": {
+        "url": "https://github.com/Wildhoney/Switzerland/issues"
+    },
+    "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "keywords": [
         "web components",
         "webcomponents",
@@ -31,71 +24,15 @@
         "shadow dom",
         "custom elements"
     ],
-    "author": "Adam Timberlake <adam.timberlake@gmail.com>",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/Wildhoney/Switzerland/issues"
-    },
-    "homepage": "https://github.com/Wildhoney/Switzerland#readme",
     "dependencies": {
-        "capitalize": "^2.0.0",
-        "chalk": "^2.4.2",
-        "copy-dir": "^1.1.0",
-        "figlet": "^1.2.3",
-        "glob": "^7.1.4",
-        "humps": "^2.0.1",
-        "hyperhtml": "2.29.0",
-        "jsdom": "^15.1.1",
-        "minimist": "^1.2.0",
-        "mkdirp": "^0.5.1",
-        "ramda": "^0.26.1",
-        "redux": "^4.0.1",
-        "redux-thunk": "2.3.0",
-        "rimraf": "^2.6.3",
-        "string-template": "^1.0.0",
-        "superfine": "6.0.1",
-        "validate-element-name": "^2.1.1"
+        "jsdom": "^16.2.2",
+        "morphdom": "^2.6.1"
     },
     "devDependencies": {
-        "@babel/plugin-syntax-import-meta": "^7.2.0",
-        "ava": "^2.1.0",
-        "ava-webcomponents": "^0.1.3",
-        "axios": "^0.19.0",
-        "babel-eslint": "^10.0.1",
-        "browser-env": "^3.2.6",
-        "change-case": "^3.1.0",
-        "compression": "^1.7.4",
-        "cors": "^2.8.5",
-        "coveralls": "^3.0.4",
-        "cryptr": "^4.0.2",
-        "delay": "^4.3.0",
-        "eslint": "^5.16.0",
-        "eslint-config-prettier": "^4.3.0",
-        "eslint-config-standard": "^12.0.0",
-        "eslint-plugin-import": "^2.17.3",
-        "eslint-plugin-node": "^9.1.0",
-        "eslint-plugin-promise": "^4.1.1",
-        "eslint-plugin-react": "^7.13.0",
-        "eslint-plugin-standard": "^4.0.0",
+        "ava": "^3.8.2",
         "esm": "^3.2.25",
-        "express": "^4.17.1",
-        "fslint": "^1.1.0",
-        "node-glob": "^1.2.0",
-        "node-mkdirp": "^0.0.1",
-        "node-url-imports": "^0.3.0",
-        "nodemon": "^1.19.1",
-        "nyc": "^14.1.1",
-        "prettier": "^1.18.2",
-        "readlint": "^0.7.2",
-        "rollup": "^1.15.5",
-        "rollup-plugin-babel": "^4.3.2",
-        "rollup-plugin-replace": "^2.2.0",
-        "shortid": "^2.2.14",
-        "sinon": "^7.3.2",
-        "starwars": "^1.0.1",
-        "stylelint": "^10.1.0",
-        "stylelint-config-prettier": "^5.2.0",
-        "taskfile": "^0.10.0",
-        "terser": "^4.0.0"
+        "prettier": "^2.0.5",
+        "ts-node": "^8.10.1",
+        "typescript": "^3.9.3"
     }
 }
