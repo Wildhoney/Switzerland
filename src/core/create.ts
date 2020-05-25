@@ -5,6 +5,7 @@ export type InitialProperties = { [key: string]: any } | { [key: string]: { [key
 export type Properties = {
     node: HTMLElement;
     server: boolean;
+    lifecycle: 'mount' | 'update' | 'unmount';
     render: ((props?: Properties) => Properties | Promise<Properties>) | (() => null);
     attrs?: Attributes;
     [key: string]: any;
@@ -32,7 +33,7 @@ export class SwissComponent {
             return middleware(await props);
         }
 
-        const defaultProps = { server: true, render: () => null };
+        const defaultProps = { server: true, render: () => null, lifecycle: 'mount' };
         return this.middleware.reduce(cycle, { ...defaultProps, ...props });
     }
 }
@@ -48,11 +49,16 @@ export default function create(name: string, ...middleware: Middleware[]): Swiss
                 initialProps: Properties;
 
                 connectedCallback(): Promise<Properties> {
-                    return this.render();
+                    return this.render({ lifecycle: 'mount' });
+                }
+
+                disconnectedCallback(): Promise<Properties> {
+                    return this.render({ lifecycle: 'unmount' });
                 }
 
                 render(props: InitialProperties = {}): Promise<Properties> {
                     return component.render({
+                        lifecycle: 'update',
                         ...props,
                         node: this,
                         server: false,
