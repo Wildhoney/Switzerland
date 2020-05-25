@@ -16,7 +16,7 @@ export const elements = new Map();
  * Detects when the component is being used on a different host where absolute paths will be used instead
  * of relative ones to allow components to be rendered cross-domain.
  */
-export const init = (componentUrl, pathConfig) => resourcePath => {
+export const init = (componentUrl, pathConfig) => (resourcePath) => {
     if (typeof require === 'undefined' || !pathConfig || pathConfig.forceBrowser) {
         return new URL(resourcePath, componentUrl).href;
     }

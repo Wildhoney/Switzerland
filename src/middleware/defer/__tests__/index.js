@@ -5,7 +5,7 @@ import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import defer from '../index.js';
 
-test('It should not invoke the function as the component is resolved;', async t => {
+test('It should not invoke the function as the component is resolved;', async (t) => {
     const identity = spy();
     const isResolved = () => Promise.resolve();
     const m = defer(identity, 100);
@@ -14,7 +14,7 @@ test('It should not invoke the function as the component is resolved;', async t 
     t.is(identity.callCount, 0);
 });
 
-test('It should invoke the function as the component is unresolved;', async t => {
+test('It should invoke the function as the component is unresolved;', async (t) => {
     const identity = spy();
     const isResolved = () => Promise.resolve();
     const m = defer(identity, 10);
@@ -27,7 +27,7 @@ test('It should invoke the function as the component is unresolved;', async t =>
     t.deepEqual(newProps, { ...defaultProps, utils: { isResolved } });
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
+test('It should be able to gracefully handle being rendered to a string;', async (t) => {
     const identity = spy();
     const component = create(
         'x-example',

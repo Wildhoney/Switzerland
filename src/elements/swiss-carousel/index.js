@@ -10,7 +10,7 @@ const tree = ({ attrs, props, h }) =>
         h('div', { class: 'track' }),
         !u.isTouchable() && p.controls(props),
         p.variables(props),
-        h.sheet(path('./css/index.css'))
+        h.sheet(path('./css/index.css')),
     ]);
 
 export default create('swiss-carousel', ...middleware(tree));

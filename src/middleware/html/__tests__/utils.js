@@ -1,7 +1,7 @@
 import test from 'ava';
 import * as u from '../utils.js';
 
-test('It should be able to put and take from the tree;', t => {
+test('It should be able to put and take from the tree;', (t) => {
     const node = document.createElement('time');
     const view = Symbol('mock-view');
     t.is(u.putTree(node, view), undefined);
@@ -9,13 +9,13 @@ test('It should be able to put and take from the tree;', t => {
     t.is(u.takeTree({}), undefined);
 });
 
-test('It should be able to transform strings into kebab form;', t => {
+test('It should be able to transform strings into kebab form;', (t) => {
     t.is(u.toKebab('test'), 'test');
     t.is(u.toKebab('testMe'), 'test-me');
     t.is(u.toKebab('anotherTestMe'), 'another-test-me');
 });
 
-test('It should be able to handle stylesheets and add promise to map;', async t => {
+test('It should be able to handle stylesheets and add promise to map;', async (t) => {
     t.plan(6);
 
     async function isResolved(promise) {
@@ -25,7 +25,7 @@ test('It should be able to handle stylesheets and add promise to map;', async t 
     }
 
     return Promise.all(
-        ['onload', 'onerror'].map(async method => {
+        ['onload', 'onerror'].map(async (method) => {
             const node = document.createElement('section');
             const tree = u.sheet(node)('example.css');
 
@@ -42,10 +42,10 @@ test('It should be able to handle stylesheets and add promise to map;', async t 
     );
 });
 
-test('It should be a able to handle the insertion of CSS variables', t => {
+test('It should be a able to handle the insertion of CSS variables', (t) => {
     const config = {
         animationDuration: 0.5,
-        type: 'ease-in'
+        type: 'ease-in',
     };
     const tree = u.vars(config);
     t.is(tree.children[0].name, ':host {  --animation-duration: 0.5; --type: ease-in; }');

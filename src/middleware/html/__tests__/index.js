@@ -7,19 +7,22 @@ import { create, render } from '../../../index.js';
 import html from '../index.js';
 import * as u from '../utils.js';
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
     t.context.viewSpy = spy(() => superfine.h('div'));
     t.context.patchStub = stub(superfine, 'patch');
     t.context.recycleStub = stub(superfine, 'recycle');
 });
 
-test.afterEach(t => {
+test.afterEach((t) => {
     t.context.patchStub.restore();
     t.context.recycleStub.restore();
 });
 
-test.serial('It should only patch the tree when the node is connected to the DOM;', async t => {
-    const assertions = [{ isConnected: true, callCount: 1 }, { isConnected: false, callCount: 0 }];
+test.serial('It should only patch the tree when the node is connected to the DOM;', async (t) => {
+    const assertions = [
+        { isConnected: true, callCount: 1 },
+        { isConnected: false, callCount: 0 },
+    ];
 
     for (const assertion of assertions) {
         const { isConnected, callCount } = assertion;
@@ -27,8 +30,8 @@ test.serial('It should only patch the tree when the node is connected to the DOM
         const props = {
             ...defaultProps,
             node: Object.create(defaultProps.node, {
-                isConnected: { value: isConnected }
-            })
+                isConnected: { value: isConnected },
+            }),
         };
         const newProps = await m(props);
         t.is(t.context.patchStub.callCount, callCount);
@@ -37,28 +40,31 @@ test.serial('It should only patch the tree when the node is connected to the DOM
     }
 });
 
-test.serial('It should be able to pass the necessary props to the `getView` function;', async t => {
-    const m = html(t.context.viewSpy);
-    const props = {
-        ...defaultProps,
-        node: Object.create(defaultProps.node, {
-            isConnected: { value: true }
-        })
-    };
-    await m(props);
-    const newProps = { ...props, h: match.func };
-    newProps.props = newProps;
-    t.true(t.context.viewSpy.calledWith(newProps));
-    t.context.patchStub.resetHistory();
-});
+test.serial(
+    'It should be able to pass the necessary props to the `getView` function;',
+    async (t) => {
+        const m = html(t.context.viewSpy);
+        const props = {
+            ...defaultProps,
+            node: Object.create(defaultProps.node, {
+                isConnected: { value: true },
+            }),
+        };
+        await m(props);
+        const newProps = { ...props, h: match.func };
+        newProps.props = newProps;
+        t.true(t.context.viewSpy.calledWith(newProps));
+        t.context.patchStub.resetHistory();
+    }
+);
 
-test.serial('It should be able to remove previous style resolutions;', async t => {
+test.serial('It should be able to remove previous style resolutions;', async (t) => {
     const m = html(t.context.viewSpy);
     const props = {
         ...defaultProps,
         node: Object.create(defaultProps.node, {
-            isConnected: { value: true }
-        })
+            isConnected: { value: true },
+        }),
     };
     const view = Symbol('mock-view');
     u.styles.set(props.node, view);
@@ -67,23 +73,26 @@ test.serial('It should be able to remove previous style resolutions;', async t =
     t.is(u.styles.get(props.node), undefined);
 });
 
-test.serial('It should be able to recycle the existing node content;', async t => {
+test.serial('It should be able to recycle the existing node content;', async (t) => {
     const m = html(t.context.viewSpy, { recycle: true });
     const props = {
         ...defaultProps,
         node: Object.create(defaultProps.node, {
-            isConnected: { value: true }
-        })
+            isConnected: { value: true },
+        }),
     };
     await m(props);
     t.is(t.context.recycleStub.callCount, 1);
     t.is(t.context.viewSpy.callCount, 1);
 });
 
-test.serial('It should be able to gracefully handle being rendered to a string;', async t => {
+test.serial('It should be able to gracefully handle being rendered to a string;', async (t) => {
     t.context.patchStub.restore();
     t.context.recycleStub.restore();
-    const component = create('x-example', html(({ h }) => h('div', {}, 'Example')));
+    const component = create(
+        'x-example',
+        html(({ h }) => h('div', {}, 'Example'))
+    );
     t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
@@ -94,7 +103,7 @@ test.serial(
         const name = 'x-example';
         await utils.waitForUpgrade(name);
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
@@ -103,7 +112,7 @@ test.serial(
         t.snapshot(await utils.innerHTML(name));
 
         {
-            const content = await page.evaluate(async name => {
+            const content = await page.evaluate(async (name) => {
                 const node = document.querySelector(name);
                 await node.render({ name: 'Maria' });
                 return node.innerHTML;
@@ -126,13 +135,13 @@ test.serial(
     async (t, { page, utils }) => {
         const name = 'x-example-recycled';
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.createElement(name);
             node.innerHTML = '<div>Hello Maria!</div>';
             document.body.append(node);
         }, name);
         await utils.waitForUpgrade(name);
-        await page.evaluate(name => document.querySelector(name).idle(), name);
+        await page.evaluate((name) => document.querySelector(name).idle(), name);
 
         t.snapshot(await utils.innerHTML(name));
     }

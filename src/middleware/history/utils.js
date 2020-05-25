@@ -4,9 +4,9 @@ import { toCamelcase } from '../../core/utils.js';
  * @function createPatch ∷ ∀ a b. (String → String) → Object String a → Object String a → (String → a)
  */
 export const createPatch = (getF, types, defaults) => {
-    return name => {
+    return (name) => {
         const key = toCamelcase(name).fromSnake();
-        const [f] = [].concat(types[key] || (a => a));
+        const [f] = [].concat(types[key] || ((a) => a));
         return getF(name) ? f(getF(name)) : defaults[key] || null;
     };
 };
@@ -14,7 +14,7 @@ export const createPatch = (getF, types, defaults) => {
 /**
  * @function changeState ∷ ∀ a b. String → [b]
  */
-export const changeState = f => (...params) => {
+export const changeState = (f) => (...params) => {
     window.history[f](...params);
     const event = new window.PopStateEvent('popstate');
     window.dispatchEvent(event);

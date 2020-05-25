@@ -14,9 +14,9 @@ export default ({ scores, countries, h, props }) => {
         h(
             'a',
             {
-                onclick: handleReset
+                onclick: handleReset,
             },
             'Play again?'
-        )
+        ),
     ]);
 };

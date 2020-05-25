@@ -6,20 +6,20 @@ import { create, render, m } from '../../../index.js';
 import { getEventName } from '../../../core/utils.js';
 import wait from '../index.js';
 
-test('It should continue immediately if there are no applicable nodes;', async t => {
+test('It should continue immediately if there are no applicable nodes;', async (t) => {
     const m = wait('todo-head', 'todo-body', 'todo-foot');
     const newProps = await m(defaultProps);
     t.deepEqual(defaultProps, newProps);
 });
 
-test('It should be able to wait for the resolution of applicable nodes;', async t => {
+test('It should be able to wait for the resolution of applicable nodes;', async (t) => {
     const eventName = getEventName('resolved');
 
     let todoFoot;
     const tree = h('todo-app', {}, [
         h('todo-head', { class: 'resolved' }),
         h('todo-body'),
-        h('todo-foot', { oncreate: node => (todoFoot = node) })
+        h('todo-foot', { oncreate: (node) => (todoFoot = node) }),
     ]);
     const node = document.createElement('main');
     patch(undefined, tree, node);
@@ -31,7 +31,7 @@ test('It should be able to wait for the resolution of applicable nodes;', async 
     t.deepEqual(defaultProps, await newProps);
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
+test('It should be able to gracefully handle being rendered to a string;', async (t) => {
     const component = create(
         'x-example',
         wait('x-another-example', 'x-and-yet-another-example'),
@@ -47,7 +47,7 @@ test(
         const name = 'x-example';
         await utils.waitForUpgrade(name);
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.createElement(name);
             document.body.append(node);
             return node.idle();

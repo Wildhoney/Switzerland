@@ -17,16 +17,16 @@ test.beforeEach(() => {
     };
 });
 
-test('It should be able to wait for the images to load before continuing;', async t => {
+test('It should be able to wait for the images to load before continuing;', async (t) => {
     const m = loader({ example: 'example.png' });
     const newProps = await m(defaultProps);
     t.deepEqual(newProps, {
         ...defaultProps,
-        loader: { example: 'example.png' }
+        loader: { example: 'example.png' },
     });
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
+test('It should be able to gracefully handle being rendered to a string;', async (t) => {
     const component = create(
         'x-example',
         loader({ example: 'Example.png' }),

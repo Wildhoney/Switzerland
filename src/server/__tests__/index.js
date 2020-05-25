@@ -4,23 +4,29 @@ import capitalise from 'capitalize';
 import { create, init, m, t as type } from '../../index.js';
 import { render } from '../index.js';
 
-test.serial('It should be able to render a shallow component to string;', async t => {
-    const component = create('x-example', m.html(({ h }) => h('div', {}, 'Hello Adam!')));
+test.serial('It should be able to render a shallow component to string;', async (t) => {
+    const component = create(
+        'x-example',
+        m.html(({ h }) => h('div', {}, 'Hello Adam!'))
+    );
     t.snapshot(await render(component));
 });
 
 test.serial(
     'It should be able to render a shallow component to string by passing pure HTML;',
-    async t => {
-        create('x-example', m.html(({ h }) => h('div', {}, 'Hello Adam!')));
+    async (t) => {
+        create(
+            'x-example',
+            m.html(({ h }) => h('div', {}, 'Hello Adam!'))
+        );
         t.snapshot(await render('<div><x-example name="Adam"></x-example></div>'));
     }
 );
 
 test.serial(
     'It should be able to render a shallow component with a HTTP request to string;',
-    async t => {
-        const fetch = async props => {
+    async (t) => {
+        const fetch = async (props) => {
             const { data } = await axios.get('https://randomuser.me/api/?seed=24541ccf67bc0aa2');
             return { ...props, name: capitalise(data.results[0].name.first) };
         };
@@ -33,11 +39,11 @@ test.serial(
     }
 );
 
-test.serial('It should be able to render a shallow component with styles to string;', async t => {
+test.serial('It should be able to render a shallow component with styles to string;', async (t) => {
     const url = 'https://www.example.org?name=Adam';
     const path = init(import.meta.url, {
         url,
-        rootPath: resolve => resolve('./')
+        rootPath: (resolve) => resolve('./'),
     });
 
     const component = create(
@@ -47,7 +53,7 @@ test.serial('It should be able to render a shallow component with styles to stri
             h('section', {}, [
                 h('div', {}, 'Hello Adam!'),
                 h('img', { src: path('../images/profile.png'), alt: 'Profile' }),
-                h.sheet(path('styles/index.css'))
+                h.sheet(path('styles/index.css')),
             ])
         )
     );
@@ -56,7 +62,7 @@ test.serial('It should be able to render a shallow component with styles to stri
 
 test.serial(
     'It should be able to render a shallow component with attributes to string;',
-    async t => {
+    async (t) => {
         const component = create(
             'x-example',
             m.attrs({ name: type.String, age: [type.Int, null] }),
@@ -73,7 +79,7 @@ test.serial(
 
 test.serial(
     'It should be able to render a shallow component with URL params to string;',
-    async t => {
+    async (t) => {
         const component = create(
             'x-example',
             m.window('https://www.example.org?name=Adam'),
@@ -84,8 +90,11 @@ test.serial(
     }
 );
 
-test.serial('It should be able to render a nested component to string;', async t => {
-    const child = create('x-child', m.html(({ h }) => h('div', {}, 'Adam')));
+test.serial('It should be able to render a nested component to string;', async (t) => {
+    const child = create(
+        'x-child',
+        m.html(({ h }) => h('div', {}, 'Adam'))
+    );
     const parent = create(
         'x-parent',
         m.html(({ h }) => h('div', {}, [h('span', {}, 'Hello'), h(child), h('span', {}, '!')]))
@@ -95,7 +104,7 @@ test.serial('It should be able to render a nested component to string;', async t
 
 test.serial(
     'It should be able to render a nested component with attributes to string;',
-    async t => {
+    async (t) => {
         const child = create(
             'x-child',
             m.attrs({ name: type.String }),
@@ -108,7 +117,7 @@ test.serial(
                 h('div', {}, [
                     h('span', {}, 'Hello'),
                     h(child, { name: attrs.name }),
-                    h('span', {}, '!')
+                    h('span', {}, '!'),
                 ])
             )
         );

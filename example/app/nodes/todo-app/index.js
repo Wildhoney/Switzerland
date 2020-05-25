@@ -16,11 +16,11 @@ const tree = ({ h, props }) =>
         list(props),
         h.vars({
             orderPosition: u.isBottom(props) ? 1 : -1,
-            borderColour: u.isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)'
+            borderColour: u.isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)',
         }),
         h.sheet(path('./styles/index.css')),
         h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-        h.sheet(path('./styles/print.css'), 'print')
+        h.sheet(path('./styles/print.css'), 'print'),
     ]);
 
 export default create('todo-app', ...middleware(tree));

@@ -9,6 +9,6 @@ export default ({ render, h, props, error }) =>
         header(props),
         h('div', { class: 'error' }, [
             h('div', { class: 'message' }, error.message),
-            h('button', { class: 'retry', onclick: render }, 'Retry')
-        ])
+            h('button', { class: 'retry', onclick: render }, 'Retry'),
+        ]),
     ]);

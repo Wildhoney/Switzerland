@@ -4,11 +4,11 @@ import { create, render, m } from '../../../index.js';
 import blend from '../index.js';
 
 const promise = () =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
         resolve({ name: 'Adam' });
     });
 
-test('It should be able to invoke the `render` function for promises;', async t => {
+test('It should be able to invoke the `render` function for promises;', async (t) => {
     const m = blend(promise);
     m({ ...defaultProps, name: 'Maria' });
 
@@ -18,8 +18,8 @@ test('It should be able to invoke the `render` function for promises;', async t 
     t.true(defaultProps.render.calledWith({ name: 'Adam' }));
 });
 
-test('It should be able to invoke the `render` function for observables;', async t => {
-    const generator = async function*() {
+test('It should be able to invoke the `render` function for observables;', async (t) => {
+    const generator = async function* () {
         yield { name: 'Adam' };
     };
 
@@ -33,7 +33,7 @@ test('It should be able to invoke the `render` function for observables;', async
     t.true(defaultProps.render.calledWith({ name: 'Adam' }));
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
+test('It should be able to gracefully handle being rendered to a string;', async (t) => {
     const component = create(
         'x-example',
         blend(promise),

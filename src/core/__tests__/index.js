@@ -3,16 +3,16 @@ import withComponent from 'ava-webcomponents';
 import { spy, match } from 'sinon';
 import { init, create, alias } from '../index.js';
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
     t.context.get = spy();
     t.context.define = spy();
     window.crypto = { getRandomValues: () => {} };
     window.customElements = {
-        get: tag => {
+        get: (tag) => {
             t.context.get(tag);
             return tag === 'x-neptune' ? class {} : null;
         },
-        define: (tag, blueprint, extend) => t.context.define(tag, blueprint, extend)
+        define: (tag, blueprint, extend) => t.context.define(tag, blueprint, extend),
     };
 });
 
@@ -21,10 +21,10 @@ test.afterEach(() => {
     window.customElements = undefined;
 });
 
-test('It should be able to handle the relative paths correctly;', t => {
+test('It should be able to handle the relative paths correctly;', (t) => {
     const path = init('https://localhost:3000/nodes/earth/planets.js', {
         url: 'localhost:3000',
-        forceBrowser: true
+        forceBrowser: true,
     });
     t.is(path('../mercury.js'), 'https://localhost:3000/nodes/mercury.js');
     t.is(path('../../venus.js'), 'https://localhost:3000/venus.js');
@@ -36,19 +36,19 @@ test('It should be able to handle the relative paths correctly;', t => {
     );
 });
 
-test('It should be able to handle paths correct using `window.location.host` directly;', t => {
+test('It should be able to handle paths correct using `window.location.host` directly;', (t) => {
     window.location.host = 'localhost:3000';
     const path = init('https://localhost:3000/nodes/earth/planets.js', {
         url: undefined,
-        forceBrowser: true
+        forceBrowser: true,
     });
     t.is(path('../mercury.js'), 'https://localhost:3000/nodes/mercury.js');
 });
 
-test('It should be able to handle the absolute paths correctly;', t => {
+test('It should be able to handle the absolute paths correctly;', (t) => {
     const path = init('https://localhost:3000/nodes/earth/planets.js', {
         url: 'switzerland.herokuapp.com',
-        forceBrowser: true
+        forceBrowser: true,
     });
     t.is(path('../mercury.js'), 'https://localhost:3000/nodes/mercury.js');
     t.is(path('../../venus.js'), 'https://localhost:3000/venus.js');
@@ -60,23 +60,23 @@ test('It should be able to handle the absolute paths correctly;', t => {
     );
 });
 
-test.serial('It should yield the defined tag name when creating a custom element;', t => {
+test.serial('It should yield the defined tag name when creating a custom element;', (t) => {
     t.is(create('x-mercury'), 'x-mercury');
     t.is(t.context.define.callCount, 1);
     t.true(t.context.define.calledWith('x-mercury', match.any));
 });
 
-test.serial('It should yield the defined tag name when extending a native element;', t => {
+test.serial('It should yield the defined tag name when extending a native element;', (t) => {
     t.is(create('x-jupiter/input'), 'x-jupiter');
     t.is(t.context.define.callCount, 1);
     t.true(
         t.context.define.calledWith('x-jupiter', match.any, {
-            extends: 'input'
+            extends: 'input',
         })
     );
 });
 
-test.serial('It should yield the defined tag name when aliasing an existing element;', t => {
+test.serial('It should yield the defined tag name when aliasing an existing element;', (t) => {
     t.is(alias('x-neptune', 'x-mars'), 'x-mars');
     t.is(t.context.get.callCount, 2);
     t.is(t.context.define.callCount, 1);
@@ -109,7 +109,7 @@ test.serial(
         const name = await page.evaluate(() => window.renamedElementName);
         await utils.waitForUpgrade(name);
 
-        const content = await page.evaluate(async name => {
+        const content = await page.evaluate(async (name) => {
             const node = document.createElement(name);
             document.body.append(node);
             await node.idle();
@@ -127,7 +127,7 @@ test.serial(
         const name = 'x-native';
         await utils.waitForUpgrade(name);
 
-        await page.evaluate(async name => {
+        await page.evaluate(async (name) => {
             const node = document.createElement('input', { is: name });
             node.setAttribute('type', 'text');
             document.body.append(node);

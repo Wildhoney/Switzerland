@@ -6,7 +6,7 @@ import { create, render, m } from '../../../index.js';
 import * as type from '../../../types/index.js';
 import history, { nodes } from '../index.js';
 
-test.serial('It should register the events to notify changes only once;', async t => {
+test.serial('It should register the events to notify changes only once;', async (t) => {
     t.plan(2);
 
     const { node } = defaultProps;
@@ -19,7 +19,7 @@ test.serial('It should register the events to notify changes only once;', async 
     m(defaultProps);
 
     try {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
             window.addEventListener('popstate', () => {
                 t.is(node.render.callCount, 1);
                 t.true(
@@ -28,9 +28,9 @@ test.serial('It should register the events to notify changes only once;', async 
                             history: {
                                 params: match.any,
                                 pathname: match.string,
-                                hash: match.string
-                            }
-                        }
+                                hash: match.string,
+                            },
+                        },
                     })
                 );
                 resolve();
@@ -42,16 +42,16 @@ test.serial('It should register the events to notify changes only once;', async 
     }
 });
 
-test('It should be able to parse params/hash and set defaults;', t => {
+test('It should be able to parse params/hash and set defaults;', (t) => {
     const mockLocation = {
         hash: '#test-me',
-        search: '?age=33&location=Watford'
+        search: '?age=33&location=Watford',
     };
     const m = history(
         {
             name: [type.String, 'Adam'],
             age: type.Int,
-            dateOfBirth: [type.Date, new Date('10-10-1985')]
+            dateOfBirth: [type.Date, new Date('10-10-1985')],
         },
         mockLocation
     );
@@ -62,7 +62,7 @@ test('It should be able to parse params/hash and set defaults;', t => {
     t.is(props.history.params.get('date_of_birth').toLocaleDateString('en-GB'), '10/10/1985');
 });
 
-test('It should be able to push and replace the URL state;', t => {
+test('It should be able to push and replace the URL state;', (t) => {
     window.history.pushState = spy();
     window.history.replaceState = spy();
     const m = history();
@@ -75,7 +75,7 @@ test('It should be able to push and replace the URL state;', t => {
     t.is(window.history.replaceState.callCount, 1);
 });
 
-test('It should be able to remove the node from the map when unmounting;', t => {
+test('It should be able to remove the node from the map when unmounting;', (t) => {
     const m = history();
     m(defaultProps);
     t.true(nodes.has(defaultProps.node));
@@ -83,7 +83,7 @@ test('It should be able to remove the node from the map when unmounting;', t => 
     t.false(nodes.has(defaultProps.node));
 });
 
-test('It should be able to gracefully handle being rendered to a string by passing explicit params;', async t => {
+test('It should be able to gracefully handle being rendered to a string by passing explicit params;', async (t) => {
     const search = { message: 'Example' };
     const location = { search };
     const component = create(
@@ -94,7 +94,7 @@ test('It should be able to gracefully handle being rendered to a string by passi
     t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
-test('It should be able to gracefully handle being rendered to a string from the URL parameters;', async t => {
+test('It should be able to gracefully handle being rendered to a string from the URL parameters;', async (t) => {
     const component = create(
         'x-example',
         m.window('https://www.example.org?message=Example'),
@@ -111,7 +111,7 @@ test(
         const name = 'x-example';
         await utils.waitForUpgrade(name);
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.createElement(name);
             document.body.append(node);
             return node.idle();

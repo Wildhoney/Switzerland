@@ -23,7 +23,7 @@ export default function html(getView, options = { recycle: false }) {
         // Define the new props and assign to `props` so it's infinitely nested.
         const newProps = {
             ...props,
-            h: extendedH
+            h: extendedH,
         };
         newProps.props = newProps;
 

@@ -4,7 +4,7 @@ import { meta } from '../../core/utils.js';
 export default () => {
     const debug = async function debug({ node, utils, props }) {
         const middleware = await utils.getMiddleware();
-        const index = middleware.findIndex(m => m === debug);
+        const index = middleware.findIndex((m) => m === debug);
         const isFirst = u.isFirst(debug, middleware);
 
         // Extract all of the names from the middleware functions.

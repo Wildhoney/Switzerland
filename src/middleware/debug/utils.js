@@ -41,11 +41,11 @@ export const getMetric = () => window.performance.now();
  * Initiates a record which will eventually contain all of the measurements for the current
  * middleware cycle.
  */
-export const newRecord = index => ({
+export const newRecord = (index) => ({
     start: getMetric(),
     previous: getMetric(),
     index,
-    records: []
+    records: [],
 });
 
 /**
@@ -62,11 +62,11 @@ export const appendRecord = (props, index, names) => ({
         ...props.debug.records,
         {
             name: names.join(' → '),
-            duration: getMetric() - props.debug.previous
-        }
+            duration: getMetric() - props.debug.previous,
+        },
     ],
     end: getMetric(),
-    previous: getMetric()
+    previous: getMetric(),
 });
 
 /**
@@ -83,7 +83,7 @@ export const extractNames = (props, index, middleware) =>
  * ---
  * Determines whether the current `debug` function is the first in the middleware list.
  */
-export const isFirst = (debug, middleware) => debug === middleware.find(m => m[meta] === ident);
+export const isFirst = (debug, middleware) => debug === middleware.find((m) => m[meta] === ident);
 
 /**
  * @function isLast ∷ ∀ a. Props p ⇒ (p → p) → [(p → p)] → Boolean
@@ -91,4 +91,4 @@ export const isFirst = (debug, middleware) => debug === middleware.find(m => m[m
  * Determines whether the current `debug` function is the last in the middleware list.
  */
 export const isLast = (debug, middleware) =>
-    debug === [...middleware].reverse().find(m => m[meta] === ident);
+    debug === [...middleware].reverse().find((m) => m[meta] === ident);

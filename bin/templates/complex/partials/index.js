@@ -7,5 +7,5 @@ export const container = ({ rolled, render, h }) =>
         h('img', { src: path('../images/dice.svg') }),
         h('p', {}, 'You rolled'),
         h('strong', {}, rolled),
-        h.sheet(path('../css/index.css'))
+        h.sheet(path('../css/index.css')),
     ]);

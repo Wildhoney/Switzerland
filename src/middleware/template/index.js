@@ -4,7 +4,7 @@ import { findBoundary } from '../../core/utils.js';
 /**
  * @function template ∷ Template t, Props p ⇒ (p → t) → (p → p)
  */
-export default getView => {
+export default (getView) => {
     return async function template(props) {
         if (props.node.isConnected) {
             const h = hyper.default(findBoundary(props));

@@ -39,13 +39,13 @@ export const updatePosition = ({ width, height, attrs, boundary, props }) => {
 };
 
 export const dispatchEvent = ({ attrs, signal: { mutations = [] }, utils, props }) => {
-    const isIndex = mutation => mutation.attributeName === 'index';
+    const isIndex = (mutation) => mutation.attributeName === 'index';
     const indexModified = mutations.some(isIndex);
     indexModified && utils.dispatch('change', attrs.index);
     return props;
 };
 
-export default tree => [
+export default (tree) => [
     m.boundary(),
     m.adapt(),
     m.attrs({ direction: [t.String, 'horizontal'], index: [t.Int, 0] }),
@@ -54,5 +54,5 @@ export default tree => [
     m.once(importTemplate),
     m.once(observeTemplate),
     updatePosition,
-    dispatchEvent
+    dispatchEvent,
 ];

@@ -1,7 +1,7 @@
 import {
     create,
     init,
-    m
+    m,
 } from 'https://cdn.jsdelivr.net/npm/switzerland@{version}/es/production/index.js';
 import { roll } from './middleware.js';
 
@@ -16,7 +16,7 @@ export default create(
             h('img', { src: path('./images/dice.svg') }),
             h('p', {}, 'You rolled'),
             h('strong', {}, rolled),
-            h.sheet(path('./css/index.css'))
+            h.sheet(path('./css/index.css')),
         ])
     )
 );

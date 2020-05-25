@@ -6,10 +6,10 @@ const completed = ({ redux, h }) =>
         h(
             'span',
             {},
-            `${redux.state.list.filter(x => x.done).length} of ${
+            `${redux.state.list.filter((x) => x.done).length} of ${
                 redux.state.list.length
             } ${u.pluralise(redux.state.list.length, 'task')}`
-        )
+        ),
     ]);
 
 const position = ({ h, props }) =>
@@ -19,7 +19,7 @@ const position = ({ h, props }) =>
             'a',
             {
                 class: u.isBottom(props) ? 'active' : '',
-                onclick: () => props.node.setAttribute('logo', 'bottom')
+                onclick: () => props.node.setAttribute('logo', 'bottom'),
             },
             'Bottom'
         ),
@@ -28,16 +28,16 @@ const position = ({ h, props }) =>
             'a',
             {
                 class: !u.isBottom(props) ? 'active' : '',
-                onclick: () => props.node.setAttribute('logo', 'top')
+                onclick: () => props.node.setAttribute('logo', 'top'),
             },
             'Top'
-        )
+        ),
     ]);
 
 const dimensions = ({ h, adapt }) =>
     h('li', {}, [
         h('em', {}, 'Dimensions: '),
-        h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`)
+        h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`),
     ]);
 
 const filter = ({ h, history }) =>
@@ -47,7 +47,7 @@ const filter = ({ h, history }) =>
             'a',
             {
                 class: history.params.get('filter') ? '' : 'active',
-                onclick: () => history.replaceState({}, '', '?filter=no')
+                onclick: () => history.replaceState({}, '', '?filter=no'),
             },
             'Show'
         ),
@@ -56,10 +56,10 @@ const filter = ({ h, history }) =>
             'a',
             {
                 class: !history.params.get('filter') ? '' : 'active',
-                onclick: () => history.replaceState({}, '', '?filter=yes')
+                onclick: () => history.replaceState({}, '', '?filter=yes'),
             },
             'Hide'
-        )
+        ),
     ]);
 
 export default ({ h, props }) =>
@@ -67,5 +67,5 @@ export default ({ h, props }) =>
         completed(props),
         position(props),
         props.adapt && dimensions(props),
-        filter(props)
+        filter(props),
     ]);

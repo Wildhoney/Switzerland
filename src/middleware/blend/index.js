@@ -4,7 +4,7 @@
  * Allows user functions to be more general by automatically invoking the render function whenever
  * the promise yielded from the user function has been resolved.
  */
-export default fn => {
+export default (fn) => {
     return function blend(props) {
         const { render } = props;
         const future = fn(props);

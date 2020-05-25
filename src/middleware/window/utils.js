@@ -1,7 +1,7 @@
 /**
  * @function normaliseUrl ∷ String → String
  */
-export const normaliseUrl = url => {
+export const normaliseUrl = (url) => {
     try {
         void new URL(url);
         return url;

@@ -11,12 +11,12 @@ export const controls = ({ attrs, count, node, h }) => {
         h('a', {
             part: 'previous-link',
             class: `previous ${isStart ? 'disabled' : ''}`.trim(),
-            onclick: isStart ? identity : () => node.setAttribute('index', attrs.index - 1)
+            onclick: isStart ? identity : () => node.setAttribute('index', attrs.index - 1),
         }),
         h('a', {
             part: 'next-link',
             class: `next ${isEnd ? 'disabled' : ''}`.trim(),
-            onclick: isEnd ? identity : () => node.setAttribute('index', attrs.index + 1)
+            onclick: isEnd ? identity : () => node.setAttribute('index', attrs.index + 1),
         })
     );
 };
@@ -29,7 +29,7 @@ export const variables = ({ attrs, count, width, height, prevProps = { height: 0
         overflow: u.isTouchable() ? 'scroll' : 'hidden',
         left: u.isTouchable() ? 0 : `-${width * attrs.index}px`,
         top: u.isTouchable() ? 0 : `-${height * attrs.index}px`,
-        animationDuration: 'var(--swiss-carousel-transition-duration)'
+        animationDuration: 'var(--swiss-carousel-transition-duration)',
     };
 
     const isAnimated = prevProps.height > 0;

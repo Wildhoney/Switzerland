@@ -1,7 +1,7 @@
 /**
  * @function load ∷ ∀ a. Props p ⇒ String → a|[a] → p → p
  */
-const load = name => async (...args) => {
+const load = (name) => async (...args) => {
     const module = await import(`./${name}/index.js`);
     return module.default(...args);
 };

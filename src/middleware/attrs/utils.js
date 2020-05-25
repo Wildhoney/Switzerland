@@ -6,11 +6,11 @@ import { toCamelcase } from '../../core/utils.js';
 export const transformAttributes = (attrs, types, defaults) =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
-        const [f] = [].concat(types[name] || (a => a));
+        const [f] = [].concat(types[name] || ((a) => a));
 
         return {
             ...acc,
-            [name]: f(attr.nodeValue)
+            [name]: f(attr.nodeValue),
         };
     }, defaults);
 
@@ -21,7 +21,7 @@ export const transformAttributes = (attrs, types, defaults) =>
  * are not included in the `exclude` list specified in the function's parameters.
  */
 export const hasApplicableMutations = (node, mutations, exclude = []) =>
-    mutations.some(mutation => {
+    mutations.some((mutation) => {
         const isObserved = !exclude.includes(mutation.attributeName);
         const isModified = mutation.oldValue !== node.getAttribute(mutation.attributeName);
         return isObserved && isModified;

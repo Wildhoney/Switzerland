@@ -2,7 +2,7 @@ import test from 'ava';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import * as u from '../utils.js';
 
-test('It should be able to set the `useState` function and behave as expected;', t => {
+test('It should be able to set the `useState` function and behave as expected;', (t) => {
     const boundUseState = u.useState(defaultProps);
 
     function run(expectedName, expectedAge) {

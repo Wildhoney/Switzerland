@@ -9,11 +9,11 @@ const defaults = {
     add: () => {},
     edit: () => {},
     remove: () => {},
-    todos: []
+    todos: [],
 };
 
 export default () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         try {
             const open = window.indexedDB.open('database', VERSION);
 
@@ -31,13 +31,13 @@ export default () => {
             open.addEventListener('success', () => {
                 const db = open.result;
 
-                const add = model => {
+                const add = (model) => {
                     const tx = db.transaction(NAME, MODE.READWRITE);
                     const store = tx.objectStore(NAME);
                     store.put(model);
                 };
 
-                const remove = model => {
+                const remove = (model) => {
                     const tx = db.transaction(NAME, MODE.READWRITE);
                     const store = tx.objectStore(NAME);
                     store.delete(model.id);
@@ -47,14 +47,14 @@ export default () => {
                 db.transaction(NAME, MODE.READONLY)
                     .objectStore(NAME)
                     .getAll()
-                    .addEventListener('success', response => {
+                    .addEventListener('success', (response) => {
                         // ...And then resolve the middleware, passing in the required properties.
                         resolve({
                             active: true,
                             add,
                             edit: add,
                             remove,
-                            todos: response.target.result
+                            todos: response.target.result,
                         });
                     });
             });

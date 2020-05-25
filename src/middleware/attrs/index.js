@@ -25,19 +25,19 @@ export default (types = {}, exclude = ['class', 'id', 'style']) => {
 
         if (!nodes.has(node)) {
             const observer = new window.MutationObserver(
-                mutations =>
+                (mutations) =>
                     u.hasApplicableMutations(node, mutations, exclude) &&
                     render({
                         signal: {
                             ...(utils.getLatestProps(node) || {}).signal,
-                            mutations
-                        }
+                            mutations,
+                        },
                     })
             );
 
             observer.observe(node, {
                 attributes: true,
-                attributeOldValue: true
+                attributeOldValue: true,
             });
             nodes.add(node);
         }
@@ -45,7 +45,7 @@ export default (types = {}, exclude = ['class', 'id', 'style']) => {
 
         return {
             ...props,
-            attrs: u.transformAttributes(node.attributes, types, defaults)
+            attrs: u.transformAttributes(node.attributes, types, defaults),
         };
     };
 };

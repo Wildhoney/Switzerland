@@ -8,7 +8,7 @@ const props = {
     ...initialProps(node, [], {}, Promise.resolve()),
     node,
     render: spy(),
-    lifecycle: 'render'
+    lifecycle: 'render',
 };
 
 props.props = props;

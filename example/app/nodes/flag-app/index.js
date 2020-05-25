@@ -15,8 +15,8 @@ const tree = ({ countries, h, props }) => {
         h('section', { class: 'body' }, [
             header(props),
             isComplete && result(props),
-            !isComplete && images(props)
-        ])
+            !isComplete && images(props),
+        ]),
     ]);
 };
 

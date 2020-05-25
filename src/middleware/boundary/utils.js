@@ -14,13 +14,13 @@ export const createBoundary = (node, options = {}) => {
     const defaultOptions = {
         mode: 'open',
         delegatesFocus: false,
-        sheets: null
+        sheets: null,
     };
 
     try {
         const boundary = node.attachShadow({
             ...defaultOptions,
-            ...options
+            ...options,
         });
 
         // Attached any adopted stylesheets if any have been passed.

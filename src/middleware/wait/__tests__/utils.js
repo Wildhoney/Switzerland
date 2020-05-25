@@ -3,11 +3,11 @@ import { spy } from 'sinon';
 import { patch, h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
 import * as u from '../utils.js';
 
-test('It should be able to find the applicable nodes;', t => {
+test('It should be able to find the applicable nodes;', (t) => {
     const tree = h('todo-app', {}, [
         h('todo-head', { class: 'resolved' }),
         h('todo-body'),
-        h('todo-foot')
+        h('todo-foot'),
     ]);
     const node = document.createElement('main');
     patch(undefined, tree, node);
@@ -17,7 +17,7 @@ test('It should be able to find the applicable nodes;', t => {
     t.is(nodes[0].nodeName.toLowerCase(), 'todo-body');
 });
 
-test('It should be able to attach the event listener and handle resolutions;', t => {
+test('It should be able to attach the event listener and handle resolutions;', (t) => {
     const eventName = '@switzerland/resolve';
     const addEventListenerSpy = spy(document, 'addEventListener');
     const removeEventListenerSpy = spy(document, 'removeEventListener');

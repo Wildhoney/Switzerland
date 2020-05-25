@@ -36,14 +36,14 @@ const errorHandlers = new WeakMap();
  * Dispatches an event, merging in the current package's version for handling legacy events
  * if/when the payloads differ from version-to-version.
  */
-export const dispatchEvent = node => (name, payload, options = {}) => {
+export const dispatchEvent = (node) => (name, payload, options = {}) => {
     const model = typeof payload === 'object' ? payload : { value: payload };
     return node.dispatchEvent(
         new window.CustomEvent(name, {
             bubbles: true,
             composed: true,
             ...options,
-            detail: { ...model, version: 4 }
+            detail: { ...model, version: 4 },
         })
     );
 };
@@ -66,7 +66,7 @@ export const getRandomId = () => {
  * that the custom element should extend, such as when you're extending a native element. Yields a tuple of
  * a free tag name -- which is determined recursively -- and the prototype that the custom element will extend.
  */
-export const parseTagName = name => {
+export const parseTagName = (name) => {
     const parts = name.split('/');
     return [findFreeTagName(parts[0]), determinePrototype(parts[1]), parts[1]];
 };
@@ -88,7 +88,7 @@ export const findFreeTagName = (name, suffix = null) => {
  * ---
  * Prepends all event names with the '@switzerland' scope.
  */
-export const getEventName = label => `@switzerland/${label}`;
+export const getEventName = (label) => `@switzerland/${label}`;
 
 /**
  * @function determinePrototype ∷ HTMLElement e ⇒ String → e
@@ -96,7 +96,7 @@ export const getEventName = label => `@switzerland/${label}`;
  * Determines which constructor to extend from for the defining of the custom element. In most cases it
  * will be `HTMLElement` unless the user is extending an existing element.
  */
-export const determinePrototype = tag =>
+export const determinePrototype = (tag) =>
     tag ? document.createElement(tag).constructor : window.HTMLElement;
 
 /**
@@ -128,7 +128,7 @@ export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
         isResolved: async () => {
             const resolution = await Promise.race([scheduledTask, Promise.resolve(false)]);
             return resolution !== false;
-        }
+        },
     };
 
     // Signals are used for temporary data for a single render-pass.
@@ -143,7 +143,7 @@ export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
         utils,
         render: node.render.bind(node),
         prevProps: previousProps.get(node),
-        lifecycle: mergeProps.lifecycle || 'update'
+        lifecycle: mergeProps.lifecycle || 'update',
     };
 };
 
@@ -199,10 +199,10 @@ export const handleException = (node, error) => {
     return void props[handler]({
         ...props,
         error,
-        render: mergeProps => {
+        render: (mergeProps) => {
             node[meta].state.setNormal();
             return node.render(mergeProps);
-        }
+        },
     });
 };
 
@@ -212,13 +212,13 @@ export const handleException = (node, error) => {
  * Finds all of the component's `HTMLStyleElement` nodes and extracts the `CSSImportRule` rules, awaiting
  * the resolution of each one before resolving the yielded promise.
  */
-export const cssImports = node =>
+export const cssImports = (node) =>
     styles.has(node) ? Promise.all([...styles.get(node)]) : Promise.resolve();
 
 /**
  * @function getDefaults ∷ ∀ a. Object String (String → a)
  */
-export const getDefaults = types =>
+export const getDefaults = (types) =>
     Object.entries(types).reduce(
         (accum, [key, value]) =>
             Array.isArray(value) && typeof value[1] !== 'undefined'
@@ -230,14 +230,14 @@ export const getDefaults = types =>
 /**
  * @function toCamelcase ∷ String → String
  */
-export const toCamelcase = value => {
-    const f = separator => () => {
+export const toCamelcase = (value) => {
+    const f = (separator) => () => {
         const r = new RegExp(`(${separator}\\w)`, 'g');
-        return value.replace(r, match => match[1].toUpperCase());
+        return value.replace(r, (match) => match[1].toUpperCase());
     };
     return {
         fromKebab: f('-'),
-        fromSnake: f('_')
+        fromSnake: f('_'),
     };
 };
 

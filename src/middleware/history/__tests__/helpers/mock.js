@@ -1,6 +1,6 @@
 import { create, m, t } from '../../../../../src/index.js';
 
-const isShowingAge = hash => hash === '#showAge';
+const isShowingAge = (hash) => hash === '#showAge';
 
 create(
     'x-example',
@@ -21,7 +21,7 @@ create(
                 'a',
                 {
                     class: 'params',
-                    onclick: () => history.pushState({}, '', '?name=Maria&age=28')
+                    onclick: () => history.pushState({}, '', '?name=Maria&age=28'),
                 },
                 'Click!'
             ),
@@ -29,10 +29,10 @@ create(
                 'a',
                 {
                     class: 'hash',
-                    onclick: () => (window.location.hash = '#showAge')
+                    onclick: () => (window.location.hash = '#showAge'),
                 },
                 'Click!'
-            )
+            ),
         ]);
     })
 );

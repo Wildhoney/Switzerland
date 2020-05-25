@@ -25,7 +25,7 @@ export default (...names) => {
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 
-        await new Promise(resolve => {
+        await new Promise((resolve) => {
             // Find all of the nodes to wait upon, minus those that have already been resolved.
             const nodes = u.findApplicableNodes(names, props);
 

@@ -9,10 +9,10 @@ const tree = ({ form, redux, h, render }) => {
     return h(
         'form',
         {
-            oncreate: form => render({ form }),
-            onsubmit: async event => (
+            oncreate: (form) => render({ form }),
+            onsubmit: async (event) => (
                 event.preventDefault(), redux.actions.add(input.value), (input.value = '')
-            )
+            ),
         },
         [
             h('input', {
@@ -24,16 +24,16 @@ const tree = ({ form, redux, h, render }) => {
                 autoComplete: 'off',
                 placeholder: 'What do you need to do?',
                 oninput: render,
-                onchange: render
+                onchange: render,
             }),
             h('button', {
                 type: 'submit',
                 class: 'add',
-                disabled: form ? !form.checkValidity() : true
+                disabled: form ? !form.checkValidity() : true,
             }),
             h.sheet(path('./styles/index.css')),
             h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-            h.sheet(path('./styles/print.css'), 'print')
+            h.sheet(path('./styles/print.css'), 'print'),
         ]
     );
 };

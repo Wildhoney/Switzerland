@@ -6,7 +6,7 @@ import { create, render, m } from '../../../index.js';
 import * as type from '../../../types/index.js';
 import attrs, { nodes } from '../index.js';
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
     const observe = (t.context.observer = spy());
     window.MutationObserver = class {
         observe() {
@@ -14,9 +14,9 @@ test.beforeEach(t => {
         }
     };
 
-    t.context.mockObserver = mutations => {
+    t.context.mockObserver = (mutations) => {
         const observeSpy = spy();
-        window.MutationObserver = function(f) {
+        window.MutationObserver = function (f) {
             f(mutations);
         };
         window.MutationObserver.prototype.observe = observeSpy;
@@ -28,13 +28,13 @@ test.afterEach(() => {
     window.MutationObserver = undefined;
 });
 
-test.serial('It should be able to setup the MutationObserver only once;', t => {
+test.serial('It should be able to setup the MutationObserver only once;', (t) => {
     const m = attrs();
     [1, 2, 3].map(() => m(defaultProps));
     t.is(t.context.observer.callCount, 1);
 });
 
-test('It should be able to parse the attrs with custom types;', t => {
+test('It should be able to parse the attrs with custom types;', (t) => {
     const node = defaultProps.node.cloneNode(true);
     node.setAttribute('name', 'Adam');
     node.setAttribute('age', '32');
@@ -43,7 +43,7 @@ test('It should be able to parse the attrs with custom types;', t => {
     const m = attrs({
         name: type.String,
         age: type.Int,
-        isDeveloper: type.Bool
+        isDeveloper: type.Bool,
     });
     const newProps = m({ node });
     t.deepEqual(newProps, {
@@ -51,19 +51,19 @@ test('It should be able to parse the attrs with custom types;', t => {
         attrs: {
             name: 'Adam',
             age: 32,
-            isDeveloper: true
-        }
+            isDeveloper: true,
+        },
     });
 });
 
-test('It should be able to define defaults using a tuple;', t => {
+test('It should be able to define defaults using a tuple;', (t) => {
     const node = defaultProps.node.cloneNode(true);
     node.setAttribute('name', 'Adam');
 
     const m = attrs({
         name: type.String,
         age: [type.Int, 32],
-        isDeveloper: [type.Bool, true]
+        isDeveloper: [type.Bool, true],
     });
     const newProps = m({ node });
     t.deepEqual(newProps, {
@@ -71,12 +71,12 @@ test('It should be able to define defaults using a tuple;', t => {
         attrs: {
             name: 'Adam',
             age: 32,
-            isDeveloper: true
-        }
+            isDeveloper: true,
+        },
     });
 });
 
-test('It should be able to remove the node from the map when unmounting;', t => {
+test('It should be able to remove the node from the map when unmounting;', (t) => {
     const m = attrs();
     m(defaultProps);
     t.true(nodes.has(defaultProps.node));
@@ -84,7 +84,7 @@ test('It should be able to remove the node from the map when unmounting;', t => 
     t.false(nodes.has(defaultProps.node));
 });
 
-test('It should invoke the `render` function if the mutations are considered applicable;', t => {
+test('It should invoke the `render` function if the mutations are considered applicable;', (t) => {
     const node = defaultProps.node.cloneNode(true);
     const renderSpy = spy();
     node.setAttribute('name', 'Adam');
@@ -119,7 +119,7 @@ test('It should invoke the `render` function if the mutations are considered app
     }
 });
 
-test('It should be able to skip the instantiation of a new observer if node seen before;', t => {
+test('It should be able to skip the instantiation of a new observer if node seen before;', (t) => {
     const node = defaultProps.node.cloneNode(true);
     const { observeSpy } = t.context.mockObserver([]);
     attrs({ name: type.String });
@@ -127,7 +127,7 @@ test('It should be able to skip the instantiation of a new observer if node seen
     t.is(observeSpy.callCount, 0);
 });
 
-test('It should be able to skip mutations if the attribute is in excluded list;', t => {
+test('It should be able to skip mutations if the attribute is in excluded list;', (t) => {
     const node = defaultProps.node.cloneNode(true);
     const renderSpy = spy();
     node.setAttribute('name', 'Adam');
@@ -140,7 +140,7 @@ test('It should be able to skip mutations if the attribute is in excluded list;'
     t.is(renderSpy.callCount, 0);
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
+test('It should be able to gracefully handle being rendered to a string;', async (t) => {
     const component = create(
         'x-example',
         attrs({ message: type.String }),
@@ -159,7 +159,7 @@ test(
         const name = 'x-example';
         await utils.waitForUpgrade(name);
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
@@ -167,14 +167,14 @@ test(
 
         t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(async name => {
+        await page.evaluate(async (name) => {
             const node = document.querySelector(name);
             node.setAttribute('name', 'Maria');
             node.setAttribute('age', 28);
         }, name);
         t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(async name => {
+        await page.evaluate(async (name) => {
             const node = document.querySelector(name);
             node.removeAttribute('name');
         }, name);

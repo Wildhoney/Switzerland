@@ -7,18 +7,18 @@ import retry from './partials/retry.js';
 
 const path = init(import.meta.url);
 
-const retrieve = async props => {
+const retrieve = async (props) => {
     const { todos } = await db();
     props.redux.actions.put(todos);
     return props;
 };
 
 const serviceWorker = (path, scope) => {
-    return m.once(async props => {
+    return m.once(async (props) => {
         try {
             navigator.serviceWorker &&
                 (await navigator.serviceWorker.register(path, {
-                    scope
+                    scope,
                 }));
             return props;
         } catch {
@@ -27,12 +27,12 @@ const serviceWorker = (path, scope) => {
     });
 };
 
-export default tree => [
+export default (tree) => [
     store,
     serviceWorker(path('../../../utils/worker.js'), '/'),
     m.boundary(),
     m.history({
-        filter: [t.Bool, false]
+        filter: [t.Bool, false],
     }),
     m.loader({ logo: path('./images/logo.png') }),
     m.rescue(m.html(retry)),
@@ -41,5 +41,5 @@ export default tree => [
     m.attrs({ logo: t.String }),
     m.adapt(),
     m.html(tree),
-    m.wait(todoInput, todoList)
+    m.wait(todoInput, todoList),
 ];

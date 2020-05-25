@@ -3,7 +3,7 @@ import * as utils from './utils.js';
 /**
  * @function window ∷ String → (Props → Props)
  */
-export default url => {
+export default (url) => {
     const ref = typeof window === 'undefined' ? null : window;
 
     return function window(props) {

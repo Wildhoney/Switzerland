@@ -10,7 +10,7 @@ window.renamedElementName = create(elementName, m.html(view));
 alias(elementName, 'x-alias');
 
 create('x-native/input', ({ node, props }) => {
-    node.addEventListener('input', event => {
+    node.addEventListener('input', (event) => {
         const { value } = event.target;
         event.target.value = R.toUpper(value);
     });

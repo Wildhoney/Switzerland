@@ -28,7 +28,7 @@ const model = {
     name: argv.name || name,
     version: pkg.version,
     testRunner: 'ava',
-    ...humps.camelizeKeys(R.omit(['_', 'style'], argv))
+    ...humps.camelizeKeys(R.omit(['_', 'style'], argv)),
 };
 
 async function main() {
@@ -51,7 +51,7 @@ async function main() {
             fs.existsSync(targetDir) && rmDir.sync(targetDir);
             makeDir.sync(targetDir);
             copyDir.sync(sourceDir, targetDir);
-            glob.sync(`${targetDir}/**/*.{js,css}`).forEach(file => {
+            glob.sync(`${targetDir}/**/*.{js,css}`).forEach((file) => {
                 const content = fmt(fs.readFileSync(file, 'utf8'), model);
                 fs.writeFileSync(file, content);
             });

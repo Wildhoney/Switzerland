@@ -15,7 +15,7 @@ export const base = (extension, middleware) =>
             this[u.meta] = {
                 queue: createQueue(),
                 state: createState(this),
-                boundary: null
+                boundary: null,
             };
         }
         connectedCallback() {
@@ -39,7 +39,7 @@ export const base = (extension, middleware) =>
                 return;
             }
 
-            const newTask = new Promise(async resolve => {
+            const newTask = new Promise(async (resolve) => {
                 // Await the completion of the task last added to the stack.
                 const currentTask = queue.current();
                 await currentTask;
@@ -70,7 +70,7 @@ export const base = (extension, middleware) =>
                     // the "resolved" class name to the element.
                     const dispatchEvent = u.dispatchEvent(node);
                     dispatchEvent(u.getEventName('resolved'), {
-                        node
+                        node,
                     });
                     node.isConnected && node.classList.add('resolved');
                     queue.drop(newTask);
@@ -96,7 +96,7 @@ export const alias = (extension, instance) =>
             super();
             this[u.meta] = {
                 queue: createQueue(),
-                state: createState(this)
+                state: createState(this),
             };
         }
         connectedCallback() {

@@ -6,6 +6,12 @@ create(
     m.wait('x-adam', 'x-maria')
 );
 
-create('x-adam', m.html(({ h }) => h('div', {}, 'Adam')));
+create(
+    'x-adam',
+    m.html(({ h }) => h('div', {}, 'Adam'))
+);
 
-create('x-maria', m.html(({ h }) => h('div', {}, 'Maria')));
+create(
+    'x-maria',
+    m.html(({ h }) => h('div', {}, 'Maria'))
+);

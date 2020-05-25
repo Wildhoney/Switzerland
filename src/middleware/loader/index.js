@@ -9,7 +9,7 @@ const cache = new Map();
  * Takes an object of image paths and waits for them to be fully downloaded into the browser's cache before
  * handing over to the subsequent middleware. Appends the "src" object to the props for consumption by the component.
  */
-export default sources => {
+export default (sources) => {
     return async function loader(props) {
         const { utils } = props;
 
@@ -18,10 +18,10 @@ export default sources => {
         }
 
         await Promise.all(
-            Object.values(sources).map(src => {
+            Object.values(sources).map((src) => {
                 return (
                     cache.get(src) ||
-                    new Promise(resolve => {
+                    new Promise((resolve) => {
                         const img = new window.Image();
                         img.addEventListener('load', resolve);
                         img.addEventListener('error', resolve);

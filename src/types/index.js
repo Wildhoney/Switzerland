@@ -1,12 +1,12 @@
 /**
  * @function String ∷ String → String
  */
-export const String = a => a;
+export const String = (a) => a;
 
 /**
  * @function Int ∷ String → Integer
  */
-export const Int = a => {
+export const Int = (a) => {
     const value = parseInt(a);
     return Number.isNaN(value) ? null : value;
 };
@@ -14,7 +14,7 @@ export const Int = a => {
 /**
  * @function BigInt ∷ String → BigInt
  */
-export const BigInt = a => {
+export const BigInt = (a) => {
     try {
         return window.BigInt(a);
     } catch {
@@ -25,7 +25,7 @@ export const BigInt = a => {
 /**
  * @function Float ∷ String → Float
  */
-export const Float = a => {
+export const Float = (a) => {
     const value = parseFloat(a);
     return Number.isNaN(value) ? null : value;
 };
@@ -33,7 +33,7 @@ export const Float = a => {
 /**
  * @function Float.DP ∷ Integer → String → Float
  */
-Float.DP = dp => a => {
+Float.DP = (dp) => (a) => {
     const value = Float(a);
     return value === null ? null : Float(value.toFixed(dp));
 };
@@ -41,7 +41,7 @@ Float.DP = dp => a => {
 /**
  * @function Bool ∷ String → Boolean
  */
-export const Bool = type => {
+export const Bool = (type) => {
     switch (type.toLowerCase()) {
         case '':
         case '1':
@@ -61,7 +61,7 @@ export const Bool = type => {
 /**
  * @function Date ∷ String → Date
  */
-export const Date = a => {
+export const Date = (a) => {
     const value = new window.Date(window.Date.parse(a));
     return Number.isNaN(value.getTime()) ? null : value;
 };
@@ -69,12 +69,12 @@ export const Date = a => {
 /**
  * @function Array ∷ ∀ a. (String → a) → String → [a]
  */
-export const Array = (f = String) => a => a.split(',').map(a => f(a));
+export const Array = (f = String) => (a) => a.split(',').map((a) => f(a));
 
 /**
  * @function Tuple ∷ ∀ a. [(String → a)] → String → [a]
  */
-export const Tuple = (...fs) => a =>
+export const Tuple = (...fs) => (a) =>
     a.split(',').map((a, index) => {
         const f = fs[index] || String;
         return f(a);
@@ -83,7 +83,7 @@ export const Tuple = (...fs) => a =>
 /**
  * @function Regex ∷ ∀ a. RegExp r ⇒ r → String → → Object String a|void
  */
-export const Regex = expression => a => {
+export const Regex = (expression) => (a) => {
     const captureGroups = [];
     const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
     for (const group of namedGroups) {
@@ -93,7 +93,7 @@ export const Regex = expression => a => {
     return captureGroups.reduce(
         (model, key) => ({
             ...model,
-            [key]: model[key] ? model[key] : null
+            [key]: model[key] ? model[key] : null,
         }),
         match ? match.groups : {}
     );

@@ -11,7 +11,7 @@ const tree = ({ redux, h, props }) =>
         !redux.state.list.length && nothing(props),
         h.sheet(path('./styles/index.css')),
         h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-        h.sheet(path('./styles/print.css'), 'print')
+        h.sheet(path('./styles/print.css'), 'print'),
     ]);
 
 export default create('todo-list', ...middleware(tree));

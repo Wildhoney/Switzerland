@@ -26,6 +26,6 @@ export default function state(node) {
     return {
         isError: () => states.get(node) === error,
         setNormal: () => states.set(node, normal),
-        setError: () => states.set(node, error)
+        setError: () => states.set(node, error),
     };
 }

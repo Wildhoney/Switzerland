@@ -11,7 +11,7 @@ export const initialProps = (node, middleware) => {
         getLatestProps: () => undefined,
         isHeadless: true,
         isIdle: () => false,
-        isResolved: () => true
+        isResolved: () => true,
     };
 
     return {
@@ -20,14 +20,14 @@ export const initialProps = (node, middleware) => {
         utils,
         render: () => {},
         prevProps: undefined,
-        lifecycle: 'mount'
+        lifecycle: 'mount',
     };
 };
 
 /**
  * @function parseHtml ∷ String → String
  */
-export const parseHtml = html => {
+export const parseHtml = (html) => {
     const host = global.document.createElement('div');
     host.innerHTML = html;
     return host;

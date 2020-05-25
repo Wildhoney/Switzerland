@@ -7,25 +7,25 @@ const node = document.createElement('x-example');
 node.setAttribute('country-name', 'United Kingdom');
 node.setAttribute('persons-age', 33);
 
-test('It should be able to transform kebab attributes to camel case;', t => {
+test('It should be able to transform kebab attributes to camel case;', (t) => {
     const attributes = u.transformAttributes(
         node.attributes,
         {
-            personsAge: type.Int
+            personsAge: type.Int,
         },
         { originCity: 'Nottingham' }
     );
     t.deepEqual(attributes, {
         countryName: 'United Kingdom',
         personsAge: 33,
-        originCity: 'Nottingham'
+        originCity: 'Nottingham',
     });
 });
 
-test('It should be able to determine if there are applicable mutations;', t => {
+test('It should be able to determine if there are applicable mutations;', (t) => {
     const mutations = [
         { attributeName: 'persons-age', oldValue: '32' },
-        { attributeName: 'country-name', oldValue: 'Russian Federation' }
+        { attributeName: 'country-name', oldValue: 'Russian Federation' },
     ];
     t.true(u.hasApplicableMutations(node, [mutations[0]]));
     t.true(u.hasApplicableMutations(node, [mutations[1]]));

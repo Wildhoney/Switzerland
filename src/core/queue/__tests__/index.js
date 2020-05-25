@@ -3,7 +3,7 @@ import createQueue from '../index.js';
 
 const mockTask = Symbol('mock-task');
 
-test('It should be able to determine the current task;', t => {
+test('It should be able to determine the current task;', (t) => {
     const queue = createQueue();
     queue.push(mockTask);
     t.is(queue.current(), mockTask);
@@ -11,7 +11,7 @@ test('It should be able to determine the current task;', t => {
     t.is(queue.current(), mockTask);
 });
 
-test('It should be able to drop tasks;', t => {
+test('It should be able to drop tasks;', (t) => {
     const queue = createQueue();
     queue.push(mockTask);
     t.is(queue.current(), mockTask);
@@ -23,14 +23,14 @@ test('It should be able to drop tasks;', t => {
     t.true(queue.isEmpty());
 });
 
-test('It should be able to determine if the current task has become invalid;', t => {
+test('It should be able to determine if the current task has become invalid;', (t) => {
     const queue = createQueue();
     t.true(queue.isInvalid(mockTask));
     queue.push(mockTask);
     t.false(queue.isInvalid(mockTask));
 });
 
-test('It should be able to calculate the size of the queue;', t => {
+test('It should be able to calculate the size of the queue;', (t) => {
     const queue = createQueue();
     t.is(queue.size(), 0);
     queue.push(mockTask);

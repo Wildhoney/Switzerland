@@ -8,8 +8,8 @@ export const findApplicableNodes = (names, props) => {
         ...names.reduce(
             (accum, name) => [...accum, ...Array.from(findBoundary(props).querySelectorAll(name))],
             []
-        )
-    ].filter(node => !node.classList.contains('resolved'));
+        ),
+    ].filter((node) => !node.classList.contains('resolved'));
 };
 
 /**

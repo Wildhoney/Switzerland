@@ -8,7 +8,7 @@ import * as u from '../../utils.js';
 
 class MockExtension {}
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
     const Implementation = impl.base(MockExtension, []);
     const instance = (t.context.instance = new Implementation());
     const queue = createQueue();
@@ -20,20 +20,20 @@ test.beforeEach(t => {
     const dispatchEvent = (instance.dispatchEvent = spy());
     const classList = (instance.classList = {
         add: spy(),
-        remove: spy()
+        remove: spy(),
     });
     t.context.spies = { querySelectorAll, dispatchEvent, classList };
     t.context.injectors = { queue, state };
 });
 
-test('It should render when the element is mounted;', t => {
+test('It should render when the element is mounted;', (t) => {
     const { instance } = t.context;
     const renderSpy = stub(instance, 'render');
     instance.connectedCallback();
     t.is(renderSpy.callCount, 1);
 });
 
-test('It should render and remove the class name when the element is unmounted;', t => {
+test('It should render and remove the class name when the element is unmounted;', (t) => {
     const { instance, spies } = t.context;
     stub(instance, 'render');
     instance.disconnectedCallback();
@@ -41,7 +41,7 @@ test('It should render and remove the class name when the element is unmounted;'
     t.true(spies.classList.remove.calledWith('resolved'));
 });
 
-test('It should not render the component when in an error state;', async t => {
+test('It should not render the component when in an error state;', async (t) => {
     const { instance, injectors } = t.context;
     injectors.state.setError();
     await instance.render();
@@ -51,10 +51,10 @@ test('It should not render the component when in an error state;', async t => {
 
 test.serial(
     'It should be able to enqueue render passes and process them consecutively;',
-    async t => {
+    async (t) => {
         const returns = {
             props: {},
-            timings: new Set()
+            timings: new Set(),
         };
 
         const { instance, spies } = t.context;
@@ -74,7 +74,7 @@ test.serial(
     }
 );
 
-test('It should dispatch the resolved event and add the class name when rendered;', async t => {
+test('It should dispatch the resolved event and add the class name when rendered;', async (t) => {
     const { instance, spies } = t.context;
     await instance.render();
     t.is(spies.classList.add.callCount, 1);
@@ -82,14 +82,14 @@ test('It should dispatch the resolved event and add the class name when rendered
     t.is(spies.dispatchEvent.callCount, 1);
 });
 
-test('It should not add the class name when the element is disconnected from the page', async t => {
+test('It should not add the class name when the element is disconnected from the page', async (t) => {
     const { instance, spies } = t.context;
     instance.isConnected = false;
     await instance.render();
     t.is(spies.classList.add.callCount, 0);
 });
 
-test('It should drop the task from the queue upon completion;', async t => {
+test('It should drop the task from the queue upon completion;', async (t) => {
     const { instance, injectors } = t.context;
     const task = instance.render();
     t.false(injectors.queue.isInvalid(task));
@@ -99,7 +99,7 @@ test('It should drop the task from the queue upon completion;', async t => {
     t.true(injectors.queue.isEmpty());
 });
 
-test.serial('It should remain in the normal state when a render pass is cancelled;', async t => {
+test.serial('It should remain in the normal state when a render pass is cancelled;', async (t) => {
     const { instance, injectors } = t.context;
     const initialPropsStub = stub(u, 'initialProps').throws(() => new u.Cancel());
     const setErrorSpy = spy(injectors.state, 'setError');
@@ -108,7 +108,7 @@ test.serial('It should remain in the normal state when a render pass is cancelle
     initialPropsStub.restore();
 });
 
-test.serial('It should be able to handle errors gracefully;', async t => {
+test.serial('It should be able to handle errors gracefully;', async (t) => {
     const { instance, injectors, spies } = t.context;
     const cycleMiddlewareStub = stub(u, 'cycleMiddleware').throws(
         () => new Error('Yoko Onoooo...')
@@ -123,7 +123,7 @@ test.serial('It should be able to handle errors gracefully;', async t => {
     handleExceptionStub.restore();
 });
 
-test('It should delegate all method invocations to the instance when aliasing;', t => {
+test('It should delegate all method invocations to the instance when aliasing;', (t) => {
     const { instance } = t.context;
     const Implementation = impl.alias(MockExtension, instance);
     const aliasedInstance = new Implementation();
@@ -141,7 +141,7 @@ test('It should delegate all method invocations to the instance when aliasing;',
     t.is(renderStub.callCount, 1);
 });
 
-test.serial('It should be able to use the mergeProps in the render method;', async t => {
+test.serial('It should be able to use the mergeProps in the render method;', async (t) => {
     const { instance } = t.context;
     const quote = starwars();
     const mergeProps = { quote };
@@ -151,7 +151,7 @@ test.serial('It should be able to use the mergeProps in the render method;', asy
     initialPropsStub.restore();
 });
 
-test.serial('It should not continue if the current task has become invalid', async t => {
+test.serial('It should not continue if the current task has become invalid', async (t) => {
     const { instance, injectors } = t.context;
     const initialPropsStub = stub(u, 'initialProps');
     const task = instance.render();

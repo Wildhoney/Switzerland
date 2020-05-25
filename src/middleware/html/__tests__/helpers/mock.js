@@ -8,18 +8,21 @@ create(
             h(
                 'form',
                 {
-                    oncreate: form => render({ form }),
-                    onsubmit: event => (
+                    oncreate: (form) => render({ form }),
+                    onsubmit: (event) => (
                         event.preventDefault(),
                         render({
-                            name: event.target.elements.namedItem('value').value
+                            name: event.target.elements.namedItem('value').value,
                         })
-                    )
+                    ),
                 },
                 [h('input', { type: 'text', name: 'value' }), h('button', { type: 'submit' })]
-            )
+            ),
         ])
     )
 );
 
-create('x-example-recycled', m.html(({ h }) => h('div', {}, 'Hello Adam!'), { recycle: true }));
+create(
+    'x-example-recycled',
+    m.html(({ h }) => h('div', {}, 'Hello Adam!'), { recycle: true })
+);

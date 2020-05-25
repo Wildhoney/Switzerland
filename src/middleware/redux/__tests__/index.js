@@ -5,7 +5,7 @@ import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import redux, { nodes } from '../index.js';
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
     t.context.reducer = spy();
     t.context.actions = { test: R.identity };
 });
@@ -15,7 +15,7 @@ test.afterEach(() => {
     nodes.delete(defaultProps.node);
 });
 
-test('It should be able to bind the actions to the dispatch;', t => {
+test('It should be able to bind the actions to the dispatch;', (t) => {
     const { reducer, actions } = t.context;
     const m = redux(reducer, actions);
     const newProps = m(defaultProps);
@@ -26,7 +26,7 @@ test('It should be able to bind the actions to the dispatch;', t => {
     t.true(reducer.calledWith(match.any, { type: 'test' }));
 });
 
-test.serial('It should be able to invoke the `render` function on update;', t => {
+test.serial('It should be able to invoke the `render` function on update;', (t) => {
     const { reducer, actions } = t.context;
     const m = redux(reducer, actions);
     const newProps = m(defaultProps);
@@ -36,7 +36,7 @@ test.serial('It should be able to invoke the `render` function on update;', t =>
     t.is(defaultProps.render.callCount, 1);
 });
 
-test('It should be able to yield the necessary props;', t => {
+test('It should be able to yield the necessary props;', (t) => {
     const { reducer, actions } = t.context;
     const m = redux(reducer, actions);
     const newProps = m(defaultProps);
@@ -44,7 +44,7 @@ test('It should be able to yield the necessary props;', t => {
     t.deepEqual(newProps, { ...defaultProps, redux: newProps.redux });
 });
 
-test.serial('It should only subscribe once to the updates per node instance;', t => {
+test.serial('It should only subscribe once to the updates per node instance;', (t) => {
     nodes.add = spy(nodes.add);
 
     const iterations = Math.floor(Math.random() * 5) + 5;
@@ -58,7 +58,7 @@ test.serial('It should only subscribe once to the updates per node instance;', t
     t.true(nodes.has(defaultProps.node));
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
+test('It should be able to gracefully handle being rendered to a string;', async (t) => {
     const { actions } = t.context;
     const reducer = () => ({ message: 'Example' });
     const component = create(

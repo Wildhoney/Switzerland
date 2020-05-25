@@ -6,7 +6,7 @@ import * as u from './utils.js';
  * Creates a shadow boundary with the supplied options, such as whether the boundary is
  * open, delegates focus, and also the chance to include adopted stylesheets.
  */
-export default options => {
+export default (options) => {
     return function boundary(props) {
         const { node, utils } = props;
 

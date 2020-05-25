@@ -1,5 +1,5 @@
 - name: start
-  task: nodemon --experimental-modules --require esm --require node-url-imports --require core-js ./example/server/index.js
+  task: nodemon ./example/server/index.js
 
 - name: format
   tasks:

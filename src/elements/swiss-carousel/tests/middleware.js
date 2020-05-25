@@ -3,15 +3,15 @@ import { spy, stub, match } from 'sinon';
 import * as m from '../middleware.js';
 import * as u from '../utils.js';
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
     const node = document.createElement('div');
     const template = document.createElement('template');
     const images = [
         document.createElement('img'),
         document.createElement('img'),
-        document.createElement('img')
+        document.createElement('img'),
     ];
-    images.forEach(image => template.content.appendChild(image));
+    images.forEach((image) => template.content.appendChild(image));
     node.appendChild(template);
 
     t.context.node = node;
@@ -26,7 +26,7 @@ test.beforeEach(t => {
     };
 });
 
-test('It should be able to initialise the variables;', t => {
+test('It should be able to initialise the variables;', (t) => {
     const props = { node: t.context.node, adapt: null };
     props.props = props;
 
@@ -34,18 +34,18 @@ test('It should be able to initialise the variables;', t => {
         ...props,
         count: 3,
         width: 0,
-        height: 0
+        height: 0,
     });
 
     t.deepEqual(m.computeVariables({ ...props, adapt: { width: 100, height: 150 } }), {
         ...props,
         count: 3,
         width: 100,
-        height: 150
+        height: 150,
     });
 });
 
-test('It should be able to import the template;', t => {
+test('It should be able to import the template;', (t) => {
     const { boundary, track } = t.context.createBoundary();
     const props = { node: t.context.node, boundary };
     props.props = props;
@@ -55,8 +55,8 @@ test('It should be able to import the template;', t => {
     t.deepEqual(newProps, props);
 });
 
-test('It should be able to observe the template for changes;', t => {
-    window.MutationObserver = function(f) {
+test('It should be able to observe the template for changes;', (t) => {
+    window.MutationObserver = function (f) {
         f();
     };
     const observeSpy = (window.MutationObserver.prototype.observe = spy());
@@ -84,7 +84,7 @@ test('It should be able to observe the template for changes;', t => {
     }
 });
 
-test('It should be able to update the scroll position;', t => {
+test('It should be able to update the scroll position;', (t) => {
     const isTouchableStub = stub(u, 'isTouchable').callsFake(() => true);
     const { boundary, track } = t.context.createBoundary();
     const scrollSpy = (track.scroll = spy());
@@ -93,7 +93,7 @@ test('It should be able to update the scroll position;', t => {
         boundary,
         width: 100,
         height: 150,
-        attrs: { direction: 'horizontal', index: 2 }
+        attrs: { direction: 'horizontal', index: 2 },
     };
 
     {
@@ -107,7 +107,7 @@ test('It should be able to update the scroll position;', t => {
     {
         const props = {
             ...defaultProps,
-            attrs: { direction: 'vertical', index: 3 }
+            attrs: { direction: 'vertical', index: 3 },
         };
         props.props = props;
         const newProps = m.updatePosition(props);
@@ -118,14 +118,14 @@ test('It should be able to update the scroll position;', t => {
     isTouchableStub.reset();
 });
 
-test('It should be able to dispatch the event when index is mutated;', t => {
+test('It should be able to dispatch the event when index is mutated;', (t) => {
     const dispatchSpy = spy();
 
     const defaultProps = {
         node: t.context.node,
         attrs: { index: 2 },
         signal: {},
-        utils: { dispatch: dispatchSpy }
+        utils: { dispatch: dispatchSpy },
     };
 
     {

@@ -6,14 +6,14 @@ import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import adapt, { nodes } from '../index.js';
 
-test.beforeEach(t => {
+test.beforeEach((t) => {
     nodes.delete(defaultProps.node);
 
     const observeSpy = spy();
     const unobserveSpy = spy();
 
-    t.context.mockObserver = entries => {
-        window.ResizeObserver = function(f) {
+    t.context.mockObserver = (entries) => {
+        window.ResizeObserver = function (f) {
             f(entries);
         };
         window.ResizeObserver.prototype.observe = observeSpy;
@@ -26,7 +26,7 @@ test.afterEach(() => {
     window.ResizeObserver = undefined;
 });
 
-test.serial('It should add them to add the node to the set;', t => {
+test.serial('It should add them to add the node to the set;', (t) => {
     t.context.mockObserver([]);
     const m = adapt();
     t.false(nodes.has(defaultProps.node));
@@ -35,7 +35,7 @@ test.serial('It should add them to add the node to the set;', t => {
     t.deepEqual(newProps, { ...defaultProps, lifecycle: 'mount' });
 });
 
-test.serial('It should observe only once per instance of node;', t => {
+test.serial('It should observe only once per instance of node;', (t) => {
     t.context.mockObserver([]);
     const { observeSpy } = t.context.spies;
     const m = adapt();
@@ -44,7 +44,7 @@ test.serial('It should observe only once per instance of node;', t => {
     t.is(observeSpy.callCount, 1);
 });
 
-test.serial('It should be able to toggle the observerable depending on the lifecycle;', t => {
+test.serial('It should be able to toggle the observerable depending on the lifecycle;', (t) => {
     t.context.mockObserver([]);
     const { observeSpy, unobserveSpy } = t.context.spies;
     const m = adapt();
@@ -54,14 +54,14 @@ test.serial('It should be able to toggle the observerable depending on the lifec
     t.is(unobserveSpy.callCount, 1);
 });
 
-test.serial('It should be able to invoke `render` for each observed component;', t => {
+test.serial('It should be able to invoke `render` for each observed component;', (t) => {
     const firstMock = document.createElement('div');
     const secondMock = document.createElement('div');
     const thirdMock = document.createElement('div');
 
     t.context.mockObserver([
         { target: firstMock, contentRect: {} },
-        { target: thirdMock, contentRect: {} }
+        { target: thirdMock, contentRect: {} },
     ]);
 
     firstMock.render = spy();
@@ -75,8 +75,12 @@ test.serial('It should be able to invoke `render` for each observed component;',
     t.is(thirdMock.render.callCount, 1);
 });
 
-test('It should be able to gracefully handle being rendered to a string;', async t => {
-    const component = create('x-example', adapt(), m.html(({ h }) => h('div', {}, 'Example')));
+test('It should be able to gracefully handle being rendered to a string;', async (t) => {
+    const component = create(
+        'x-example',
+        adapt(),
+        m.html(({ h }) => h('div', {}, 'Example'))
+    );
     t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
@@ -87,13 +91,13 @@ test(
         const name = 'x-example';
         await utils.waitForUpgrade(name);
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
         }, name);
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.querySelector(name);
             node.style.display = 'block';
             node.style.width = '200px';
@@ -103,7 +107,7 @@ test(
         await delay(100);
         t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.querySelector(name);
             node.style.width = '500px';
             node.style.height = '350px';

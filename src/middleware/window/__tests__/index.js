@@ -3,7 +3,7 @@ import withComponent from 'ava-webcomponents';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import window from '../index.js';
 
-test('It should be able to supply the JSDOM instance of window;', async t => {
+test('It should be able to supply the JSDOM instance of window;', async (t) => {
     const m = window('https://www.example.org/');
     const newProps = await m(defaultProps);
     t.is(newProps.window.location.host, 'www.example.org');
@@ -16,7 +16,7 @@ test(
         const name = 'x-example';
         await utils.waitForUpgrade(name);
 
-        await page.evaluate(name => {
+        await page.evaluate((name) => {
             const node = document.createElement(name);
             document.body.append(node);
             return node.idle();
