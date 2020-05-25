@@ -5,7 +5,13 @@
         "module": "esnext",
         "outDir": "dist",
         "esModuleInterop": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "plugins": [
+            {
+                "transform": "@zoltu/typescript-transformer-append-js-extension/output/index.js",
+                "after": true
+            }
+        ]
     },
     "exclude": ["node_modules"]
 }

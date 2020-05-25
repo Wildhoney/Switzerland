@@ -1,4 +1,4 @@
-import { Types, Attributes } from './';
+import { Types, Attributes } from './index';
 
 type Transform = { fromKebab: () => string; fromSnake: () => string };
 
@@ -34,4 +34,12 @@ export function toCamelcase(value: string): Transform {
         fromKebab: f('-'),
         fromSnake: f('_'),
     };
+}
+
+export function hasApplicableMutations(node: HTMLElement, mutations, exclude: string[] = []) {
+    return mutations.some((mutation) => {
+        const isObserved = !exclude.includes(mutation.attributeName);
+        const isModified = mutation.oldValue !== node.getAttribute(mutation.attributeName);
+        return isObserved && isModified;
+    });
 }

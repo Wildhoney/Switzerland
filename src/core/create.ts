@@ -1,10 +1,11 @@
-import { Attributes } from '../middleware/attrs';
+import { Attributes } from '../middleware/attrs/index';
 
 export type InitialProperties = { [key: string]: any } | { [key: string]: { [key: string]: any } };
 
 export type Properties = {
     node: HTMLElement;
     server: boolean;
+    render: ((props?: Properties) => Properties | Promise<Properties>) | (() => null);
     attrs?: Attributes;
     [key: string]: any;
 };
@@ -31,10 +32,35 @@ export class SwissComponent {
             return middleware(await props);
         }
 
-        return this.middleware.reduce(cycle, { ...props, server: true });
+        const defaultProps = { server: true, render: () => null };
+        return this.middleware.reduce(cycle, { ...defaultProps, ...props });
     }
 }
 
 export default function create(name: string, ...middleware: Middleware[]): Swiss {
-    return new SwissComponent(name, middleware);
+    const component = new SwissComponent(name, middleware);
+    const hasCustomElements = typeof window?.customElements !== 'undefined';
+
+    hasCustomElements &&
+        window.customElements.define(
+            name,
+            class SwissComponent extends HTMLElement {
+                initialProps: Properties;
+
+                connectedCallback(): Promise<Properties> {
+                    return this.render();
+                }
+
+                render(props: InitialProperties = {}): Promise<Properties> {
+                    return component.render({
+                        ...props,
+                        node: this,
+                        server: false,
+                        render: this.render.bind(this),
+                    });
+                }
+            }
+        );
+
+    return component;
 }

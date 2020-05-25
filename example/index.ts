@@ -1,6 +1,13 @@
-import { render } from "../src";
+import { create, h, m, t } from '../src/index.js';
 
-export async function main() {
-  // const html = await render(Layout);
-  // console.log(html);
-}
+create(
+    'x-people',
+    m.attrs({ names: t.Array(t.String) }),
+    m.html(({ attrs }) =>
+        h(
+            'ul',
+            {},
+            attrs.names.map((name) => h('li', {}, name))
+        )
+    )
+);

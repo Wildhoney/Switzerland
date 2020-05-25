@@ -1,6 +1,7 @@
-import { JSDOM } from 'jsdom';
 import { Tree, Properties, Tag, ChildNode } from '../../core/h';
 import { Swiss, SwissComponent } from '../../core/create';
+
+let mockWindow = <Window | null>null;
 
 declare global {
     interface Window {
@@ -37,10 +38,12 @@ async function getNode(tag: Tag, attrs: Properties): Promise<HTMLElement | Text>
     return window.document.createElement(tag.name);
 }
 
-const mockWindow = new JSDOM().window;
-
 export function getWindow(): Window {
-    return typeof window === 'undefined' ? mockWindow : window;
+    if (typeof window !== 'undefined') return window;
+    if (mockWindow != null) return mockWindow;
+    const { JSDOM } = require('jsdom');
+    mockWindow = new JSDOM().window;
+    return mockWindow;
 }
 
 export async function parseTree(tree: Tree): Promise<HTMLElement | Text> {
