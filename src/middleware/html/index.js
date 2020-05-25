@@ -1,4 +1,4 @@
-import * as superfine from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import superfine from 'superfine';
 import { findBoundary } from '../../core/utils.js';
 import * as u from './utils.js';
 
@@ -35,7 +35,12 @@ export default function html(getView, options = { recycle: false }) {
             u.putTree(node, superfine.recycle(findBoundary(props)));
         }
 
-        if (props.node.isConnected || utils.isHeadless) {
+        if (utils.isHeadless) {
+            props.node.appendChild(u.renderToDOM(view));
+            u.putTree(node, view);
+        }
+
+        if (props.node.isConnected) {
             const tree = superfine.patch(u.takeTree(node), view, findBoundary(props));
             u.putTree(node, tree);
         }

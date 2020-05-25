@@ -1,5 +1,5 @@
 import test from 'ava';
-import { spy, stub, match } from 'sinon';
+import sinon from 'sinon';
 import * as m from '../middleware.js';
 import * as u from '../utils.js';
 
@@ -59,9 +59,9 @@ test('It should be able to observe the template for changes;', (t) => {
     window.MutationObserver = function (f) {
         f();
     };
-    const observeSpy = (window.MutationObserver.prototype.observe = spy());
+    const observeSpy = (window.MutationObserver.prototype.observe = sinon.spy());
 
-    const utils = { getLatestProps: spy(() => ({ attrs: { index: 1 } })) };
+    const utils = { getLatestProps: sinon.spy(() => ({ attrs: { index: 1 } })) };
     const { boundary } = t.context.createBoundary();
     const props = { node: t.context.node, boundary, utils };
     props.props = props;
@@ -71,12 +71,12 @@ test('It should be able to observe the template for changes;', (t) => {
         t.deepEqual(newProps, props);
         t.is(utils.getLatestProps.callCount, 1);
         t.is(observeSpy.callCount, 1);
-        t.true(observeSpy.calledWith(t.context.template.content, match.object));
+        t.true(observeSpy.calledWith(t.context.template.content, sinon.match.object));
         t.is(Number(t.context.node.getAttribute('index')), 1);
     }
 
     {
-        const utils = { getLatestProps: spy(() => ({ attrs: { index: 3 } })) };
+        const utils = { getLatestProps: sinon.spy(() => ({ attrs: { index: 3 } })) };
         const props = { node: t.context.node, boundary, utils };
         props.props = props;
         m.observeTemplate(props);
@@ -85,9 +85,9 @@ test('It should be able to observe the template for changes;', (t) => {
 });
 
 test('It should be able to update the scroll position;', (t) => {
-    const isTouchableStub = stub(u, 'isTouchable').callsFake(() => true);
+    const isTouchableStub = sinon.stub(u, 'isTouchable').callsFake(() => true);
     const { boundary, track } = t.context.createBoundary();
-    const scrollSpy = (track.scroll = spy());
+    const scrollSpy = (track.scroll = sinon.spy());
     const defaultProps = {
         node: t.context.node,
         boundary,
@@ -119,7 +119,7 @@ test('It should be able to update the scroll position;', (t) => {
 });
 
 test('It should be able to dispatch the event when index is mutated;', (t) => {
-    const dispatchSpy = spy();
+    const dispatchSpy = sinon.spy();
 
     const defaultProps = {
         node: t.context.node,

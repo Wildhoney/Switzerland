@@ -1,7 +1,7 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
 import delay from 'delay';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import adapt, { nodes } from '../index.js';
@@ -9,8 +9,8 @@ import adapt, { nodes } from '../index.js';
 test.beforeEach((t) => {
     nodes.delete(defaultProps.node);
 
-    const observeSpy = spy();
-    const unobserveSpy = spy();
+    const observeSpy = sinon.spy();
+    const unobserveSpy = sinon.spy();
 
     t.context.mockObserver = (entries) => {
         window.ResizeObserver = function (f) {
@@ -64,9 +64,9 @@ test.serial('It should be able to invoke `render` for each observed component;',
         { target: thirdMock, contentRect: {} },
     ]);
 
-    firstMock.render = spy();
-    secondMock.render = spy();
-    thirdMock.render = spy();
+    firstMock.render = sinon.spy();
+    secondMock.render = sinon.spy();
+    thirdMock.render = sinon.spy();
 
     const m = adapt();
     m({ ...defaultProps, lifecycle: 'mount' });

@@ -1,11 +1,11 @@
 import test from 'ava';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import once from '../index.js';
 
 test('It should only invoke the function once per node instance;', async (t) => {
-    const fn = spy(() => ({ name: 'Adam' }));
+    const fn = sinon.spy(() => ({ name: 'Adam' }));
     const newProps = await once(fn)(defaultProps);
 
     t.deepEqual(newProps, { ...defaultProps, name: 'Adam' });
@@ -18,7 +18,7 @@ test('It should only invoke the function once per node instance;', async (t) => 
 });
 
 test('It should only invoke the function once per node instance even when the function returns a falsy value;', async (t) => {
-    const fn = spy(() => null);
+    const fn = sinon.spy(() => null);
     once(fn)(defaultProps);
     once(fn)(defaultProps);
     once(fn)(defaultProps);

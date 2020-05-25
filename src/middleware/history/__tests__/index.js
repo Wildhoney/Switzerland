@@ -1,6 +1,6 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import { spy, match } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import * as type from '../../../types/index.js';
@@ -10,7 +10,7 @@ test.serial('It should register the events to notify changes only once;', async 
     t.plan(2);
 
     const { node } = defaultProps;
-    node.render = spy();
+    node.render = sinon.spy();
     const m = history();
 
     // Attempt to register the same node multiple times...
@@ -26,9 +26,9 @@ test.serial('It should register the events to notify changes only once;', async 
                     node.render.calledWith({
                         signal: {
                             history: {
-                                params: match.any,
-                                pathname: match.string,
-                                hash: match.string,
+                                params: sinon.match.any,
+                                pathname: sinon.match.string,
+                                hash: sinon.match.string,
                             },
                         },
                     })
@@ -63,8 +63,8 @@ test('It should be able to parse params/hash and set defaults;', (t) => {
 });
 
 test('It should be able to push and replace the URL state;', (t) => {
-    window.history.pushState = spy();
-    window.history.replaceState = spy();
+    window.history.pushState = sinon.spy();
+    window.history.replaceState = sinon.spy();
     const m = history();
     const props = m(defaultProps);
     props.history.pushState();

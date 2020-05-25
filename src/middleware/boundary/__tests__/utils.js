@@ -1,5 +1,5 @@
 import test from 'ava';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import { meta } from '../../../core/utils.js';
 import * as u from '../utils.js';
 
@@ -7,7 +7,7 @@ test('It should be able to attach the shadow boundary to an element;', (t) => {
     const element = document.createElement('section');
     element[meta] = { boundary: null };
 
-    const attachShadow = spy(element.attachShadow);
+    const attachShadow = sinon.spy(element.attachShadow);
     element.attachShadow = attachShadow;
 
     const root = u.createBoundary(element);

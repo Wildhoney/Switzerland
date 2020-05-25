@@ -18,16 +18,20 @@ export const base = (extension, middleware) =>
                 boundary: null,
             };
         }
+
         connectedCallback() {
             return this.render({ lifecycle: 'mount' });
         }
+
         disconnectedCallback() {
             this.classList.remove('resolved');
             return this.render({ lifecycle: 'unmount' });
         }
+
         idle() {
             return this[u.meta].queue.current();
         }
+
         render(mergeProps = {}) {
             const isRemounting = mergeProps.lifecycle === 'mount';
             const node = this;
@@ -46,7 +50,7 @@ export const base = (extension, middleware) =>
 
                 if (node[u.meta].queue.isInvalid(newTask)) {
                     // If a caught error has removed it from the queue, then we don't go any further.
-                    return void resolve();
+                    return resolve();
                 }
 
                 try {
@@ -61,7 +65,7 @@ export const base = (extension, middleware) =>
 
                     // Handle any errors that were thrown from the processing of the middleware functions.
                     // Errors should cancel any enqueued middleware.
-                    return void (queue.dropAll(), state.setError(), u.handleException(node, error));
+                    return queue.dropAll(), state.setError(), u.handleException(node, error);
                 } finally {
                     // Await the resolution of all the CSS import rules.
                     await u.cssImports(node);
@@ -99,15 +103,19 @@ export const alias = (extension, instance) =>
                 state: createState(this),
             };
         }
+
         connectedCallback() {
             return instance.connectedCallback.call(this);
         }
+
         disconnectedCallback() {
             return instance.disconnectedCallback.call(this);
         }
+
         idle() {
             return instance.idle.call(this);
         }
+
         render() {
             return instance.render.call(this);
         }

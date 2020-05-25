@@ -1,6 +1,6 @@
 import test from 'ava';
-import { spy } from 'sinon';
-import { patch, h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import sinon from 'sinon';
+import { patch, h } from 'superfine';
 import * as u from '../utils.js';
 
 test('It should be able to find the applicable nodes;', (t) => {
@@ -19,9 +19,9 @@ test('It should be able to find the applicable nodes;', (t) => {
 
 test('It should be able to attach the event listener and handle resolutions;', (t) => {
     const eventName = '@switzerland/resolve';
-    const addEventListenerSpy = spy(document, 'addEventListener');
-    const removeEventListenerSpy = spy(document, 'removeEventListener');
-    const resolveSpy = spy();
+    const addEventListenerSpy = sinon.spy(document, 'addEventListener');
+    const removeEventListenerSpy = sinon.spy(document, 'removeEventListener');
+    const resolveSpy = sinon.spy();
 
     const resolutions = new Set();
     const todoHead = document.createElement('todo-head');

@@ -18,7 +18,8 @@
         "postpublish": "taskfile postpublish",
         "prepublishOnly": "taskfile prepublish",
         "start": "taskfile start",
-        "test": "taskfile test"
+        "test": "taskfile test",
+        "spec": "taskfile test/spec"
     },
     "repository": {
         "type": "git",
@@ -57,6 +58,7 @@
         "validate-element-name": "^2.1.1"
     },
     "devDependencies": {
+        "@ava/babel": "^1.0.1",
         "@babel/plugin-syntax-import-meta": "^7.8.3",
         "ava": "^3.8.2",
         "ava-webcomponents": "^0.1.3",
@@ -82,7 +84,6 @@
         "fslint": "^1.1.0",
         "node-glob": "^1.2.0",
         "node-mkdirp": "^0.0.1",
-        "node-url-imports": "^0.3.0",
         "nodemon": "^2.0.4",
         "nyc": "^15.0.1",
         "prettier": "^2.0.5",

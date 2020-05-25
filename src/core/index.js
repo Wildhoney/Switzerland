@@ -4,11 +4,6 @@ import * as impl from './impl/index.js';
 export { meta, Cancel } from './utils.js';
 
 /**
- * @constant elements ∷ Map
- */
-export const elements = new Map();
-
-/**
  * @function init ∷ String → String → Boolean → (String → String)
  * ---
  * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
@@ -44,10 +39,7 @@ export const create = (name, ...middleware) => {
         );
         return tag;
     } catch {
-        const type = [name, middleware];
-        elements.set(name, middleware);
-        type.toString = () => name;
-        return type;
+        return { name, middleware };
     }
 };
 

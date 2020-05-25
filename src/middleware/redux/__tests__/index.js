@@ -1,12 +1,12 @@
 import test from 'ava';
-import { spy, match } from 'sinon';
+import sinon from 'sinon';
 import * as R from 'ramda';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import redux, { nodes } from '../index.js';
 
 test.beforeEach((t) => {
-    t.context.reducer = spy();
+    t.context.reducer = sinon.spy();
     t.context.actions = { test: R.identity };
 });
 
@@ -23,7 +23,7 @@ test('It should be able to bind the actions to the dispatch;', (t) => {
     t.is(reducer.callCount, 1);
     newProps.redux.actions.test({ type: 'test' });
     t.is(reducer.callCount, 2);
-    t.true(reducer.calledWith(match.any, { type: 'test' }));
+    t.true(reducer.calledWith(sinon.match.any, { type: 'test' }));
 });
 
 test.serial('It should be able to invoke the `render` function on update;', (t) => {
@@ -45,7 +45,7 @@ test('It should be able to yield the necessary props;', (t) => {
 });
 
 test.serial('It should only subscribe once to the updates per node instance;', (t) => {
-    nodes.add = spy(nodes.add);
+    nodes.add = sinon.spy(nodes.add);
 
     const iterations = Math.floor(Math.random() * 5) + 5;
     for (let index = 0; index <= iterations; index++) {

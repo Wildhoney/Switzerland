@@ -23,7 +23,7 @@ export default (types = {}, exclude = ['class', 'id', 'style']) => {
     return function attrs(props) {
         const { node, utils, lifecycle, render } = props;
 
-        if (!nodes.has(node)) {
+        if (!nodes.has(node) && !utils.isHeadless) {
             const observer = new window.MutationObserver(
                 (mutations) =>
                     u.hasApplicableMutations(node, mutations, exclude) &&

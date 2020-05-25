@@ -1,13 +1,13 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import * as u from '../utils.js';
 import boundary from '../index.js';
 
 test('It should be able to invoke the `createBoundary` function;', (t) => {
-    const createBoundarySpy = spy(u, 'createBoundary');
+    const createBoundarySpy = sinon.spy(u, 'createBoundary');
     const m = boundary();
     m(defaultProps);
     t.is(createBoundarySpy.callCount, 1);
@@ -46,5 +46,6 @@ test('It should be able to gracefully handle being rendered to a string;', async
         boundary(),
         m.html(({ h }) => h('div', {}, 'Example'))
     );
+
     t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });

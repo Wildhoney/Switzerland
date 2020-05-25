@@ -1,5 +1,5 @@
-import * as r from 'https://cdn.jsdelivr.net/npm/redux@4.0.1/es/redux.mjs';
-import thunk from 'https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js';
+import * as r from 'redux';
+import thunk from 'redux-thunk';
 
 /**
  * @constant nodes ∷ WeakSet

@@ -1,6 +1,6 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import { patch, h } from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
+import { patch, h } from 'superfine';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import { getEventName } from '../../../core/utils.js';

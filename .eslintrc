@@ -3,7 +3,9 @@
     "extends": ["standard", "prettier", "prettier/react", "prettier/standard"],
     "plugins": ["react"],
     "rules": {
-        "no-sequences": "off"
+        "no-sequences": "off",
+        "import/no-absolute-path": "off",
+        "no-async-promise-executor": "off"
     },
     "globals": {
         "caches": true,

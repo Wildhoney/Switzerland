@@ -196,7 +196,7 @@ export const handleException = (node, error) => {
 
     previousProps.set(node, { ...props, error });
 
-    return void props[handler]({
+    return props[handler]({
         ...props,
         error,
         render: (mergeProps) => {

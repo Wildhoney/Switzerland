@@ -1,9 +1,9 @@
 import test from 'ava';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import * as u from '../utils.js';
 
 test('It should be able to create a patch `get` method for the `URLSearchParams`;', (t) => {
-    const getF = spy();
+    const getF = sinon.spy();
     const types = {};
     const defaults = {};
     const patchF = u.createPatch(getF, types, defaults);
@@ -13,7 +13,7 @@ test('It should be able to create a patch `get` method for the `URLSearchParams`
 });
 
 test('It should be able to dispatch the event on the node;', (t) => {
-    window.history.pushState = spy();
+    window.history.pushState = sinon.spy();
     const params = [1, 2, 3];
     u.changeState('pushState')(...params);
     t.is(window.history.pushState.callCount, 1);

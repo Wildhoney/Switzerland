@@ -1,4 +1,4 @@
-import * as hyper from 'https://cdn.jsdelivr.net/npm/hyperhtml@2.17.1/esm/index.js';
+import * as hyper from 'hyperhtml';
 import { findBoundary } from '../../core/utils.js';
 
 /**

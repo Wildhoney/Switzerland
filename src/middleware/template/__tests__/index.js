@@ -1,13 +1,13 @@
 import test from 'ava';
-import { spy, stub } from 'sinon';
+import sinon from 'sinon';
 import * as R from 'ramda';
-import * as hyper from 'https://cdn.jsdelivr.net/npm/hyperhtml@2.17.1/esm/index.js';
+import * as hyper from 'hyperhtml';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import template from '../index.js';
 
 test.beforeEach((t) => {
-    t.context.viewSpy = spy(({ h }) => h`<section><header>Example</header></section>`);
-    t.context.hyperStub = stub(hyper, 'default').returns(() => ({
+    t.context.viewSpy = sinon.spy(({ h }) => h`<section><header>Example</header></section>`);
+    t.context.hyperStub = sinon.stub(hyper, 'default').returns(() => ({
         h: R.identity,
     }));
 });

@@ -8,9 +8,11 @@ test.beforeEach(() => {
         constructor() {
             this.resolver = null;
         }
+
         addEventListener(type, resolve) {
             if (type === 'load') this.resolver = resolve;
         }
+
         setAttribute() {
             this.resolver();
         }

@@ -36,7 +36,7 @@
   tasks:
       - mv ava.config.js ava.config.backup
       - - cp tests/helpers/ava.config.js ava.config.js
-      - - - nyc --require esm --require node-url-imports --require core-js --require ./tests/helpers/browser-env.js ava || mv ava.config.backup ava.config.js 2>/dev/null
+      - - - nyc --require core-js --require ./tests/helpers/browser-env.js ava || mv ava.config.backup ava.config.js 2>/dev/null
       - - - - NODE_ENV=test nyc report --reporter=text-lcov | coveralls || mv ava.config.backup ava.config.js 2>/dev/null
       - - - - - mv ava.config.backup ava.config.js 2>/dev/null
 

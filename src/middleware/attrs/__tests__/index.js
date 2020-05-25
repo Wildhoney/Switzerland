@@ -1,13 +1,13 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import * as type from '../../../types/index.js';
 import attrs, { nodes } from '../index.js';
 
 test.beforeEach((t) => {
-    const observe = (t.context.observer = spy());
+    const observe = (t.context.observer = sinon.spy());
     window.MutationObserver = class {
         observe() {
             return observe();
@@ -15,7 +15,7 @@ test.beforeEach((t) => {
     };
 
     t.context.mockObserver = (mutations) => {
-        const observeSpy = spy();
+        const observeSpy = sinon.spy();
         window.MutationObserver = function (f) {
             f(mutations);
         };
@@ -86,7 +86,7 @@ test('It should be able to remove the node from the map when unmounting;', (t) =
 
 test('It should invoke the `render` function if the mutations are considered applicable;', (t) => {
     const node = defaultProps.node.cloneNode(true);
-    const renderSpy = spy();
+    const renderSpy = sinon.spy();
     node.setAttribute('name', 'Adam');
     node.setAttribute('age', '33');
 
@@ -129,7 +129,7 @@ test('It should be able to skip the instantiation of a new observer if node seen
 
 test('It should be able to skip mutations if the attribute is in excluded list;', (t) => {
     const node = defaultProps.node.cloneNode(true);
-    const renderSpy = spy();
+    const renderSpy = sinon.spy();
     node.setAttribute('name', 'Adam');
     node.setAttribute('age', '33');
     node.classList.add('something');

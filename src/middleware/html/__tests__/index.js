@@ -1,16 +1,16 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import * as superfine from 'https://cdn.jsdelivr.net/npm/superfine@6.0.1/src/index.js';
-import { spy, stub, match } from 'sinon';
+import superfine from 'superfine';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render } from '../../../index.js';
 import html from '../index.js';
 import * as u from '../utils.js';
 
 test.beforeEach((t) => {
-    t.context.viewSpy = spy(() => superfine.h('div'));
-    t.context.patchStub = stub(superfine, 'patch');
-    t.context.recycleStub = stub(superfine, 'recycle');
+    t.context.viewSpy = sinon.spy(() => superfine.h('div'));
+    t.context.patchStub = sinon.stub(superfine, 'patch');
+    t.context.recycleStub = sinon.stub(superfine, 'recycle');
 });
 
 test.afterEach((t) => {
@@ -51,7 +51,7 @@ test.serial(
             }),
         };
         await m(props);
-        const newProps = { ...props, h: match.func };
+        const newProps = { ...props, h: sinon.match.func };
         newProps.props = newProps;
         t.true(t.context.viewSpy.calledWith(newProps));
         t.context.patchStub.resetHistory();

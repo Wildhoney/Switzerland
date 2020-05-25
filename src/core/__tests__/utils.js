@@ -1,5 +1,5 @@
 import test from 'ava';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import * as u from '../utils.js';
 import * as type from '../../types/index.js';
 
@@ -31,8 +31,8 @@ test('It should be able to determine the prototype of a given element;', (t) => 
 
 test('It should be able to dispatch the event with the node and version;', (t) => {
     const node = document.createElement('div');
-    const constructorSpy = spy();
-    const dispatchEventSpy = spy();
+    const constructorSpy = sinon.spy();
+    const dispatchEventSpy = sinon.spy();
     window.CustomEvent = function (name, options) {
         constructorSpy(name, options);
     };

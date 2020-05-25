@@ -1,11 +1,11 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import { spy, match } from 'sinon';
+import sinon from 'sinon';
 import { init, create, alias } from '../index.js';
 
 test.beforeEach((t) => {
-    t.context.get = spy();
-    t.context.define = spy();
+    t.context.get = sinon.spy();
+    t.context.define = sinon.spy();
     window.crypto = { getRandomValues: () => {} };
     window.customElements = {
         get: (tag) => {
@@ -63,14 +63,14 @@ test('It should be able to handle the absolute paths correctly;', (t) => {
 test.serial('It should yield the defined tag name when creating a custom element;', (t) => {
     t.is(create('x-mercury'), 'x-mercury');
     t.is(t.context.define.callCount, 1);
-    t.true(t.context.define.calledWith('x-mercury', match.any));
+    t.true(t.context.define.calledWith('x-mercury', sinon.match.any));
 });
 
 test.serial('It should yield the defined tag name when extending a native element;', (t) => {
     t.is(create('x-jupiter/input'), 'x-jupiter');
     t.is(t.context.define.callCount, 1);
     t.true(
-        t.context.define.calledWith('x-jupiter', match.any, {
+        t.context.define.calledWith('x-jupiter', sinon.match.any, {
             extends: 'input',
         })
     );
@@ -81,7 +81,7 @@ test.serial('It should yield the defined tag name when aliasing an existing elem
     t.is(t.context.get.callCount, 2);
     t.is(t.context.define.callCount, 1);
     t.true(t.context.get.calledWith('x-neptune'));
-    t.true(t.context.define.calledWith('x-mars', match.any));
+    t.true(t.context.define.calledWith('x-mars', sinon.match.any));
 });
 
 test.serial(

@@ -1,13 +1,13 @@
 import test from 'ava';
 import withComponent from 'ava-webcomponents';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import methods from '../index.js';
 
 test('It should be able to attach methods to the node;', (t) => {
-    const add = spy();
-    const remove = spy();
+    const add = sinon.spy();
+    const remove = sinon.spy();
     const node = defaultProps.node.cloneNode(true);
     const m = methods({ add, remove });
     const newProps = m({ node });

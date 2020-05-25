@@ -1,12 +1,12 @@
 import test from 'ava';
-import { spy } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import * as u from '../utils.js';
 import state from '../index.js';
 
 test('It should be able to invoke the `useState` function;', (t) => {
-    const useStateSpy = spy(u, 'useState');
+    const useStateSpy = sinon.spy(u, 'useState');
     const m = state();
     m(defaultProps);
     t.is(useStateSpy.callCount, 1);

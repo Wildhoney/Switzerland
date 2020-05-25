@@ -26,9 +26,10 @@ const createModel = (text) => ({
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.ADD:
+        case actionTypes.ADD: {
             const models = [].concat(action.payload);
             return { list: [...state.list, ...models] };
+        }
 
         case actionTypes.REMOVE:
             return {
