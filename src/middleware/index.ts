@@ -1,0 +1,9 @@
+export { default as attrs } from './middleware/attrs/index';
+export { default as blend } from './middleware/blend/index';
+export { default as delay } from './middleware/delay/index';
+export { default as html } from './middleware/html/index';
+export { default as interval } from './middleware/interval/index';
+export { default as loader } from './middleware/loader/index';
+export { default as methods } from './middleware/methods/index';
+export { default as once } from './middleware/once/index';
+export { default as redux } from './middleware/redux/index';

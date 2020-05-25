@@ -1,3 +1,15 @@
+/**
+ * @function attrs
+ * ---
+ * Takes an optional list of excluded attributes that will be ignored when their values are mutated, such as you
+ * may not want the component to re-render when class names are modified, such as the "resolved" class name that
+ * Switzerland adds when a component has been resolved.
+ *
+ * The 'attrs' middleware parses all of the attributes defined on the host node, and augments the passed props with
+ * their values. It also observes the attributes using the 'MutationObserver' to re-render the component when any
+ * of the non-excluded attributes are modified.
+ */
+
 import { Middleware } from '../../core/create';
 import * as utils from './utils';
 

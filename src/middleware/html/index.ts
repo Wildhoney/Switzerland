@@ -1,3 +1,10 @@
+/**
+ * @function html
+ * ---
+ * Takes a virtual DOM representation that will render to the node's shadow boundary. For size reasons, Switzerland
+ * uses MorphDOM and as such you can use the MorphDOM documentation for reference.
+ */
+
 import { Middleware, Properties } from '../../core/create';
 import { Tree } from '../../core/h';
 import * as utils from './utils';
