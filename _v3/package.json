@@ -1,0 +1,101 @@
+{
+    "name": "switzerland",
+    "version": "3.13.0",
+    "module": "./es/development/index.js",
+    "type": "module",
+    "bin": {
+        "swiss": "bin/index.js"
+    },
+    "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
+    "directories": {
+        "test": "tests"
+    },
+    "scripts": {
+        "build": "taskfile build",
+        "coverage": "taskfile test/coverage",
+        "docker": "taskfile docker",
+        "format": "taskfile format",
+        "postpublish": "taskfile postpublish",
+        "prepublishOnly": "taskfile prepublish",
+        "start": "taskfile start",
+        "test": "taskfile test",
+        "spec": "taskfile test/spec"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Wildhoney/Switzerland.git"
+    },
+    "keywords": [
+        "web components",
+        "webcomponents",
+        "components",
+        "shadow dom",
+        "custom elements"
+    ],
+    "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Wildhoney/Switzerland/issues"
+    },
+    "homepage": "https://github.com/Wildhoney/Switzerland#readme",
+    "dependencies": {
+        "capitalize": "^2.0.3",
+        "chalk": "^4.0.0",
+        "copy-dir": "^1.2.0",
+        "figlet": "^1.4.0",
+        "glob": "^7.1.6",
+        "humps": "^2.0.1",
+        "jsdom": "^16.2.2",
+        "minimist": "^1.2.5",
+        "mkdirp": "^1.0.4",
+        "morphdom": "^2.6.1",
+        "ramda": "^0.27.0",
+        "redux": "^4.0.5",
+        "redux-thunk": "2.3.0",
+        "rimraf": "^3.0.2",
+        "string-template": "^1.0.0",
+        "validate-element-name": "^2.1.1"
+    },
+    "devDependencies": {
+        "@ava/babel": "^1.0.1",
+        "@babel/plugin-syntax-import-meta": "^7.8.3",
+        "ava": "^3.8.2",
+        "ava-webcomponents": "^0.1.3",
+        "axios": "^0.19.2",
+        "babel-eslint": "^10.1.0",
+        "browser-env": "^3.3.0",
+        "change-case": "^4.1.1",
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "coveralls": "^3.1.0",
+        "cryptr": "^6.0.2",
+        "delay": "^4.3.0",
+        "eslint": "^7.1.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-react": "^7.20.0",
+        "eslint-plugin-standard": "^4.0.1",
+        "esm": "^3.2.25",
+        "express": "^4.17.1",
+        "fslint": "^1.1.0",
+        "node-glob": "^1.2.0",
+        "node-mkdirp": "^0.0.1",
+        "nodemon": "^2.0.4",
+        "nyc": "^15.0.1",
+        "prettier": "^2.0.5",
+        "readlint": "^0.7.2",
+        "rollup": "^2.10.9",
+        "rollup-plugin-babel": "^4.4.0",
+        "rollup-plugin-replace": "^2.2.0",
+        "shortid": "^2.2.15",
+        "sinon": "^9.0.2",
+        "starwars": "^1.0.1",
+        "stylelint": "^13.5.0",
+        "stylelint-config-prettier": "^8.0.1",
+        "taskfile": "^0.10.0",
+        "terser": "^4.7.0"
+    }
+}
