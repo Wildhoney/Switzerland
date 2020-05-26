@@ -1,4 +1,4 @@
-import { init } from '/vendor/index.js';
+import { init } from 'switzerland';
 import header from './header.js';
 
 const path = init(import.meta.url);

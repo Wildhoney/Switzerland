@@ -1,5 +1,7 @@
 - name: start
-  task: nodemon ./example/server/index.js
+  tasks:
+      - ln -sf ../src/index.js ./node_modules/switzerland
+      - - nodemon ./example/server/index.js
 
 - name: format
   tasks:

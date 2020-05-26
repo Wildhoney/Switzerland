@@ -13,6 +13,19 @@
             type="text/javascript"
             src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"
         ></script>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "jsdom": "",
+                    "switzerland": "/vendor/index.js",
+                    "morphdom": "https://cdn.jsdelivr.net/npm/morphdom@2.6.1/dist/morphdom-esm.js",
+                    "redux": "https://cdn.jsdelivr.net/npm/redux@4.0.1/es/redux.mjs",
+                    "redux-thunk": "https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js"
+                }
+            }
+        </script>
+
         <script type="module" src="/nodes/todo-app/index.js" async defer></script>
         <script type="module" src="/nodes/flag-app/index.js" async defer></script>
         <script type="module" src="/vendor/elements/swiss-carousel/index.js" async defer></script>
@@ -24,7 +37,7 @@
             <todo-app logo="bottom"></todo-app>
         </article>
 
-        <article>
+        <!-- <article>
             <swiss-carousel direction="horizontal">
                 <template>
                     <img src="/vendor/elements/swiss-carousel/images/1.jpg" />
@@ -36,7 +49,7 @@
                     <img src="/vendor/elements/swiss-carousel/images/7.jpg" />
                 </template>
             </swiss-carousel>
-        </article>
+        </article> -->
 
         <!-- <article><flag-app></flag-app></article> -->
     </body>

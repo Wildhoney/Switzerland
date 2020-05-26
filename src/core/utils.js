@@ -248,7 +248,7 @@ export const toCamelcase = (value) => {
 };
 
 /**
- * @function findBoundary ∷ { HTMLElement, ShadowRoot|void } → ShadowRoot|HTMLElement
+ * @function getBoundary ∷ { HTMLElement, ShadowRoot|void } → ShadowRoot|HTMLElement
  */
-export const findBoundary = ({ node, boundary }) =>
+export const getBoundary = ({ node, boundary }) =>
     boundary || (node[meta] && node[meta].boundary) || node;

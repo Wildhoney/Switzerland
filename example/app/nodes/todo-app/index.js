@@ -1,4 +1,4 @@
-import { create, init } from '/vendor/index.js';
+import { create, init } from 'switzerland';
 import middleware from './middleware.js';
 import todoInput from '../todo-input/index.js';
 import todoList from '../todo-list/index.js';

@@ -1,4 +1,4 @@
-import { m, t } from '/vendor/index.js';
+import { m, t } from 'switzerland';
 import store from '../../../utils/store.js';
 
 export default (tree) => [

@@ -68,12 +68,12 @@ test('It should be able to transform into camelCase from snake and kebab;', (t) 
 
 test('It should be able to find the boundary or node depending on their existence;', (t) => {
     const node = document.createElement('div');
-    t.is(u.findBoundary({ node }), node);
+    t.is(u.getBoundary(node), node);
 
     const boundary = node.attachShadow({ mode: 'open' });
-    node[u.meta] = { boundary };
-    t.is(u.findBoundary({ node }), boundary);
+    node.shadowRoot = boundary;
+    t.is(u.getBoundary(node), boundary);
 
-    delete node[u.meta].boundary;
-    t.is(u.findBoundary({ node, boundary }), boundary);
+    delete node.shadowRoot;
+    t.is(u.getBoundary(node), boundary);
 });

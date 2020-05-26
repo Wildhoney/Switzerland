@@ -1,4 +1,4 @@
-import { findBoundary } from '../../core/utils.js';
+import { getBoundary } from '../../core/utils.js';
 
 /**
  * @function findApplicableNodes ∷ String → Props → [HTMLElement]
@@ -6,7 +6,10 @@ import { findBoundary } from '../../core/utils.js';
 export const findApplicableNodes = (names, props) => {
     return [
         ...names.reduce(
-            (accum, name) => [...accum, ...Array.from(findBoundary(props).querySelectorAll(name))],
+            (accum, name) => [
+                ...accum,
+                ...Array.from(getBoundary(props.node).querySelectorAll(name)),
+            ],
             []
         ),
     ].filter((node) => !node.classList.contains('resolved'));

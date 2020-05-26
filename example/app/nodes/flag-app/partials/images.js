@@ -1,4 +1,4 @@
-// import { u } from '/vendor/index.js';
+// import { u } from 'switzerland';
 // import { handlers } from '../utils.js';
 
 export default ({ countries, loader, h, props }) => {

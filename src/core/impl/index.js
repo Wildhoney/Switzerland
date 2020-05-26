@@ -1,4 +1,3 @@
-import dom from 'jsdom';
 import * as u from '../utils.js';
 import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
@@ -16,15 +15,17 @@ export const base = (extension, middleware) =>
             this[u.meta] = {
                 queue: createQueue(),
                 state: createState(this),
-                boundary: null,
+                boundary: this.shadowRoot,
             };
         }
 
         connectedCallback() {
+            this.setAttribute('data-swiss', '');
             return this.render({ lifecycle: 'mount' });
         }
 
         disconnectedCallback() {
+            this.removeAttribute('data-swiss', '');
             this.classList.remove('resolved');
             return this.render({ lifecycle: 'unmount' });
         }
@@ -129,9 +130,11 @@ export class SwitzerlandServer {
     }
 
     async render(props) {
-        const { window } = new dom.JSDOM();
+        const dom = await import('jsdom');
+        const { window } = new dom.default.JSDOM();
 
         const node = window.document.createElement(this.name);
+        node.setAttribute('data-swiss', '');
         Object.entries(props).forEach(([key, value]) => node.setAttribute(key, value));
         node.classList.add('resolved');
 

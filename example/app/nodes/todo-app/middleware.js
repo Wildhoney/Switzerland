@@ -1,4 +1,4 @@
-import { init, m, t } from '/vendor/index.js';
+import { init, m, t } from 'switzerland';
 import db from '../../utils/db.js';
 import store from '../../../utils/store.js';
 import todoInput from '../todo-input/index.js';

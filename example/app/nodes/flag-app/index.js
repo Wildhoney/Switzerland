@@ -1,4 +1,4 @@
-import { create, init } from '/vendor/index.js';
+import { create, init } from 'switzerland';
 import middleware from './middleware.js';
 import header from './partials/header.js';
 import result from './partials/result.js';

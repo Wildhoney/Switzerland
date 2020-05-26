@@ -1,4 +1,4 @@
-import { m } from '/vendor/index.js';
+import { m } from 'switzerland';
 import * as u from './utils.js';
 
 const fetchCountries = async ({ props }) => ({

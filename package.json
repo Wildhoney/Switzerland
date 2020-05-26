@@ -45,16 +45,15 @@
         "figlet": "^1.4.0",
         "glob": "^7.1.6",
         "humps": "^2.0.1",
-        "hyperhtml": "2.32.2",
         "jsdom": "^16.2.2",
         "minimist": "^1.2.5",
         "mkdirp": "^1.0.4",
+        "morphdom": "^2.6.1",
         "ramda": "^0.27.0",
         "redux": "^4.0.5",
         "redux-thunk": "2.3.0",
         "rimraf": "^3.0.2",
         "string-template": "^1.0.0",
-        "superfine": "7.0.0",
         "validate-element-name": "^2.1.1"
     },
     "devDependencies": {

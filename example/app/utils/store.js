@@ -1,4 +1,4 @@
-import { m } from '/vendor/index.js';
+import { m } from 'switzerland';
 import indexedDb from './db.js';
 
 const initialState = {
