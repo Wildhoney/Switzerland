@@ -1,5 +1,6 @@
 import superfine from 'superfine';
 import dom from 'jsdom';
+import { SwitzerlandServer } from '../../core/impl/index.js';
 
 /**
  * @constant trees ∷ WeakMap
@@ -60,24 +61,34 @@ export const vars = (model) => {
     return superfine.h('style', { type: 'text/css' }, `:host { ${vars} }`);
 };
 
-function getNode({ name, type }) {
-    const { window } = new dom.JSDOM();
-
-    return type === 3 ? window.document.createTextNode(name) : window.document.createElement(name);
+function isComponent(tree) {
+    return tree?.name instanceof SwitzerlandServer;
 }
 
-export function renderToDOM(tree) {
-    const node = getNode(tree);
+async function getNode(tree) {
+    if (isComponent(tree)) return tree.name.render(tree.props);
 
+    const { window } = new dom.JSDOM();
+
+    return tree.type === 3
+        ? window.document.createTextNode(tree.name)
+        : window.document.createElement(tree.name);
+}
+
+export async function renderToDOM(tree) {
+    const node = await getNode(tree);
+
+    // Iterate over each attribute and apply that to the node if it's not a component.
     Object.entries(tree.props).forEach(([key, value]) => {
-        if (typeof value === "function") return;
-        node.setAttribute(key, value)
+        if (typeof value === 'function') return;
+        node.setAttribute(key, value);
     });
 
-    tree.children.forEach((tree) => {
-        const childNode = renderToDOM(tree);
-        node.appendChild(childNode);
-    });
+    // Iterate over each of the children and yield a node with the HTML content.
+    for (tree of tree.children) {
+        const child = await renderToDOM(tree);
+        node.appendChild(child);
+    }
 
     return node;
 }

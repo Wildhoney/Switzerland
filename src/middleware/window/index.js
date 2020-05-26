@@ -4,15 +4,11 @@ import * as utils from './utils.js';
  * @function window ∷ String → (Props → Props)
  */
 export default (url) => {
-    const ref = typeof window === 'undefined' ? null : window;
+    return async function window(props) {
+        if (!props.utils.isHeadless) return props;
 
-    return function window(props) {
-        if (typeof require === 'undefined') {
-            return { ...props, window: ref };
-        }
-
-        const { JSDOM } = require('jsdom');
-        const dom = new JSDOM('', { url: utils.normaliseUrl(url) });
-        return { ...props, window: dom.window };
+        const dom = await import('jsdom');
+        const { window } = new dom.default.JSDOM('', { url: utils.normaliseUrl(url) });
+        return { ...props, window };
     };
 };

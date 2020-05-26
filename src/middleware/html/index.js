@@ -10,7 +10,7 @@ import * as u from './utils.js';
  */
 export default function html(getView, options = { recycle: false }) {
     return async function html(props) {
-        const { boundary, utils, node } = props;
+        const { node, utils } = props;
 
         // Remove any previous style resolutions.
         u.styles.has(node) && u.styles.delete(node);
@@ -31,17 +31,19 @@ export default function html(getView, options = { recycle: false }) {
 
         if (options.recycle && !u.takeTree(node)) {
             // Recycle the node if the node's content is empty.
-            boundary && boundary.appendChild(node.firstChild);
+            node.shadowRoot && node.shadowRoot.appendChild(node.firstChild);
             u.putTree(node, superfine.recycle(findBoundary(props)));
         }
 
         if (utils.isHeadless) {
-            props.node.appendChild(u.renderToDOM(view));
-            u.putTree(node, view);
+            const tree = superfine.h('templatey', { shadowroot: 'open' }, [view]);
+            props.node.appendChild(await u.renderToDOM(tree));
+            u.putTree(node, tree);
         }
 
         if (props.node.isConnected) {
-            const tree = superfine.patch(u.takeTree(node), view, findBoundary(props));
+            const boundary = node.shadowRoot || node.attachShadow({ mode: 'open' });
+            const tree = superfine.patch(u.takeTree(node), view, boundary);
             u.putTree(node, tree);
         }
 

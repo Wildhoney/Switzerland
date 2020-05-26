@@ -1,3 +1,4 @@
+import dom from 'jsdom';
 import * as u from '../utils.js';
 import createState from '../state/index.js';
 import createQueue from '../queue/index.js';
@@ -120,3 +121,33 @@ export const alias = (extension, instance) =>
             return instance.render.call(this);
         }
     };
+
+export class SwitzerlandServer {
+    constructor(name, middleware) {
+        this.name = name;
+        this.middleware = middleware;
+    }
+
+    async render(props) {
+        const { window } = new dom.JSDOM();
+
+        const node = window.document.createElement(this.name);
+        Object.entries(props).forEach(([key, value]) => node.setAttribute(key, value));
+        node.classList.add('resolved');
+
+        const newProps = await u.cycleMiddleware(
+            node,
+            u.initialProps(node, this.middleware, {
+                lifecycle: 'mount',
+                utils: { isHeadless: true },
+            }),
+            this.middleware
+        );
+
+        return newProps.node;
+    }
+}
+
+export const server = (name, middleware) => {
+    return new SwitzerlandServer(name, middleware);
+};

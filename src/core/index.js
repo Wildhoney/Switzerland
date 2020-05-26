@@ -39,7 +39,7 @@ export const create = (name, ...middleware) => {
         );
         return tag;
     } catch {
-        return { name, middleware };
+        return impl.server(name, middleware);
     }
 };
 

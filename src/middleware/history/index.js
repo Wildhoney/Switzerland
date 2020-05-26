@@ -39,6 +39,7 @@ export default (types = {}, locationParams) => {
     return function history(props) {
         const { node, utils, lifecycle } = props;
         const { isHeadless } = utils;
+
         const location = locationParams || (props.window || window).document.location;
         !nodes.has(node) && nodes.set(node, { types, defaults, location, utils });
         lifecycle === 'unmount' && nodes.delete(node);

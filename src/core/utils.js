@@ -115,7 +115,12 @@ export const consoleMessage = (text, type = 'error') =>
  * A utility function for setting all of the initial props that are used for each rendering of a component.
  * Takes the `mergeProps` which a developer can pass to the `render` method.
  */
-export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
+export const initialProps = (
+    node,
+    middleware,
+    mergeProps = {},
+    scheduledTask = Promise.resolve()
+) => {
     const utils = {
         dispatch: dispatchEvent(node),
         abort: () => {
@@ -129,6 +134,7 @@ export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
             const resolution = await Promise.race([scheduledTask, Promise.resolve(false)]);
             return resolution !== false;
         },
+        ...mergeProps.utils,
     };
 
     // Signals are used for temporary data for a single render-pass.
@@ -141,7 +147,7 @@ export const initialProps = (node, middleware, mergeProps, scheduledTask) => {
         ...mergeProps,
         node,
         utils,
-        render: node.render.bind(node),
+        render: node.render ? node.render.bind(node) : () => {},
         prevProps: previousProps.get(node),
         lifecycle: mergeProps.lifecycle || 'update',
     };
