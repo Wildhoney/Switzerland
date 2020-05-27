@@ -1,10 +1,8 @@
 import * as utils from './utils.js';
 import createQueue from './queue/index.js';
 
-const queue = createQueue();
-
 export function base(extension, middleware) {
-    const meta = Symbol('switzerland/meta');
+    const queue = createQueue();
 
     return class Switzerland extends extension {
         constructor() {
@@ -16,11 +14,11 @@ export function base(extension, middleware) {
             return this.render({ lifecycle: 'mount' });
         }
 
-        // disconnectedCallback() {
-        //     this.removeAttribute('data-swiss', '');
-        //     this.classList.remove('resolved');
-        //     return this.render({ lifecycle: 'unmount' });
-        // }
+        disconnectedCallback() {
+            this.removeAttribute('data-swiss', '');
+            this.classList.remove('resolved');
+            return this.render({ lifecycle: 'unmount' });
+        }
 
         render(props = {}) {
             const task = new Promise(async (resolve) => {

@@ -3,6 +3,8 @@ import { fromCamelcase } from '../../core/utils.js';
 
 const eventListeners = new WeakMap();
 
+export const styleSheets = new WeakMap();
+
 export function createVNode(name, props = {}, children = []) {
     return {
         name,
@@ -11,7 +13,26 @@ export function createVNode(name, props = {}, children = []) {
     };
 }
 
-async function getNode(tree) {
+export const createStyleVNode = (node) => (path, mediaQuery = '', attrs = {}) => {
+    let setLoaded = () => {};
+
+    !styleSheets.has(node) && styleSheets.set(node, new Set());
+    styleSheets.get(node).add(new Promise((resolve) => (setLoaded = resolve)));
+
+    return createVNode(
+        'style',
+        {
+            ...attrs,
+            key: path,
+            type: 'text/css',
+            onerror: () => setLoaded(),
+            onload: () => setLoaded(),
+        },
+        `@import "${path}" ${mediaQuery}`.trim() + ';'
+    );
+};
+
+export async function getNode(tree) {
     // Null values should yield to empty strings.
     if (tree == null) return document.createTextNode('');
 
@@ -35,6 +56,11 @@ export async function getVNodeDOM(tree) {
     tree?.props &&
         Object.entries(tree.props).forEach(([key, value]) => {
             if (typeof value === 'function') return;
+            if (typeof value === 'boolean') {
+                value === true && node.setAttribute(key, '');
+                return;
+            }
+
             node.setAttribute(key, value);
         });
 

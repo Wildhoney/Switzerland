@@ -1,4 +1,6 @@
-import { create, m, t } from 'switzerland';
+import { create, init, m, t } from 'switzerland';
+
+const path = init(import.meta.url);
 
 const person = create(
     'x-person',
@@ -15,15 +17,21 @@ const person = create(
 export default create(
     'x-people',
     m.boundary(),
-    m.html(({ h, render, name = null }) => {
-        return h('section', { onPersonClick: (event) => render({ name: event.detail.value }) }, [
-            name && h('div', {}, [h('span', {}, `You've selected:`), h('strong', {}, `${name}!`)]),
+    m.state({ name: 'Adam' }),
+    m.html(({ state, style, h }) => {
+        const [name, setName] = state(null);
+
+        return h('section', { onPersonClick: (event) => setName(event.detail.value) }, [
+            style(path('index.css')),
+
+            name &&
+                h('div', {}, [h('span', {}, `You've selected:`), ' ', h('strong', {}, `${name}!`)]),
 
             h(person, { name: 'Adam' }),
             h(person, { name: 'Maria' }),
             h(person, { name: 'Imogen' }),
 
-            h('button', { onClick: () => render({ name: null }) }, 'Clear'),
+            h('button', { disabled: !name, onClick: () => setName(null) }, 'Clear'),
         ]);
     })
 );
