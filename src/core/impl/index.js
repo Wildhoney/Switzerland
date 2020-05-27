@@ -6,10 +6,6 @@ export function base(extension, middleware) {
     const queue = createQueue();
 
     return class Switzerland extends extension {
-        constructor() {
-            super();
-        }
-
         connectedCallback() {
             this.setAttribute('data-swiss', '');
             return this.render({ lifecycle: 'mount' });

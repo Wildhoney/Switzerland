@@ -8,16 +8,26 @@
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
         "build": "node terser.config.mjs",
-        "start": "ln -sf  ~/Webroot/Switzerland node_modules/switzerland && nodemon ./example/server/index.mjs"
+        "start": "ln -sf  ~/Webroot/Switzerland node_modules/switzerland && nodemon ./example/server/index.mjs",
+        "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
+        "lint": "eslint '{src,tests,example}/**/**.js'"
     },
     "dependencies": {
         "morphdom": "^2.6.1"
     },
     "devDependencies": {
+        "babel-eslint": "^10.1.0",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
+        "eslint": "^7.1.0",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-react": "^7.20.0",
+        "eslint-plugin-standard": "^4.0.1",
         "express": "^4.17.1",
         "glob": "^7.1.6",
         "jsdom": "^16.2.2",

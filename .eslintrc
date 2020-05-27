@@ -1,0 +1,11 @@
+{
+    "parser": "babel-eslint",
+    "extends": ["standard", "prettier", "prettier/react", "prettier/standard"],
+    "plugins": ["react"],
+    "rules": {
+        "no-sequences": "off",
+        "no-async-promise-executor": "off",
+        "no-unsafe-finally": "off"
+    },
+    "globals": { "MutationObserver": true, "HTMLElement": true, "CustomEvent": true }
+}

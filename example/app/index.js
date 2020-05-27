@@ -1,4 +1,4 @@
-import { create, init, m, t } from 'switzerland';
+import { create, m, t } from 'switzerland';
 
 const person = create(
     'x-person',
