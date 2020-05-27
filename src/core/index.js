@@ -1,6 +1,8 @@
 import * as impl from './impl/index.js';
 import * as utils from './utils.js';
 
+export const serverOptions = new Map();
+
 /**
  * @function create
  * ---
@@ -29,17 +31,9 @@ export function create(name, ...middleware) {
  * Detects when the component is being used on a different host where absolute paths will be used instead
  * of relative ones to allow components to be rendered cross-domain.
  */
-export function init(componentUrl, pathConfig) {
+export function init(componentUrl) {
     return (resourcePath) => {
-        if (typeof require === 'undefined' || !pathConfig || pathConfig.forceBrowser) {
-            return new URL(resourcePath, componentUrl).href;
-        }
-
-        const componentPath = new URL(componentUrl).pathname;
-        const path = require('path');
-        const relativePath = path.relative(pathConfig.rootPath(path.resolve), componentPath);
-        const urlPath = new URL(relativePath, pathConfig.url);
-        return new URL(resourcePath, urlPath).href;
+        return new URL(resourcePath, componentUrl).href;
     };
 }
 
@@ -48,7 +42,10 @@ export function init(componentUrl, pathConfig) {
  * ---
  * Takes the component tree and renders it to string for server-side rendering capabilities.
  */
-export async function render(app, props = {}) {
+export async function render(app, props = {}, options = { path: 'https://0.0.0.0/' }) {
+    // Set the server-side options such as the server's URL.
+    Object.entries(options).forEach(([key, value]) => serverOptions.set(key, value));
+
     const node = await app.render(props);
     return node.outerHTML;
 }

@@ -14,6 +14,11 @@ app.use(compression());
 const example = path.resolve('./example/app');
 const vendor = path.resolve(process.env.NODE_ENV === 'production' ? './es/production' : './src');
 
+const options = {
+    path: 'http://localhost:3000/',
+    root: path.resolve('./example/app'),
+};
+
 app.get('*', (_, response, next) => {
     response.header('Service-Worker-Allowed', '/');
     next();
@@ -21,7 +26,12 @@ app.get('*', (_, response, next) => {
 
 app.get('/', async (_, response) => {
     const html = fs.readFileSync(`${example}/index.html`, 'utf-8');
-    response.send(fmt(html, { app: await render(people) }));
+
+    response.send(
+        fmt(html, {
+            app: await render(people, {}, options),
+        })
+    );
 });
 
 app.use('/vendor', express.static(vendor));
