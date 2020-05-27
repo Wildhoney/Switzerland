@@ -5,32 +5,41 @@ const eventListeners = new WeakMap();
 
 export const styleSheets = new WeakMap();
 
-export function createVNode(name, props = {}, children = []) {
-    return {
-        name,
-        props,
-        children,
-    };
+export function createVNode(node) {
+    function createVNode(name, props = {}, children = []) {
+        return {
+            name,
+            props,
+            children,
+        };
+    }
+
+    createVNode.styleSheet = createStyleVNode(node, createVNode);
+
+    return createVNode;
 }
 
-export const createStyleVNode = (node) => (path, mediaQuery = '', attrs = {}) => {
-    let setLoaded = () => {};
+export function createStyleVNode(node, createVNode) {
+    return (path, mediaQuery = '', attrs = {}) => {
+        let setLoaded = () => {};
 
-    !styleSheets.has(node) && styleSheets.set(node, new Set());
-    styleSheets.get(node).add(new Promise((resolve) => (setLoaded = resolve)));
-
-    return createVNode(
-        'style',
-        {
-            ...attrs,
-            key: path,
-            type: 'text/css',
-            onerror: () => setLoaded(),
-            onload: () => setLoaded(),
-        },
-        `@import "${path}" ${mediaQuery}`.trim() + ';'
-    );
-};
+        return createVNode(
+            'style',
+            {
+                ...attrs,
+                key: path,
+                type: 'text/css',
+                onCreate: () => {
+                    !styleSheets.has(node) && styleSheets.set(node, new Set());
+                    styleSheets.get(node).add(new Promise((resolve) => (setLoaded = resolve)));
+                },
+                onLoad: () => setLoaded(),
+                onError: () => setLoaded(),
+            },
+            `@import "${path}" ${mediaQuery}`.trim() + ';'
+        );
+    };
+}
 
 export async function getNode(tree) {
     // Null values should yield to empty strings.

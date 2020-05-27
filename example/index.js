@@ -18,11 +18,11 @@ export default create(
     'x-people',
     m.boundary(),
     m.state({ name: 'Adam' }),
-    m.html(({ state, style, h }) => {
+    m.html(({ state, h }) => {
         const [name, setName] = state(null);
 
         return h('section', { onPersonClick: (event) => setName(event.detail.value) }, [
-            style(path('index.css')),
+            h.styleSheet(path('index.css')),
 
             name &&
                 h('div', {}, [h('span', {}, `You've selected:`), ' ', h('strong', {}, `${name}!`)]),
