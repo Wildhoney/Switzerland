@@ -1,15 +1,29 @@
 {
     "name": "switzerland",
     "version": "4.0.0",
+    "type": "module",
     "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
     "main": "src/index.js",
     "repository": "git@github.com:Wildhoney/Switzerland.git",
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'"
+        "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
+        "build": "node terser.config.mjs",
+        "start": "nodemon ./example/server/index.mjs"
+    },
+    "dependencies": {
+        "morphdom": "^2.6.1"
     },
     "devDependencies": {
-        "prettier": "^2.0.5"
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "glob": "^7.1.6",
+        "mkdirp": "^1.0.4",
+        "nodemon": "^2.0.4",
+        "prettier": "^2.0.5",
+        "string-template": "^1.0.0",
+        "terser": "^4.7.0"
     }
 }
