@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "morphdom": "https://cdn.jsdelivr.net/npm/morphdom@2.6.1/dist/morphdom-esm.js",
+          "superfine": "https://cdn.jsdelivr.net/npm/superfine@7.0.0/src/index.js",
+          "switzerland": "./src/index.js"
+        }
+      }
+    </script>
+
+    <script type="module" src="./example/index.js"></script>
+  </head>
+  <body>
+    <x-people names="Adam,Maria,Imogen" data-swiss>
+      <template shadowroot="open">
+        <section>
+          <x-person name="Adam" data-swiss
+            ><template shadowroot="open">Adam</template></x-person
+          >
+          <x-person name="Maria" data-swiss
+            ><template shadowroot="open">Maria</template></x-person
+          >
+          <x-person name="Imogen" data-swiss
+            ><template shadowroot="open">Imogen</template></x-person
+          >
+        </section>
+      </template>
+    </x-people>
+  </body>
+</html>

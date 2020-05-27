@@ -1,9 +1,15 @@
 {
-  "name": "switzerland",
-  "version": "4.0.0",
-  "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
-  "main": "src/index.js",
-  "repository": "git@github.com:Wildhoney/Switzerland.git",
-  "author": "Adam Timberlake <adam.timberlake@gmail.com>",
-  "license": "MIT"
+    "name": "switzerland",
+    "version": "4.0.0",
+    "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
+    "main": "src/index.js",
+    "repository": "git@github.com:Wildhoney/Switzerland.git",
+    "author": "Adam Timberlake <adam.timberlake@gmail.com>",
+    "license": "MIT",
+    "scripts": {
+        "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'"
+    },
+    "devDependencies": {
+        "prettier": "^2.0.5"
+    }
 }
