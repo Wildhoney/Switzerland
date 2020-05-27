@@ -1,3 +1,5 @@
+import { getWindow } from '../utils.js';
+
 export function getRandomId() {
     const a = new Uint32Array(1);
     window.crypto.getRandomValues(a);
@@ -11,11 +13,13 @@ export function parseTagName(name) {
 }
 
 export function getAvailableTagName(name, suffix = null) {
+    if (typeof window === 'undefined') return name;
     const tag = suffix ? `${name}-${suffix}` : name;
     return !window.customElements.get(tag) ? tag : getAvailableTagName(tag, getRandomId());
 }
 
 export function determinePrototype(name) {
+    const window = getWindow();
     return name ? document.createElement(name).constructor : window.HTMLElement;
 }
 

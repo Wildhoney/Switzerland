@@ -1,11 +1,11 @@
 export function getInitialProps(node, props) {
     return {
-        ...props,
         node,
         boundary: node.shadowRoot ?? node,
         server: false,
         render: (props) => node.render(props),
         dispatch: dispatchEvent(node),
+        ...props,
     };
 }
 

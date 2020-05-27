@@ -1,5 +1,6 @@
 import { Swiss } from '../../core/impl/index.js';
 import { fromCamelcase } from '../../core/utils.js';
+import { getWindow } from '../../utils.js';
 
 const eventListeners = new WeakMap();
 
@@ -42,20 +43,22 @@ export function createStyleVNode(node, createVNode) {
 }
 
 export async function getNode(tree) {
+    const window = getWindow();
+
     // Null values should yield to empty strings.
-    if (tree == null) return document.createTextNode('');
+    if (tree == null) return window.document.createTextNode('');
 
     // Children can be passed through as just string representations.
-    if (typeof tree !== 'object') return document.createTextNode(String(tree));
+    if (typeof tree !== 'object') return window.document.createTextNode(String(tree));
 
     // Delegate to a whole new Swiss custom element.
-    if (tree.name instanceof Swiss) return tree.name.render();
+    if (tree.name instanceof Swiss) return tree.name.render(tree.props);
 
     // Delegate to a localised function.
     if (typeof tree === 'function') return tree(tree.props);
 
     // Otherwise it's a standard element.
-    return document.createElement(tree.name);
+    return window.document.createElement(tree.name);
 }
 
 export async function getVNodeDOM(tree) {

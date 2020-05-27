@@ -18,6 +18,8 @@ export default (types = {}, exclude = ['class', 'id', 'style', 'data-swiss']) =>
     const defaults = getDefaults(types);
 
     return function attrs(props) {
+        if (props.server) return props;
+
         if (!nodes.has(props.node) && !props.server) {
             const observer = new MutationObserver(
                 (mutations) =>
@@ -36,7 +38,7 @@ export default (types = {}, exclude = ['class', 'id', 'style', 'data-swiss']) =>
 
         return {
             ...props,
-            attrs: utils.transformAttributes(props.node.attributes, types, defaults),
+            attrs: utils.getAttributes(props.node.attributes, types, defaults),
         };
     };
 };

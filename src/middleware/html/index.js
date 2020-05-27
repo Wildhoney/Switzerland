@@ -1,14 +1,22 @@
 import morph from 'morphdom';
 import * as utils from './utils.js';
+import { getWindow } from '../../utils.js';
 
 export default function html(getTree) {
     return async (props) => {
+        const window = getWindow();
         const tree = await getTree({
             ...props,
             h: utils.createVNode(props.node),
         });
         const dom = await utils.getVNodeDOM(tree);
-        const fragment = document.createDocumentFragment();
+
+        if (props.server) {
+            props.node.appendChild(dom);
+            return props;
+        }
+
+        const fragment = window.document.createDocumentFragment();
         props.boundary && fragment.append(dom);
 
         morph(props.boundary, fragment, {
@@ -37,6 +45,6 @@ export default function html(getTree) {
         const styleSheets = utils.styleSheets.get(props.node);
         styleSheets && (await Promise.allSettled(styleSheets));
 
-        return { ...props, tree };
+        return props;
     };
 }

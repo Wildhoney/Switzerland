@@ -4,7 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import fmt from 'string-template';
-// import people from '../app/index.js';
+import { render } from 'switzerland';
+import people from '../app/index.js';
 
 const app = express();
 app.use(cors());
@@ -18,10 +19,9 @@ app.get('*', (_, response, next) => {
     next();
 });
 
-app.get('/', (_, response) => {
-    // console.log(people);
+app.get('/', async (_, response) => {
     const html = fs.readFileSync(`${example}/index.html`, 'utf-8');
-    response.send(fmt(html, { app: 'x' }));
+    response.send(fmt(html, { app: await render(people) }));
 });
 
 app.use('/vendor', express.static(vendor));

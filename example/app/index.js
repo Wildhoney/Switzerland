@@ -6,16 +6,17 @@ const person = create(
     'x-person',
     m.boundary(),
     m.attrs({ name: t.String }),
-    m.html(({ h, attrs, dispatch }) => {
+    m.html(({ h, server, attrs, dispatch }) => {
         return h('p', { onClick: () => dispatch('person-click', attrs.name) }, [
             `${attrs.name} - `,
-            h('a', { href: 'javscript:void' }, 'Choose'),
+            h('button', { disabled: server }, 'Choose'),
         ]);
     })
 );
 
 export default create(
     'x-people',
+    // m.window(import.meta.url),
     m.boundary(),
     m.state({ name: 'Adam' }),
     m.html(({ state, h }) => {

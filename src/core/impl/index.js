@@ -1,5 +1,6 @@
 import * as utils from './utils.js';
 import createQueue from './queue/index.js';
+import { getWindow } from '../../utils.js';
 
 export function base(extension, middleware) {
     const queue = createQueue();
@@ -46,10 +47,15 @@ export class Swiss {
         this.extend = extend;
     }
 
-    render() {
-        const node = document.createElement(this.name);
+    async render(props = {}) {
+        const node = getWindow().document.createElement(this.name);
         node.setAttribute('data-swiss', '');
-        this.extend != null && node.setAttribute('is', this.extend);
+
+        // Don't render at this point if it's not being server rendered, as the `connectedCallback`
+        // of the `customElements` constructor will initiate the rendering process upon mount.
+        if (typeof window !== 'undefined') return node;
+
+        await utils.cycleMiddleware(node, { server: true, attrs: props }, this.middleware);
         return node;
     }
 }

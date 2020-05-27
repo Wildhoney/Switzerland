@@ -1,6 +1,6 @@
 import { toCamelcase } from '../../core/utils.js';
 
-export const transformAttributes = (attrs, types, defaults) =>
+export const getAttributes = (attrs, types, defaults) =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
         const [f] = [].concat(types[name] || ((a) => a));

@@ -10,13 +10,15 @@ import * as utils from './utils.js';
 export function create(name, ...middleware) {
     const [tag, constuctor, extend] = utils.parseTagName(name);
 
-    window.customElements.define(
-        tag,
-        impl.base(constuctor, middleware),
-        extend && { extends: extend }
-    );
-
-    return impl.server(extend ?? tag, middleware, extend ? tag : null);
+    try {
+        window.customElements.define(
+            tag,
+            impl.base(constuctor, middleware),
+            extend && { extends: extend }
+        );
+    } finally {
+        return impl.server(extend ?? tag, middleware, extend ? tag : null);
+    }
 }
 
 /**
@@ -39,4 +41,14 @@ export function init(componentUrl, pathConfig) {
         const urlPath = new URL(relativePath, pathConfig.url);
         return new URL(resourcePath, urlPath).href;
     };
+}
+
+/**
+ * @function render
+ * ---
+ * Takes the component tree and renders it to string for server-side rendering capabilities.
+ */
+export async function render(app, props = {}) {
+    const node = await app.render(props);
+    return node.outerHTML;
 }

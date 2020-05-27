@@ -10,7 +10,7 @@
     "scripts": {
         "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
         "build": "node terser.config.mjs",
-        "start": "nodemon ./example/server/index.mjs"
+        "start": "ln -sf  ~/Webroot/Switzerland node_modules/switzerland && nodemon ./example/server/index.mjs"
     },
     "dependencies": {
         "morphdom": "^2.6.1"
@@ -20,6 +20,7 @@
         "cors": "^2.8.5",
         "express": "^4.17.1",
         "glob": "^7.1.6",
+        "jsdom": "^16.2.2",
         "mkdirp": "^1.0.4",
         "nodemon": "^2.0.4",
         "prettier": "^2.0.5",
