@@ -1,0 +1,7 @@
+ul li button.delete {
+    width: 65px;
+}
+
+ul li {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}

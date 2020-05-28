@@ -1,0 +1,22 @@
+html,
+body {
+    background-color: rgba(0, 0, 0, 0.015);
+}
+
+body {
+    scroll-snap-type: y mandatory;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+todo-app::part(header) {
+    transition: filter 1s;
+}
+
+todo-app::part(header):hover {
+    filter: grayscale(100%);
+}

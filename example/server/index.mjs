@@ -5,7 +5,7 @@ import cors from 'cors';
 import compression from 'compression';
 import fmt from 'string-template';
 import { render } from 'switzerland';
-import people from '../app/index.js';
+import people from '../app/nodes/todo-app/index.js';
 
 const app = express();
 app.use(cors());

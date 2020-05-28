@@ -7,5 +7,10 @@
         "no-async-promise-executor": "off",
         "no-unsafe-finally": "off"
     },
-    "globals": { "MutationObserver": true, "HTMLElement": true, "CustomEvent": true }
+    "globals": { "MutationObserver": true, "HTMLElement": true, "CustomEvent": true },
+    "env": {
+        "browser": true,
+        "node": true,
+        "worker": true
+    }
 }

@@ -3,21 +3,33 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Switzerland</title>
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/core.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.0.2/webcomponents-bundle.js"
+        ></script>
 
         <script type="importmap">
             {
                 "imports": {
-                    "jsdom": "https://cdn.jsdelivr.net/npm/morphdom@2.6.1/dist/morphdom-esm.js",
+                    "jsdom": "",
+                    "switzerland": "/vendor/index.js",
                     "morphdom": "https://cdn.jsdelivr.net/npm/morphdom@2.6.1/dist/morphdom-esm.js",
-                    "superfine": "https://cdn.jsdelivr.net/npm/superfine@7.0.0/src/index.js",
-                    "switzerland": "./vendor/index.js"
+                    "redux": "https://cdn.jsdelivr.net/npm/redux@4.0.1/es/redux.mjs",
+                    "redux-thunk": "https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js"
                 }
             }
         </script>
 
-        <script type="module" src="./index.js"></script>
+        <script type="module" src="/nodes/todo-app/index.js" async defer></script>
+        <link rel="stylesheet" type="text/css" href="/styles.css" />
     </head>
+
     <body>
         {app}
     </body>
