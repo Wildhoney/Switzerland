@@ -1,13 +1,31 @@
 import { create, m, t } from 'switzerland';
 
+const button = create(
+    'x-button/div',
+    m.window(import.meta.url),
+    m.boundary(),
+    m.attrs({ name: t.String }),
+    m.html(({ path, h, children }) => {
+        return h('div', {}, [children, h.styleSheet(path('button.css'))]);
+    })
+);
+
 const person = create(
     'x-person',
     m.boundary(),
     m.attrs({ name: t.String }),
-    m.html(({ h, server, attrs, dispatch }) => {
-        return h('p', { onClick: () => dispatch('person-click', attrs.name) }, [
+    m.html(({ h, attrs, server, dispatch }) => {
+        return h('p', {}, [
             `${attrs.name} - `,
-            h('button', { disabled: server }, 'Choose'),
+            h(
+                button,
+                {
+                    disabled: server,
+                    name: attrs.name,
+                    onClick: () => dispatch('person-click', attrs.name),
+                },
+                'Choose'
+            ),
         ]);
     })
 );
@@ -15,6 +33,7 @@ const person = create(
 export default create(
     'x-people',
     m.window(import.meta.url),
+    m.boundary(),
     m.html(({ path, h, f }) => {
         const [name, setName] = f.useState(null);
 
