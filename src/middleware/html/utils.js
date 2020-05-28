@@ -15,7 +15,7 @@ export function createVNode(node) {
         };
     }
 
-    createVNode.styleSheet = createStyleVNode(node, createVNode);
+    createVNode.sheet = createStyleVNode(node, createVNode);
 
     return createVNode;
 }

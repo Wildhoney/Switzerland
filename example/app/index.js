@@ -1,15 +1,5 @@
 import { create, m, t } from 'switzerland';
 
-const button = create(
-    'x-button/div',
-    m.window(import.meta.url),
-    m.boundary(),
-    m.attrs({ name: t.String }),
-    m.html(({ path, h, children }) => {
-        return h('div', {}, [children, h.styleSheet(path('button.css'))]);
-    })
-);
-
 const person = create(
     'x-person',
     m.boundary(),
@@ -18,13 +8,13 @@ const person = create(
         return h('p', {}, [
             `${attrs.name} - `,
             h(
-                button,
+                'button',
                 {
                     disabled: server,
                     name: attrs.name,
                     onClick: () => dispatch('person-click', attrs.name),
                 },
-                'Choose'
+                'Select'
             ),
         ]);
     })
@@ -38,16 +28,22 @@ export default create(
         const [name, setName] = f.useState(null);
 
         return h('section', { onPersonClick: (event) => setName(event.detail.value) }, [
-            h.styleSheet(path('index.css')),
-
-            name &&
-                h('div', {}, [h('span', {}, `You've selected:`), ' ', h('strong', {}, `${name}!`)]),
+            h('div', {}, [
+                h('span', {}, `You've selected: `),
+                h('strong', {}, `${name ?? 'Nobody'}!`),
+                h('br'),
+                h('br'),
+                h('button', { disabled: !name, onClick: () => setName(null) }, 'Clear Selection'),
+                h('br'),
+                h('br'),
+                h('hr'),
+            ]),
 
             h(person, { name: 'Adam' }),
             h(person, { name: 'Maria' }),
             h(person, { name: 'Imogen' }),
 
-            h('button', { disabled: !name, onClick: () => setName(null) }, 'Clear'),
+            h.sheet(path('index.css')),
         ]);
     })
 );
