@@ -10,7 +10,7 @@ export const serverOptions = new Map();
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
 export function create(name, ...middleware) {
-    const [tag, constuctor, extend] = utils.parseTagName(name);
+    const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
         window.customElements.define(
