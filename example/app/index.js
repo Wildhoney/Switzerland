@@ -15,10 +15,8 @@ const person = create(
 export default create(
     'x-people',
     m.window(import.meta.url),
-    m.boundary(),
-    m.state({ name: 'Adam' }),
-    m.html(({ state, path, h }) => {
-        const [name, setName] = state(null);
+    m.html(({ path, h, f }) => {
+        const [name, setName] = f.useState(null);
 
         return h('section', { onPersonClick: (event) => setName(event.detail.value) }, [
             h.styleSheet(path('index.css')),
