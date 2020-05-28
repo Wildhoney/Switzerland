@@ -1,3 +1,4 @@
+import { createVNode } from '../html/utils.js';
 import * as utils from './utils.js';
 
 /**
@@ -8,7 +9,15 @@ import * as utils from './utils.js';
  */
 export default (options) => {
     return function boundary(props) {
-        if (props.server) return { ...props, boundary: null };
+        if (props.server)
+            return {
+                ...props,
+                boundary: (tree) => {
+                    const h = createVNode(props.node);
+                    return h('x-template', { shadowroot: 'open' }, tree);
+                },
+            };
+
         const boundary = utils.attachBoundary(props.node, options);
         return { ...props, boundary };
     };

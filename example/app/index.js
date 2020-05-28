@@ -17,7 +17,7 @@ export default create(
     m.window(import.meta.url),
     m.boundary(),
     m.state({ name: 'Adam' }),
-    m.html(({ state, path, h, window }) => {
+    m.html(({ state, path, h }) => {
         const [name, setName] = state(null);
 
         return h('section', { onPersonClick: (event) => setName(event.detail.value) }, [

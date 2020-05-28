@@ -9,13 +9,16 @@ export default function html(getTree) {
             ...props,
             h: utils.createVNode(props.node),
         });
-        const dom = await utils.getVNodeDOM(tree);
 
         if (props.server) {
+            const dom = await utils.getVNodeDOM(
+                typeof props.boundary === 'function' ? props.boundary(tree) : (tree) => tree
+            );
             props.node.appendChild(dom);
             return props;
         }
 
+        const dom = await utils.getVNodeDOM(tree);
         const fragment = window.document.createDocumentFragment();
         props.boundary && fragment.append(dom);
 
