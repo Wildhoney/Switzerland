@@ -1,11 +1,21 @@
 import * as utils from './utils.js';
 import createQueue from './queue/index.js';
+import createState from './state/index.js';
 import { getWindow } from '../../utils.js';
 
 export function base(extension, middleware) {
-    const queue = createQueue();
+    const meta = Symbol('switzerland/meta');
 
-    return class Switzerland extends extension {
+    return class Swiss extends extension {
+        constructor() {
+            super();
+
+            this[meta] = {
+                queue: createQueue(),
+                state: createState(this),
+            };
+        }
+
         connectedCallback() {
             this.setAttribute('data-swiss', '');
             return this.render({ lifecycle: 'mount' });
@@ -18,13 +28,23 @@ export function base(extension, middleware) {
         }
 
         render(props = {}) {
+            const { queue, state } = this[meta];
+            state.setNormal();
+
             const task = new Promise(async (resolve) => {
                 // Await the completion of the task last added to the stack.
                 const currentTask = queue.current();
                 await currentTask;
 
-                // Iterate and invoke each middleware for this Swiss component.
-                await utils.cycleMiddleware(this, props, middleware);
+                try {
+                    // Iterate and invoke each middleware for this Swiss component.
+                    await utils.cycleMiddleware(this, props, middleware);
+                } catch (error) {
+                    // Clear the queue and resolve as a middleware threw an error, and also
+                    // mark the component as having errored.
+                    queue.dropAll();
+                    state.setError();
+                }
 
                 resolve();
             });

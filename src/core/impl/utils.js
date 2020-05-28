@@ -1,3 +1,6 @@
+import { consoleMessage } from '../../utils.js';
+import { rescueHandler } from '../../middleware/rescue/index.js';
+
 export function getInitialProps(node, props) {
     return {
         node,
@@ -29,8 +32,27 @@ export const dispatchEvent = (node) => (name, payload, options = {}) => {
 };
 
 export function cycleMiddleware(node, props, middleware) {
+    const records = new Map();
+
     async function cycle(props, middleware) {
-        return middleware(await props);
+        const updatedProps = await props;
+
+        try {
+            const newProps = await middleware(updatedProps);
+
+            // Keep a reference to the rescue handler if the new props yield one.
+            if (rescueHandler in newProps) records.set('handler', newProps[rescueHandler]);
+
+            return newProps;
+        } catch (error) {
+            const handler = records.get('handler');
+
+            // Invoke the error handler if it's present, otherwise show a console error.
+            await (handler ? handler({ ...updatedProps, error }) : consoleMessage(error));
+
+            // Re-throw an error so the caller in `Swiss.render` can clear the queue.
+            throw new Error('switzerland/error');
+        }
     }
 
     const initialProps = getInitialProps(node);
