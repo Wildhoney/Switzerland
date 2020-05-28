@@ -1,6 +1,7 @@
 import morph from 'morphdom';
 import * as utils from './utils.js';
 import { getWindow } from '../../utils.js';
+import { dispatchEvent } from '../../core/impl/utils.js';
 
 export default function html(getTree) {
     return async (props) => {
@@ -28,12 +29,10 @@ export default function html(getTree) {
                 return node.getAttribute('key') ?? null;
             },
             onNodeAdded(node) {
-                const event = new CustomEvent('create');
-                setTimeout(() => node.dispatchEvent(event));
+                dispatchEvent(node)('create', { node });
             },
             onNodeDiscarded(node) {
-                const event = new CustomEvent('destroy');
-                setTimeout(() => node.dispatchEvent(event));
+                dispatchEvent(node)('destroy', { node });
             },
             onBeforeElUpdated(from, to) {
                 const isSwiss = from instanceof HTMLElement && 'swiss' in from.dataset;
@@ -45,8 +44,8 @@ export default function html(getTree) {
         utils.attachEventListeners(tree, props.boundary.firstChild);
 
         // Wait until the appended style sheets have been resolved.
-        const styleSheets = utils.styleSheets.get(props.node);
-        styleSheets && (await Promise.allSettled(styleSheets));
+        // const styleSheets = utils.styleSheets.get(props.node);
+        // styleSheets && (await Promise.allSettled(styleSheets));
 
         return props;
     };
