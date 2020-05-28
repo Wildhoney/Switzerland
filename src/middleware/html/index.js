@@ -13,7 +13,7 @@ export default function html(getTree) {
 
         if (props.server) {
             const dom = await utils.getVNodeDOM(
-                typeof props.boundary === 'function' ? props.boundary(tree) : (tree) => tree
+                typeof props.boundary === 'function' ? props.boundary(tree) : tree
             );
             props.node.appendChild(dom);
             return props;
@@ -24,6 +24,8 @@ export default function html(getTree) {
         props.boundary && fragment.append(dom);
 
         morph(props.boundary, fragment, {
+            childrenOnly: props.boundary != null,
+
             getNodeKey(node) {
                 if (!(node instanceof HTMLElement)) return null;
                 return node.getAttribute('key') ?? null;
