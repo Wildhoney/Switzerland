@@ -43,7 +43,7 @@ export function createStyleVNode(node, createVNode) {
 }
 
 export async function getNode(tree) {
-    const window = getWindow();
+    const window = await getWindow();
 
     // Null values should yield to empty strings.
     if (tree == null) return window.document.createTextNode('');

@@ -5,7 +5,7 @@ import { dispatchEvent } from '../../core/impl/utils.js';
 
 export default function html(getTree) {
     return async (props) => {
-        const window = getWindow();
+        const window = await getWindow();
         const tree = await getTree({
             ...props,
             h: utils.createVNode(props.node),

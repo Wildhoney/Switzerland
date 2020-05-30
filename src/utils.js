@@ -1,8 +1,17 @@
-import dom from 'jsdom';
+const cache = new Map();
 
 export function getWindow() {
     if (typeof window !== 'undefined') return window;
-    return new dom.JSDOM().window;
+
+    return (
+        cache.get('window') ??
+        new Promise(async (resolve) => {
+            const dom = await import('jsdom');
+            const window = new dom.default.JSDOM().window;
+            cache.set('window', window);
+            resolve(window);
+        })
+    );
 }
 
 export function consoleMessage(text, type = 'error') {

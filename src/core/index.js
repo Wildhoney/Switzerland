@@ -1,3 +1,4 @@
+import { getWindow } from '../utils.js';
 import * as impl from './impl/index.js';
 import * as utils from './utils.js';
 
@@ -45,6 +46,10 @@ export function init(componentUrl) {
 export async function render(app, props = {}, options = { path: 'https://0.0.0.0/' }) {
     // Set the server-side options such as the server's URL.
     Object.entries(options).forEach(([key, value]) => serverOptions.set(key, value));
+
+    // Initialise the window on initial render so that it doesn't need to yield a promise every
+    // single time it's invoked, instead the return value is memoized.
+    await getWindow();
 
     const node = await app.render(props);
     return node.outerHTML;
