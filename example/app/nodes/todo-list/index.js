@@ -3,7 +3,7 @@ import { create, m } from 'switzerland';
 export default create(
     'todo-list',
     m.boundary(),
-    m.window(import.meta.url),
+    m.path(import.meta.url),
     m.html(({ redux, h, path }) => {
         const todos = [];
 
