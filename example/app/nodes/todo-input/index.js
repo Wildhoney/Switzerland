@@ -4,9 +4,12 @@ export default create(
     'todo-input',
     m.boundary(),
     m.path(import.meta.url),
-    m.html(({ path, h, render }) => {
+    m.html(({ path, h, f, server }) => {
+        const [text, setText] = f.useState('');
+
         return h('form', {}, [
             h('input', {
+                value: text,
                 type: 'text',
                 name: 'todo',
                 required: true,
@@ -14,14 +17,13 @@ export default create(
                 autoFocus: 'on',
                 autoComplete: 'off',
                 placeholder: 'What do you need to do?',
-                oninput: render,
-                onchange: render,
+                onInput: (event) => setText(event.target.value),
             }),
 
             h('button', {
                 type: 'submit',
                 class: 'add',
-                disabled: true,
+                disabled: server,
             }),
 
             h.sheet(path('./styles/index.css')),
