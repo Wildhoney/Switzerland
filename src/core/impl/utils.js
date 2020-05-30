@@ -41,7 +41,7 @@ export function cycleMiddleware(node, props, middleware) {
         updatedProps.props = updatedProps;
 
         try {
-            const newProps = await middleware(updatedProps);
+            const newProps = await (await middleware)(updatedProps);
 
             // Keep a reference to the rescue handler if the new props yield one.
             if (rescueHandler in newProps) records.set('handler', newProps[rescueHandler]);

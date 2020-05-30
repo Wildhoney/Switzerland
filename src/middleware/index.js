@@ -1,8 +1,15 @@
-export { default as attrs } from './attrs/index.js';
-export { default as boundary } from './boundary/index.js';
-export { default as delay } from './delay/index.js';
-export { default as html } from './html/index.js';
-export { default as path } from './path/index.js';
-export { default as loader } from './loader/index.js';
-export { default as rescue } from './rescue/index.js';
-export { default as window } from './window/index.js';
+export function load(name) {
+    return async (...args) => {
+        const module = await import(`./${name}/index.js`);
+        return module.default(...args);
+    };
+}
+
+export const attrs = load('attrs');
+export const boundary = load('boundary');
+export const delay = load('delay');
+export const html = load('html');
+export const loader = load('loader');
+export const path = load('path');
+export const rescue = load('rescue');
+export const window = load('window');
