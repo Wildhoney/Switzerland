@@ -25,20 +25,6 @@ export function create(name, ...middleware) {
 }
 
 /**
- * @function init
- * ---
- * Utility function for referencing paths inside of your custom components. Allows you to encapsulate
- * the components by using the `import.meta.url` (or `document.currentScript` for non-module includes).
- * Detects when the component is being used on a different host where absolute paths will be used instead
- * of relative ones to allow components to be rendered cross-domain.
- */
-export function init(componentUrl) {
-    return (resourcePath) => {
-        return new URL(resourcePath, componentUrl).href;
-    };
-}
-
-/**
  * @function render
  * ---
  * Takes the component tree and renders it to string for server-side rendering capabilities.
