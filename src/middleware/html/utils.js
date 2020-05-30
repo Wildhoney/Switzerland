@@ -16,6 +16,7 @@ export function createVNode(node) {
     }
 
     createVNode.sheet = createStyleVNode(node, createVNode);
+    createVNode.variables = createStyleVariables(createVNode);
 
     return createVNode;
 }
@@ -39,6 +40,16 @@ export function createStyleVNode(node, createVNode) {
             },
             `@import "${path}" ${mediaQuery}`.trim() + ';'
         );
+    };
+}
+
+export function createStyleVariables(createVNode) {
+    return (model) => {
+        const vars = Object.entries(model).reduce(
+            (accum, [key, value]) => `${accum} --${fromCamelcase(key).toKebab()}: ${value};`,
+            ''
+        );
+        return createVNode('style', { type: 'text/css' }, `:host { ${vars} }`);
     };
 }
 

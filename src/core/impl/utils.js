@@ -38,6 +38,7 @@ export function cycleMiddleware(node, props, middleware) {
 
     async function cycle(props, middleware) {
         const updatedProps = await props;
+        updatedProps.props = updatedProps;
 
         try {
             const newProps = await middleware(updatedProps);
