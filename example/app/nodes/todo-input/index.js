@@ -2,6 +2,7 @@ import { create, m } from 'switzerland';
 
 export default create(
     'todo-input',
+    m.boundary(),
     m.window(import.meta.url),
     m.html(({ path, h, render }) => {
         return h('form', {}, [
