@@ -7,6 +7,7 @@ export function getInitialProps(node, props) {
         node,
         boundary: node.shadowRoot ?? node,
         server: false,
+        lifecycle: 'update',
         render: (props) => node.render(props),
         dispatch: dispatchEvent(node),
         f: bindHooks(node),
