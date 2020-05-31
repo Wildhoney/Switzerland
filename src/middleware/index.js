@@ -10,6 +10,7 @@ export const boundary = load('boundary');
 export const delay = load('delay');
 export const html = load('html');
 export const loader = load('loader');
+export const methods = load('methods');
 export const path = load('path');
 export const rescue = load('rescue');
 export const window = load('window');
