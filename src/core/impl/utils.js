@@ -1,6 +1,5 @@
 import { consoleMessage } from '../../utils.js';
 import { rescueHandler } from '../../middleware/rescue/index.js';
-import bindHooks from '../../hooks/index.js';
 
 export function getInitialProps(node, props) {
     return {
@@ -10,7 +9,6 @@ export function getInitialProps(node, props) {
         lifecycle: 'update',
         render: (props) => node.render(props),
         dispatch: dispatchEvent(node),
-        f: bindHooks(node),
         ...props,
     };
 }
