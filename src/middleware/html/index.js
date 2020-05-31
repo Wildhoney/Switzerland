@@ -3,8 +3,8 @@ import * as utils from './utils.js';
 import { getWindow } from '../../utils.js';
 import { dispatchEvent } from '../../core/impl/utils.js';
 
-export default function html(getTree) {
-    return async (props) => {
+export default (getTree) => {
+    return async function html(props) {
         const window = await getWindow();
         const tree = await getTree({
             ...props,
@@ -51,4 +51,4 @@ export default function html(getTree) {
 
         return props;
     };
-}
+};

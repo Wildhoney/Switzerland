@@ -5,7 +5,6 @@ export function load(name) {
     };
 }
 
-
 export const attrs = load('attrs');
 export const boundary = load('boundary');
 export const delay = load('delay');
@@ -14,6 +13,7 @@ export const loader = load('loader');
 export const methods = load('methods');
 export const path = load('path');
 export const redux = load('redux');
+export const rename = load('rename');
 export const rescue = load('rescue');
 export const state = load('state');
 export const wait = load('wait');

@@ -1,7 +1,7 @@
 import { getWindow } from '../../utils.js';
 
-export default function window() {
-    return async (props) => {
+export default () => {
+    return async function window(props) {
         return { ...props, window: await getWindow() };
     };
-}
+};
