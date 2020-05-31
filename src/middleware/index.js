@@ -6,9 +6,11 @@ export function load(name) {
 }
 
 export const attrs = load('attrs');
+export const blend = load('blend');
 export const boundary = load('boundary');
 export const delay = load('delay');
 export const html = load('html');
+export const interval = load('interval');
 export const loader = load('loader');
 export const methods = load('methods');
 export const path = load('path');
