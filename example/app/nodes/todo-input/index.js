@@ -1,34 +1,33 @@
 import { create, m } from 'switzerland';
 
-export default create(
-    'todo-input',
-    m.boundary(),
-    m.path(import.meta.url),
-    m.html(({ path, h, f, server }) => {
-        const [text, setText] = f.useState('');
+const middleware = [m.boundary(), m.path(import.meta.url), m.html(render)];
 
-        return h('form', {}, [
-            h('input', {
-                value: text,
-                type: 'text',
-                name: 'todo',
-                required: true,
-                minLength: 5,
-                autoFocus: 'on',
-                autoComplete: 'off',
-                placeholder: 'What do you need to do?',
-                onInput: (event) => setText(event.target.value),
-            }),
+function render({ path, h, f, server }) {
+    const [text, setText] = f.useState('');
 
-            h('button', {
-                type: 'submit',
-                class: 'add',
-                disabled: server,
-            }),
+    return h('form', {}, [
+        h('input', {
+            value: text,
+            type: 'text',
+            name: 'todo',
+            required: true,
+            minLength: 5,
+            autoFocus: 'on',
+            autoComplete: 'off',
+            placeholder: 'What do you need to do?',
+            onInput: (event) => setText(event.target.value),
+        }),
 
-            h.sheet(path('./styles/index.css')),
-            h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-            h.sheet(path('./styles/print.css'), 'print'),
-        ]);
-    })
-);
+        h('button', {
+            type: 'submit',
+            class: 'add',
+            disabled: server,
+        }),
+
+        h.sheet(path('./styles/index.css')),
+        h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
+        h.sheet(path('./styles/print.css'), 'print'),
+    ]);
+}
+
+export default create('todo-input', ...middleware);
