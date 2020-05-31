@@ -1,8 +1,8 @@
 import { getEventName } from '../../core/utils.js';
-import * as utils from './utils.js';
+import * as u from './utils.js';
 
 /**
- * @function wait
+ * @function wait ∷ Props p ⇒ [String] → (p → Promise p)
  *  ---
  * Takes a list of node names that correspond to Switzerland defined custom elements. Awaits for them to
  * be mounted in the DOM, including running all of their associated middleware, before resolving the custom element
@@ -18,18 +18,20 @@ export default (...names) => {
     const eventName = getEventName('resolved');
 
     return async function wait(props) {
-        if (props.server) return props;
+        if (props.utils.isHeadless) {
+            return props;
+        }
 
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 
         await new Promise((resolve) => {
             // Find all of the nodes to wait upon, minus those that have already been resolved.
-            const nodes = utils.getApplicableNodes(names, props.boundary);
+            const nodes = u.findApplicableNodes(names, props);
 
             nodes.length === 0
                 ? resolve()
-                : utils.attachEventListener(eventName, nodes, resolved, resolve);
+                : u.attachEventListener(eventName, nodes, resolved, resolve);
         });
 
         return props;

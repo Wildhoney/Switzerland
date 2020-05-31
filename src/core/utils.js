@@ -41,3 +41,7 @@ export function fromCamelcase(value) {
         toSnake: f('_'),
     };
 }
+
+export function getEventName(label) {
+    return `@switzerland/${label}`;
+}

@@ -13,4 +13,5 @@ export const loader = load('loader');
 export const methods = load('methods');
 export const path = load('path');
 export const rescue = load('rescue');
+export const wait = load('wait');
 export const window = load('window');

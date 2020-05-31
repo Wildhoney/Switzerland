@@ -2,6 +2,7 @@ import * as utils from './utils.js';
 import createQueue from './queue/index.js';
 import createState from './state/index.js';
 import { getWindow } from '../../utils.js';
+import { getEventName } from '../utils.js';
 
 export function base(extension, middleware) {
     const meta = Symbol('switzerland/meta');
@@ -18,7 +19,6 @@ export function base(extension, middleware) {
 
         connectedCallback() {
             this.setAttribute('data-swiss', '');
-            this.classList.add('resolved');
             return this.render({ lifecycle: 'mount' });
         }
 
@@ -29,6 +29,7 @@ export function base(extension, middleware) {
         }
 
         render(props = {}) {
+            const node = this;
             const { queue, state } = this[meta];
             state.setNormal();
 
@@ -45,6 +46,16 @@ export function base(extension, middleware) {
                     // mark the component as having errored.
                     queue.dropAll();
                     state.setError();
+                } finally {
+                    // Always dispatch the "resolved" event regardless of success or failure. We also apply
+                    // the "resolved" class name to the element.
+                    const dispatchEvent = utils.dispatchEvent(node);
+                    dispatchEvent(getEventName('resolved'), {
+                        node,
+                    });
+                    node.isConnected && node.classList.add('resolved');
+                    queue.drop(task);
+                    resolve();
                 }
 
                 resolve();
