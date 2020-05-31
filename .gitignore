@@ -4,5 +4,8 @@
 # npm
 node_modules
 
+# build
+es/
+
 # yarn
 yarn-error.log

@@ -18,6 +18,7 @@ export function base(extension, middleware) {
 
         connectedCallback() {
             this.setAttribute('data-swiss', '');
+            this.classList.add('resolved');
             return this.render({ lifecycle: 'mount' });
         }
 
@@ -71,13 +72,14 @@ export class Swiss {
             this.extend && { is: this.extend }
         );
         if (this.extend) node.setAttribute('is', this.extend);
-        node.setAttribute('data-swiss', '');
+        // node.setAttribute('data-swiss', '');
 
         // Don't render at this point if it's not being server rendered, as the `connectedCallback`
         // of the `customElements` constructor will initiate the rendering process upon mount.
         if (typeof window !== 'undefined') return node;
 
         await utils.cycleMiddleware(node, { server: true, attrs: props }, this.middleware);
+        node.classList.add('resolved');
         return node;
     }
 }
