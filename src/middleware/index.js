@@ -9,6 +9,7 @@ export const attrs = load('attrs');
 export const blend = load('blend');
 export const boundary = load('boundary');
 export const delay = load('delay');
+export const form = load('form');
 export const html = load('html');
 export const interval = load('interval');
 export const loader = load('loader');

@@ -1,9 +1,9 @@
 import { create, m } from 'switzerland';
 
-const middleware = [m.boundary(), m.path(import.meta.url), m.html(render)];
+const middleware = [m.boundary(), m.state(), m.path(import.meta.url), m.html(render), m.form()];
 
-function render({ path, h, f, server }) {
-    const [text, setText] = f.useState('');
+function render({ form, path, h, state, server }) {
+    const [text, setText] = state('');
 
     return h('form', {}, [
         h('input', {
@@ -21,7 +21,7 @@ function render({ path, h, f, server }) {
         h('button', {
             type: 'submit',
             class: 'add',
-            disabled: server,
+            disabled: server || !form?.default?.checkValidity(),
         }),
 
         h.sheet(path('./styles/index.css')),

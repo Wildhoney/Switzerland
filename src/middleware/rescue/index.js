@@ -13,6 +13,7 @@ export default (getTree) => {
     return function rescue(props) {
         return {
             ...props,
+            html: getTree,
             [rescueHandler]: (props) => {
                 return html(getTree)(props);
             },

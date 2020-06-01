@@ -16,7 +16,7 @@ export default (getTree) => {
                 typeof props.boundary === 'function' ? props.boundary(tree) : tree
             );
             props.node.appendChild(dom);
-            return props;
+            return { ...props, boundary: props.node.shadowRoot };
         }
 
         const dom = await utils.getVNodeDOM(tree);
@@ -49,6 +49,6 @@ export default (getTree) => {
         // const styleSheets = utils.styleSheets.get(props.node);
         // styleSheets && (await Promise.allSettled(styleSheets));
 
-        return props;
+        return { ...props, html: getTree };
     };
 };
