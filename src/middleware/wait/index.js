@@ -1,5 +1,5 @@
 import { getEventName } from '../../core/utils.js';
-import * as u from './utils.js';
+import * as utils from './utils.js';
 
 /**
  * @function wait ∷ Props p ⇒ [String] → (p → Promise p)
@@ -18,20 +18,18 @@ export default (...names) => {
     const eventName = getEventName('resolved');
 
     return async function wait(props) {
-        if (props.utils.isHeadless) {
-            return props;
-        }
+        if (props.server) return props;
 
         // Determine which elements we need to await being resolved before we continue.
         const resolved = new Set();
 
         await new Promise((resolve) => {
             // Find all of the nodes to wait upon, minus those that have already been resolved.
-            const nodes = u.findApplicableNodes(names, props);
+            const nodes = utils.getApplicableNodes(names, props);
 
             nodes.length === 0
                 ? resolve()
-                : u.attachEventListener(eventName, nodes, resolved, resolve);
+                : utils.attachEventListener(eventName, nodes, resolved, resolve);
         });
 
         return props;
