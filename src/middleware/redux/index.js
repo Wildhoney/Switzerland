@@ -1,5 +1,11 @@
 import * as r from 'redux';
-import thunk from 'redux-thunk';
+import t from 'redux-thunk';
+
+const redux = {
+    createStore: r.default?.createStore ?? r.createStore,
+    applyMiddleware: r.default?.applyMiddleware ?? r.applyMiddleware,
+    bindActionCreators: r.default?.bindActionCreators ?? r.bindActionCreators,
+};
 
 export const nodes = new WeakSet();
 
@@ -7,8 +13,11 @@ export const nodes = new WeakSet();
  * @function redux
  */
 export default (reducer, actions) => {
-    const { dispatch, getState, subscribe } = r.createStore(reducer, r.applyMiddleware(thunk));
-    const boundActions = actions && r.bindActionCreators(actions, dispatch);
+    const { dispatch, getState, subscribe } = redux.createStore(
+        reducer,
+        redux.applyMiddleware(t.default ?? t)
+    );
+    const boundActions = actions && redux.bindActionCreators(actions, dispatch);
 
     return function redux(props) {
         const state = getState();
