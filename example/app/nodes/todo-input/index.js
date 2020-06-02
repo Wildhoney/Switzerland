@@ -1,11 +1,24 @@
 import { create, m } from 'switzerland';
+import store from '../../utils/store.js';
 
-const middleware = [m.boundary(), m.state(), m.path(import.meta.url), m.html(render), m.form()];
+const middleware = [
+    m.boundary(),
+    store,
+    m.state(),
+    m.path(import.meta.url),
+    m.html(render),
+    m.form(),
+];
 
-function render({ form, path, h, state, server }) {
+function render({ form, redux, path, h, state, server }) {
     const [text, setText] = state('');
 
-    return h('form', {}, [
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        return setText(''), redux.actions.add(text);
+    };
+
+    return h('form', { onSubmit: handleSubmit }, [
         h('input', {
             value: text,
             type: 'text',

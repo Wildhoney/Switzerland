@@ -1,9 +1,12 @@
 import { create, m } from 'switzerland';
+import store from '../../utils/store.js';
 
-const middleware = [m.boundary(), m.path(import.meta.url), m.html(render)];
+const middleware = [m.boundary(), store, m.path(import.meta.url), m.html(render)];
 
 function render({ redux, h, path }) {
-    const todos = [];
+    const todos = redux.state.list
+        .filter((model) => (history.params.get('filter') ? !model.done : true))
+        .sort((a, b) => a.created - b.created);
 
     return h('ul', {}, [
         todos.length === 0
