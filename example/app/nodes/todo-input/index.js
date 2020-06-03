@@ -19,6 +19,10 @@ function render({ form, redux, path, h, state, server }) {
     };
 
     return h('form', { onSubmit: handleSubmit }, [
+        h.sheet(path('./styles/index.css')),
+        h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
+        h.sheet(path('./styles/print.css'), 'print'),
+
         h('input', {
             value: text,
             type: 'text',
@@ -36,10 +40,6 @@ function render({ form, redux, path, h, state, server }) {
             class: 'add',
             disabled: server || !form?.default?.checkValidity(),
         }),
-
-        h.sheet(path('./styles/index.css')),
-        h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-        h.sheet(path('./styles/print.css'), 'print'),
     ]);
 }
 
