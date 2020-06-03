@@ -6,8 +6,8 @@ const eventListeners = new WeakMap();
 
 export const styleSheets = new WeakMap();
 
-export function createVNode(node) {
-    function createVNode(name, props = {}, children = []) {
+export function createVNode() {
+    function create(name, props = {}, children = []) {
         return {
             name,
             props,
@@ -15,31 +15,22 @@ export function createVNode(node) {
         };
     }
 
-    createVNode.sheet = createStyleVNode(node, createVNode);
-    createVNode.variables = createStyleVariables(createVNode);
+    create.sheet = createStyleVNode(create);
+    create.variables = createStyleVariables(create);
 
-    return createVNode;
+    return create;
 }
 
-export function createStyleVNode(node, createVNode) {
-    return (path, mediaQuery = '', attrs = {}) => {
-        let setLoaded = () => {};
-
-        return createVNode(
-            'style',
-            {
-                ...attrs,
-                key: path,
-                type: 'text/css',
-                onCreate: () => {
-                    !styleSheets.has(node) && styleSheets.set(node, new Set());
-                    styleSheets.get(node).add(new Promise((resolve) => (setLoaded = resolve)));
-                },
-                onLoad: () => setLoaded(),
-                onError: () => setLoaded(),
-            },
-            `@import "${path}" ${mediaQuery}`.trim() + ';'
-        );
+export function createStyleVNode(createVNode) {
+    return (path, media = '', attrs = {}) => {
+        return createVNode('link', {
+            ...attrs,
+            key: path,
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: path,
+            media,
+        });
     };
 }
 

@@ -7,7 +7,7 @@ export default (getTree) => {
     return async function html(props) {
         const updatedProps = {
             ...props,
-            h: utils.createVNode(props.node),
+            h: utils.createVNode(),
         };
         updatedProps.props = updatedProps;
 
