@@ -12,13 +12,15 @@ const middleware = [
 ];
 
 function render({ path, loader, props }) {
-    return h('section', { class: 'todo-app' }, [
-        h(TodoInput),
-        h(TodoList),
+    return [
+        h('section', { class: 'todo-app' }, [
+            h(TodoInput),
+            h(TodoList),
 
-        h('h1', { part: 'header' }, [
-            h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
-                h('img', { src: loader.logo }),
+            h('h1', { part: 'header' }, [
+                h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
+                    h('img', { src: loader.logo }),
+                ]),
             ]),
         ]),
 
@@ -30,7 +32,7 @@ function render({ path, loader, props }) {
             orderPosition: isBottom(props) ? 1 : -1,
             borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)',
         }),
-    ]);
+    ];
 }
 
 export default create('todo-app', ...middleware);

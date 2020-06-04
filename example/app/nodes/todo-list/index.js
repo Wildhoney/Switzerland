@@ -13,14 +13,13 @@ const middleware = [
 function render({ redux, path, props }) {
     const hasTodos = redux.state.list.length > 0;
 
-    return h('ul', {}, [
+    return [
+        h('ul', {}, [...(hasTodos ? List(props) : []), ...(!hasTodos ? Nothing(props) : [])]),
+
         h(utils.node.Sheet, { href: path('./styles/index.css') }),
         h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
         h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
-
-        ...(hasTodos ? List(props) : []),
-        ...(!hasTodos ? Nothing(props) : []),
-    ]);
+    ];
 }
 
 function List({ history, redux }) {

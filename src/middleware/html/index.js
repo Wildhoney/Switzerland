@@ -18,7 +18,7 @@ export default (getTree) => {
 
         const dom = await utils.getVNodeDOM(tree);
         const fragment = window.document.createDocumentFragment();
-        props.boundary && fragment.append(dom);
+        props.boundary && [].concat(dom).forEach((dom) => fragment.append(dom));
 
         morph(props.boundary, fragment, {
             childrenOnly: props.boundary != null,

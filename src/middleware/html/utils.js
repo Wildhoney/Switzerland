@@ -18,24 +18,36 @@ export async function getNode(tree) {
     const window = await getWindow();
 
     // Null values should yield to empty strings.
-    if (tree == null) return window.document.createTextNode('');
+    if (tree == null) return [window.document.createTextNode('')];
 
     // Children can be passed through as just string representations.
-    if (typeof tree !== 'object') return window.document.createTextNode(String(tree));
+    if (typeof tree !== 'object') return [window.document.createTextNode(String(tree))];
 
     // Delegate to a whole new Swiss custom element.
-    if (tree.name instanceof Swiss) return tree.name.render(tree.props);
+    if (tree.name instanceof Swiss) return [tree.name.render(tree.props)];
+
+    // Delegate to a localised function which produces its own sub-tree.
+    if (typeof tree.name === 'function') {
+        // Gather the sub-tree by invoking the function.
+        const subTree = tree.name({ ...tree.props, children: tree.children });
+        const node = window.document.createElement(subTree.name);
+        return [node, subTree.props];
+    }
 
     // Otherwise it's a standard element.
-    return window.document.createElement(tree.name);
+    return [window.document.createElement(tree.name)];
 }
 
 export async function getVNodeDOM(tree) {
-    const node = await getNode(tree);
+    // When passed an array of trees we'll cycle through each one.
+    if (Array.isArray(tree)) return Promise.all(tree.map(getVNodeDOM));
+
+    // Create the node from the given tree.
+    const [node, props = {}] = await getNode(tree);
 
     // Iterate over each attribute and apply that to the node if it's not a component.
     tree?.props &&
-        Object.entries(tree.props).forEach(([key, value]) => {
+        Object.entries({ ...tree.props, ...props }).forEach(([key, value]) => {
             if (typeof value === 'function') return;
             if (typeof value === 'boolean') {
                 value === true && node.setAttribute(key, '');
@@ -47,17 +59,14 @@ export async function getVNodeDOM(tree) {
 
     // Iterate over each of the children and yield a node with the HTML content.
     for (tree of [].concat(tree?.children ?? [])) {
-        if (typeof tree.name !== 'function') {
-            // Continue processing the current tree.
-            const child = await getVNodeDOM(tree);
-            node.appendChild(child);
-            continue;
-        }
+        const child = await getVNodeDOM(tree);
+        node.appendChild(child);
+        continue;
 
         // Otherwise delegate to a localised function which produces its own sub-tree.
-        const subTree = tree.name({ ...tree.props, children: tree.children });
-        const child = await getVNodeDOM(subTree);
-        node.appendChild(child);
+        // const subTree = tree.name({ ...tree.props, children: tree.children });
+        // const child = await getVNodeDOM(subTree);
+        // node.appendChild(child);
     }
 
     return node;
