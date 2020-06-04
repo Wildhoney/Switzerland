@@ -6,41 +6,11 @@ const eventListeners = new WeakMap();
 
 export const styleSheets = new WeakMap();
 
-export function createVNode() {
-    function create(name, props = {}, children = []) {
-        return {
-            name,
-            props,
-            children,
-        };
-    }
-
-    create.sheet = createStyleVNode(create);
-    create.variables = createStyleVariables(create);
-
-    return create;
-}
-
-export function createStyleVNode(createVNode) {
-    return (path, media = '', attrs = {}) => {
-        return createVNode('link', {
-            ...attrs,
-            key: path,
-            rel: 'stylesheet',
-            type: 'text/css',
-            href: path,
-            media,
-        });
-    };
-}
-
-export function createStyleVariables(createVNode) {
-    return (model) => {
-        const vars = Object.entries(model).reduce(
-            (accum, [key, value]) => `${accum} --${fromCamelcase(key).toKebab()}: ${value};`,
-            ''
-        );
-        return createVNode('style', { type: 'text/css' }, `:host { ${vars} }`);
+export function createVNode(name, props = {}, children = []) {
+    return {
+        name,
+        props,
+        children,
     };
 }
 
@@ -55,9 +25,6 @@ export async function getNode(tree) {
 
     // Delegate to a whole new Swiss custom element.
     if (tree.name instanceof Swiss) return tree.name.render(tree.props);
-
-    // Delegate to a localised function.
-    if (typeof tree === 'function') return tree(tree.props);
 
     // Otherwise it's a standard element.
     return window.document.createElement(tree.name);
@@ -80,6 +47,15 @@ export async function getVNodeDOM(tree) {
 
     // Iterate over each of the children and yield a node with the HTML content.
     for (tree of [].concat(tree?.children ?? [])) {
+        if (typeof tree.name === 'function') {
+            // // Delegate to a localised function which produces its own sub-tree.
+            const subTree = tree.name({ ...tree.props, children: tree.children });
+            const child = await getVNodeDOM(subTree);
+            node.appendChild(child);
+            continue;
+        }
+
+        // Otherwise continue processing the current tree.
         const child = await getVNodeDOM(tree);
         node.appendChild(child);
     }

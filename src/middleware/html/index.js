@@ -5,14 +5,8 @@ import { dispatchEvent } from '../../core/impl/utils.js';
 
 export default (getTree) => {
     return async function html(props) {
-        const updatedProps = {
-            ...props,
-            h: utils.createVNode(),
-        };
-        updatedProps.props = updatedProps;
-
         const window = await getWindow();
-        const tree = await getTree(updatedProps);
+        const tree = await getTree(props);
 
         if (props.server) {
             const dom = await utils.getVNodeDOM(
@@ -47,10 +41,6 @@ export default (getTree) => {
 
         // Attach the required event listeners to the DOM.
         utils.attachEventListeners(tree, props.boundary.firstChild);
-
-        // Wait until the appended style sheets have been resolved.
-        // const styleSheets = utils.styleSheets.get(props.node);
-        // styleSheets && (await Promise.allSettled(styleSheets));
 
         return { ...props, html: getTree };
     };
