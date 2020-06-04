@@ -1,4 +1,4 @@
-import { create, m ,h,utils} from 'switzerland';
+import { create, m, h, utils } from 'switzerland';
 import store from '../../utils/store.js';
 
 const middleware = [
@@ -23,7 +23,7 @@ function render({ redux, path, props }) {
     ]);
 }
 
-function List({ history, redux,  }) {
+function List({ history, redux }) {
     const todos = redux.state.list
         .filter((model) => (history.params.get('filter') ? !model.done : true))
         .sort((a, b) => a.created - b.created);

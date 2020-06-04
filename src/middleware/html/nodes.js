@@ -1,7 +1,7 @@
 import { fromCamelcase } from '../../core/utils.js';
 import { createVNode } from './utils.js';
 
-export function Sheet({ href, media = false}) {
+export function Sheet({ href, media = false }) {
     return createVNode('link', {
         key: href,
         rel: 'stylesheet',

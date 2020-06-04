@@ -1,7 +1,7 @@
 import { create, m, t, h, utils } from 'switzerland';
 import TodoInput from '../todo-input/index.js';
 import TodoList from '../todo-list/index.js';
-import {isBottom, } from './utils.js';
+import { isBottom } from './utils.js';
 
 const middleware = [
     m.path(import.meta.url),
@@ -13,7 +13,6 @@ const middleware = [
 
 function render({ path, loader, props }) {
     return h('section', { class: 'todo-app' }, [
-
         h(TodoInput),
         h(TodoList),
 
@@ -23,7 +22,6 @@ function render({ path, loader, props }) {
             ]),
         ]),
 
-        
         h(utils.node.Sheet, { href: path('./styles/index.css') }),
         h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
         h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
