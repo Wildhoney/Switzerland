@@ -40,3 +40,14 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
     const node = await app.render(props);
     return node.outerHTML.replace(/x-template/g, 'template');
 }
+
+/**
+ * @function styles
+ * ---
+ * Collates the styles for server-side rendering so that the applicable style tags can be placed in
+ * the head of the document to prevent FOUC.
+ */
+export function styles(...output) {
+    const styles = output.flatMap((output) => output.match(/<link.+?>/gi));
+    return styles.join('\n');
+}
