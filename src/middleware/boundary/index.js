@@ -12,10 +12,8 @@ export default (options) => {
         if (props.server)
             return {
                 ...props,
-                boundary: (tree) => {
-                    const h = createVNode(props.node);
-                    return h('x-template', { shadowroot: 'open' }, tree);
-                },
+                boundary: (tree) => 
+                     createVNode('x-template', { shadowroot: 'open' }, tree)
             };
 
         const boundary = utils.attachBoundary(props.node, options);
