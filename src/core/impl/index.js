@@ -24,7 +24,6 @@ export function base(extension, middleware) {
 
         disconnectedCallback() {
             this.removeAttribute('data-swiss', '');
-            this.classList.remove('resolved');
             return this.render({ lifecycle: 'unmount' });
         }
 
@@ -53,7 +52,6 @@ export function base(extension, middleware) {
                     dispatchEvent(getEventName('resolved'), {
                         node,
                     });
-                    node.isConnected && node.classList.add('resolved');
                     queue.drop(task);
                     resolve();
                 }
@@ -89,8 +87,8 @@ export class Swiss {
         // of the `customElements` constructor will initiate the rendering process upon mount.
         if (typeof window !== 'undefined') return node;
 
+        // Iterate over the middleware and then return the node.
         await utils.cycleMiddleware(node, { server: true, attrs: props }, this.middleware);
-        node.classList.add('resolved');
         return node;
     }
 }
