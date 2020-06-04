@@ -1,15 +1,21 @@
 import { create, m } from 'switzerland';
 import store from '../../utils/store.js';
 
-const middleware = [m.boundary(), store, m.path(import.meta.url), m.html(render), m.form()];
+const middleware = [
+    m.boundary(),
+    store,
+    m.state(),
+    m.path(import.meta.url),
+    m.html(render),
+    m.form(),
+];
 
-function render({ form, redux, path, h, server }) {
-    const input = form?.elements.namedItem('todo');
+function render({ form, redux, path, h, state, server }) {
+    const [todo, setTodo] = state('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        redux.actions.add(input.value);
-        input.value = '';
+        return setTodo(''), redux.actions.add(todo);
     };
 
     return h('form', { onSubmit: handleSubmit }, [
@@ -18,6 +24,7 @@ function render({ form, redux, path, h, server }) {
         h.sheet(path('./styles/print.css'), 'print'),
 
         h('input', {
+            value: todo,
             type: 'text',
             name: 'todo',
             required: true,
@@ -25,6 +32,7 @@ function render({ form, redux, path, h, server }) {
             autoFocus: 'on',
             autoComplete: 'off',
             placeholder: 'What do you need to do?',
+            onInput: (event) => setTodo(event.target.value),
         }),
 
         h('button', {
