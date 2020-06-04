@@ -1,4 +1,4 @@
-import { create, m } from 'switzerland';
+import { create, m, h, utils } from 'switzerland';
 import store from '../../utils/store.js';
 
 const middleware = [
@@ -10,7 +10,7 @@ const middleware = [
     m.form(),
 ];
 
-function render({ form, redux, path, h, state, server }) {
+function render({ form, redux, path, state, server }) {
     const [todo, setTodo] = state('');
 
     const handleSubmit = (event) => {
@@ -19,9 +19,9 @@ function render({ form, redux, path, h, state, server }) {
     };
 
     return h('form', { onSubmit: handleSubmit }, [
-        h.sheet(path('./styles/index.css')),
-        h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-        h.sheet(path('./styles/print.css'), 'print'),
+        h(utils.node.Sheet, { href: path('./styles/index.css') }),
+        h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
+        h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
 
         h('input', {
             value: todo,

@@ -1,4 +1,4 @@
-import { create, m } from 'switzerland';
+import { create, m ,h,utils} from 'switzerland';
 import store from '../../utils/store.js';
 
 const middleware = [
@@ -10,20 +10,20 @@ const middleware = [
     m.html(render),
 ];
 
-function render({ h, redux, path, props }) {
+function render({ redux, path, props }) {
     const hasTodos = redux.state.list.length > 0;
 
     return h('ul', {}, [
-        h.sheet(path('./styles/index.css')),
-        h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-        h.sheet(path('./styles/print.css'), 'print'),
+        h(utils.node.Sheet, { href: path('./styles/index.css') }),
+        h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
+        h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
 
         ...(hasTodos ? List(props) : []),
         ...(!hasTodos ? Nothing(props) : []),
     ]);
 }
 
-function List({ history, redux, h }) {
+function List({ history, redux,  }) {
     const todos = redux.state.list
         .filter((model) => (history.params.get('filter') ? !model.done : true))
         .sort((a, b) => a.created - b.created);
@@ -45,7 +45,7 @@ function List({ history, redux, h }) {
           );
 }
 
-function Nothing({ h }) {
+function Nothing() {
     return [h('li', { class: 'none' }, [h('p', {}, 'You have not added any todos yet.')])];
 }
 

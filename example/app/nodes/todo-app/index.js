@@ -1,7 +1,7 @@
-import { create, m, t } from 'switzerland';
+import { create, m, t, h, utils } from 'switzerland';
 import TodoInput from '../todo-input/index.js';
 import TodoList from '../todo-list/index.js';
-import * as utils from './utils.js';
+import {isBottom, } from './utils.js';
 
 const middleware = [
     m.path(import.meta.url),
@@ -11,8 +11,9 @@ const middleware = [
     m.html(render),
 ];
 
-function render({ path, loader, h, props }) {
+function render({ path, loader, props }) {
     return h('section', { class: 'todo-app' }, [
+
         h(TodoInput),
         h(TodoList),
 
@@ -22,14 +23,15 @@ function render({ path, loader, h, props }) {
             ]),
         ]),
 
-        h.variables({
-            orderPosition: utils.isBottom(props) ? 1 : -1,
-            borderColour: utils.isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)',
-        }),
+        
+        h(utils.node.Sheet, { href: path('./styles/index.css') }),
+        h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
+        h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
 
-        h.sheet(path('./styles/index.css')),
-        h.sheet(path('./styles/mobile.css'), '(max-width: 768px)'),
-        h.sheet(path('./styles/print.css'), 'print'),
+        utils.node.Variables({
+            orderPosition: isBottom(props) ? 1 : -1,
+            borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)',
+        }),
     ]);
 }
 
