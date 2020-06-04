@@ -13,7 +13,7 @@
         "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
         "test": "yarn lint && yarn spec",
         "spec": "ava",
-        "lint": "eslint '{src,tests,example}/**/**.js'",
+        "lint": "eslint '{src,tests,example}/**/**.js' && yarn fslint",
         "fslint": "yarn build && (cd es/production && tar -zcf ../../build.tar.gz .) && (fslint --files=build.tar.gz --limit=6144 || rm -rf build.tar.gz es/) && rm -rf build.tar.gz es/"
     },
     "dependencies": {
