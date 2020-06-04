@@ -13,7 +13,8 @@
         "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
         "test": "yarn lint && yarn spec",
         "spec": "ava",
-        "lint": "eslint '{src,tests,example}/**/**.js'"
+        "lint": "eslint '{src,tests,example}/**/**.js'",
+        "fslint": "yarn build && (cd es/production && tar -zcf ../../build.tar.gz .) && (fslint --files=build.tar.gz --limit=6144 || rm -rf build.tar.gz es/) && rm -rf build.tar.gz es/"
     },
     "dependencies": {
         "morphdom": "^2.6.1"
@@ -32,6 +33,7 @@
         "eslint-plugin-react": "^7.20.0",
         "eslint-plugin-standard": "^4.0.1",
         "express": "^4.17.1",
+        "fslint": "^1.1.0",
         "glob": "^7.1.6",
         "jsdom": "^16.2.2",
         "mkdirp": "^1.0.4",
