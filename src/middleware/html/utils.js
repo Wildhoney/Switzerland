@@ -47,16 +47,16 @@ export async function getVNodeDOM(tree) {
 
     // Iterate over each of the children and yield a node with the HTML content.
     for (tree of [].concat(tree?.children ?? [])) {
-        if (typeof tree.name === 'function') {
-            // // Delegate to a localised function which produces its own sub-tree.
-            const subTree = tree.name({ ...tree.props, children: tree.children });
-            const child = await getVNodeDOM(subTree);
+        if (typeof tree.name !== 'function') {
+            // Continue processing the current tree.
+            const child = await getVNodeDOM(tree);
             node.appendChild(child);
             continue;
         }
 
-        // Otherwise continue processing the current tree.
-        const child = await getVNodeDOM(tree);
+        // Otherwise delegate to a localised function which produces its own sub-tree.
+        const subTree = tree.name({ ...tree.props, children: tree.children });
+        const child = await getVNodeDOM(subTree);
         node.appendChild(child);
     }
 
