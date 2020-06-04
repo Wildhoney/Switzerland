@@ -37,6 +37,7 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
     // single time it's invoked, instead the return value is memoized.
     await getWindow();
 
+
     const node = await app.render(props);
     return node.outerHTML.replace(/x-template/g, 'template');
 }

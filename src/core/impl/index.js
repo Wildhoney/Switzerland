@@ -80,8 +80,8 @@ export class Swiss {
             this.name,
             this.extend && { is: this.extend }
         );
+        node.setAttribute('data-swiss', '');
         if (this.extend) node.setAttribute('is', this.extend);
-        // node.setAttribute('data-swiss', '');
 
         // Don't render at this point if it's not being server rendered, as the `connectedCallback`
         // of the `customElements` constructor will initiate the rendering process upon mount.
