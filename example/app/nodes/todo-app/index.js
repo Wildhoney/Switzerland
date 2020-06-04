@@ -9,7 +9,6 @@ const middleware = [
     m.attrs({ logo: t.String }),
     m.loader((path) => ({ logo: path('./images/logo.png') })),
     m.html(render),
-    m.wait('todo-input', 'todo-list'),
 ];
 
 function render({ path, loader, h, props }) {
