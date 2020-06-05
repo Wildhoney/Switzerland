@@ -28,7 +28,7 @@
 2. [Elements](#elements)
 3. [Philosophy](#philosophy)
 4. [Middleware](#middleware)
-<!-- 5. [CLI](#cli) -->
+ <!-- 5. [CLI](#cli) -->
 
 ## Getting Started
 
@@ -176,7 +176,7 @@ import { render } from 'switzerland';
 import Countries from './components/Countries';
 
 app.get('/', async (_, response) => {
-    const html = fs.readFileSync(`${example}/index.html`, 'utf-8');
+    const html = fs.readFileSync('./app/index.html', 'utf-8');
     const countries = await render(Countries, {
         values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
     });
@@ -194,7 +194,7 @@ import { render, styles } from 'switzerland';
 import Countries from './components/Countries';
 
 app.get('/', async (_, response) => {
-    const html = fs.readFileSync(`${example}/index.html`, 'utf-8');
+    const html = fs.readFileSync('./app/index.html', 'utf-8');
     const countries = await render(Countries, {
         values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
     });
