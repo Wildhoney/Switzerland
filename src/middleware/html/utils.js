@@ -71,6 +71,10 @@ export async function getVNodeDOM(tree) {
 }
 
 export function attachEventListeners(tree, node) {
+    if (Array.isArray(tree))
+        // Iterate over the tree if it's an array.
+        tree.forEach((tree, index) => attachEventListeners(tree, [...node.childNodes][index]));
+
     const listeners = eventListeners.get(node) ?? [];
 
     // Remove all of the existing event listeners from the node.

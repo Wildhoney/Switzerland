@@ -41,7 +41,7 @@ export default (getTree) => {
         });
 
         // Attach the required event listeners to the DOM.
-        utils.attachEventListeners(tree, props.boundary.firstChild);
+        utils.attachEventListeners(tree, props.boundary);
 
         return { ...props, html: getTree };
     };
