@@ -7,17 +7,18 @@ export default (getTree) => {
     return async function html(props) {
         const window = await getWindow();
         const tree = await getTree(props);
+        const fragment = window.document.createDocumentFragment();
 
         if (props.server) {
             const dom = await utils.getVNodeDOM(
                 typeof props.boundary === 'function' ? props.boundary(tree) : tree
             );
-            props.node.appendChild(dom);
+            [].concat(dom).forEach((dom) => fragment.append(dom));
+            props.node.appendChild(fragment);
             return { ...props, boundary: props.node.shadowRoot };
         }
 
         const dom = await utils.getVNodeDOM(tree);
-        const fragment = window.document.createDocumentFragment();
         props.boundary && [].concat(dom).forEach((dom) => fragment.append(dom));
 
         morph(props.boundary, fragment, {
