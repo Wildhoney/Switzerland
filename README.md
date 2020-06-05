@@ -253,7 +253,7 @@ After a couple of milliseconds you _should_ see the todo app embedded into Googl
 -   [`blend`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/blend) &ndash; Keep your functions general when using as middleware functions.
 -   `defer` &ndash; Invokes function after `x` milliseconds if the current render hasn't completed.
 -   `delay` &ndash; Awaits by `x` milliseconds before continuing to the next middleware item.
--   [`wait`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/wait) &ndash; Await the resolution of other components to make rendering atmoic.
+-   [`wait`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/wait) &ndash; Await the resolution of other components to make rendering atomic.
 
 <!-- ## CLI
 
