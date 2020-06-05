@@ -1,28 +1,18 @@
-import { create, m, h, utils } from 'switzerland';
+import { create, m, h, t, utils } from 'switzerland';
 import store from '../../utils/store.js';
 
 const middleware = [
     m.boundary(),
     store,
     m.window(),
-    m.history(),
+    m.history({
+        filter: [t.Bool, false],
+    }),
     m.path(import.meta.url),
     m.html(render),
 ];
 
-function render({ redux, path, props }) {
-    const hasTodos = redux.state.list.length > 0;
-
-    return [
-        h('ul', {}, [...(hasTodos ? List(props) : []), ...(!hasTodos ? Nothing(props) : [])]),
-
-        h(utils.node.Sheet, { href: path('./styles/index.css') }),
-        h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
-        h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
-    ];
-}
-
-function List({ history, redux }) {
+function list({ history, redux }) {
     const todos = redux.state.list
         .filter((model) => (history.params.get('filter') ? !model.done : true))
         .sort((a, b) => a.created - b.created);
@@ -44,8 +34,20 @@ function List({ history, redux }) {
           );
 }
 
-function Nothing() {
+function nothing() {
     return [h('li', { class: 'none' }, [h('p', {}, 'You have not added any todos yet.')])];
+}
+
+function render({ redux, path, props }) {
+    const hasTodos = redux.state.list.length > 0;
+
+    return [
+        h('ul', {}, [...(hasTodos ? list(props) : []), ...(!hasTodos ? nothing(props) : [])]),
+
+        h(utils.node.Sheet, { href: path('./styles/index.css') }),
+        h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
+        h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
+    ];
 }
 
 export default create('todo-list', ...middleware);
