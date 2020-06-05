@@ -1,9 +1,8 @@
 import { create, m, t, h, utils } from 'switzerland';
 import TodoInput from '../todo-input/index.js';
 import TodoList from '../todo-list/index.js';
-import db from '../../utils/db.js';
 import store from '../../utils/store.js';
-import { isBottom } from './utils.js';
+import { isBottom, initialise, worker } from './utils.js';
 
 const middleware = [
     m.window(),
@@ -16,27 +15,6 @@ const middleware = [
     m.loader((path) => ({ logo: path('./images/logo.png') })),
     m.html(render),
 ];
-
-async function initialise(props) {
-    const { todos } = await db();
-    props.redux.actions.put(todos);
-    return props;
-}
-
-async function worker(props) {
-    try {
-        props.window.navigator.serviceWorker &&
-            (await props.window.navigator.serviceWorker.register(
-                props.path('../../../utils/worker.js'),
-                {
-                    scope: '/',
-                }
-            ));
-        return props;
-    } catch {
-        return props;
-    }
-}
 
 function render({ path, loader, props }) {
     return [
