@@ -19,5 +19,6 @@ export const path = load('path');
 export const redux = load('redux');
 export const rename = load('rename');
 export const rescue = load('rescue');
+export const run = load('run');
 export const state = load('state');
 export const window = load('window');
