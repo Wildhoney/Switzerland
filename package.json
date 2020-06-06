@@ -24,7 +24,7 @@
         "babel-eslint": "^10.1.0",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
-        "eslint": "^7.1.0",
+        "eslint": "^7.2.0",
         "eslint-config-prettier": "^6.11.0",
         "eslint-config-standard": "^14.1.1",
         "eslint-plugin-import": "^2.20.2",
