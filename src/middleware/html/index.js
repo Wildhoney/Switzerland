@@ -1,25 +1,22 @@
 import morph from 'morphdom';
 import * as utils from './utils.js';
-import { getWindow } from '../../utils.js';
 import { dispatchEvent } from '../../core/impl/utils.js';
 
 export default (getTree) => {
     return async function html(props) {
-        const window = await getWindow();
         const tree = await getTree(props);
-        const fragment = window.document.createDocumentFragment();
 
         if (props.server) {
-            const dom = await utils.getVNodeDOM(
+            const nodes = await utils.getVNodeDOM(
                 typeof props.boundary === 'function' ? props.boundary(tree) : tree
             );
-            [].concat(dom).forEach((dom) => fragment.append(dom));
+            const fragment = await utils.getVNodeFragment(nodes);
             props.node.appendChild(fragment);
             return { ...props, boundary: props.node.shadowRoot };
         }
 
-        const dom = await utils.getVNodeDOM(tree);
-        props.boundary && [].concat(dom).forEach((dom) => fragment.append(dom));
+        const nodes = await utils.getVNodeDOM(tree);
+        const fragment = await utils.getVNodeFragment(nodes);
 
         morph(props.boundary, fragment, {
             childrenOnly: props.boundary != null,
@@ -29,19 +26,19 @@ export default (getTree) => {
                 return node.getAttribute('key') ?? null;
             },
             onNodeAdded(node) {
+                node.attachEventListeners(node);
                 dispatchEvent(node)('create', { node });
             },
             onNodeDiscarded(node) {
+                node.detatchEventListeners(node);
                 dispatchEvent(node)('destroy', { node });
             },
             onBeforeElUpdated(from, to) {
                 const isSwiss = from instanceof HTMLElement && 'swiss' in from.dataset;
+                !isSwiss && to.attachEventListeners(from);
                 return isSwiss ? false : to;
             },
         });
-
-        // Attach the required event listeners to the DOM.
-        utils.attachEventListeners(tree, props.boundary);
 
         return { ...props, html: getTree };
     };
