@@ -35,7 +35,7 @@ export default (getTree) => {
             },
             onBeforeElUpdated(from, to) {
                 const isSwiss = from instanceof HTMLElement && 'swiss' in from.dataset;
-                !isSwiss && to.attachEventListeners(from);
+                to.attachEventListeners(from);
                 return isSwiss ? false : to;
             },
         });
