@@ -2,10 +2,12 @@ import { create, m, h, t, utils } from 'switzerland';
 import store from '../../utils/store.js';
 import List from './components/list.js';
 import Nothing from './components/nothing.js';
+import { initialise } from './utils.js';
 
 const middleware = [
-    m.boundary(),
     store,
+    m.run('mount', initialise),
+    m.boundary(),
     m.window(),
     m.history({
         filter: [t.Bool, false],

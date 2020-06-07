@@ -2,13 +2,12 @@ import { create, m, t, h, utils } from 'switzerland';
 import TodoInput from '../todo-input/index.js';
 import TodoList from '../todo-list/index.js';
 import store from '../../utils/store.js';
-import { isBottom, initialise, worker } from './utils.js';
+import { isBottom, worker } from './utils.js';
 
 const middleware = [
     m.window(),
     store,
     m.path(import.meta.url),
-    m.run('mount', initialise),
     m.run('mount', worker),
     m.boundary(),
     m.attrs({ logo: t.String }),
