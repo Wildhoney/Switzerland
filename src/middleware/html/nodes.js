@@ -21,5 +21,5 @@ export function Variables(props) {
 }
 
 export function Fragment(props) {
-    return Object.values(props);
+    return props.children ?? Object.values(props);
 }
