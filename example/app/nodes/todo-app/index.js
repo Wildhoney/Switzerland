@@ -5,17 +5,15 @@ import store from '../../utils/store.js';
 import { isBottom, worker } from './utils.js';
 
 const middleware = [
-    m.window(),
     store,
     m.path(import.meta.url),
     m.run('mount', worker),
     m.boundary(),
     m.attrs({ logo: t.String }),
-    m.loader((path) => ({ logo: path('./images/logo.png') })),
     m.html(render),
 ];
 
-function render({ path, loader, props }) {
+function render({ path, props, window }) {
     return [
         h('section', { class: 'todo-app' }, [
             h(TodoInput),
@@ -23,7 +21,7 @@ function render({ path, loader, props }) {
 
             h('h1', { part: 'header' }, [
                 h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
-                    h('img', { src: loader.logo }),
+                    h('img', { src: path('./images/logo.png') }),
                 ]),
             ]),
         ]),

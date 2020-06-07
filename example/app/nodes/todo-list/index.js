@@ -8,7 +8,6 @@ const middleware = [
     store,
     m.run('mount', initialise),
     m.boundary(),
-    m.window(),
     m.history({
         filter: [t.Bool, false],
     }),

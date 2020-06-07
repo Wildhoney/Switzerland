@@ -214,7 +214,7 @@ const options = {
 };
 ```
 
-Finally if you reference the `window` in any of your components, you can use the `m.window` middleware for server-side compatibility &ndash; on the server the `window` will be from JSDOM, whereas on the client side `window` will be the native window object.
+Finally if you reference the `window` in any of your components, you can destructure the `window` property for server-side compatibility &ndash; on the server the `window` will be from JSDOM, whereas on the client side `window` will be the native window object.
 
 ## Elements
 

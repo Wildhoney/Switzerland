@@ -1,14 +1,17 @@
-import { consoleMessage } from '../../utils.js';
+import { consoleMessage, getWindow } from '../../utils.js';
 import { rescueHandler } from '../../middleware/rescue/index.js';
 
-export function getInitialProps(node, props) {
+async function getInitialProps(node, props) {
+    const server = props.server ?? false;
+
     return {
         node,
         boundary: node.shadowRoot ?? node,
-        server: false,
+        server,
         lifecycle: 'update',
         render: (props) => node.render(props),
         dispatch: dispatchEvent(node),
+        window: server ? await getWindow() : window,
         ...props,
     };
 }
@@ -32,7 +35,7 @@ export const dispatchEvent = (node) => (name, payload, options = {}) => {
     );
 };
 
-export function cycleMiddleware(node, props, middleware) {
+export async function cycleMiddleware(node, props, middleware) {
     const records = new Map();
 
     async function cycle(props, middleware) {
@@ -57,6 +60,6 @@ export function cycleMiddleware(node, props, middleware) {
         }
     }
 
-    const initialProps = getInitialProps(node);
+    const initialProps = await getInitialProps(node, props);
     return middleware.reduce(cycle, { ...initialProps, ...props });
 }
