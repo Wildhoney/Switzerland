@@ -19,3 +19,7 @@ export function Variables(props) {
 
     return createVNode('style', { type: 'text/css' }, `:host { ${vars} }`);
 }
+
+export function Fragment(props) {
+    return Object.values(props);
+}

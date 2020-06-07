@@ -25,7 +25,7 @@ function render({ form, redux, path, state, server }) {
                 type: 'text',
                 name: 'todo',
                 required: true,
-                minLength: 5,
+                minLength: 3,
                 autoFocus: 'on',
                 autoComplete: 'off',
                 placeholder: 'What do you need to do?',
