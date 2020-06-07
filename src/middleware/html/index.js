@@ -26,17 +26,17 @@ export default (getTree) => {
                 return node.getAttribute('key') ?? null;
             },
             onNodeAdded(node) {
-                node.attachEventListeners(node);
+                typeof node.attachEventListeners === 'function' && node.attachEventListeners(node);
                 dispatchEvent(node)('create', { node });
             },
             onNodeDiscarded(node) {
-                node.detatchEventListeners(node);
+                typeof node.detatchEventListeners === 'function' &&
+                    node.detatchEventListeners(node);
                 dispatchEvent(node)('destroy', { node });
             },
             onBeforeElUpdated(from, to) {
-                const isSwiss = from instanceof HTMLElement && 'swiss' in from.dataset;
-                to.attachEventListeners(from);
-                return isSwiss ? false : to;
+                typeof to.attachEventListeners === 'function' && to.attachEventListeners(from);
+                return to;
             },
         });
 
