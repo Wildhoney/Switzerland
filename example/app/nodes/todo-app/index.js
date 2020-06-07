@@ -12,7 +12,9 @@ const middleware = [
     m.path(import.meta.url),
     m.run('mount', worker),
     m.boundary(),
-    m.history(),
+    m.history({
+        filter: [t.Bool, false],
+    }),
     m.attrs({ logo: t.String }),
     m.html(render),
 ];
