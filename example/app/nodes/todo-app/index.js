@@ -3,17 +3,21 @@ import TodoInput from '../todo-input/index.js';
 import TodoList from '../todo-list/index.js';
 import store from '../../utils/store.js';
 import { isBottom, worker } from './utils.js';
+import Position from './components/position.js';
+import Dimensions from './components/dimensions.js';
+import Filter from './components/filter.js';
 
 const middleware = [
     store,
     m.path(import.meta.url),
     m.run('mount', worker),
     m.boundary(),
+    m.history(),
     m.attrs({ logo: t.String }),
     m.html(render),
 ];
 
-function render({ path, props, window }) {
+function render({ path, props }) {
     return [
         h('section', { class: 'todo-app' }, [
             h(TodoInput),
@@ -24,6 +28,8 @@ function render({ path, props, window }) {
                     h('img', { src: path('./images/logo.png') }),
                 ]),
             ]),
+
+            h('ul', {}, [h(Position, props), h(Filter, props), h(Dimensions, props)]),
         ]),
 
         h(utils.node.Sheet, { href: path('./styles/index.css') }),
