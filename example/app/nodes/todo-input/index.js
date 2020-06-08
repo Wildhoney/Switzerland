@@ -4,14 +4,14 @@ import store from '../../utils/store.js';
 const middleware = [
     m.boundary(),
     store,
-    m.state(),
+    m.bind(),
     m.path(import.meta.url),
     m.html(render),
     m.form(),
 ];
 
-function render({ form, redux, path, state, server }) {
-    const [todo, setTodo] = state('');
+function render({ form, redux, path, bind, server }) {
+    const [todo, setTodo] = bind.useState('');
 
     const handleSubmit = (event) => {
         event.preventDefault();

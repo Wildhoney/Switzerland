@@ -6,6 +6,7 @@ export function load(name) {
 }
 
 export const attrs = load('attrs');
+export const bind = load('bind');
 export const blend = load('blend');
 export const boundary = load('boundary');
 export const delay = load('delay');
@@ -19,4 +20,3 @@ export const redux = load('redux');
 export const rename = load('rename');
 export const rescue = load('rescue');
 export const run = load('run');
-export const state = load('state');
