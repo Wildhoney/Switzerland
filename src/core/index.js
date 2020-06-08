@@ -47,7 +47,25 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
  * Collates the styles for server-side rendering so that the applicable style tags can be placed in
  * the head of the document to prevent FOUC.
  */
-export function styles(...output) {
-    const styles = output.flatMap((output) => output.match(/<link.+?>/gi));
-    return styles.join('\n');
+export async function styles(...output) {
+    const window = getWindow();
+
+    const links = output
+        .flatMap((output) => output.match(/<link.+?>/gi))
+        .map((link) => {
+            // Parse the link DOM string into a HTML node.
+            const node = window.document.createElement('div');
+            node.innerHTML = link;
+            const child = node.firstChild;
+
+            // Transform the link into a preload node for the head of the document.
+            child.setAttribute('as', 'style');
+            child.setAttribute('rel', 'preload');
+            child.removeAttribute('key');
+            child.removeAttribute('type');
+
+            return child.outerHTML;
+        });
+
+    return links.join('\n');
 }
