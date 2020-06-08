@@ -37,12 +37,16 @@ export default (getTree) => {
             onBeforeElUpdated(from, to) {
                 const isSwiss = from instanceof HTMLElement && 'swiss' in from.dataset;
 
-                if (isSwiss)
+                if (isSwiss) {
                     // We only update the attributes of Swiss components, as each component
                     // is self-contained.
+                    Object.values(from.attributes).forEach((attr) =>
+                        from.removeAttribute(attr.nodeName)
+                    );
                     Object.values(to.attributes).forEach((attr) =>
                         from.setAttribute(attr.nodeName, attr.nodeValue)
                     );
+                }
 
                 typeof to.attachEventListeners === 'function' && to.attachEventListeners(from);
                 return isSwiss ? false : to;
