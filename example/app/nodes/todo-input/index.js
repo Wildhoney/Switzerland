@@ -4,24 +4,22 @@ import store from '../../utils/store.js';
 const middleware = [
     m.boundary(),
     store,
-    m.bind(),
     m.path(import.meta.url),
+    m.state({ text: '' }),
     m.html(render),
     m.form(),
 ];
 
-function render({ form, redux, path, bind, server }) {
-    const [todo, setTodo] = bind.useState('');
-
+function render({ form, redux, path, server, state, setState }) {
     const handleSubmit = (event) => {
         event.preventDefault();
-        return setTodo(''), redux.actions.add(todo);
+        return setState({ ...state, text: '' }), redux.actions.add(state.text);
     };
 
     return [
         h('form', { onSubmit: handleSubmit }, [
             h('input', {
-                value: todo,
+                value: state.text,
                 type: 'text',
                 name: 'todo',
                 required: true,
@@ -29,7 +27,7 @@ function render({ form, redux, path, bind, server }) {
                 autoFocus: 'on',
                 autoComplete: 'off',
                 placeholder: 'What do you need to do?',
-                onInput: (event) => setTodo(event.target.value),
+                onInput: (event) => setState({ ...state, text: event.target.value }),
             }),
 
             h('button', {
