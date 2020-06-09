@@ -6,12 +6,10 @@ export function useState({ node, render }) {
     return (value) => {
         const key = utils.getKey();
 
-        console.log(key);
-
         !values.has(node) && values.set(node, new Map());
         const storage = values.get(node);
 
         const setValue = (value) => (storage.set(key, value), render());
-        return [storage.get(key) || value, setValue];
+        return [storage.get(key) ?? value, setValue];
     };
 }
