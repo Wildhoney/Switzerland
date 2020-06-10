@@ -9,9 +9,24 @@ export const events = Symbol('switzerland/events');
 export function createVNode(name, props = {}, ...children) {
     return {
         name,
-        props,
+        props: typeof name === 'string' ? getProps(props) : props,
         children: children.flat(),
     };
+}
+
+export function getProps(props) {
+    return Object.entries(props).reduce((props, [key, value]) => {
+        if (typeof value === 'object') {
+            const mergedProps = Object.entries(value).reduce((props, prop) => {
+                const item = getProps({ [`${key}-${prop[0]}`]: prop[1] });
+                return { ...props, ...item };
+            }, {});
+
+            return { ...props, ...mergedProps };
+        }
+
+        return { ...props, [key]: value };
+    }, {});
 }
 
 export async function getNode(tree) {
