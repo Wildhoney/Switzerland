@@ -42,12 +42,12 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
 }
 
 /**
- * @function styles
+ * @function preload
  * ---
- * Collates the styles for server-side rendering so that the applicable style tags can be placed in
- * the head of the document to prevent FOUC.
+ * Collates the assets for server-side rendering so that the qualifying nodes can be placed in
+ * the head of the document to preload which helps to prevent FOUC.
  */
-export async function styles(...output) {
+export async function preload(...output) {
     const window = getWindow();
 
     const links = output

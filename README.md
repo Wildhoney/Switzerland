@@ -185,12 +185,12 @@ app.get('/', async (_, response) => {
 });
 ```
 
-Using the declarative shadow DOM a shadow boundary will be added to your component server-side when using the `m.boundary` middleware. All styles will be applied in the component, however to prevent FOUC it's recommended to load your CSS documents in the `head` &ndash; Switzerland exports a `styles` function which takes your HTML and collates all of the CSS imports for that component tree.
+Using the declarative shadow DOM a shadow boundary will be added to your component server-side when using the `m.boundary` middleware. All styles will be applied in the component, however to prevent FOUC it's recommended to load your CSS documents in the `head` &ndash; Switzerland exports a `preload` function which takes your HTML and collates all of the CSS imports for that component tree.
 
 ```javascript
 import fs from 'fs';
 import fmt from 'string-template';
-import { render, styles } from 'switzerland';
+import { render, preload } from 'switzerland';
 import Countries from './components/Countries';
 
 app.get('/', async (_, response) => {
@@ -199,7 +199,7 @@ app.get('/', async (_, response) => {
         values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
     });
 
-    response.send(fmt(html, { countries, styles: styles(html) }));
+    response.send(fmt(html, { countries, styles: preload(html) }));
 });
 ```
 
