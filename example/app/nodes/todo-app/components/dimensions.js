@@ -1,10 +1,10 @@
 import { h } from 'switzerland';
 
-export default function Dimensions() {
-    const adapt = { width: 100, height: 120 };
+export default function Dimensions({ state }) {
+    if (!state.adapt) return h('li', {}, 'Loading...');
 
     return h('li', {}, [
         h('em', {}, 'Dimensions: '),
-        h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`),
+        h('span', {}, `${Math.round(state.adapt.width)}×${Math.round(state.adapt.height)}`),
     ]);
 }

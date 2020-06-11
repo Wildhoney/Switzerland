@@ -1,14 +1,14 @@
 import { h } from 'switzerland';
 import { isBottom } from '../utils.js';
 
-export default function Position(props) {
+export default function Position({ node, attrs }) {
     return h('li', {}, [
         h('em', {}, 'Logo: '),
         h(
             'a',
             {
-                class: isBottom(props) ? 'active' : '',
-                onClick: () => props.node.setAttribute('logo', 'bottom'),
+                class: isBottom(attrs) ? 'active' : '',
+                onClick: () => node.setAttribute('logo', 'bottom'),
             },
             'Bottom'
         ),
@@ -16,8 +16,8 @@ export default function Position(props) {
         h(
             'a',
             {
-                class: !isBottom(props) ? 'active' : '',
-                onClick: () => props.node.setAttribute('logo', 'top'),
+                class: !isBottom(attrs) ? 'active' : '',
+                onClick: () => node.setAttribute('logo', 'top'),
             },
             'Top'
         ),

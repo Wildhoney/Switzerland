@@ -5,6 +5,7 @@ export function load(name) {
     };
 }
 
+export const adapt = load('adapt');
 export const attrs = load('attrs');
 export const blend = load('blend');
 export const boundary = load('boundary');

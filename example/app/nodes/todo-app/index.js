@@ -12,6 +12,8 @@ const middleware = [
     m.path(import.meta.url),
     m.run('mount', worker),
     m.boundary(),
+    m.state(),
+    m.adapt(),
     m.history({
         filter: [t.Bool, false],
     }),
