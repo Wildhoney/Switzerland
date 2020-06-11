@@ -12,9 +12,9 @@ export const nodes = new Map();
 
                 node.render({
                     history: {
-                        params: utils.getParams(props.types, props.defaults, location),
-                        pathname: location.pathname,
-                        hash: location.hash,
+                        params: utils.getParams(props.types, props.defaults, window.location),
+                        pathname: window.location.pathname,
+                        hash: window.location.hash,
                     },
                 });
             })
@@ -32,7 +32,7 @@ export default (types = {}) => {
     const defaults = getDefaults(types);
 
     return function history(props) {
-        const location = (props.window || window).document.location;
+        const location = (props.window ?? window).document.location;
         !nodes.has(props.node) && nodes.set(props.node, { types, defaults, location, utils });
         props.lifecycle === 'unmount' && nodes.delete(props.node);
 

@@ -1,14 +1,16 @@
 import test from 'ava';
-import withComponent from 'ava-webcomponents';
+// import withComponent from 'ava-webcomponents';
 import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
+import { getWindow } from '../../../utils.js';
 import * as type from '../../../types/index.js';
 import history, { nodes } from '../index.js';
 
 test.serial('It should register the events to notify changes only once;', async (t) => {
     t.plan(2);
 
+    const window = await getWindow();
     const { node } = defaultProps;
     node.render = sinon.spy();
     const m = history();
@@ -22,6 +24,7 @@ test.serial('It should register the events to notify changes only once;', async 
         return new Promise((resolve) => {
             window.addEventListener('popstate', () => {
                 t.is(node.render.callCount, 1);
+
                 t.true(
                     node.render.calledWith({
                         signal: {
@@ -104,28 +107,28 @@ test('It should be able to gracefully handle being rendered to a string from the
     t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
-test(
-    'It should be able to render the node and update with the merge props and respond to events;',
-    withComponent(`${__dirname}/helpers/mock.js`),
-    async (t, { page, utils }) => {
-        const name = 'x-example';
-        await utils.waitForUpgrade(name);
+// test.skip(
+//     'It should be able to render the node and update with the merge props and respond to events;',
+//     withComponent(`${__dirname}/helpers/mock.js`),
+//     async (t, { page, utils }) => {
+//         const name = 'x-example';
+//         await utils.waitForUpgrade(name);
 
-        await page.evaluate((name) => {
-            const node = document.createElement(name);
-            document.body.append(node);
-            return node.idle();
-        }, name);
+//         await page.evaluate((name) => {
+//             const node = document.createElement(name);
+//             document.body.append(node);
+//             return node.idle();
+//         }, name);
 
-        t.snapshot(await utils.innerHTML(name));
+//         t.snapshot(await utils.innerHTML(name));
 
-        await page.click(`${name} a.params`);
-        t.snapshot(await utils.innerHTML(name));
+//         await page.click(`${name} a.params`);
+//         t.snapshot(await utils.innerHTML(name));
 
-        await page.goBack();
-        t.snapshot(await utils.innerHTML(name));
+//         await page.goBack();
+//         t.snapshot(await utils.innerHTML(name));
 
-        await page.click(`${name} a.hash`);
-        t.snapshot(await utils.innerHTML(name));
-    }
-);
+//         await page.click(`${name} a.hash`);
+//         t.snapshot(await utils.innerHTML(name));
+//     }
+// );

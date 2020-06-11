@@ -1,11 +1,11 @@
 import test from 'ava';
-import { useFakeTimers } from 'sinon';
+import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';
 import interval from '../index.js';
 
 test.beforeEach((t) => {
-    t.context.clock = useFakeTimers();
+    t.context.clock = sinon.useFakeTimers();
 });
 
 test.afterEach((t) => {

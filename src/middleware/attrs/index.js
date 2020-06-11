@@ -21,7 +21,7 @@ export default (types = {}, exclude = ['class', 'id', 'style', 'data-swiss']) =>
         if (props.server) return props;
 
         if (!nodes.has(props.node) && !props.server) {
-            const observer = new MutationObserver(
+            const observer = new props.window.MutationObserver(
                 (mutations) =>
                     utils.hasApplicableMutations(props.node, mutations, exclude) && props.render()
             );

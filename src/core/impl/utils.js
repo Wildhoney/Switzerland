@@ -1,7 +1,7 @@
 import { consoleMessage, getWindow } from '../../utils.js';
 import { rescueHandler } from '../../middleware/rescue/index.js';
 
-async function getInitialProps(node, props) {
+export async function getInitialProps(node, props) {
     const server = props.server ?? false;
 
     return {

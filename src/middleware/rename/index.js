@@ -6,6 +6,7 @@ import * as utils from './utils.js';
 export default (name, middleware) => {
     return async function rename(props) {
         const newProps = await (await middleware)(props);
+
         const diff = utils.difference(Object.keys(props), Object.keys(newProps));
         const take = utils.take(diff);
         const drop = utils.drop(diff);

@@ -1,6 +1,8 @@
 html,
 body {
     background-color: rgba(0, 0, 0, 0.015);
+    scrollbar-width: thin; /* "auto" or "thin"  */
+    scrollbar-color: blue orange;
 }
 
 * {

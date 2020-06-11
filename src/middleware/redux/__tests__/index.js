@@ -1,8 +1,8 @@
 import test from 'ava';
 import sinon from 'sinon';
-import * as R from 'ramda';
+import R from 'ramda';
 import defaultProps from '../../../../tests/helpers/default-props.js';
-import { create, render, m } from '../../../index.js';
+import { create, render, m, h } from '../../../index.js';
 import redux, { nodes } from '../index.js';
 
 test.beforeEach((t) => {
@@ -64,7 +64,7 @@ test('It should be able to gracefully handle being rendered to a string;', async
     const component = create(
         'x-example',
         redux(reducer, actions),
-        m.html(({ redux, h }) => h('div', {}, redux.state.message))
+        m.html(({ redux }) => h('div', {}, redux.state.message))
     );
-    t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
+    t.is(await render(component), '<x-example data-swiss=""><div>Example</div></x-example>');
 });
