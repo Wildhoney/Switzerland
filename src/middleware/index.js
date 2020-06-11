@@ -13,6 +13,7 @@ export const delay = load('delay');
 export const form = load('form');
 export const history = load('history');
 export const html = load('html');
+export const intersect = load('intersect');
 export const interval = load('interval');
 export const methods = load('methods');
 export const path = load('path');
