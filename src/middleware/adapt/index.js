@@ -1,13 +1,14 @@
-import { newState } from '../state/index.js';
+const nodes = new WeakSet();
 
-export const nodes = new WeakSet();
+const state = new WeakMap();
 
 const observer =
     typeof window !== 'undefined' &&
     new window.ResizeObserver((entries) =>
-        entries.forEach((entry) =>
-            entry.target.render({ [newState]: { adapt: entry.contentRect } })
-        )
+        entries.forEach((entry) => {
+            state.set(entry.target, entry.contentRect);
+            entry.target.render();
+        })
     );
 
 /**
@@ -34,6 +35,6 @@ export default () => {
                 break;
         }
 
-        return props;
+        return { ...props, adapt: state.get(props.node) ?? null };
     };
 };
