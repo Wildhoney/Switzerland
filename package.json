@@ -22,7 +22,7 @@
         "redux-thunk": "^2.3.0"
     },
     "devDependencies": {
-        "ava": "^3.8.2",
+        "ava": "^3.9.0",
         "ava-webcomponents": "^0.1.3",
         "babel-eslint": "^10.1.0",
         "browser-env": "^3.3.0",
@@ -47,6 +47,6 @@
         "sinon": "^9.0.2",
         "starwars": "^1.0.1",
         "string-template": "^1.0.0",
-        "terser": "^4.7.0"
+        "terser": "^4.8.0"
     }
 }
