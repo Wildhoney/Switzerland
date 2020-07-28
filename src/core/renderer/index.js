@@ -1,0 +1,52 @@
+import morph from 'morphdom';
+import * as utils from './utils.js';
+import { dispatchEvent } from '../../core/impl/utils.js';
+
+export default async function renderer({ tree, node, server, boundary }) {
+    if (server) {
+        const nodes = await utils.getVNodeDOM(
+            typeof boundary === 'function' ? boundary(tree) : tree
+        );
+        const fragment = await utils.getVNodeFragment(nodes);
+        node.appendChild(fragment);
+        return node.shadowRoot;
+    }
+
+    const nodes = await utils.getVNodeDOM(tree);
+    const fragment = await utils.getVNodeFragment(nodes);
+
+    morph(boundary, fragment, {
+        childrenOnly: boundary != null,
+
+        getNodeKey(node) {
+            if (!(node instanceof HTMLElement)) return null;
+            return node.getAttribute('key') ?? null;
+        },
+        onNodeAdded(node) {
+            typeof node.attachEventListeners === 'function' && node.attachEventListeners(node);
+            dispatchEvent(node)('create', { node });
+        },
+        onNodeDiscarded(node) {
+            typeof node.detatchEventListeners === 'function' && node.detatchEventListeners(node);
+            dispatchEvent(node)('destroy', { node });
+        },
+        onBeforeElUpdated(from, to) {
+            const isSwiss = from instanceof HTMLElement && 'swiss' in from.dataset;
+
+            if (isSwiss) {
+                // We only update the attributes of Swiss components, as each component is self-contained.
+                Object.values(from.attributes).forEach((attr) =>
+                    from.removeAttribute(attr.nodeName)
+                );
+                Object.values(to.attributes).forEach((attr) =>
+                    from.setAttribute(attr.nodeName, attr.nodeValue)
+                );
+            }
+
+            typeof to.attachEventListeners === 'function' && to.attachEventListeners(from);
+            return isSwiss ? false : to;
+        },
+    });
+
+    return node.shadowRoot;
+}

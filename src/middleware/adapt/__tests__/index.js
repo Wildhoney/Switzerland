@@ -1,5 +1,5 @@
 import test from 'ava';
-import withComponent from 'ava-webcomponents';
+// import withComponent from 'ava-webcomponents';
 import delay from 'delay';
 import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
@@ -84,35 +84,35 @@ test('It should be able to gracefully handle being rendered to a string;', async
     t.is(await render(component), '<x-example class="resolved"><div>Example</div></x-example>');
 });
 
-test(
-    'It should be able to fire the `render` function each time the dimensions change;',
-    withComponent(`${__dirname}/helpers/mock.js`),
-    async (t, { page, utils }) => {
-        const name = 'x-example';
-        await utils.waitForUpgrade(name);
+// test(
+//     'It should be able to fire the `render` function each time the dimensions change;',
+//     withComponent(`${__dirname}/helpers/mock.js`),
+//     async (t, { page, utils }) => {
+//         const name = 'x-example';
+//         await utils.waitForUpgrade(name);
 
-        await page.evaluate((name) => {
-            const node = document.createElement(name);
-            document.body.append(node);
-            return node.idle();
-        }, name);
+//         await page.evaluate((name) => {
+//             const node = document.createElement(name);
+//             document.body.append(node);
+//             return node.idle();
+//         }, name);
 
-        await page.evaluate((name) => {
-            const node = document.querySelector(name);
-            node.style.display = 'block';
-            node.style.width = '200px';
-            node.style.height = '150px';
-            return node.render();
-        }, name);
-        await delay(100);
-        t.snapshot(await utils.innerHTML(name));
+//         await page.evaluate((name) => {
+//             const node = document.querySelector(name);
+//             node.style.display = 'block';
+//             node.style.width = '200px';
+//             node.style.height = '150px';
+//             return node.render();
+//         }, name);
+//         await delay(100);
+//         t.snapshot(await utils.innerHTML(name));
 
-        await page.evaluate((name) => {
-            const node = document.querySelector(name);
-            node.style.width = '500px';
-            node.style.height = '350px';
-        }, name);
-        await delay(100);
-        t.snapshot(await utils.innerHTML(name));
-    }
-);
+//         await page.evaluate((name) => {
+//             const node = document.querySelector(name);
+//             node.style.width = '500px';
+//             node.style.height = '350px';
+//         }, name);
+//         await delay(100);
+//         t.snapshot(await utils.innerHTML(name));
+//     }
+// );

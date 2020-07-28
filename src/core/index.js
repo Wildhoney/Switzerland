@@ -53,6 +53,8 @@ export async function preload(...output) {
     const links = output
         .flatMap((output) => output.match(/<link.+?>/gi))
         .map((link) => {
+            if (!link) return;
+
             // Parse the link DOM string into a HTML node.
             const node = window.document.createElement('div');
             node.innerHTML = link;

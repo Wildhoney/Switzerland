@@ -39,7 +39,7 @@ export function base(extension, middleware) {
 
                 try {
                     // Iterate and invoke each middleware for this Swiss component.
-                    await utils.cycleMiddleware(this, props, middleware);
+                    await utils.runComponent(this, props, middleware);
                 } catch (error) {
                     // Clear the queue and resolve as a middleware threw an error, and also
                     // mark the component as having errored.
@@ -88,7 +88,7 @@ export class Swiss {
         if (typeof window !== 'undefined') return node;
 
         // Iterate over the middleware and then return the node.
-        await utils.cycleMiddleware(node, { server: true, attrs: props }, this.middleware);
+        await utils.runComponent(node, { server: true, attrs: props }, this.middleware);
         return node;
     }
 }
