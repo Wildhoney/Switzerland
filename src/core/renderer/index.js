@@ -1,8 +1,11 @@
 import morph from 'morphdom';
 import * as utils from './utils.js';
 import { dispatchEvent } from '../../core/impl/utils.js';
+import { boundaries } from '../../core/impl/adapters/attach-shadow/index.js';
 
-export default async function renderer({ tree, node, server, boundary }) {
+export default async function renderer({ tree, node, server }) {
+    const boundary = boundaries.get(node) ?? node;
+
     if (server) {
         const nodes = await utils.getVNodeDOM(
             typeof boundary === 'function' ? boundary(tree) : tree

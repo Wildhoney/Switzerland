@@ -23,8 +23,10 @@ import { create, h } from 'switzerland';
 //     );
 // });
 
-function controller({ node, lifecycle, render, factory }) {
-    return { name: 'Adam' };
+async function controller({ render, adapter, ...props }) {
+    adapter.attachShadow();
+
+    return { name: 'Adam', render };
 
     // factory.attachShadow();
 
@@ -38,7 +40,7 @@ function controller({ node, lifecycle, render, factory }) {
 function view({ name }) {
     return h('section', {}, [
         h('h1', {}, `Hello ${name}!`),
-        h('button', { onClick: () => console.log(`Hi ${name}!`) }, 'Say Hi!'),
+        h('button', { onClick: console.log }, 'Say Hi!'),
     ]);
 }
 
