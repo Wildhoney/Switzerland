@@ -1,6 +1,5 @@
 import test from 'ava';
 // import withComponent from 'ava-webcomponents';
-import delay from 'delay';
 import sinon from 'sinon';
 import defaultProps from '../../../../tests/helpers/default-props.js';
 import { create, render, m } from '../../../index.js';

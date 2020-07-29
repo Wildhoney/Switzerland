@@ -48,6 +48,8 @@ async function controller({ render, adapter, node, ...props }) {
     const attrs = adapter.parseAttributes({ name: t.String });
     const [state, methods] = adapter.newState(createMethods, initialState);
 
+    adapter.registerMethods({ setName: (name, node) => node.setAttribute('name', name) });
+
     return { name: attrs.name, render, node, state, methods };
 }
 
