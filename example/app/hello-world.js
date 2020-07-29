@@ -1,4 +1,4 @@
-import { create, h } from 'switzerland';
+import { create, h, t } from 'switzerland';
 
 // function controller({ node, lifecycle, render, factory }) {
 //     factory.attachShadow();
@@ -23,24 +23,28 @@ import { create, h } from 'switzerland';
 //     );
 // });
 
-async function controller({ render, adapter, ...props }) {
+async function controller({ render, adapter, node, ...props }) {
     adapter.attachShadow();
 
-    return { name: 'Adam', render };
+    // const path = await adapter.getPath(import.meta.url);
+    const attrs = adapter.parseAttributes({ name: t.String });
+
+    return { name: attrs.name, render, node };
 
     // factory.attachShadow();
 
-    // const path = factory.getPath(import.meta.url);
     // const attrs = factory.parseAttrs({ values: t.Array(t.String) });
     // const state = factory.newState(container, initialState);
 
     // return { attrs, path, state };
 }
 
-function view({ name }) {
+function view({ name, node }) {
     return h('section', {}, [
         h('h1', {}, `Hello ${name}!`),
-        h('button', { onClick: console.log }, 'Say Hi!'),
+        h('button', { onClick: () => node.setAttribute('name', 'Adam') }, 'Say Hi to Adam'),
+        h('button', { onClick: () => node.setAttribute('name', 'Maria') }, 'Say Hi to Maria'),
+        h('button', { onClick: () => node.setAttribute('name', 'Imogen') }, 'Say Hi to Imogen'),
     ]);
 }
 

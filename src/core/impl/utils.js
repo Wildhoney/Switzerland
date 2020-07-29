@@ -53,7 +53,7 @@ export async function runComponent(node, props, [runController, runView]) {
     };
 
     try {
-        // Run the controller to gather it's props for view rendering.
+        // Run the controller to gather its props for view rendering.
         const viewProps = await runController(controllerProps);
         const tree = await runView(viewProps);
         await renderer({ ...renderProps, tree });

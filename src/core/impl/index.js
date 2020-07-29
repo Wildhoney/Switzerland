@@ -87,8 +87,11 @@ export class Swiss {
         // of the `customElements` constructor will initiate the rendering process upon mount.
         if (typeof window !== 'undefined') return node;
 
+        // Apply all of the attributes to the host node.
+        for (const [key, value] of Object.entries(props)) node.setAttribute(key, value);
+
         // Iterate over the middleware and then return the node.
-        await utils.runComponent(node, { server: true, attrs: props }, this.middleware);
+        await utils.runComponent(node, { server: true }, this.middleware);
         return node;
     }
 }
