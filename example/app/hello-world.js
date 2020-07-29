@@ -1,71 +1,35 @@
 import { create, h, t } from 'switzerland';
 
-// function controller({ node, lifecycle, render, factory }) {
-//     factory.attachShadow();
-
-//     const path = factory.getPath(import.meta.url);
-//     const attrs = factory.parseAttrs({ values: t.Array(t.String) });
-//     const state = factory.newState(container, initialState);
-
-//     return { attrs, path, state };
-// }
-
-// export default create('x-countries', controller, ({ attrs, path, state }) => {
-//     return (
-//         h(utils.node.Sheet, { href: path('index.css') }),
-//         h('section', {}, [
-//             h(
-//                 'ul',
-//                 {},
-//                 attrs.values.map((country) => h('li', {}, country))
-//             ),
-//         ])
-//     );
-// });
-
-const initialState = {
-    count: 0,
-};
+const getInitialState = (name) => ({
+    name,
+});
 
 function createMethods(state) {
     return {
-        reset() {
-            return initialState;
-        },
-        increment() {
-            return { ...state, count: state.count + 1 };
-        },
-        decrement() {
-            return { ...state, count: state.count - 1 };
+        changeName(name) {
+            return { ...state, name };
         },
     };
 }
 
-async function controller({ render, adapter, node, ...props }) {
+async function controller({ adapter }) {
     adapter.attachShadow();
 
-    // const path = await adapter.getPath(import.meta.url);
     const attrs = adapter.parseAttributes({ name: t.String });
-    const [state, methods] = adapter.newState(createMethods, initialState);
+    const [state, methods] = adapter.newState(createMethods, getInitialState(attrs.name));
 
-    adapter.registerMethods({ setName: (name, node) => node.setAttribute('name', name) });
+    adapter.registerMethods({ setName: methods.changeName });
 
-    return { name: attrs.name, render, node, state, methods };
+    return { state, methods };
 }
 
-function view({ name, node, state, methods }) {
+function view({ state, methods, dispatch, node }) {
     return h('section', {}, [
-        h('button', { onClick: methods.decrement }, '-'),
-        h('div', {}, state.count ?? '?'),
-        h('button', { onClick: methods.increment }, '+'),
-        h('button', { onClick: methods.reset }, 'Reset!'),
+        h('h1', {}, `Hello ${state.name}!`),
 
-        h('hr'),
-
-        h('h1', {}, `Hello ${name}!`),
-        h('button', { onClick: () => node.setAttribute('name', 'Adam') }, 'Say Hi to Adam'),
-        h('button', { onClick: () => node.setAttribute('name', 'Maria') }, 'Say Hi to Maria'),
-        h('button', { onClick: () => node.setAttribute('name', 'Imogen') }, 'Say Hi to Imogen'),
+        h('button', { onClick: () => methods.changeName('Adam') }, 'Say Hi to Adam'),
+        h('button', { onClick: () => methods.changeName('Maria') }, 'Say Hi to Maria'),
+        h('button', { onClick: () => methods.changeName('Imogen') }, 'Say Hi to Imogen'),
     ]);
 }
 
