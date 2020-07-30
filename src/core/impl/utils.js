@@ -45,32 +45,18 @@ async function bindAdapters(renderProps) {
 
 export async function runComponent(node, props, [runController, runView]) {
     const renderProps = { ...props, ...(await getInitialProps(node, props)) };
-
-    const defaultControllerProps = {
-        ...renderProps,
-        node,
-        lifecycle: props.lifecycle,
-        adapter: await bindAdapters(renderProps),
-    };
-
-    const defaultViewProps = {
-        node,
-        dispatch: renderProps.dispatch,
-        server: renderProps.server,
-        window: renderProps.window,
-        lifecycle: renderProps.lifecycle,
-    };
+    const boundAdapters = await bindAdapters(renderProps);
 
     try {
         // Run the controller to gather its props for view rendering.
-        const viewProps = await runController(defaultControllerProps);
-        const tree = await runView({ ...defaultViewProps, ...viewProps });
+        const viewProps = await runController({ ...renderProps, adapter: boundAdapters });
+        const tree = await runView({ ...renderProps, ...viewProps });
         await renderer({ ...renderProps, tree });
     } catch (error) {
         // Invoke the controller and view again but with passing the error that was thrown.
         process?.env?.NODE_ENV !== 'production' && consoleMessage(error);
-        const viewProps = await runController({ ...defaultControllerProps, error });
-        const tree = await runView({ ...defaultViewProps, ...viewProps, error });
+        const viewProps = await runController({ ...renderProps, adapter: boundAdapters, error });
+        const tree = await runView({ ...renderProps, ...viewProps, error });
         await renderer({ ...renderProps, tree });
 
         // Re-throw an error so the caller in `Swiss.render` can clear the queue.
