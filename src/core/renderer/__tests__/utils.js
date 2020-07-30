@@ -11,11 +11,7 @@ test('It should be able to parse a basic vnode tree;', async (t) => {
 });
 
 test('It should be able to parse a vnode tree that begins with an array;', async (t) => {
-    const main = [
-        h('section', {}, 'Hello Adam!'),
-        h('section', {}, 'Hello Maria!'),
-        h('section', {}, 'Hello Imogen!'),
-    ];
+    const main = [h('section', {}, 'Hello Adam!'), h('section', {}, 'Hello Maria!'), h('section', {}, 'Hello Imogen!')];
     t.plan(main.length);
     const nodes = await getVNodeDOM(main);
     nodes.forEach((node) => t.snapshot(node.outerHTML));
@@ -23,11 +19,7 @@ test('It should be able to parse a vnode tree that begins with an array;', async
 
 test('It should be able to parse a vnode tree with children;', async (t) => {
     const name = ({ name }) => h('li', {}, name);
-    const main = h('ul', {}, [
-        h(name, { name: 'Adam' }),
-        h(name, { name: 'Maria' }),
-        h(name, { name: 'Imogen' }),
-    ]);
+    const main = h('ul', {}, [h(name, { name: 'Adam' }), h(name, { name: 'Maria' }), h(name, { name: 'Imogen' })]);
     const node = await getVNodeDOM(main);
     t.snapshot(node.outerHTML);
 });
@@ -50,11 +42,7 @@ test('It should be able to parse a vnode tree that yields a Swiss component;', a
         m.html(({ attrs }) => h('div', {}, `Hello ${attrs.name}!`))
     );
 
-    const main = h('section', {}, [
-        h(Name, { name: 'Adam' }),
-        h(Name, { name: 'Maria' }),
-        h(Name, { name: 'Imogen' }),
-    ]);
+    const main = h('section', {}, [h(Name, { name: 'Adam' }), h(Name, { name: 'Maria' }), h(Name, { name: 'Imogen' })]);
     const node = await getVNodeDOM(main);
     t.snapshot(node.outerHTML);
 });
@@ -85,11 +73,7 @@ test('It should be able to parse a vnode tree with children that yield nested ar
 
 test('It should be able to yield a document fragment of the parsed DOM tree;', async (t) => {
     const window = await getWindow();
-    const main = [
-        h('section', {}, 'Hello Adam!'),
-        h('section', {}, 'Hello Maria!'),
-        h('section', {}, 'Hello Imogen!'),
-    ];
+    const main = [h('section', {}, 'Hello Adam!'), h('section', {}, 'Hello Maria!'), h('section', {}, 'Hello Imogen!')];
     const nodes = await getVNodeDOM(main);
     const fragment = await getVNodeFragment(nodes);
     t.true(fragment instanceof window.DocumentFragment);

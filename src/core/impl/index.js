@@ -76,10 +76,7 @@ export class Swiss {
     async render(props = {}) {
         // Setup the node with the `data-swiss` attribute for tracking the component's boundary, and
         // if it's extending an ative element, append the "is" attribute too.
-        const node = getWindow().document.createElement(
-            this.name,
-            this.extend && { is: this.extend }
-        );
+        const node = getWindow().document.createElement(this.name, this.extend && { is: this.extend });
         node.setAttribute('data-swiss', '');
         if (this.extend) node.setAttribute('is', this.extend);
 

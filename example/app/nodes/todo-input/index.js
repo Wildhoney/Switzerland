@@ -1,14 +1,7 @@
 import { create, m, h, utils } from 'switzerland';
 import store from '../../utils/store.js';
 
-const middleware = [
-    m.boundary(),
-    store,
-    m.path(import.meta.url),
-    m.state({ text: '' }),
-    m.html(render),
-    m.form(),
-];
+const middleware = [m.boundary(), store, m.path(import.meta.url), m.state({ text: '' }), m.html(render), m.form()];
 
 function render({ form, redux, path, server, state, setState }) {
     const handleSubmit = (event) => {

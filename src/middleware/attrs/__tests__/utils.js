@@ -30,13 +30,7 @@ test('It should be able to determine if there are applicable mutations;', (t) =>
     t.true(u.hasApplicableMutations(node, [mutations[0]]));
     t.true(u.hasApplicableMutations(node, [mutations[1]]));
     t.true(u.hasApplicableMutations(node, mutations));
-    t.true(
-        u.hasApplicableMutations(
-            node,
-            [...mutations, { attributeName: 'class', oldValue: starwars() }],
-            ['class']
-        )
-    );
+    t.true(u.hasApplicableMutations(node, [...mutations, { attributeName: 'class', oldValue: starwars() }], ['class']));
     t.false(u.hasApplicableMutations(node, [{ attributeName: 'persons-age', oldValue: '33' }]));
     t.false(
         u.hasApplicableMutations(

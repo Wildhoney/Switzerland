@@ -23,7 +23,7 @@ async function controller({ adapter }) {
     return { state, methods };
 }
 
-function view({ state, methods, dispatch, node }) {
+function view({ state, methods }) {
     return h('section', {}, [
         h('h1', {}, `Hello ${state.name}!`),
 

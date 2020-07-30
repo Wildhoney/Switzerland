@@ -5,9 +5,7 @@ export const nodes = new WeakSet();
 const observer =
     typeof window !== 'undefined' &&
     new window.IntersectionObserver((entries) =>
-        entries.forEach((entry) =>
-            entry.target.render({ [newState]: { intersect: entry.contentRect } })
-        )
+        entries.forEach((entry) => entry.target.render({ [newState]: { intersect: entry.contentRect } }))
     );
 
 /**

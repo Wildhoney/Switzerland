@@ -14,11 +14,7 @@ export function create(name, ...middleware) {
     const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
-        window.customElements.define(
-            tag,
-            impl.base(constuctor, middleware),
-            extend && { extends: extend }
-        );
+        window.customElements.define(tag, impl.base(constuctor, middleware), extend && { extends: extend });
     } finally {
         return impl.server(extend ?? tag, middleware, extend ? tag : null);
     }

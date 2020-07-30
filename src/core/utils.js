@@ -14,9 +14,7 @@ export function getPrototype(name) {
 export function getDefaults(types) {
     return Object.entries(types).reduce(
         (accum, [key, value]) =>
-            Array.isArray(value) && typeof value[1] !== 'undefined'
-                ? { ...accum, [key]: value[1] }
-                : accum,
+            Array.isArray(value) && typeof value[1] !== 'undefined' ? { ...accum, [key]: value[1] } : accum,
         {}
     );
 }

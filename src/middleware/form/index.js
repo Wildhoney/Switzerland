@@ -11,9 +11,7 @@ export default () => {
             );
 
             // Only re-render when there are forms and there's a tree available.
-            forms.length > 0 &&
-                props.html &&
-                (await html(props.html)({ ...props, form, lifecycle: 'update' }));
+            forms.length > 0 && props.html && (await html(props.html)({ ...props, form, lifecycle: 'update' }));
         }
 
         return props;

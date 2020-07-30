@@ -10,8 +10,7 @@ export default (fn) => {
         const future = fn(props);
         const isPromise = future instanceof Promise;
         const isGenerator =
-            fn.constructor &&
-            ['AsyncGeneratorFunction', 'GeneratorFunction'].includes(fn.constructor.name);
+            fn.constructor && ['AsyncGeneratorFunction', 'GeneratorFunction'].includes(fn.constructor.name);
 
         switch (true) {
             case isPromise:
