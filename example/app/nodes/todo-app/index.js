@@ -14,12 +14,11 @@ async function controller({ adapter, window }) {
     const attrs = adapter.parseAttributes({ logo: t.String });
     const redux = adapter.subscribeRedux(store);
     const history = adapter.getHistory({ filter: [t.Bool, false] });
-
-    // @TODO: adapt middleware!
+    const adapt = adapter.getDimensions();
 
     adapter.run.onMount(() => setupWorker({ path, window }));
 
-    return { path, attrs, redux, history };
+    return { path, attrs, redux, history, adapt };
 }
 
 function view({ path, props }) {

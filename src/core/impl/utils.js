@@ -1,5 +1,4 @@
 import { consoleMessage, getWindow } from '../../utils.js';
-// import { rescueHandler } from '../../middleware/rescue/index.js';
 import * as renderer from '../renderer/index.js';
 import * as adapters from './adapters/index.js';
 
