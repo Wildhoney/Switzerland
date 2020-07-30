@@ -12,7 +12,8 @@ export async function renderTree({ tree, node, server }) {
         const nodes = await utils.getVNodeDOM(typeof boundary === 'function' ? boundary(tree) : tree);
         const fragment = await utils.getVNodeFragment(nodes);
         node.appendChild(fragment);
-        return node.shadowRoot;
+
+        return node.shadowRoot ?? node;
     }
 
     const nodes = await utils.getVNodeDOM(tree);
@@ -47,7 +48,7 @@ export async function renderTree({ tree, node, server }) {
         },
     });
 
-    return node.shadowRoot;
+    return node.shadowRoot ?? node;
 }
 
 function toMap(forms) {
