@@ -91,7 +91,7 @@ export class Swiss {
         for (const [key, value] of Object.entries(props)) node.setAttribute(key, value);
 
         // Iterate over the middleware and then return the node.
-        await utils.runComponent(node, { server: true }, this.middleware);
+        await utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware);
         return node;
     }
 }
