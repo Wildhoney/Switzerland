@@ -11,7 +11,7 @@ async function controller({ adapter, window }) {
     adapter.attachShadow();
 
     const path = await adapter.getPath(import.meta.url);
-    const attrs = adapter.parseAttributes({ logo: t.String });
+    const attrs = adapter.parseAttributes({ logo: [t.String, 'top'] });
     const redux = adapter.subscribeRedux(store);
     const history = adapter.getHistory({ filter: [t.Bool, false] });
     const adapt = adapter.getDimensions();
@@ -21,7 +21,7 @@ async function controller({ adapter, window }) {
     return { path, attrs, redux, history, adapt };
 }
 
-function view({ path, props }) {
+function view({ path, props, attrs }) {
     return [
         h('section', { class: 'todo-app' }, [
             h(TodoInput),
@@ -41,8 +41,8 @@ function view({ path, props }) {
         h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
 
         utils.node.Variables({
-            orderPosition: isBottom(props) ? 1 : -1,
-            borderColour: isBottom(props) ? 'transparent' : 'rgba(0, 0, 0, 0.1)',
+            orderPosition: isBottom(attrs) ? 1 : -1,
+            borderColour: isBottom(attrs) ? 'transparent' : 'rgba(0, 0, 0, 0.1)',
         }),
     ];
 }
