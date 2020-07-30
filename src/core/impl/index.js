@@ -89,6 +89,7 @@ export class Swiss {
 
         // Iterate over the middleware and then return the node.
         await utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware);
+
         return node;
     }
 }
