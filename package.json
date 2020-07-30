@@ -43,7 +43,7 @@
         "mkdirp": "^1.0.4",
         "nodemon": "^2.0.4",
         "prettier": "^2.0.5",
-        "ramda": "^0.27.0",
+        "ramda": "^0.27.1",
         "sinon": "^9.0.2",
         "starwars": "^1.0.1",
         "string-template": "^1.0.0",
