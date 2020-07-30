@@ -1,21 +1,25 @@
-import { create, m, h, t, utils } from 'switzerland';
+import { create, h, t, utils } from 'switzerland';
 import store from '../../utils/store.js';
 import List from './components/list.js';
 import Nothing from './components/nothing.js';
-import { initialise } from './utils.js';
+import db from '../../utils/db.js';
 
-const middleware = [
-    store,
-    m.run('mount', initialise),
-    m.boundary(),
-    m.history({
-        filter: [t.Bool, false],
-    }),
-    m.path(import.meta.url),
-    m.html(render),
-];
+async function controller({ adapter }) {
+    adapter.attachShadow();
 
-function render({ redux, path, props }) {
+    const path = await adapter.getPath(import.meta.url);
+    const redux = adapter.subscribeRedux(store);
+    const history = adapter.getHistory({ filter: [t.Bool, false] });
+
+    adapter.run.onMount(async () => {
+        const { todos } = await db();
+        redux.actions.put(todos);
+    });
+
+    return { path, redux, history };
+}
+
+function view({ redux, path, props }) {
     const hasTodos = redux.state.list.length > 0;
 
     return [
@@ -27,4 +31,4 @@ function render({ redux, path, props }) {
     ];
 }
 
-export default create('todo-list', ...middleware);
+export default create('todo-list', controller, view);

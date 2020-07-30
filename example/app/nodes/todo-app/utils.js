@@ -2,14 +2,11 @@ export function isBottom(attrs) {
     return attrs.logo === 'bottom';
 }
 
-export async function worker(props) {
+export async function setupWorker({ path, window }) {
     try {
-        props.window.navigator.serviceWorker &&
-            (await props.window.navigator.serviceWorker.register(props.path('../../../utils/worker.js'), {
+        window.navigator.serviceWorker &&
+            (await window.navigator.serviceWorker.register(path('../../../utils/worker.js'), {
                 scope: '/',
             }));
-        return props;
-    } catch {
-        return props;
-    }
+    } catch {}
 }

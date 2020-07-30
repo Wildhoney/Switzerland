@@ -5,7 +5,7 @@ import cors from 'cors';
 import compression from 'compression';
 import fmt from 'string-template';
 import { render, preload } from 'switzerland';
-import people from '../app/hello-world.js';
+import todoApp from '../app/nodes/todo-app/index.js';
 
 const app = express();
 app.use(cors());
@@ -26,7 +26,7 @@ app.get('*', (_, response, next) => {
 
 app.get('/', async (_, response) => {
     const html = fs.readFileSync(`${example}/index.html`, 'utf-8');
-    const todos = await render(people, { name: 'Adam' }, options);
+    const todos = await render(todoApp, {}, options);
 
     response.send(fmt(html, { styles: await preload(todos), todos }));
 });

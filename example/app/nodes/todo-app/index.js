@@ -1,26 +1,28 @@
-import { create, m, t, h, utils } from 'switzerland';
+import { create, t, h, utils } from 'switzerland';
 import TodoInput from '../todo-input/index.js';
 import TodoList from '../todo-list/index.js';
 import store from '../../utils/store.js';
-import { isBottom, worker } from './utils.js';
+import { isBottom, setupWorker } from './utils.js';
 import Position from './components/position.js';
 import Dimensions from './components/dimensions.js';
 import Filter from './components/filter.js';
 
-const middleware = [
-    store,
-    m.path(import.meta.url),
-    m.run('mount', worker),
-    m.boundary(),
-    m.adapt(),
-    m.history({
-        filter: [t.Bool, false],
-    }),
-    m.attrs({ logo: t.String }),
-    m.html(render),
-];
+async function controller({ adapter, window }) {
+    adapter.attachShadow();
 
-function render({ path, props }) {
+    const path = await adapter.getPath(import.meta.url);
+    const attrs = adapter.parseAttributes({ logo: t.String });
+    const redux = adapter.subscribeRedux(store);
+    const history = adapter.getHistory({ filter: [t.Bool, false] });
+
+    // @TODO: adapt middleware!
+
+    adapter.run.onMount(() => setupWorker({ path, window }));
+
+    return { path, attrs, redux, history };
+}
+
+function view({ path, props }) {
     return [
         h('section', { class: 'todo-app' }, [
             h(TodoInput),
@@ -46,4 +48,4 @@ function render({ path, props }) {
     ];
 }
 
-export default create('todo-app', ...middleware);
+export default create('todo-app', controller, view);

@@ -1,14 +1,24 @@
-import { create, m, h, utils } from 'switzerland';
+import { create, h, utils } from 'switzerland';
 import store from '../../utils/store.js';
+import * as duck from './duck.js';
 
-const middleware = [m.boundary(), store, m.path(import.meta.url), m.state({ text: '' }), m.html(render), m.form()];
+async function controller({ adapter }) {
+    adapter.attachShadow();
 
-function render({ form, redux, path, server, state, setState }) {
+    const path = await adapter.getPath(import.meta.url);
+    const redux = adapter.subscribeRedux(store);
+    const [state, methods] = adapter.newState(duck.createMethods, duck.initialState);
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        return setState({ ...state, text: '' }), redux.actions.add(state.text);
+        methods.setText('');
+        redux.actions.add(state.text);
     };
 
+    return { path, state, methods, handleSubmit };
+}
+
+function view({ form, path, server, state, methods, handleSubmit }) {
     return [
         h('form', { onSubmit: handleSubmit }, [
             h('input', {
@@ -20,7 +30,7 @@ function render({ form, redux, path, server, state, setState }) {
                 autoFocus: 'on',
                 autoComplete: 'off',
                 placeholder: 'What do you need to do?',
-                onInput: (event) => setState({ ...state, text: event.target.value }),
+                onInput: (event) => methods.setText(event.target.value),
             }),
 
             h('button', {
@@ -36,4 +46,4 @@ function render({ form, redux, path, server, state, setState }) {
     ];
 }
 
-export default create('todo-input', ...middleware);
+export default create('todo-input', controller, view);

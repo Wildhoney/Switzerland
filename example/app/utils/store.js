@@ -1,4 +1,4 @@
-import { m } from 'switzerland';
+import { utils } from 'switzerland';
 import indexedDb from './db.js';
 
 const initialState = {
@@ -69,4 +69,4 @@ const actions = {
     },
 };
 
-export default m.redux(reducer, actions);
+export default utils.redux.create(reducer, actions);
