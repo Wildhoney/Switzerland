@@ -4,6 +4,6 @@ export { default as parseAttributes } from './parse-attributes/index.js';
 export { default as newState } from './new-state/index.js';
 export { default as registerMethods } from './register-methods/index.js';
 export { default as run } from './run/index.js';
-export { default as subscribeRedux } from './subscribe-redux/index.js';
+export { default as bindRedux } from './bind-redux/index.js';
 export { default as getHistory } from './get-history/index.js';
 export { default as getDimensions } from './get-dimensions/index.js';

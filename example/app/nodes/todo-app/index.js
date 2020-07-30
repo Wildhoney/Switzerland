@@ -12,7 +12,7 @@ async function controller({ adapter, window }) {
 
     const path = await adapter.getPath(import.meta.url);
     const attrs = adapter.parseAttributes({ logo: [t.String, 'top'] });
-    const redux = adapter.subscribeRedux(store);
+    const redux = adapter.bindRedux(store);
     const history = adapter.getHistory({ filter: [t.Bool, false] });
     const adapt = adapter.getDimensions();
 

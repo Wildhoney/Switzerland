@@ -8,7 +8,7 @@ async function controller({ adapter }) {
     adapter.attachShadow();
 
     const path = await adapter.getPath(import.meta.url);
-    const redux = adapter.subscribeRedux(store);
+    const redux = adapter.bindRedux(store);
     const history = adapter.getHistory({ filter: [t.Bool, false] });
 
     adapter.run.onMount(async () => {
