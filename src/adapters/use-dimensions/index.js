@@ -12,14 +12,14 @@ const observer =
     );
 
 /**
- * @function adapt
+ * @function useDimensions
  * ---
  * Hooks up the host node to the `ResizeObserver` observer which allows for element queries where components are
  * re-rendered whenever their dimensions change, rather than when the page's dimension changes. This allows for
  * responsiveness on an element-level, where for example an element is placed in a 200px space it can render
  * differently than when it's placed in a 400px space.
  */
-export default function getDimensions({ node, lifecycle, server }) {
+export default function useDimensions({ node, lifecycle, server }) {
     return () => {
         if (server) return null;
 

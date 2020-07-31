@@ -16,7 +16,7 @@ export function newRedux(reducer, actions) {
     return { ...props, dispatch, boundActions };
 }
 
-export default function bindRedux({ node, render }) {
+export default function useRedux({ node, render }) {
     return ({ getState, boundActions, dispatch, subscribe }) => {
         const state = getState();
         const redux = { state, actions: boundActions, dispatch };

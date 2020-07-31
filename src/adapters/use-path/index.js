@@ -1,7 +1,7 @@
 import { serverOptions } from '../../core/index.js';
 import * as utils from './utils.js';
 
-export default function getPath({ server }) {
+export default function usePath({ server }) {
     return async (url) => {
         if (!server) return utils.getPath(url);
 

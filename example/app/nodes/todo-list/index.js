@@ -7,9 +7,9 @@ import db from '../../utils/db.js';
 async function controller({ adapter }) {
     adapter.attachShadow();
 
-    const path = await adapter.getPath(import.meta.url);
-    const redux = adapter.bindRedux(store);
-    const history = adapter.getHistory({ filter: [t.Bool, false] });
+    const path = await adapter.usePath(import.meta.url);
+    const redux = adapter.useRedux(store);
+    const history = adapter.useHistory({ filter: [t.Bool, false] });
 
     adapter.run.onMount(async () => {
         const { todos } = await db();

@@ -3,7 +3,7 @@ import * as utils from './utils.js';
 
 export const nodes = new WeakSet();
 
-export default function parseAttributes({ node, window, server, lifecycle, render }) {
+export default function useAttrs({ node, window, server, lifecycle, render }) {
     return (types, exclude = ['class', 'id', 'style', 'data-swiss']) => {
         const defaults = getDefaults(types);
 

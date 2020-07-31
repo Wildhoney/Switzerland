@@ -1,9 +1,11 @@
 export { default as attachShadow } from './attach-shadow/index.js';
-export { default as getPath } from './get-path/index.js';
-export { default as parseAttributes } from './parse-attributes/index.js';
-export { default as newState } from './new-state/index.js';
-export { default as registerMethods } from './register-methods/index.js';
+export { default as attachMethods } from './attach-methods/index.js';
+
+export { default as usePath } from './use-path/index.js';
+export { default as useAttrs } from './use-attrs/index.js';
+export { default as useState } from './use-state/index.js';
+export { default as useRedux } from './use-redux/index.js';
+export { default as useHistory } from './use-history/index.js';
+export { default as useDimensions } from './use-dimensions/index.js';
+
 export { default as run } from './run/index.js';
-export { default as bindRedux } from './bind-redux/index.js';
-export { default as getHistory } from './get-history/index.js';
-export { default as getDimensions } from './get-dimensions/index.js';

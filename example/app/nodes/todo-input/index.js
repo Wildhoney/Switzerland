@@ -5,9 +5,9 @@ import * as duck from './duck.js';
 async function controller({ adapter }) {
     adapter.attachShadow();
 
-    const path = await adapter.getPath(import.meta.url);
-    const redux = adapter.bindRedux(store);
-    const [state, methods] = adapter.newState(duck.createMethods, duck.initialState);
+    const path = await adapter.usePath(import.meta.url);
+    const redux = adapter.useRedux(store);
+    const [state, methods] = adapter.useState(duck.createMethods, duck.initialState);
 
     const handleSubmit = (event) => {
         event.preventDefault();

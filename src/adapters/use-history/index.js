@@ -22,13 +22,13 @@ export const nodes = new Map();
 );
 
 /**
- * @function history
+ * @function useHistory
  * ---
  * Observes and re-renders whenever the route has been updated. Passes the parsed props that can be
  * set by passing the params and their associated types. Useful for whenever you're managing state by
  * using the browser's URL params.
  */
-export default function getHistory({ node, window, lifecycle, server }) {
+export default function useHistory({ node, window, lifecycle, server }) {
     return (types) => {
         const defaults = getDefaults(types);
 
