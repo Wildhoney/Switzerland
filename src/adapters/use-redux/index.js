@@ -9,7 +9,7 @@ const redux = {
 
 export const nodes = new WeakSet();
 
-export function newRedux(reducer, actions) {
+export function createStore(reducer, actions) {
     const { dispatch, ...props } = redux.createStore(reducer, redux.applyMiddleware(t.default ?? t));
     const boundActions = actions && redux.bindActionCreators(actions, dispatch);
 

@@ -1,8 +1,8 @@
 import * as node from './core/renderer/nodes.js';
-import { newRedux } from './adapters/use-redux/index.js';
+import { createStore } from './adapters/use-redux/index.js';
 
 export { create, render, preload } from './core/index.js';
 export { createVNode as h } from './core/renderer/utils.js';
 export * as t from './types/index.js';
 
-export const utils = { node, redux: { new: newRedux } };
+export const utils = { node, redux: { createStore } };

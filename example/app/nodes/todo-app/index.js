@@ -14,7 +14,7 @@ async function controller({ adapter, window }) {
     const attrs = adapter.useAttrs({ logo: [t.String, 'top'] });
     const redux = adapter.useRedux(store);
     const history = adapter.useHistory({ filter: [t.Bool, false] });
-    const adapt = adapter.useDimensions();
+    const adapt = adapter.useResize();
 
     adapter.run.onMount(() => setupWorker({ path, window }));
 

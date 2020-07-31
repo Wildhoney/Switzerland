@@ -69,4 +69,4 @@ const actions = {
     },
 };
 
-export default utils.redux.new(reducer, actions);
+export default utils.redux.createStore(reducer, actions);
