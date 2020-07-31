@@ -36,10 +36,15 @@ export const dispatchEvent = (node) => (name, payload, options = {}) => {
 };
 
 async function bindAdapters(renderProps) {
-    return Object.entries(adapters).reduce(async (accum, [name, runAdapter]) => {
-        const adapters = await accum;
-        return { ...adapters, [name]: await runAdapter(renderProps) };
-    }, {});
+    function applyAdapters(adapters) {
+        return Object.entries(adapters).reduce(async (accum, [name, adapter]) => {
+            const adapters = await accum;
+            const isNested = typeof adapter === 'object';
+            return { ...adapters, [name]: isNested ? await applyAdapters(adapter) : adapter(renderProps) };
+        }, {});
+    }
+
+    return await applyAdapters(adapters);
 }
 
 function makeCyclicProps(props) {

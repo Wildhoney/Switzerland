@@ -1,6 +1,6 @@
 const states = new WeakMap();
 
-export default function useState({ node, lifecycle, render }) {
+export default function useMethods({ node, lifecycle, render }) {
     return (createMethods, initialState) => {
         if (!states.has(node)) {
             const methods = Object.keys(createMethods(initialState)).reduce((accum, name) => {

@@ -6,8 +6,8 @@ async function controller({ adapter }) {
     adapter.attachShadow();
 
     const path = await adapter.usePath(import.meta.url);
-    const redux = adapter.useRedux(store);
-    const [state, methods] = adapter.useState(duck.createMethods, duck.initialState);
+    const redux = adapter.state.useRedux(store);
+    const [state, methods] = adapter.state.useMethods(duck.createMethods, duck.initialState);
 
     const handleSubmit = (event) => {
         event.preventDefault();

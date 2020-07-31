@@ -10,8 +10,8 @@ import Filter from './components/filter.js';
 async function controller({ adapter, window }) {
     adapter.attachShadow();
 
-    const redux = adapter.useRedux(store);
-    const adapt = adapter.useResize();
+    const redux = adapter.state.useRedux(store);
+    const adapt = adapter.observer.useResize();
     const attrs = adapter.useAttrs({ logo: [t.String, 'top'] });
     const path = await adapter.usePath(import.meta.url);
     const history = adapter.useHistory({ filter: [t.Bool, false] });
