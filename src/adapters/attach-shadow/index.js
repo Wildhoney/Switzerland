@@ -1,4 +1,4 @@
-import { createVNode } from '../../../renderer/utils.js';
+import { createVNode } from '../../core/renderer/utils.js';
 import * as utils from './utils.js';
 
 export const boundaries = new WeakMap();

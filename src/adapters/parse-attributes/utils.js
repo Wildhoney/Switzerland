@@ -1,4 +1,4 @@
-import { toCamelcase } from '../../../utils.js';
+import { toCamelcase } from '../../core/utils.js';
 
 export const getAttributes = (attrs, types, defaults) =>
     Object.values(attrs).reduce((acc, attr) => {

@@ -1,6 +1,6 @@
 import { consoleMessage, getWindow } from '../../utils.js';
+import * as adapters from '../../adapters/index.js';
 import * as renderer from '../renderer/index.js';
-import * as adapters from './adapters/index.js';
 
 export async function getInitialProps(node, props) {
     const server = props.server ?? false;

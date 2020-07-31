@@ -1,4 +1,4 @@
-import { getDefaults } from '../../../utils.js';
+import { getDefaults } from '../../core/utils.js';
 import * as utils from './utils.js';
 
 export const nodes = new WeakSet();

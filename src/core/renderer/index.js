@@ -1,7 +1,7 @@
 import morph from 'morphdom';
 import * as utils from './utils.js';
 import { dispatchEvent } from '../../core/impl/utils.js';
-import { boundaries } from '../../core/impl/adapters/attach-shadow/index.js';
+import { boundaries } from '../../adapters/attach-shadow/index.js';
 
 const cache = new WeakMap();
 

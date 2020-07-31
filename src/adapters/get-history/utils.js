@@ -1,4 +1,4 @@
-import { toCamelcase } from '../../../utils.js';
+import { toCamelcase } from '../../core/utils.js';
 
 export function createPatch(getF, types, defaults) {
     return (name) => {

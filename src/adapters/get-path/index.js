@@ -1,4 +1,4 @@
-import { serverOptions } from '../../../index.js';
+import { serverOptions } from '../../core/index.js';
 import * as utils from './utils.js';
 
 export default function getPath({ server }) {
