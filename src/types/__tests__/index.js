@@ -1,6 +1,6 @@
 import test from 'ava';
 import capitalise from 'capitalize';
-import * as R from 'ramda';
+import R from 'ramda';
 import * as type from '../index.js';
 
 test('It should be able to parse String types;', (t) => {
@@ -82,26 +82,26 @@ test('It should be able to parse Tuple types;', (t) => {
     t.deepEqual(type.Tuple()('Adam,32'), ['Adam', '32']);
 });
 
-// test('It should be able to parse Regex types;', (t) => {
-//     const r = /(?<day>\d+)-(?<month>\d+)(?:-(?<year>\d+))?/;
-//     t.deepEqual(type.Regex(r)('10-10-1985'), {
-//         day: '10',
-//         month: '10',
-//         year: '1985',
-//     });
-//     t.deepEqual(type.Regex(r)('10-10'), {
-//         day: '10',
-//         month: '10',
-//         year: null,
-//     });
-//     t.deepEqual(type.Regex(r)('Adam'), {
-//         day: null,
-//         month: null,
-//         year: null,
-//     });
-//     t.deepEqual(R.map(Number)(type.Regex(r)('10-10-1985')), {
-//         day: 10,
-//         month: 10,
-//         year: 1985,
-//     });
-// });
+test('It should be able to parse Regex types;', (t) => {
+    const r = /(?<day>\d+)-(?<month>\d+)(?:-(?<year>\d+))?/;
+    t.deepEqual(type.Regex(r)('10-10-1985'), {
+        day: '10',
+        month: '10',
+        year: '1985',
+    });
+    t.deepEqual(type.Regex(r)('10-10'), {
+        day: '10',
+        month: '10',
+        year: null,
+    });
+    t.deepEqual(type.Regex(r)('Adam'), {
+        day: null,
+        month: null,
+        year: null,
+    });
+    t.deepEqual(R.map(Number)(type.Regex(r)('10-10-1985')), {
+        day: 10,
+        month: 10,
+        year: 1985,
+    });
+});

@@ -25,7 +25,7 @@ Float.DP = (dp) => (a) => {
     return value === null ? null : Float(value.toFixed(dp));
 };
 
-export const Bool = (a, [truthies, falsies] = [[], []]) => {
+export const Bool = (a) => {
     switch (a.toLowerCase()) {
         case '':
         case '1':
