@@ -4,6 +4,7 @@ const state = new WeakMap();
 
 const observer =
     typeof window !== 'undefined' &&
+    'IntersectionObserver' in window &&
     new window.IntersectionObserver((entries) =>
         entries.forEach(function useIntersection(entry) {
             state.set(entry.target, entry.contentRect);

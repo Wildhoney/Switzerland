@@ -1,6 +1,5 @@
 import test from 'ava';
 import { create } from '../../../core/index.js';
-import * as m from '../../../middleware/index.js';
 import { getWindow } from '../../../utils.js';
 import { createVNode as h, getVNodeFragment, getVNodeDOM } from '../utils.js';
 
@@ -36,11 +35,16 @@ test('It should be able to parse a vnode tree with children that yield arrays;',
 });
 
 test('It should be able to parse a vnode tree that yields a Swiss component;', async (t) => {
-    const Name = create(
-        'x-name',
-        m.attrs(),
-        m.html(({ attrs }) => h('div', {}, `Hello ${attrs.name}!`))
-    );
+    function controller({ adapter }) {
+        const attrs = adapter.useAttrs();
+        return { attrs };
+    }
+
+    function view({ attrs }) {
+        return h('div', {}, `Hello ${attrs.name}!`);
+    }
+
+    const Name = create('x-name', { controller, view });
 
     const main = h('section', {}, [h(Name, { name: 'Adam' }), h(Name, { name: 'Maria' }), h(Name, { name: 'Imogen' })]);
     const node = await getVNodeDOM(main);

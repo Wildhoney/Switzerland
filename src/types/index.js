@@ -48,7 +48,7 @@ export function Date(a) {
     return Number.isNaN(value.getTime()) ? null : value;
 }
 
-export function Array(f) {
+export function Array(f = String) {
     return (a) => a.split(',').map((a) => f(a));
 }
 
