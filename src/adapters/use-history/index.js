@@ -29,7 +29,7 @@ export const nodes = new Map();
  * using the browser's URL params.
  */
 export default function useHistory({ node, window, lifecycle, server }) {
-    return (types) => {
+    return (types = {}) => {
         const defaults = getDefaults(types);
 
         const location = window.document.location;

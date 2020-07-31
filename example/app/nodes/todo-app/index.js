@@ -47,4 +47,4 @@ function view({ path, props, attrs }) {
     ];
 }
 
-export default create('todo-app', controller, view);
+export default create('todo-app', { controller, view });

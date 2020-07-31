@@ -31,4 +31,4 @@ function view({ redux, path, props }) {
     ];
 }
 
-export default create('todo-list', controller, view);
+export default create('todo-list', { controller, view });

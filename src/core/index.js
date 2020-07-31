@@ -1,6 +1,8 @@
 import { getWindow } from '../utils.js';
 import * as impl from './impl/index.js';
 import * as utils from './utils.js';
+import defaultController from './defaults/controller.js';
+import defaultView from './defaults/view.js';
 
 export const serverOptions = new Map();
 
@@ -10,13 +12,16 @@ export const serverOptions = new Map();
  * Takes the name of the web component and an array of functions that represent the middleware. Each
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
-export function create(name, ...middleware) {
+export function create(
+    name,
+    { controller = defaultController, view = defaultView } = { controller: defaultController, view: defaultView }
+) {
     const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
-        window.customElements.define(tag, impl.base(constuctor, middleware), extend && { extends: extend });
+        window.customElements.define(tag, impl.base(constuctor, [controller, view]), extend && { extends: extend });
     } finally {
-        return impl.server(extend ?? tag, middleware, extend ? tag : null);
+        return impl.server(extend ?? tag, [controller, view], extend ? tag : null);
     }
 }
 

@@ -46,4 +46,4 @@ function view({ form, path, server, state, methods, handleSubmit }) {
     ];
 }
 
-export default create('todo-input', controller, view);
+export default create('todo-input', { controller, view });
