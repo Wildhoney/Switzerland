@@ -27,26 +27,25 @@
 1. [Getting Started](#getting-started)
 2. [Elements](#elements)
 3. [Philosophy](#philosophy)
-4. [Middleware](#middleware)
- <!-- 5. [CLI](#cli) -->
+    <!-- 4. [Middleware](#middleware) -->
+     <!-- 5. [CLI](#cli) -->
 
 ## Getting Started
 
-As Switzerland is functional its components simply take `props` and yield `props` &ndash; middleware can have side-effects such as writing to the DOM, and can also be asynchronous by yielding a `Promise`. Middleware is processed on each render from left-to-right which makes components very easy to reason about. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
+Switzerland takes both a controller and a view for rendering components &ndash; the controller is used for passing props to the view, and is separate from the view as this prevents a tight coupling between the props needed for the view to the render tree. By taking this approach the controllers and views are kept more general which faciliates sharing. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
 ```javascript
 import { create, m, h } from 'switzerland';
 
-create(
-    'x-countries',
-    m.html(() =>
-        h('ul', {}, [
-            h('li', {}, 'United Kingdom'),
-            h('li', {}, 'Russian Federation'),
-            h('li', {}, 'Republic of Indonesia'),
-        ])
-    )
-);
+function view() {
+    return h('ul', {}, [
+        h('li', {}, 'United Kingdom'),
+        h('li', {}, 'Russian Federation'),
+        h('li', {}, 'Republic of Indonesia'),
+    ]);
+}
+
+export default create('x-countries', { view });
 ```
 
 We now have a usable custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder or even nothing at all before the component renders.
@@ -55,27 +54,31 @@ We now have a usable custom element called `x-countries` which can be used anywh
 <x-countries />
 ```
 
-For the `x-countries` component we only have one middleware function &ndash; the `html` middleware which takes `props` and yields `props` but has a side-effect of writing to the DOM using [`morphdom`](https://github.com/patrick-steele-idem/morphdom). It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
+For the `x-countries` component we have a view but no controller &ndash; instead the default controller has been applied. The view takes `props` from the controller and has a side-effect of writing to the DOM using [`morphdom`](https://github.com/patrick-steele-idem/morphdom). It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
 
-Let's take the next step and supply the list of countries via HTML attributes. For this example we'll use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
+Let's take the next step and supply the list of countries via HTML attributes. For this example we'll introduce a specialised controller and use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
 ```javascript
 import { create, m, t, h } from 'switzerland';
 
-create(
-    'x-countries',
-    m.attrs({ values: t.Array(t.String) }),
-    m.html(({ attrs }) =>
-        h(
-            'ul',
-            {},
-            attrs.values.map((country) => h('li', {}, country))
-        )
-    )
-);
+function controller({ adapter }) {
+    const attrs = adapter.useAttrs({ values: t.Array(t.String) });
+
+    return { countries: attrs.values };
+}
+
+function view({ countries }) {
+    return h(
+        'ul',
+        {},
+        countries.map((country) => h('li', {}, country))
+    );
+}
+
+export default create('x-countries', { controller, view });
 ```
 
-Notice that we've now introduced the `attrs` middleware before the `html` middleware; we have a guarantee that `attrs` has completed its work before passing the baton to `html`. It's the responsibility of the `attrs` middleware to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
+Notice how we're destructuring the `adapter` from the props in the controller to then parse the node's attributes. By introducing a controller it's easy to see from the example above how both the controller and view become immediately reuseable. The controller reads attributes from the node and yields the `countries` array &ndash; whereas the view simply takes the `countries` array and iterates over it. It's the responsibility of the `useAttrs` adapter to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
 
 ```html
 <x-countries values="United Kingdom,Russian Federation,Republic of Indonesia" />
@@ -90,17 +93,22 @@ node.attributes.values = `${node.attributes.values},Hungary,Cuba`;
 
 Switzerland components only take string values as their attributes as that's all the HTML spec allows. Using the types we can transform those string values into JS values, and with this approach we allow for greater interoperability. Components can be used as pure HTML, using vanilla JS, or inside React, Vue, Angular, etc... Passing complex state to components only reduces their reusability.
 
-Where other JS libraries fall short, Switzerland considers all web assets to be within its remit. For example in React it is fairly common to use a third-party, non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the `html` middleware &ndash; or the `template` middleware if we choose to use JS template literals:
+Where other JS libraries fall short, Switzerland considers all web assets to be within its remit. For example in React it is fairly common to use a third-party, non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the view:
 
 ```javascript
 import { create, utils, m, t, h } from 'switzerland';
 
-create(
-    'x-countries',
-    m.boundary(),
-    m.path(import.meta.url),
-    m.attrs({ values: t.Array(t.String) }),
-    m.html(({ attrs, path }) => [
+async function controller({ adapter }) {
+    adapter.attachShadow();
+
+    const path = await adapter.getPath(import.meta.url);
+    const attrs = adapter.useAttrs({ values: t.Array(t.String) });
+
+    return { path, countries: attrs.values };
+}
+
+function view({ path, countries }) {
+    return (
         h(utils.node.Sheet, { href: path('index.css') }),
         h('section', {}, [
             h(
@@ -108,12 +116,14 @@ create(
                 {},
                 attrs.values.map((country) => h('li', {}, country))
             ),
-        ]),
-    ])
-);
+        ])
+    );
+}
+
+export default create('x-countries', { controller, view });
 ```
 
-Notice that we've also added the `m.boundary` middleware function which attaches a shadow boundary to our custom element. We do this so that our applied styles are encapsulated in the component itself, rather than bleeding into other elements on the page.
+Notice that we've also invoked the `attachShadow` adapter which attaches a shadow boundary to our custom element &ndash; it also works for server-side rendering without any configuration in browsers where it's currently supported. We do this so that our applied styles are encapsulated in the component itself, rather than bleeding into other elements on the page.
 
 We use the `utils.node.Sheet` helper function which constructs the `link` node itself &ndash; however there's no reason why we couldn't write it ourselves using the `h` function. In using the `path` middleware we have a function that allows us to resolve assets relative to the current JS file:
 
@@ -127,45 +137,46 @@ We use the `utils.node.Sheet` helper function which constructs the `link` node i
 
 By utilising [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM) you're able to keep your CSS documents as general as possible, since none of the styles defined within it will leak into other elements or components. As the CSS document is imported, all assets referenced inside the CSS document are resolved relative to it.
 
-Adding events to a component is achieved through the `utils.dispatch` function which is passed through the `props`. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
+Adding events to a component is achieved through the `dispatch` function which is passed through the `props` to the view. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
 
 ```javascript
 import { create, utils, m, t, h } from 'switzerland';
 
-create(
-    'x-countries',
-    m.boundary(),
-    m.path(import.meta.url),
-    m.attrs({ values: t.Array(t.String) }),
-    m.html(({ attrs, path }) => [
+async function controller({ adapter }) {
+    adapter.attachShadow();
+
+    const path = await adapter.getPath(import.meta.url);
+    const attrs = adapter.useAttrs({ values: t.Array(t.String) });
+
+    return { path, countries: attrs.values };
+}
+
+function view({ dispatch, path, countries }) {
+    return (
         h(utils.node.Sheet, { href: path('index.css') }),
         h('section', {}, [
             h(
                 'ul',
                 {},
                 attrs.values.map((country) =>
-                    h(
-                        'li',
-                        { onClick: () => utils.dispatch('clicked-country', { country }) },
-                        country
-                    )
+                    h('li', { onClick: () => utils.dispatch('clicked-country', { country }) }, country)
                 )
             ),
-        ]),
-    ])
-);
+        ])
+    );
+}
+
+export default create('x-countries', { controller, view });
 ```
 
-Interestingly it's possible to use any valid event name for the `utils.dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our event all set up we can attach the listener by using the native `addEventListener` method on the custom element itself:
+Interestingly it's possible to use any valid event name for the `dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our event all set up we can attach the listener by using the native `addEventListener` method on the custom element itself:
 
 ```javascript
 const node = document.querySelector('x-countries');
-node.addEventListener('clicked-country', (event) =>
-    console.log(`Country: ${event.detail.country}!`)
-);
+node.addEventListener('clicked-country', (event) => console.log(`Country: ${event.detail.country}!`));
 ```
 
-Taking the final step in our initial example &ndash; since `v4.0.0` Switzerland has the ability to be server-side rendered without much configuration. In your Node application you need to import the `render` function which accepts a component as its argument &mdash; in return the `render` function will give you a stringified representation of your component's tree.
+Taking the final step in our initial example &ndash; since from `v4.0.0` Switzerland has the ability to be server-side rendered without much configuration. In your Node application you need to import the `render` function which accepts a component as its argument &mdash; in return the `render` function will give you a stringified representation of your component's tree.
 
 First we need to export the `x-countries` component so that it can be referenced from another file, and then we import that alongside the `render`, and pass the component to the `render` function.
 
@@ -185,7 +196,7 @@ app.get('/', async (_, response) => {
 });
 ```
 
-Using the declarative shadow DOM a shadow boundary will be added to your component server-side when using the `m.boundary` middleware. All styles will be applied in the component, however to prevent FOUC it's recommended to load your CSS documents in the `head` &ndash; Switzerland exports a `preload` function which takes your HTML and collates all of the CSS imports for that component tree.
+Using the declarative shadow DOM a shadow boundary will be added to your component server-side when using the `attachShadow` adapter. All styles will be applied in the component, however to prevent FOUC it's recommended to load your CSS documents in the `head` &ndash; Switzerland exports a `preload` function which takes your HTML and collates all of the CSS imports for that component tree.
 
 ```javascript
 import fs from 'fs';
@@ -246,14 +257,14 @@ document.body.append(document.createElement('todo-app'));
 
 After a couple of milliseconds you _should_ see the todo app embedded into Google with all of the styles applied. If you have any todos in your list then you will also see those due to the IndexedDb that the example utilises. It's worth noting that for this example to work correctly, the host &mdash; in the above case `switzerland.herokuapp.com` &mdash; needs the CORS headers configured correctly.
 
-## Middleware
+<!-- ## Middleware
 
 -   `adapt` &ndash; Uses `ResizeObserver` to re-render whenever the component's dimensions change;
 -   `attrs` &ndash; Provides the parsing and observing of a node's attributes.
 -   [`blend`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/blend) &ndash; Keep your functions general when using as middleware functions.
 -   `defer` &ndash; Invokes function after `x` milliseconds if the current render hasn't completed.
 -   `delay` &ndash; Awaits by `x` milliseconds before continuing to the next middleware item.
--   [`wait`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/wait) &ndash; Await the resolution of other components to make rendering atomic.
+-   [`wait`](https://github.com/Wildhoney/Switzerland/tree/master/src/middleware/wait) &ndash; Await the resolution of other components to make rendering atomic. -->
 
 <!-- ## CLI
 
