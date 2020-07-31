@@ -22,7 +22,10 @@ export default function useRedux({ node, render }) {
         const redux = { state, actions: boundActions, dispatch };
 
         if (!nodes.has(node)) {
-            subscribe(() => render({ redux }));
+            subscribe(function useRedux() {
+                render();
+            });
+
             nodes.add(node);
         }
 

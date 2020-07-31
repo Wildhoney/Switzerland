@@ -5,7 +5,7 @@ const state = new WeakMap();
 const observer =
     typeof window !== 'undefined' &&
     new window.ResizeObserver((entries) =>
-        entries.forEach((entry) => {
+        entries.forEach(function useResize(entry) {
             state.set(entry.target, entry.contentRect);
             entry.target.render();
         })

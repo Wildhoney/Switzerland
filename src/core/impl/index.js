@@ -49,9 +49,7 @@ export function base(extension, middleware) {
                     // Always dispatch the "resolved" event regardless of success or failure. We also apply
                     // the "resolved" class name to the element.
                     const dispatchEvent = utils.dispatchEvent(node);
-                    dispatchEvent(getEventName('resolved'), {
-                        node,
-                    });
+                    dispatchEvent(getEventName('resolved'), { node });
                     queue.drop(task);
                     resolve();
                 }

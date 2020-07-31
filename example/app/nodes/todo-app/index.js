@@ -10,11 +10,11 @@ import Filter from './components/filter.js';
 async function controller({ adapter, window }) {
     adapter.attachShadow();
 
-    const path = await adapter.usePath(import.meta.url);
-    const attrs = adapter.useAttrs({ logo: [t.String, 'top'] });
     const redux = adapter.useRedux(store);
-    const history = adapter.useHistory({ filter: [t.Bool, false] });
     const adapt = adapter.useResize();
+    const attrs = adapter.useAttrs({ logo: [t.String, 'top'] });
+    const path = await adapter.usePath(import.meta.url);
+    const history = adapter.useHistory({ filter: [t.Bool, false] });
 
     adapter.run.onMount(() => setupWorker({ path, window }));
 
