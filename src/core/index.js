@@ -19,7 +19,7 @@ export function create(
     const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
-        window.customElements.define(tag, impl.base(constuctor, [controller, view]), extend && { extends: extend });
+        window.customElements.define(tag, impl.client(constuctor, [controller, view]), extend && { extends: extend });
     } finally {
         return impl.server(extend ?? tag, [controller, view], extend ? tag : null);
     }
@@ -39,7 +39,7 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
     await getWindow();
 
     const node = await app.render(props);
-    return node.outerHTML.replace(/x-template/g, 'template');
+    return node.outerHTML.replace(/swiss-template/g, 'template');
 }
 
 /**

@@ -35,7 +35,7 @@ export const dispatchEvent = (node) => (name, payload, options = {}) => {
     );
 };
 
-async function bindAdapters(renderProps) {
+export async function bindAdapters(renderProps, boundableAdapters = adapters) {
     function applyAdapters(adapters) {
         return Object.entries(adapters).reduce(async (accum, [name, adapter]) => {
             const adapters = await accum;
@@ -44,10 +44,10 @@ async function bindAdapters(renderProps) {
         }, {});
     }
 
-    return await applyAdapters(adapters);
+    return await applyAdapters(boundableAdapters);
 }
 
-function makeCyclicProps(props) {
+export function makeCyclicProps(props) {
     props.props = props;
     return props;
 }

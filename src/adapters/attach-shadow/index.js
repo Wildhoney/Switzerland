@@ -8,7 +8,7 @@ export default function attachShadow({ node, server, lifecycle }) {
         if (lifecycle !== 'mount') return;
 
         if (server) {
-            const createBoundary = (tree) => createVNode('x-template', { shadowroot: 'open' }, tree);
+            const createBoundary = (tree) => createVNode('swiss-template', { shadowroot: 'open' }, tree);
             boundaries.set(node, createBoundary);
             return createBoundary;
         }

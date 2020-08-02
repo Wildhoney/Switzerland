@@ -9,3 +9,6 @@ es/
 
 # yarn
 yarn-error.log
+
+# nyc
+.nyc_output

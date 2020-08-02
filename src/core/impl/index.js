@@ -2,14 +2,16 @@ import * as utils from './utils.js';
 import createQueue from './queue/index.js';
 import createState from './state/index.js';
 import { getWindow } from '../../utils.js';
-import { getEventName } from '../utils.js';
+import { getEventName, fromCamelcase } from '../utils.js';
 
-export function base(extension, middleware) {
+export function client(extension, middleware) {
     const meta = Symbol('switzerland/meta');
 
     return class Swiss extends extension {
         constructor() {
             super();
+
+            this.utils = utils;
 
             this[meta] = {
                 queue: createQueue(),
@@ -23,7 +25,7 @@ export function base(extension, middleware) {
         }
 
         disconnectedCallback() {
-            this.removeAttribute('data-swiss', '');
+            this.removeAttribute('data-swiss');
             return this.render({ lifecycle: 'unmount' });
         }
 
@@ -39,7 +41,7 @@ export function base(extension, middleware) {
 
                 try {
                     // Iterate and invoke each middleware for this Swiss component.
-                    await utils.runComponent(this, props, middleware);
+                    await this.utils.runComponent(this, props, middleware);
                 } catch (error) {
                     // Clear the queue and resolve as a middleware threw an error, and also
                     // mark the component as having errored.
@@ -48,7 +50,7 @@ export function base(extension, middleware) {
                 } finally {
                     // Always dispatch the "resolved" event regardless of success or failure. We also apply
                     // the "resolved" class name to the element.
-                    const dispatchEvent = utils.dispatchEvent(node);
+                    const dispatchEvent = this.utils.dispatchEvent(node);
                     dispatchEvent(getEventName('resolved'), { node });
                     queue.drop(task);
                     resolve();
@@ -69,6 +71,7 @@ export class Swiss {
         this.name = name;
         this.middleware = middleware;
         this.extend = extend;
+        this.utils = utils;
     }
 
     async render(props = {}) {
@@ -83,10 +86,10 @@ export class Swiss {
         if (typeof window !== 'undefined') return node;
 
         // Apply all of the attributes to the host node.
-        for (const [key, value] of Object.entries(props)) node.setAttribute(key, value);
+        for (const [key, value] of Object.entries(props)) node.setAttribute(fromCamelcase(key).toKebab(), value);
 
         // Iterate over the middleware and then return the node.
-        await utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware);
+        await this.utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware);
 
         return node;
     }
