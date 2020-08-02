@@ -8,6 +8,7 @@ export async function getInitialProps(node, props) {
     return {
         node,
         server,
+        options: {},
         lifecycle: 'update',
         render: (props) => node?.render?.(props),
         dispatch: dispatchEvent(node),
@@ -40,7 +41,10 @@ export async function bindAdapters(renderProps, options, boundableAdapters = ada
         return Object.entries(adapters).reduce(async (accum, [name, adapter]) => {
             const adapters = await accum;
             const isNested = typeof adapter === 'object';
-            return { ...adapters, [name]: isNested ? await applyAdapters(adapter) : adapter(renderProps, options) };
+            return {
+                ...adapters,
+                [name]: isNested ? await applyAdapters(adapter) : adapter({ ...renderProps, options }),
+            };
         }, {});
     }
 
@@ -52,13 +56,13 @@ export function makeCyclicProps(props) {
     return props;
 }
 
-export async function renderTree({ renderProps, boundAdapters, runController, runView, options }) {
+export async function renderTree({ renderProps, boundAdapters, runController, runView }) {
     // Run the controller and pass those props to the view which yields a tree to render.
     const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters }));
     const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps }));
 
     // Render the tree that is yielded from the view.
-    await renderer.renderTree({ ...renderProps, tree, options });
+    await renderer.renderTree({ ...renderProps, tree });
 
     {
         // Determine if there are any form nodes in the renderer HTML.
@@ -68,7 +72,7 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
             // Re-render the controller and view if a form is detected in the output.
             const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters, form }));
             const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, form, lifecycle: 'update' }));
-            await renderer.renderTree({ ...renderProps, tree, lifecycle: 'update', options });
+            await renderer.renderTree({ ...renderProps, tree, lifecycle: 'update' });
 
             return tree;
         }
@@ -78,12 +82,12 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
 }
 
 export async function runComponent(node, props, [runController, runView], options = {}) {
-    const renderProps = { ...props, ...(await getInitialProps(node, props)), form: renderer.getForms(node) };
+    const renderProps = { ...props, ...(await getInitialProps(node, props)), form: renderer.getForms(node), options };
     const boundAdapters = await bindAdapters(renderProps, options);
 
     try {
         // Run the controller to gather its props for view rendering.
-        return await renderTree({ boundAdapters, renderProps, runController, runView, options });
+        return await renderTree({ boundAdapters, renderProps, runController, runView });
     } catch (error) {
         // Invoke the controller and view again but with passing the error that was thrown.
         process?.env?.NODE_ENV !== 'production' && consoleMessage(error);

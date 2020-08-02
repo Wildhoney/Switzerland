@@ -38,7 +38,7 @@ test('It should be able to handle the dispatching of events;', (t) => {
 
 test('It should be able to create bound adapter functions using the props;', async (t) => {
     const adapter = sinon.spy(() => () => {});
-    const props = { node: document.createElement('x-adam'), server: false };
+    const props = { node: document.createElement('x-adam'), server: false, options: {} };
 
     const boundAdapters = await utils.bindAdapters(props, {}, { adapter });
 
@@ -49,7 +49,7 @@ test('It should be able to create bound adapter functions using the props;', asy
 
 test('It should be able to create bound nested adapter functions using the props;', async (t) => {
     const adapter = sinon.spy(() => () => {});
-    const props = { node: document.createElement('x-adam'), server: false };
+    const props = { node: document.createElement('x-adam'), server: false, options: {} };
 
     const boundAdapters = await utils.bindAdapters(props, {}, { nestedAdapter: { adapter } });
 

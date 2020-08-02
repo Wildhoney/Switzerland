@@ -1,6 +1,6 @@
 import * as utils from './utils.js';
 
-export default function usePath({ server }, options) {
+export default function usePath({ server, options }) {
     return async (url) => {
         if (!server) return utils.getPath(url);
 
