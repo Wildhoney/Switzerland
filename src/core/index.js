@@ -38,8 +38,40 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
     // single time it's invoked, instead the return value is memoized.
     await getWindow();
 
+    // Render the app using the passed props.
     const node = await app.render(props);
+
+    // Clear the server options for the next render.
+    serverOptions.clear();
+
+    // JSDOM has an issue with appending children to the `template` node, so we merely find and replace
+    // at this point to mimick the behaviour.
     return node.outerHTML.replace(/swiss-template/g, 'template');
+}
+
+/**
+ * @function preload
+ * ---
+ * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
+ */
+export async function renderToStream(...args) {
+    const { Transform } = await import('stream');
+
+    const stream = new Transform();
+
+    // Push chunks of data into our stream.
+    stream._transform = function (chunk, encoding, done) {
+        this.push(chunk);
+        done();
+    };
+
+    // Invoke the typical `render` function but with an attached stream.
+    serverOptions.set('stream', stream);
+    await render(...args);
+
+    // End the stream and yield to the caller.
+    stream.end();
+    return stream;
 }
 
 /**

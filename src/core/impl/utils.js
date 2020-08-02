@@ -70,11 +70,11 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
             const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, form, lifecycle: 'update' }));
             await renderer.renderTree({ ...renderProps, tree, lifecycle: 'update' });
 
-            return [viewProps, tree];
+            return tree;
         }
     }
 
-    return [viewProps, tree];
+    return tree;
 }
 
 export async function runComponent(node, props, [runController, runView]) {

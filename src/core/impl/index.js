@@ -3,6 +3,7 @@ import createQueue from './queue/index.js';
 import createState from './state/index.js';
 import { getWindow } from '../../utils.js';
 import { getEventName, fromCamelcase } from '../utils.js';
+import { serverOptions } from '../index.js';
 
 export function client(extension, middleware) {
     const meta = Symbol('switzerland/meta');
@@ -11,12 +12,12 @@ export function client(extension, middleware) {
         constructor() {
             super();
 
-            this.utils = utils;
-
             this[meta] = {
                 queue: createQueue(),
                 state: createState(this),
             };
+
+            this.utils = utils;
         }
 
         connectedCallback() {
@@ -90,6 +91,12 @@ export class Swiss {
 
         // Iterate over the middleware and then return the node.
         await this.utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware);
+
+        if (serverOptions.get('stream')) {
+            // Write to the stream's buffer if required.
+            const stream = serverOptions.get('stream');
+            stream.write(node.outerHTML);
+        }
 
         return node;
     }
