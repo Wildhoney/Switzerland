@@ -56,8 +56,37 @@ export async function getVNodeFragment(...nodes) {
     return fragment;
 }
 
-function isEvent(key, value) {
+export function isEvent(key, value) {
     return key.startsWith('on') && typeof value === 'function';
+}
+
+export function attachEventListeners(tree) {
+    return (node) => {
+        // Remove all of the existing event listeners from the node.
+        detatchEventListeners(node);
+
+        tree?.props &&
+            Object.entries(tree.props).forEach(([key, value]) => {
+                if (!isEvent(key, value)) return;
+
+                // Attach all of the required events to the given node.
+                const name = fromCamelcase(key.substr(2)).toKebab().substr(1);
+                node.addEventListener(name, value);
+
+                // Memorise the events so that can be removed later if necessary.
+                !eventListeners.get(node) && eventListeners.set(node, new Set());
+                eventListeners.get(node).add({ name, fn: value });
+            });
+    };
+}
+
+export function detatchEventListeners(node) {
+    // Remove all of the events currently bound to the node.
+    const listeners = eventListeners.get(node) ?? [];
+    [...listeners].forEach((listener) => {
+        eventListeners.get(node).delete(listener);
+        node.removeEventListener(listener.name, listener.fn);
+    });
 }
 
 export async function getVNodeDOM(tree) {
@@ -96,34 +125,7 @@ export async function getVNodeDOM(tree) {
         [].concat(children).forEach((child) => node.appendChild(child));
     }
 
-    function attachEventListeners(node) {
-        // Remove all of the existing event listeners from the node.
-        detatchEventListeners(node);
-
-        tree?.props &&
-            Object.entries(tree.props).forEach(([key, value]) => {
-                if (!isEvent(key, value)) return;
-
-                // Attach all of the required events to the given node.
-                const name = fromCamelcase(key.substr(2)).toKebab().substr(1);
-                node.addEventListener(name, value);
-
-                // Memorise the events so that can be removed later if necessary.
-                !eventListeners.get(node) && eventListeners.set(node, new Set());
-                eventListeners.get(node).add({ name, fn: value });
-            });
-    }
-
-    function detatchEventListeners(node) {
-        // Remove all of the events currently bound to the node.
-        const listeners = eventListeners.get(node) ?? [];
-        [...listeners].forEach((listener) => {
-            eventListeners.get(node).delete(listener);
-            node.removeEventListener(listener.name, listener.fn);
-        });
-    }
-
-    node.attachEventListeners = attachEventListeners;
+    node.attachEventListeners = attachEventListeners(tree);
     node.detatchEventListeners = detatchEventListeners;
 
     return node;

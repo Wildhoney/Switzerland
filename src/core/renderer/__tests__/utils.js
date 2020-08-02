@@ -1,7 +1,15 @@
 import test from 'ava';
+import sinon from 'sinon';
 import { create } from '../../../core/index.js';
 import { getWindow } from '../../../utils.js';
-import { createVNode as h, getVNodeFragment, getVNodeDOM } from '../utils.js';
+import {
+    createVNode as h,
+    getVNodeFragment,
+    getVNodeDOM,
+    attachEventListeners,
+    isEvent,
+    detatchEventListeners,
+} from '../utils.js';
 
 test('It should be able to parse a basic vnode tree;', async (t) => {
     const main = h('section', {}, 'Hello Adam!');
@@ -81,4 +89,36 @@ test('It should be able to yield a document fragment of the parsed DOM tree;', a
     const nodes = await getVNodeDOM(main);
     const fragment = await getVNodeFragment(nodes);
     t.true(fragment instanceof window.DocumentFragment);
+});
+
+test('It should be able to determine when an event is actually an event;', (t) => {
+    t.true(isEvent('onClick', () => {}));
+    t.false(isEvent('onClick', {}));
+    t.false(isEvent('click', () => {}));
+});
+
+test('It should be able to handle of attaching events to any given node;', (t) => {
+    const node = document.createElement('x-imogen');
+    node.addEventListener = sinon.spy();
+
+    const click = () => {};
+    const onClick = () => {};
+    const onChange = {};
+    attachEventListeners(h('button', { click, onClick, onChange }))(node);
+
+    t.is(node.addEventListener.callCount, 1);
+    t.true(node.addEventListener.calledWith('click', onClick));
+});
+
+test('It should be able to handle of detatching events from any given node;', (t) => {
+    const node = document.createElement('x-imogen');
+    node.addEventListener = sinon.spy();
+    node.removeEventListener = sinon.spy();
+
+    const onClick = () => {};
+    attachEventListeners(h('button', { onClick }))(node);
+
+    detatchEventListeners(node);
+    t.is(node.removeEventListener.callCount, 1);
+    t.true(node.removeEventListener.calledWith('click', onClick));
 });

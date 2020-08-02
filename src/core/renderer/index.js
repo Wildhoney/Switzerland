@@ -23,7 +23,7 @@ export async function renderTree({ tree, node, server }) {
         childrenOnly: boundary != null,
 
         getNodeKey(node) {
-            if (!(node instanceof HTMLElement)) return null;
+            if (!(node instanceof window.HTMLElement)) return null;
             return node.getAttribute('key') ?? null;
         },
         onNodeAdded(node) {
@@ -35,7 +35,7 @@ export async function renderTree({ tree, node, server }) {
             dispatchEvent(node)('destroy', { node });
         },
         onBeforeElUpdated(from, to) {
-            const isSwiss = from instanceof HTMLElement && 'swiss' in from.dataset;
+            const isSwiss = from instanceof window.HTMLElement && 'swiss' in from.dataset;
 
             if (isSwiss) {
                 // We only update the attributes of Swiss components, as each component is self-contained.

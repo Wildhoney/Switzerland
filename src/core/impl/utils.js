@@ -52,21 +52,29 @@ export function makeCyclicProps(props) {
     return props;
 }
 
-async function renderTree({ node, boundAdapters, renderProps, runController, runView }) {
+export async function renderTree({ renderProps, boundAdapters, runController, runView }) {
+    // Run the controller and pass those props to the view which yields a tree to render.
     const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters }));
     const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps }));
+
+    // Render the tree that is yielded from the view.
     await renderer.renderTree({ ...renderProps, tree });
 
     {
-        const form = renderer.renderForms(node);
+        // Determine if there are any form nodes in the renderer HTML.
+        const form = renderer.renderForms(renderProps.node);
 
         if (Object.keys(form).length > 0) {
             // Re-render the controller and view if a form is detected in the output.
             const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters, form }));
             const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, form, lifecycle: 'update' }));
             await renderer.renderTree({ ...renderProps, tree, lifecycle: 'update' });
+
+            return [viewProps, tree];
         }
     }
+
+    return [viewProps, tree];
 }
 
 export async function runComponent(node, props, [runController, runView]) {
@@ -75,11 +83,11 @@ export async function runComponent(node, props, [runController, runView]) {
 
     try {
         // Run the controller to gather its props for view rendering.
-        return renderTree({ node, boundAdapters, renderProps, runController, runView });
+        return await renderTree({ boundAdapters, renderProps, runController, runView });
     } catch (error) {
         // Invoke the controller and view again but with passing the error that was thrown.
         process?.env?.NODE_ENV !== 'production' && consoleMessage(error);
-        await renderTree({ node, boundAdapters, renderProps: { ...renderProps, error }, runController, runView });
+        await renderTree({ boundAdapters, renderProps: { ...renderProps, error }, runController, runView });
 
         // Re-throw an error so the caller in `Swiss.render` can clear the queue.
         throw new Error('switzerland/error');
