@@ -5,11 +5,11 @@ import { boundaries } from '../../adapters/attach-shadow/index.js';
 
 const cache = new WeakMap();
 
-export async function renderTree({ tree, node, server }) {
+export async function renderTree({ tree, node, server, options }) {
     const boundary = boundaries.get(node) ?? node;
 
     if (server) {
-        const nodes = await utils.getVNodeDOM(typeof boundary === 'function' ? boundary(tree) : tree);
+        const nodes = await utils.getVNodeDOM(typeof boundary === 'function' ? boundary(tree) : tree, options);
         const fragment = await utils.getVNodeFragment(nodes);
         node.appendChild(fragment);
 

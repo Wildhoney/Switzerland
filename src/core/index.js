@@ -4,8 +4,6 @@ import * as utils from './utils.js';
 import defaultController from './defaults/controller.js';
 import defaultView from './defaults/view.js';
 
-export const serverOptions = new Map();
-
 /**
  * @function create
  * ---
@@ -31,18 +29,12 @@ export function create(
  * Takes the component tree and renders it to string for server-side rendering capabilities.
  */
 export async function render(app, props = {}, options = { path: 'https://0.0.0.0/' }) {
-    // Set the server-side options such as the server's URL.
-    Object.entries(options).forEach(([key, value]) => serverOptions.set(key, value));
-
     // Initialise the window on initial render so that it doesn't need to yield a promise every
     // single time it's invoked, instead the return value is memoized.
     await getWindow();
 
     // Render the app using the passed props.
-    const node = await app.render(props);
-
-    // Clear the server options for the next render.
-    serverOptions.clear();
+    const node = await app.render(props, options);
 
     // JSDOM has an issue with appending children to the `template` node, so we merely find and replace
     // at this point to mimick the behaviour.
@@ -54,9 +46,8 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
  * ---
  * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
  */
-export async function renderToStream(...args) {
+export async function renderToStream(app = {}, props, options = { path: 'https://0.0.0.0/' }) {
     const { Transform } = await import('stream');
-
     const stream = new Transform();
 
     // Push chunks of data into our stream.
@@ -66,8 +57,7 @@ export async function renderToStream(...args) {
     };
 
     // Invoke the typical `render` function but with an attached stream.
-    serverOptions.set('stream', stream);
-    await render(...args);
+    await render(app, props, { ...options, stream });
 
     // End the stream and yield to the caller.
     stream.end();

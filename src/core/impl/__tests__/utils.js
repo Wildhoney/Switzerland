@@ -40,7 +40,7 @@ test('It should be able to create bound adapter functions using the props;', asy
     const adapter = sinon.spy(() => () => {});
     const props = { node: document.createElement('x-adam'), server: false };
 
-    const boundAdapters = await utils.bindAdapters(props, { adapter });
+    const boundAdapters = await utils.bindAdapters(props, {}, { adapter });
 
     t.is(adapter.callCount, 1);
     t.true(adapter.calledWith(props));
@@ -51,7 +51,7 @@ test('It should be able to create bound nested adapter functions using the props
     const adapter = sinon.spy(() => () => {});
     const props = { node: document.createElement('x-adam'), server: false };
 
-    const boundAdapters = await utils.bindAdapters(props, { nestedAdapter: { adapter } });
+    const boundAdapters = await utils.bindAdapters(props, {}, { nestedAdapter: { adapter } });
 
     t.is(adapter.callCount, 1);
     t.true(adapter.calledWith(props));
@@ -121,8 +121,10 @@ test('It should be able to run the component and handle any errors that are thro
     });
     const runView = sinon.spy(() => h('section'));
 
+    sinon.stub(console, 'error');
     await t.throwsAsync(() => utils.runComponent(node, { node, server: true }, [runController, runView]), {
         instanceOf: Error,
         message: 'Oh no!',
     });
+    console.error.restore();
 });

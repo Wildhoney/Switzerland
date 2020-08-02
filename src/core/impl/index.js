@@ -3,7 +3,6 @@ import createQueue from './queue/index.js';
 import createState from './state/index.js';
 import { getWindow } from '../../utils.js';
 import { getEventName, fromCamelcase } from '../utils.js';
-import { serverOptions } from '../index.js';
 
 export function client(extension, middleware) {
     const meta = Symbol('switzerland/meta');
@@ -75,7 +74,7 @@ export class Swiss {
         this.utils = utils;
     }
 
-    async render(props = {}) {
+    async render(props = {}, options = {}) {
         // Setup the node with the `data-swiss` attribute for tracking the component's boundary, and
         // if it's extending an ative element, append the "is" attribute too.
         const node = getWindow().document.createElement(this.name, this.extend && { is: this.extend });
@@ -90,13 +89,10 @@ export class Swiss {
         for (const [key, value] of Object.entries(props)) node.setAttribute(fromCamelcase(key).toKebab(), value);
 
         // Iterate over the middleware and then return the node.
-        await this.utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware);
+        await this.utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware, options);
 
-        if (serverOptions.get('stream')) {
-            // Write to the stream's buffer if required.
-            const stream = serverOptions.get('stream');
-            stream.write(node.outerHTML);
-        }
+        // Write to the stream's buffer if required.
+        typeof options.stream !== 'undefined' && options.stream.write(node.outerHTML);
 
         return node;
     }
