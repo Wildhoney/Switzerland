@@ -68,7 +68,7 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
         // Determine if there are any form nodes in the renderer HTML.
         const form = renderer.renderForms(renderProps.node);
 
-        if (Object.keys(form).length > 0) {
+        if (!renderProps.server && Object.keys(form).length > 0) {
             // Re-render the controller and view if a form is detected in the output.
             const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters, form }));
             const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, form, lifecycle: 'update' }));
@@ -86,12 +86,18 @@ export async function runComponent(node, props, [runController, runView], option
     const boundAdapters = await bindAdapters(renderProps, options);
 
     try {
-        // Run the controller to gather its props for view rendering.
-        return await renderTree({ boundAdapters, renderProps, runController, runView });
+        // Run the controller to gather its props for view rendering, and write to the stream if available.
+        const tree = await renderTree({ boundAdapters, renderProps, runController, runView });
+        typeof options.stream !== 'undefined' &&
+            options.stream.write(node.innerHTML.replace(/swiss-template/g, 'template'));
+        return tree;
     } catch (error) {
-        // Invoke the controller and view again but with passing the error that was thrown.
+        // Invoke the controller and view again but with passing the error that was thrown, writing to the stream
+        // again if necessary.
         process?.env?.NODE_ENV !== 'production' && consoleMessage(error);
         await renderTree({ boundAdapters, renderProps: { ...renderProps, error }, runController, runView });
+        typeof options.stream !== 'undefined' &&
+            options.stream.write(node.innerHTML.replace(/swiss-template/g, 'template'));
 
         // Re-throw an error so the caller in `Swiss.render` can clear the queue.
         throw new Error('switzerland/error');

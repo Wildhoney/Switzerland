@@ -90,7 +90,7 @@ test('It should be able to render the passed tree twice when the form is detecte
 
     const props = await utils.renderTree({
         boundAdapters: {},
-        renderProps: { node: document.createElement('x-adam'), server: true, form: {} },
+        renderProps: { node: document.createElement('x-adam'), server: false, form: {} },
         runController,
         runView,
     });
