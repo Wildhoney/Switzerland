@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import glob from 'glob';
 import mkdirp from 'mkdirp';
-import terser from 'terser';
+import * as terser from 'terser';
 
 function main() {
     const files = glob.sync('./src/**/**.js').filter((a) => !a.includes('__tests__'));
