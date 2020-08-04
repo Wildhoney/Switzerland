@@ -8,6 +8,9 @@
     "repository": "git@github.com:Wildhoney/Switzerland.git",
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
+    "engines": {
+        "node": "14.x"
+    },
     "scripts": {
         "build": "node terser.config.mjs",
         "start": "ln -nsf ../ node_modules/switzerland && nodemon ./example/server/index.mjs",
