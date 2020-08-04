@@ -1,3 +1,5 @@
+.history/
+.nyc_output/
 example/
 tests/
 media/
