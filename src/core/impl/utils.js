@@ -56,7 +56,7 @@ export function makeCyclicProps(props) {
     return props;
 }
 
-export async function renderTree({ renderProps, boundAdapters, runController, runView }) {
+export async function renderTree({ renderProps, boundAdapters, runController, runView, detectForms = true }) {
     // Run the controller and pass those props to the view which yields a tree to render.
     const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters }));
     const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps }));
@@ -64,18 +64,18 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
     // Render the tree that is yielded from the view.
     await renderer.renderTree({ ...renderProps, tree });
 
-    {
+    if (!renderProps.server && detectForms) {
         // Determine if there are any form nodes in the renderer HTML.
         const form = renderer.renderForms(renderProps.node);
 
-        if (!renderProps.server && Object.keys(form).length > 0) {
-            // Re-render the controller and view if a form is detected in the output.
-            const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters, form }));
-            const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, form, lifecycle: 'update' }));
-            await renderer.renderTree({ ...renderProps, tree, lifecycle: 'update' });
-
-            return tree;
-        }
+        if (Object.keys(form).length > 0)
+            return renderTree({
+                renderProps: { ...renderProps, form, lifecycle: 'update' },
+                boundAdapters,
+                runController,
+                runView,
+                detectForms: false,
+            });
     }
 
     return tree;
