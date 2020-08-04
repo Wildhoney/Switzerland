@@ -1,0 +1,8 @@
+example/
+tests/
+media/
+
+.eslintrc          
+.prettierrc.json                                       
+ava.config.js                                          
+terser.config.mjs                                      
