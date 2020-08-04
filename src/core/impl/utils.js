@@ -1,4 +1,4 @@
-import { consoleMessage, getWindow } from '../../utils.js';
+import { consoleMessage, getWindow, replaceTemplate } from '../../utils.js';
 import * as adapters from '../../adapters/index.js';
 import * as renderer from '../renderer/index.js';
 
@@ -84,20 +84,19 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
 export async function runComponent(node, props, [runController, runView], options = {}) {
     const renderProps = { ...props, ...(await getInitialProps(node, props)), form: renderer.getForms(node), options };
     const boundAdapters = await bindAdapters(renderProps, options);
+    const isStreaming = typeof options.stream !== 'undefined';
 
     try {
         // Run the controller to gather its props for view rendering, and write to the stream if available.
         const tree = await renderTree({ boundAdapters, renderProps, runController, runView });
-        typeof options.stream !== 'undefined' &&
-            options.stream.write(node.innerHTML.replace(/swiss-template/g, 'template'));
+        isStreaming && options.stream.write(replaceTemplate(node.innerHTML));
         return tree;
     } catch (error) {
         // Invoke the controller and view again but with passing the error that was thrown, writing to the stream
         // again if necessary.
         process?.env?.NODE_ENV !== 'production' && consoleMessage(error);
         await renderTree({ boundAdapters, renderProps: { ...renderProps, error }, runController, runView });
-        typeof options.stream !== 'undefined' &&
-            options.stream.write(node.innerHTML.replace(/swiss-template/g, 'template'));
+        isStreaming && options.stream.write(replaceTemplate(node.innerHTML));
 
         // Re-throw an error so the caller in `Swiss.render` can clear the queue.
         throw new Error('switzerland/error');

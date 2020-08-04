@@ -1,4 +1,4 @@
-import { getWindow } from '../utils.js';
+import { getWindow, replaceTemplate } from '../utils.js';
 import * as impl from './impl/index.js';
 import * as utils from './utils.js';
 import defaultController from './defaults/controller.js';
@@ -35,7 +35,7 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
 
     // JSDOM has an issue with appending children to the `template` node, so we merely find and replace
     // at this point to mimick the behaviour.
-    return node.outerHTML.replace(/swiss-template/g, 'template');
+    return replaceTemplate(node.outerHTML);
 }
 
 /**

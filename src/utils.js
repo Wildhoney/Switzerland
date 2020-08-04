@@ -17,3 +17,7 @@ export function getWindow() {
 export function consoleMessage(text, type = 'error') {
     console[type](`\uD83C\uDDE8\uD83C\uDDED Switzerland: ${text}.`);
 }
+
+export function replaceTemplate(html) {
+    return html.replace(/swiss-template/g, 'template');
+}
