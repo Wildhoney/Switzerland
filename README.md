@@ -96,7 +96,7 @@ Switzerland components only take string values as their attributes as that's all
 Where other JS libraries fall short, Switzerland considers all web assets to be within its remit. For example in React it is fairly common to use a third-party, non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the view:
 
 ```javascript
-import { create, utils, m, t, h } from 'switzerland';
+import { create, utils, t, h } from 'switzerland';
 
 async function controller({ adapter }) {
     adapter.attachShadow();
@@ -141,7 +141,7 @@ By utilising [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Compo
 Adding events to a component is achieved through the `dispatch` function which is passed through the `props` to the view. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
 
 ```javascript
-import { create, utils, m, t, h } from 'switzerland';
+import { create, utils, t, h } from 'switzerland';
 
 async function controller({ adapter }) {
     adapter.attachShadow();
