@@ -9,7 +9,7 @@
     "license": "MIT",
     "scripts": {
         "build": "node terser.config.mjs",
-        "start": "ln -sf  ~/Webroot/Switzerland node_modules/switzerland && nodemon ./example/server/index.mjs",
+        "start": "ln -nsf ../ node_modules/switzerland && nodemon ./example/server/index.mjs",
         "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
         "test": "yarn lint && yarn spec",
         "spec": "ava",
