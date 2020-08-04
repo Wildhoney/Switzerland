@@ -35,7 +35,7 @@
 Switzerland takes both a controller and a view for rendering components &ndash; the controller is used for passing props to the view, and is separate from the view as this prevents a tight coupling between the internal props required for rendering the tree. By taking this approach the controllers and views are kept more general which faciliates interoperability. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
 ```javascript
-import { create, m, h } from 'switzerland';
+import { create, h } from 'switzerland';
 
 function view() {
     return h('ul', {}, [
@@ -59,7 +59,7 @@ You may have noticed for the `x-countries` component we have a view but no assoc
 Let's take the next step and supply the list of countries via HTML attributes. For this example we'll introduce a specialised controller and use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
 ```javascript
-import { create, m, t, h } from 'switzerland';
+import { create, t, h } from 'switzerland';
 
 function controller({ adapter }) {
     const attrs = adapter.useAttrs({ values: t.Array(t.String) });
