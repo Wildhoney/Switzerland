@@ -1,0 +1,10 @@
+language: node_js
+node_js: stable
+deploy:
+  provider: heroku
+  api_key:
+    secure: V1YuUZJNhYYmScvVX7e9tuWucX3k+3jtq5yiIYgTQWmNcuRwn9Jk9ddMJYzlKTSq5n5NGnWt+2sRydTQf708u+KBOvVmtqqT8x92uztiCBUz6KYumrxz0w9T7KDgGEMmUhVB9G4lSEQ3m0IkuVAnXxwXttOBG92giJVu4p/DdzS3Akvl5rdKbU/jXQqC3bjSWKJWyxgnlv7hbBaKNwmoSmjEX4uThRNE1Z1SYpKYeav6Whgg9p6VZFb0C16UG+S5+5FdE6a0NWylW18sdD6ebocBbmiIpvtPbEND7h0STh56ZO+u25pYofzDhk4P9vTNk1PEeajJEfuNEqRFg2NRD29NcOE5XX4Zu+Ci5qQYy4Z0Gx6BQ3g6YT7qMAAY2B+dl/AVk8rlWNCZC7tVc785TUC2MuswmZ8WtdgenrMB+ZnBzDuZAP9VGU6LaQwA33avVNpJURlQ+6ySMn1j9hyZa/ynXzBdEeT6hxnF5gHKJzV4opdXleyCerrbhERccAOZzIj7DAGvDcEFUprR9gifpj9AhbGXN21T2BcZjHeKOp+FQaPiOpTqF5RnicCjNWh0JiFYZJw117kFx4zT7ivfRPApGi+hW48/oLp8cc71ScfOUzVbgir4RWiQa64rRVHeaOGDZmdN64xlnD2L/QNTT5wGr88Bh/cMw7WYPa904NA=
+  app: switzerland
+  on:
+    repo: Wildhoney/Switzerland
+  skip_cleanup: true

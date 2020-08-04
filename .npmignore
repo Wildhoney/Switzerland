@@ -4,7 +4,8 @@ example/
 tests/
 media/
 
-.eslintrc          
-.prettierrc.json                                       
-ava.config.js                                          
-terser.config.mjs                                      
+.eslintrc
+.travis.yml
+.prettierrc.json
+ava.config.js
+terser.config.mjs
