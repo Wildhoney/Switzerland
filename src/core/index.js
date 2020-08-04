@@ -10,10 +10,7 @@ import defaultView from './defaults/view.js';
  * Takes the name of the web component and an array of functions that represent the middleware. Each
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
-export function create(
-    name,
-    { controller = defaultController, view = defaultView } = { controller: defaultController, view: defaultView }
-) {
+export function create(name, { controller = defaultController, view = defaultView } = {}) {
     const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
@@ -28,7 +25,7 @@ export function create(
  * ---
  * Takes the component tree and renders it to string for server-side rendering capabilities.
  */
-export async function render(app, props = {}, options = { path: 'https://0.0.0.0/' }) {
+export async function render(app, props = {}, options = { path: 'https://0.0.0.0/', root: '' }) {
     // Initialise the window on initial render so that it doesn't need to yield a promise every
     // single time it's invoked, instead the return value is memoized.
     await getWindow();
@@ -46,7 +43,7 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
  * ---
  * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
  */
-export async function renderToStream(app = {}, props, options = { path: 'https://0.0.0.0/' }) {
+export async function renderToStream(app = {}, props, options = { path: 'https://0.0.0.0/', root: '' }) {
     const { Transform } = await import('stream');
     const stream = new Transform();
 
@@ -56,6 +53,7 @@ export async function renderToStream(app = {}, props, options = { path: 'https:/
         done();
     };
 
+    console.log(options);
     // Invoke the typical `render` function but with an attached stream.
     await render(app, props, { ...options, stream });
 
