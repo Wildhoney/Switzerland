@@ -53,13 +53,14 @@ export async function renderToStream(app = {}, props, options = { path: 'https:/
         done();
     };
 
-    console.log(options);
-    // Invoke the typical `render` function but with an attached stream.
-    await render(app, props, { ...options, stream });
+    async function run() {
+        // Invoke the typical `render` function but with an attached stream, and end the stream once
+        // the full component tree has been rendered.
+        await render(app, props, { ...options, stream });
+        stream.end();
+    }
 
-    // End the stream and yield to the caller.
-    stream.end();
-    return stream;
+    return run(), stream;
 }
 
 /**
