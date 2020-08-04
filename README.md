@@ -225,7 +225,23 @@ const options = {
 };
 ```
 
-Finally if you reference the `window` in any of your components, you can destructure the `window` property for server-side compatibility &ndash; on the server the `window` will be from JSDOM, whereas on the client side `window` will be the native window object.
+Interestingly if you reference the `window` in any of your components, you can destructure the `window` property for server-side compatibility &ndash; on the server the `window` will be from JSDOM, whereas on the client side `window` will be the native window object.
+
+### Streaming Responses
+
+With the exported `renderToStream` function, you're able to stream your responses to the client from the server &ndash; this allows for a quicker time to first byte response.
+
+```javascript
+import { renderToStream } from 'switzerland';
+import Countries from './components/Countries';
+
+app.get('/', async (_, response) => {
+    response.write('<!DOCTYPE html><html lang="en"><body>');
+    const reader = await renderToStream(Countries);
+    reader.pipe(response, { end: false });
+    reader.on('end', () => response.end('</body></html>'));
+});
+```
 
 ## Elements
 
