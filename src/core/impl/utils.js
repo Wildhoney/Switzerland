@@ -31,7 +31,7 @@ export const dispatchEvent = (node) => (name, payload, options = {}) => {
             bubbles: true,
             composed: true,
             ...options,
-            detail: { ...model, version: 4 },
+            detail: { ...model, version: 5 },
         })
     );
 };
