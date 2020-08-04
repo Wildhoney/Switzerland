@@ -32,7 +32,7 @@
 
 ## Getting Started
 
-Switzerland takes both a controller and a view for rendering components &ndash; the controller is used for passing props to the view, and is separate from the view as this prevents a tight coupling between the props needed for the view to the render tree. By taking this approach the controllers and views are kept more general which faciliates sharing. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
+Switzerland takes both a controller and a view for rendering components &ndash; the controller is used for passing props to the view, and is separate from the view as this prevents a tight coupling between the internal props required for rendering the tree. By taking this approach the controllers and views are kept more general which faciliates interoperability. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
 ```javascript
 import { create, m, h } from 'switzerland';
@@ -54,7 +54,7 @@ We now have a usable custom element called `x-countries` which can be used anywh
 <x-countries />
 ```
 
-For the `x-countries` component we have a view but no controller &ndash; instead the default controller has been applied. The view takes `props` from the controller and has a side-effect of writing to the DOM using [`morphdom`](https://github.com/patrick-steele-idem/morphdom). It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
+You may have noticed for the `x-countries` component we have a view but no associated controller &ndash; instead we're using the default controller as our component doesn't yet have any specialised internal prop requirements. The view takes `props` from the controller and has a side-effect of writing to the DOM using [`morphdom`](https://github.com/patrick-steele-idem/morphdom). It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
 
 Let's take the next step and supply the list of countries via HTML attributes. For this example we'll introduce a specialised controller and use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
@@ -108,16 +108,17 @@ async function controller({ adapter }) {
 }
 
 function view({ path, countries }) {
-    return (
-        h(utils.node.Sheet, { href: path('index.css') }),
+    return [
         h('section', {}, [
             h(
                 'ul',
                 {},
                 attrs.values.map((country) => h('li', {}, country))
             ),
-        ])
-    );
+        ]),
+
+        h(utils.node.Sheet, { href: path('index.css') }),
+    ];
 }
 
 export default create('x-countries', { controller, view });
@@ -152,18 +153,19 @@ async function controller({ adapter }) {
 }
 
 function view({ dispatch, path, countries }) {
-    return (
-        h(utils.node.Sheet, { href: path('index.css') }),
+    return [
         h('section', {}, [
             h(
                 'ul',
                 {},
                 attrs.values.map((country) =>
-                    h('li', { onClick: () => utils.dispatch('clicked-country', { country }) }, country)
+                    h('li', { onClick: () => dispatch('clicked-country', { country }) }, country)
                 )
             ),
-        ])
-    );
+        ]),
+
+        h(utils.node.Sheet, { href: path('index.css') }),
+    ];
 }
 
 export default create('x-countries', { controller, view });
@@ -237,7 +239,11 @@ import Countries from './components/Countries';
 
 app.get('/', async (_, response) => {
     response.write('<!DOCTYPE html><html lang="en"><body>');
-    const reader = await renderToStream(Countries);
+
+    const reader = await renderToStream(Countries, {
+        values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
+    });
+
     reader.pipe(response, { end: false });
     reader.on('end', () => response.end('</body></html>'));
 });
