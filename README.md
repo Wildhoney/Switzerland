@@ -249,6 +249,8 @@ app.get('/', async (_, response) => {
 });
 ```
 
+It's worth remembering that when streaming responses you lose the ability to preload assets, as the full HTML is not necessarily known up-front.
+
 ## Elements
 
 Helpfully provided in the library are a set of custom elements that you can use in your own projects.

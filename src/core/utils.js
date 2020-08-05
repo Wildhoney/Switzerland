@@ -1,5 +1,3 @@
-import { getWindow } from '../utils.js';
-
 export function parseName(name) {
     const [tag, prototype] = name.split('/');
     const extend = prototype ?? null;
@@ -7,7 +5,7 @@ export function parseName(name) {
 }
 
 export function getPrototype(name) {
-    const window = getWindow();
+    if (typeof window === 'undefined') return null;
     return name ? window.document.createElement(name).constructor : window.HTMLElement;
 }
 

@@ -70,7 +70,7 @@ export async function renderToStream(app = {}, props, options = { path: 'https:/
  * the head of the document to preload which helps to prevent FOUC.
  */
 export async function preload(...output) {
-    const window = getWindow();
+    const window = await getWindow();
 
     const links = output
         .flatMap((output) => output.match(/<link.+?>/gi))

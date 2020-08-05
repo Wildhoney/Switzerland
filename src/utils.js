@@ -7,7 +7,7 @@ export function getWindow() {
         cache.get('window') ??
         new Promise(async (resolve) => {
             const dom = await import('jsdom');
-            const window = new dom.default.JSDOM().window;
+            const { window } = new dom.default.JSDOM();
             cache.set('window', window);
             resolve(window);
         })
