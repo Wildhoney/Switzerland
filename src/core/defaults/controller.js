@@ -1,3 +1,9 @@
+/**
+ * @function defaultController
+ * ---
+ * Default controller for setting up the shadow boundary, passing all attributes as string
+ * values, and the history object.
+ */
 export default function defaultController({ adapter }) {
     adapter.attachShadow();
 

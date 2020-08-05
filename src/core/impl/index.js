@@ -4,6 +4,12 @@ import createState from './state/index.js';
 import { getWindow } from '../../utils.js';
 import { getEventName, fromCamelcase } from '../utils.js';
 
+/**
+ * @function client
+ * ---
+ * Takes the element to extend and the middleware (controller and view) for instantiating the
+ * custom element ready to be rendered to the DOM.
+ */
 export function client(extension, middleware) {
     const meta = Symbol('switzerland/meta');
 
@@ -101,6 +107,12 @@ export class Swiss {
     }
 }
 
+/**
+ * @function server
+ * ---
+ * Yields a Swiss component for rendering server-side, taking the tag name, middleware functions (controller
+ * and view), as well as optionally the element it extends.
+ */
 export function server(tag, middleware, extend = null) {
     return new Swiss(tag, middleware, extend);
 }

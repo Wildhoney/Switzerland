@@ -36,6 +36,12 @@ export const dispatchEvent = (node) => (name, payload, options = {}) => {
     );
 };
 
+/**
+ * @function bindAdapters
+ * ---
+ * Takes an object of adapters and binds them by invoking the adapter function with the current render
+ * props, which allows the adapter to access the internal state of the custom element and re-render.
+ */
 export async function bindAdapters(renderProps, options, boundableAdapters = adapters) {
     function applyAdapters(adapters) {
         return Object.entries(adapters).reduce(async (accum, [name, adapter]) => {
@@ -51,11 +57,24 @@ export async function bindAdapters(renderProps, options, boundableAdapters = ada
     return await applyAdapters(boundableAdapters);
 }
 
+/**
+ * @function makeCyclicProps
+ * ---
+ * Utility function for making the props infinitely nestable, this allows the props to be destructured
+ * infinitely which faciliates passing them down to other components. Similar to Haskell's at-syntax.
+ */
 export function makeCyclicProps(props) {
     props.props = props;
     return props;
 }
 
+/**
+ * @function renderTree
+ * ---
+ * Takes all of the arguments required for rendering the current tree by invoking the controller followed by
+ * the view, and then determining if there are any forms in the rendered output, and if so invoking a second
+ * pass over both the controller and view.
+ */
 export async function renderTree({ renderProps, boundAdapters, runController, runView, detectForms = true }) {
     // Run the controller and pass those props to the view which yields a tree to render.
     const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters }));
@@ -81,6 +100,12 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
     return tree;
 }
 
+/**
+ * @function runComponent
+ * ---
+ * Takes and gathers from other sources all of the required data for rendering the component. Also writes to the stream
+ * if the developer invoked the `renderToStream` function.
+ */
 export async function runComponent(node, props, [runController, runView], options = {}) {
     const renderProps = { ...props, ...(await getInitialProps(node, props)), form: renderer.getForms(node), options };
     const boundAdapters = await bindAdapters(renderProps, options);

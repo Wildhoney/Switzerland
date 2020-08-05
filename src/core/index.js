@@ -39,7 +39,7 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
 }
 
 /**
- * @function preload
+ * @function renderToStream
  * ---
  * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
  */
@@ -48,10 +48,7 @@ export async function renderToStream(app = {}, props, options = { path: 'https:/
     const stream = new Transform();
 
     // Push chunks of data into our stream.
-    stream._transform = function (chunk, encoding, done) {
-        this.push(chunk);
-        done();
-    };
+    stream._transform = (chunk, _, done) => (this.push(chunk), done());
 
     async function run() {
         // Invoke the typical `render` function but with an attached stream, and end the stream once
@@ -66,8 +63,8 @@ export async function renderToStream(app = {}, props, options = { path: 'https:/
 /**
  * @function preload
  * ---
- * Collates the assets for server-side rendering so that the qualifying nodes can be placed in
- * the head of the document to preload which helps to prevent FOUC.
+ * Collates the assets for server-side rendering so that the qualifying nodes can be placed in the head of the
+ * document to preload which helps to prevent FOUC.
  */
 export async function preload(...output) {
     const window = await getWindow();
