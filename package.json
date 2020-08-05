@@ -19,7 +19,7 @@
         "spec": "ava",
         "coverage": "nyc ava",
         "lint": "eslint '{src,tests,example}/**/**.js' && yarn fslint",
-        "fslint": "yarn build && (cd es/production && tar -zcf ../../build.tar.gz .) && (fslint --files=build.tar.gz --limit=6144 || rm -rf build.tar.gz es/) && rm -rf build.tar.gz es/"
+        "fslint": "yarn build && (cd es/production && tar -zcf ../../build.tar.gz .) && (fslint --files=build.tar.gz --limit=10240 || rm -rf build.tar.gz es/) && rm -rf build.tar.gz es/"
     },
     "dependencies": {
         "morphdom": "^2.6.1",
