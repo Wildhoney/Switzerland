@@ -212,7 +212,7 @@ app.get('/', async (_, response) => {
         values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
     });
 
-    response.send(fmt(html, { countries, styles: preload(html) }));
+    response.send(fmt(html, { countries, styles: await preload(html) }));
 });
 ```
 
