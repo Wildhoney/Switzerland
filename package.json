@@ -12,7 +12,7 @@
         "node": "14.x"
     },
     "scripts": {
-        "build": "node terser.config.mjs",
+        "build": "node babel.config.mjs",
         "start": "ln -nsf ../ node_modules/switzerland && nodemon ./example/server/index.mjs",
         "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
         "test": "yarn lint && yarn spec",
@@ -27,6 +27,7 @@
         "redux-thunk": "^2.3.0"
     },
     "devDependencies": {
+        "@babel/core": "^7.11.1",
         "ava": "^3.11.0",
         "babel-eslint": "^10.1.0",
         "browser-env": "^3.3.0",
@@ -54,7 +55,6 @@
         "ramda": "^0.27.1",
         "sinon": "^9.0.2",
         "starwars": "^1.0.1",
-        "string-template": "^1.0.0",
-        "terser": "^5.0.0"
+        "string-template": "^1.0.0"
     }
 }

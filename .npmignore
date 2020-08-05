@@ -8,4 +8,4 @@ media/
 .travis.yml
 .prettierrc.json
 ava.config.js
-terser.config.mjs
+babel.config.mjs

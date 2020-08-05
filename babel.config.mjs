@@ -2,7 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import glob from 'glob';
 import mkdirp from 'mkdirp';
-import * as terser from 'terser';
+import parser from '@babel/parser';
+import generator from '@babel/generator';
 
 function main() {
     const files = glob.sync('./src/**/**.js').filter((a) => !a.includes('__tests__'));
@@ -14,13 +15,8 @@ function main() {
 
         await mkdirp(path.parse(outputProduction).dir);
 
-        const { code } = terser.minify(data, {
-            ecma: 8,
-            module: true,
-            compress: {
-                passes: 2,
-            },
-        });
+        const ast = parser.parse(data, { sourceType: 'module' });
+        const { code } = generator.default(ast, { minified: true, comments: false, compact: true });
 
         code && fs.writeFileSync(outputProduction, code);
         await mkdirp(path.parse(outputDevelopment).dir);
