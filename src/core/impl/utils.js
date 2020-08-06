@@ -49,7 +49,7 @@ export async function bindAdapters(renderProps, options, boundableAdapters = ada
             const isNested = typeof adapter === 'object';
             return {
                 ...adapters,
-                [name]: isNested ? await applyAdapters(adapter) : adapter({ ...renderProps, options }),
+                [name]: await (isNested ? applyAdapters(adapter) : adapter({ ...renderProps, options })),
             };
         }, {});
     }

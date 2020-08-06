@@ -5,7 +5,7 @@ import * as duck from './duck.js';
 async function controller({ adapter }) {
     adapter.attachShadow();
 
-    const path = await adapter.usePath(import.meta.url);
+    const path = adapter.usePath(import.meta.url);
     const redux = adapter.state.useRedux(store);
     const [state, methods] = adapter.state.useMethods(duck.createMethods, duck.initialState);
 
