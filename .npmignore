@@ -9,3 +9,4 @@ media/
 .prettierrc.json
 ava.config.js
 babel.config.mjs
+**/__tests__/
