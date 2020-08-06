@@ -1,5 +1,13 @@
 const states = new WeakMap();
 
+/**
+ * @function useMethods
+ * ---
+ * Mimicks the super useful and simple `useMethods` hook from the `react-use` library which allows
+ * for a Redux style reducer without the individual actions and action types. Requires you to pass
+ * the `createMethods` object which contains a list of action functions, and the `initialState` of
+ * the store.
+ */
 export default function useMethods({ node, lifecycle, render }) {
     return (createMethods, initialState) => {
         if (!states.has(node)) {

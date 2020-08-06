@@ -1,16 +1,7 @@
-/**
- * @constant states
- */
 const states = new WeakMap();
 
-/**
- * @constant normal
- */
 const normal = Symbol('normal');
 
-/**
- * @constant error
- */
 const error = Symbol('error');
 
 /**

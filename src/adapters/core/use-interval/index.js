@@ -3,7 +3,8 @@ const nodes = new WeakMap();
 /**
  * @function useInterval
  * ---
- * Re-renders the component specified by the milliseconds.
+ * Re-renders the component every X milliseconds. Clears the interval on unmounting of the component
+ * from the DOM.
  */
 export default function useInterval({ node, lifecycle, render }) {
     return (milliseconds) => {

@@ -1,3 +1,9 @@
+/**
+ * @function run
+ * ---
+ * Utility adapater for invoking a given function depending on the current lifecycle state
+ * of the component.
+ */
 export default function run({ lifecycle }) {
     return {
         onMount(fn) {

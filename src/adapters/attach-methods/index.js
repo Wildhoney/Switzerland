@@ -1,9 +1,9 @@
 /**
  * @function attachMethods
  * ---
- * Takes a map of function names to functions, and attaches them to the node, which allows you to directly
- * invoke the functions once you have a reference to the node. Using the 'methods' middleware passes the arguments
- * as-is, but also passes the current set of props as the final argument.
+ * Takes a map of function names to functions, and attaches them to the node which allows you to directly
+ * invoke the functions once you have a reference to the node. Using the 'attachMethods' adapters passes the arguments
+ * as-is but also passes the node is the final argument so you have access to the render method.
  */
 
 export default function attachMethods({ node }) {
