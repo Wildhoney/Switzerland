@@ -272,9 +272,18 @@ Switzerland is capable of being integrated into any website or app without any f
 As a little teaser, navigate to [Google.com](https://www.google.com/) and paste the following snippet of code into the console:
 
 ```javascript
+// Import map required for ECMA import resolutions.
+const map = document.createElement('script');
+map.type = 'importmap';
+map.innerHTML = `{ "imports": { "switzerland": "https://cdn.jsdelivr.net/npm/switzerland@5.0.6/es/production/index.js", "morphdom": "https://cdn.jsdelivr.net/npm/morphdom@2.6.1/dist/morphdom-esm.js", "redux": "https://cdn.jsdelivr.net/npm/redux@4.0.1/es/redux.mjs", "redux-thunk": "https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js" }}`;
+
+// Import the script for the todo app.
 const node = document.createElement('script');
 node.type = 'module';
 node.src = 'https://switzerland.herokuapp.com/nodes/todo-app/index.js';
+
+// Append everything to the DOM and run.
+document.head.append(map);
 document.head.append(node);
 document.body.append(document.createElement('todo-app'));
 ```
