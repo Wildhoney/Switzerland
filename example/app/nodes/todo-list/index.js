@@ -4,7 +4,7 @@ import List from './components/list.js';
 import Nothing from './components/nothing.js';
 import db from '../../utils/db.js';
 
-async function controller({ adapter }) {
+function controller({ adapter }) {
     adapter.attachShadow();
 
     const path = adapter.usePath(import.meta.url);

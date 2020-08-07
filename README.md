@@ -98,10 +98,10 @@ Where other JS libraries fall short, Switzerland considers all web assets to be 
 ```javascript
 import { create, utils, t, h } from 'switzerland';
 
-async function controller({ adapter }) {
+function controller({ adapter }) {
     adapter.attachShadow();
 
-    const path = await adapter.getPath(import.meta.url);
+    const path = adapter.usePath(import.meta.url);
     const attrs = adapter.useAttrs({ values: t.Array(t.String) });
 
     return { path, countries: attrs.values };
@@ -143,10 +143,10 @@ Adding events to a component is achieved through the `dispatch` function which i
 ```javascript
 import { create, utils, t, h } from 'switzerland';
 
-async function controller({ adapter }) {
+function controller({ adapter }) {
     adapter.attachShadow();
 
-    const path = await adapter.getPath(import.meta.url);
+    const path = adapter.usePath(import.meta.url);
     const attrs = adapter.useAttrs({ values: t.Array(t.String) });
 
     return { path, countries: attrs.values };

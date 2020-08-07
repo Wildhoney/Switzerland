@@ -7,7 +7,7 @@ import Position from './components/position.js';
 import Dimensions from './components/dimensions.js';
 import Filter from './components/filter.js';
 
-async function controller({ adapter, window }) {
+function controller({ adapter, window }) {
     adapter.attachShadow();
 
     const redux = adapter.state.useRedux(store);

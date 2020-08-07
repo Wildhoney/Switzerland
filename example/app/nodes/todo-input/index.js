@@ -2,7 +2,7 @@ import { create, h, utils } from 'switzerland';
 import store from '../../utils/store.js';
 import * as duck from './duck.js';
 
-async function controller({ adapter }) {
+function controller({ adapter }) {
     adapter.attachShadow();
 
     const path = adapter.usePath(import.meta.url);
