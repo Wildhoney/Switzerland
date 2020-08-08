@@ -188,7 +188,7 @@ First we need to export the `x-countries` component so that it can be referenced
 import fs from 'fs';
 import fmt from 'string-template';
 import { render } from 'switzerland';
-import Countries from './components/Countries';
+import Countries from './components/Countries.js';
 
 app.get('/', async (_, response) => {
     const html = fs.readFileSync('./app/index.html', 'utf-8');
@@ -206,7 +206,7 @@ Using the declarative shadow DOM a shadow boundary will be added to your compone
 import fs from 'fs';
 import fmt from 'string-template';
 import { render, preload } from 'switzerland';
-import Countries from './components/Countries';
+import Countries from './components/Countries.js';
 
 app.get('/', async (_, response) => {
     const html = fs.readFileSync('./app/index.html', 'utf-8');
@@ -237,7 +237,7 @@ With the exported `renderToStream` function, you're able to stream your response
 
 ```javascript
 import { renderToStream } from 'switzerland';
-import Countries from './components/Countries';
+import Countries from './components/Countries.js';
 
 app.get('/', async (_, response) => {
     response.write('<!DOCTYPE html><html lang="en"><body>');
