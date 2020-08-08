@@ -32,6 +32,8 @@
 
 ## Getting Started
 
+Use our [JSFiddle base](https://jsfiddle.net/yqh3satr/) if you'd like to follow along interactively or for reproducing bugs for linking with issues.
+
 Switzerland takes both a controller and a view for rendering components &ndash; the controller is used for passing props to the view, and is separate from the view as this prevents a tight coupling between the internal props required for rendering the tree. By taking this approach the controllers and views are kept more general which faciliates interoperability. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
 ```javascript
