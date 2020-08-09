@@ -18,6 +18,7 @@
         "test": "yarn lint && yarn spec",
         "spec": "ava",
         "coverage": "nyc ava",
+        "prepublishOnly": "yarn format && yarn test && yarn build",
         "lint": "eslint '{src,tests,example}/**/**.js' && yarn fslint",
         "fslint": "yarn build && (cd es/production && tar -zcf ../../build.tar.gz .) && (fslint --files=build.tar.gz --limit=10240 || rm -rf build.tar.gz es/) && rm -rf build.tar.gz es/"
     },
