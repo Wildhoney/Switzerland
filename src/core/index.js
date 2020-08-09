@@ -14,7 +14,11 @@ export function create(name, { controller = defaultController, view = defaultVie
     const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
-        window.customElements.define(tag, impl.client(constuctor, [controller, view]), extend && { extends: extend });
+        window.customElements.define(
+            window.customElements.get(tag) ? utils.getRandomName() : tag,
+            impl.client(constuctor, [controller, view]),
+            extend && { extends: extend }
+        );
     } finally {
         return impl.server(extend ?? tag, [controller, view], extend ? tag : null);
     }
@@ -89,4 +93,25 @@ export async function preload(...output) {
         });
 
     return links.join('\n');
+}
+
+/**
+ * @function rename
+ * ---
+ * Allows for the renaming of components, especially if a component has a duplicate name of another. In that case
+ * Switzerland will assign a random name to the component, and it's up to the developer to rename it accordingly.
+ */
+export function rename(component, name) {
+    const [controller, view] = component.middleware;
+    return create(name, { controller, view });
+}
+
+/**
+ * @function fetch
+ * ---
+ * Utility function for unwrapping the `default` export from an asynchronous import, which allows for fetching of
+ * components only when they're needed in the current tree.
+ */
+export async function fetch(importer) {
+    return (await importer).default;
 }

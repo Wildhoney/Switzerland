@@ -12,6 +12,16 @@ export function parseName(name) {
 }
 
 /**
+ * @function
+ * ---
+ * Generates a temporary random name for a custom element due to their being a duplicate, which should
+ * be later re-named using the `rename` function.
+ */
+export function getRandonName() {
+    return `swiss-${Date.now()}-${Math.round(Math.random() * 100)}`;
+}
+
+/**
  * @function getPrototype
  * ---
  * Determine the prototype for any given element name, for example `div` would yield `HTMLElement`, and
