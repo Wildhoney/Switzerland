@@ -299,7 +299,7 @@ async function view({ showCountries }) {
 export default create('x-countries', { view });
 ```
 
-Helpfully the component is fetched only once thanks to the way ECMAScript modules function. Using this approach we can prevent the unnecessary transferring data across the wire, and in turn make it fetch lazily depending on when components are needed.
+Helpfully the component is fetched only once thanks to the way ECMAScript modules function. Using this approach we can prevent the unnecessary transferring of data across the wire, and in turn make it fetch lazily depending on when components are needed.
 
 ## Elements
 
