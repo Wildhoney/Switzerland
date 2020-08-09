@@ -30,10 +30,6 @@ export function create(name, { controller = defaultController, view = defaultVie
  * Takes the component tree and renders it to string for server-side rendering capabilities.
  */
 export async function render(app, props = {}, options = { path: 'https://0.0.0.0/', root: '' }) {
-    // Initialise the window on initial render so that it doesn't need to yield a promise every
-    // single time it's invoked, instead the return value is memoized.
-    await getWindow();
-
     // Render the app using the passed props.
     const node = await app.render(props, options);
 
