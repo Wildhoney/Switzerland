@@ -32,7 +32,7 @@
 
 ## Getting Started
 
-Use our [JSFiddle base](https://jsfiddle.net/9kmx2tub/) if you'd like to follow along interactively or for reproducing bugs for linking with issues.
+Use our [JSFiddle base](https://jsfiddle.net/9kmx2tub/) (uncompiled) if you'd like to follow along interactively or for reproducing bugs for linking with issues.
 
 Switzerland takes both a controller and a view for rendering components &ndash; the controller is used for passing props to the view, and is separate from the view as this prevents a tight coupling between the internal props required for rendering the tree. By taking this approach the controllers and views are kept more general which faciliates interoperability. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
@@ -50,7 +50,7 @@ function view() {
 export default create('x-countries', { view });
 ```
 
-We now have a usable custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder or even nothing at all before the component renders.
+We now have a usable custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder, static HTML generated on the server-side, or even nothing at all before the component renders.
 
 ```html
 <x-countries />
