@@ -90,21 +90,3 @@ export async function preload(...output) {
 
     return links.join('\n');
 }
-
-/**
- * @function compose
- * ---
- * Allows the composition of controllers and views. In the case of controllers, the yielded objects are merged
- * together with duplicate props taking precendence in reverse order. In the case of views, the trees are taken
- * from left-to-right.
- */
-export function compose(...fns) {
-    return (props) => {
-        const isViews = props.adapter == null;
-        const newProps = fns.flatMap((fn) => fn(props));
-
-        return isViews
-            ? newProps
-            : Object.values(newProps).reduce((accumProps, props) => ({ ...accumProps, ...props }), {});
-    };
-}
