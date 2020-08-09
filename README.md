@@ -25,10 +25,9 @@
 ## Contents
 
 1. [Getting Started](#getting-started)
-2. [Elements](#elements)
-3. [Philosophy](#philosophy)
-    <!-- 4. [Middleware](#middleware) -->
-     <!-- 5. [CLI](#cli) -->
+2. [Concepts](#concepts)
+3. [Elements](#elements)
+4. [Philosophy](#philosophy)
 
 ## Getting Started
 
@@ -230,6 +229,10 @@ const options = {
 ```
 
 Interestingly if you reference the `window` in any of your components, you can destructure the `window` property for server-side compatibility &ndash; on the server the `window` will be from JSDOM, whereas on the client side `window` will be the native window object.
+
+## Concepts
+
+Whilst Switzerland aspires to be as simple as possible, there are a handful of additional concepts that are more advanced which are documented in this section.
 
 ### Streaming Responses
 
