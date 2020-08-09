@@ -78,7 +78,7 @@ export function makeCyclicProps(props) {
 export async function renderTree({ renderProps, boundAdapters, runController, runView, detectForms = true }) {
     // Run the controller and pass those props to the view which yields a tree to render.
     const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters }));
-    const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps }));
+    const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, adapter: null }));
 
     // Render the tree that is yielded from the view.
     await renderer.renderTree({ ...renderProps, tree });
