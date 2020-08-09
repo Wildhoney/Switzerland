@@ -256,6 +256,51 @@ app.get('/', async (_, response) => {
 
 It's worth remembering that when streaming responses you lose the ability to preload assets, as the full HTML is not necessarily known up-front.
 
+### Renaming Components
+
+In some instances it may be necessary to rename components, usually because there exists already a custom element with the name you're attempting to use. In those cases Switzerland will assign a random name to your custom element, and therefore should be renamed to something sensible using the exported `rename` function.
+
+```javascript
+import { create, rename, h } from 'switzerland';
+import Country from './components/Country.js';
+
+const CountryRenamed = rename(Country, 'x-country-renamed');
+
+function view() {
+    return h('ul', {}, [
+        h(CountryRenamed, { name: 'United Kingdom' }),
+        h(CountryRenamed, { name: 'Russian Federation' }),
+        h(CountryRenamed, { name: 'Republic of Indonesia' }),
+    ]);
+}
+
+export default create('x-countries', { view });
+```
+
+In the above case the `x-country` _may_ still exist as you'd expect, assuming it's not a duplicate, but in addition to that you'll have a custom `x-country-renamed` element that can be used in exactly the same way.
+
+### Asynchronous Imports
+
+In most cases importing the custom elements you're going to be using in your tree is acceptable, however you may wish to take the next step and lazy load **only** the components that are going to be used in any given render pass. For example using the example below the `Country` component is loaded asynchronously **only** when the conditions match for it to be rendered.
+
+```javascript
+import { create, fetch, h } from 'switzerland';
+
+async function view({ showCountries }) {
+    if (!showCountries) return h('div', {}, 'Countries are currently hidden.');
+
+    return h('ul', {}, [
+        h(await fetch('./components/Country.js'), { name: 'United Kingdom' }),
+        h(await fetch('./components/Country.js'), { name: 'Russian Federation' }),
+        h(await fetch('./components/Country.js'), { name: 'Republic of Indonesia' }),
+    ]);
+}
+
+export default create('x-countries', { view });
+```
+
+Helpfully the component is fetched only once thanks to the way ECMAScript modules function. Using this approach we can prevent the unnecessary transferring data across the wire, and in turn make it fetch lazily depending on when components are needed.
+
 ## Elements
 
 Helpfully provided in the library are a set of custom elements that you can use in your own projects.
