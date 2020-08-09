@@ -71,7 +71,6 @@ test('It should be able to handle the rendering of the client component;', async
 test('It should be able to handle the rendering of the server component;', async (t) => {
     const { spies } = t.context;
     const window = global.window;
-
     delete global.window;
     await getWindow();
 
