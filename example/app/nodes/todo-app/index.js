@@ -1,6 +1,4 @@
-import { create, t, h, utils } from 'switzerland';
-import TodoInput from '../todo-input/index.js';
-import TodoList from '../todo-list/index.js';
+import { create, utils, fetch, t, h } from 'switzerland';
 import store from '../../utils/store.js';
 import { isBottom, setupWorker } from './utils.js';
 import Position from './components/position.js';
@@ -21,11 +19,11 @@ function controller({ adapter, window }) {
     return { path, attrs, redux, history, adapt };
 }
 
-function view({ path, props, attrs }) {
+async function view({ path, props, attrs }) {
     return [
         h('section', { class: 'todo-app' }, [
-            h(TodoInput),
-            h(TodoList),
+            h(await fetch(import('../todo-input/index.js'))),
+            h(await fetch(import('../todo-list/index.js'))),
 
             h('h1', { part: 'header' }, [
                 h('a', { href: 'https://github.com/Wildhoney/Switzerland' }, [
