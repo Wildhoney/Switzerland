@@ -70,7 +70,7 @@ export async function preload(...output) {
     const window = await getWindow();
 
     const links = output
-        .flatMap((output) => output.match(/<link.+?>/gi))
+        .flatMap((output) => output.match(/<link.+?>/gis))
         .map((link) => {
             if (!link) return;
 
