@@ -247,7 +247,9 @@ function controller({ node, adapter }) {
 }
 ```
 
--   `attachShadow`: Attach a shadow boundary to the current node with any options passed in as the first argument.
+### `attachShadow`
+
+Attach a shadow boundary to the current node with any options passed in as the first argument.
 
 ```javascript
 function controller({ adapter }) {
@@ -257,7 +259,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `useAttrs`: Extract the attributes and parse the node's attributes according to the typings passed in. Re-render the component upon attributes mutating, and the second argument to exclude attributes from the mutation observer.
+### `useAttrs`
+
+Extract the attributes and parse the node's attributes according to the typings passed in. Re-render the component upon attributes mutating, and the second argument to exclude attributes from the mutation observer.
 
 ```javascript
 import { t } from 'switerland';
@@ -269,7 +273,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `useHistory`: Fetch a list of the parameters from the URL and push and replace the state. Parsed the parameters according to the passed in types as the first argument.
+### `useHistory`
+
+Fetch a list of the parameters from the URL and push and replace the state. Parsed the parameters according to the passed in types as the first argument.
 
 ```javascript
 import { t } from 'switerland';
@@ -282,7 +288,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `usePath`: Yields a function when invoked with `import.meta.url` which allows you to resolve assets relative to the component's path on both the client and server.
+### `usePath`
+
+Yields a function when invoked with `import.meta.url` which allows you to resolve assets relative to the component's path on both the client and server.
 
 ```javascript
 import { t } from 'switerland';
@@ -294,7 +302,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `state.useMethods`: Utilises the helpful [`useMethods` from `react-use`](https://github.com/streamich/react-use/blob/master/docs/useMethods.md) which allows for reading and updating state.
+### `state.useMethods`
+
+Utilises the helpful [`useMethods` from `react-use`](https://github.com/streamich/react-use/blob/master/docs/useMethods.md) which allows for reading and updating state.
 
 ```javascript
 import { t } from 'switerland';
@@ -306,6 +316,8 @@ function controller({ adapter }) {
     return { state, methods };
 }
 ```
+
+### `state.useRedux`
 
 -   `state.useRedux`: Utillises Redux for managing shared state between many components after creating a new store with the `utils.redux.createStore` function.
 
@@ -322,7 +334,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `observer.useResize`: Observes the dimensions of the current node and re-renders when the dimensions change.
+### `observer.useResize`
+
+Observes the dimensions of the current node and re-renders when the dimensions change.
 
 ```javascript
 import { t, utils } from 'switerland';
@@ -334,7 +348,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `observer.useIntersection`: Observes the intersection of the current node and re-renders when the intersections change.
+### `observer.useIntersection`
+
+Observes the intersection of the current node and re-renders when the intersections change.
 
 ```javascript
 import { t, utils } from 'switerland';
@@ -346,7 +362,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `core.useInterval`: Re-renders the component every _X_ milliseconds.
+### `core.useInterval`
+
+Re-renders the component every _X_ milliseconds.
 
 ```javascript
 import { t, utils } from 'switerland';
@@ -358,9 +376,9 @@ function controller({ adapter }) {
 }
 ```
 
--   `run.onMount`: Utility function for running a function on mount (`lifecycle === 'mount'`);
--   `run.onUpdate`: Utility function for running a function on update (`lifecycle === 'update'`);
--   `run.onUnmount`: Utility function for running a function on unmount (`lifecycle === 'unmount'`);
+### `run.onMount`, `run.onUpdate`, `run.onUnmount`
+
+Set of convenient utility functions for running functions on mount, update and unmount.
 
 ```javascript
 import { t, utils } from 'switerland';
