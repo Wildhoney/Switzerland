@@ -286,9 +286,9 @@ function controller({ adapter }) {
 import { t } from 'switerland';
 
 function controller({ adapter }) {
-    const { name, age } = adapter.useAttrs({ name: t.String, age: t.Int });
+    const path = adapter.usePath(import.meta.url);
 
-    return { person: { name, age } };
+    return { path };
 }
 ```
 
@@ -311,7 +311,7 @@ function controller({ adapter }) {
 import { t, utils } from 'switerland';
 import { reducer, actions } from './duck.js';
 
-const store = utils.createStore(reducer, actions);
+const store = utils.redux.createStore(reducer, actions);
 
 function controller({ adapter }) {
     const redux = adapter.useRedux(store);
@@ -363,10 +363,12 @@ function controller({ adapter }) {
 ```javascript
 import { t, utils } from 'switerland';
 
-function controller({ adapter }) {
-    adapter.run.onMount(() => `${node.nodeName.toLowerCase()} mounted!}`);
-    adapter.run.onUpdate(() => `${node.nodeName.toLowerCase()} updated!}`);
-    adapter.run.onUnmount(() => `${node.nodeName.toLowerCase()} unmounted!}`);
+function controller({ node, adapter }) {
+    const nodeName = node.nodeName.toLowerCase();
+
+    adapter.run.onMount(() => console.log(`${nodeName} mounted.}`));
+    adapter.run.onUpdate(() => console.log(`${nodeName} updated.}`));
+    adapter.run.onUnmount(() => console.log(`${nodeName} unmounted.}`));
 
     return {};
 }
