@@ -364,13 +364,13 @@ function controller({ adapter }) {
 
 ### `core.useInterval`
 
-Re-renders the component every _X_ milliseconds.
+Re-renders the component every _X_ milliseconds and halts the interval on unmount or when it's halted manually using `clearInterval`.
 
 ```javascript
 import { t, utils } from 'switerland';
 
 function controller({ adapter }) {
-    adapter.core.useInterval(1_000);
+    const interval = adapter.core.useInterval(1_000);
 
     return {};
 }

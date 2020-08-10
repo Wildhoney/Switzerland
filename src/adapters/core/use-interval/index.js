@@ -9,10 +9,12 @@ const nodes = new WeakMap();
 export default function useInterval({ node, lifecycle, render }) {
     return (milliseconds) => {
         switch (lifecycle) {
-            case 'mount':
+            case 'mount': {
                 // Use the `setInterval` to re-render the component every X milliseconds.
-                nodes.set(node, setInterval(render, milliseconds));
-                break;
+                const interval = setInterval(render, milliseconds);
+                nodes.set(node, interval);
+                return interval;
+            }
 
             case 'unmount':
                 // Stop the interval when the node is unmounted from the DOM.
