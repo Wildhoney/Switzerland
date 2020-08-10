@@ -238,21 +238,139 @@ Adapters are at the heart of Switzerland and whilst they may have hook-esque nam
 -   `attachMethods`: Attach methods to a node that can be invoked once you have a reference to the node itself.
 
 ```javascript
-const a = "test";
+function controller({ node, adapter }) {
+    adapter.useMethods({ greet: (name) => `${node.nodeName.toLowerCase()} meet ${name}.` });
+
+    return {};
+}
 ```
 
 -   `attachShadow`: Attach a shadow boundary to the current node with any options passed in as the first argument.
+
+```javascript
+function controller({ adapter }) {
+    adapter.attachShadow({ delegatesFocus: true });
+
+    return {};
+}
+```
+
 -   `useAttrs`: Extract the attributes and parse the node's attributes according to the typings passed in. Re-render the component upon attributes mutating, and the second argument to exclude attributes from the mutation observer.
+
+```javascript
+import { t } from 'switerland';
+
+function controller({ adapter }) {
+    const { name, age } = adapter.useAttrs({ name: t.String, age: t.Int });
+
+    return { person: { name, age } };
+}
+```
+
 -   `useHistory`: Fetch a list of the parameters from the URL and push and replace the state. Parsed the parameters according to the passed in types as the first argument.
+
+```javascript
+import { t } from 'switerland';
+
+function controller({ adapter }) {
+    const { params, pushState, replaceState } = adapter.useHistory({ name: t.String, age: t.Int });
+    const person = { name: params.get('name'), age: params.get('age') };
+
+    return { person, pushState, replaceState };
+}
+```
+
 -   `usePath`: Yields a function when invoked with `import.meta.url` which allows you to resolve assets relative to the component's path on both the client and server.
+
+```javascript
+import { t } from 'switerland';
+
+function controller({ adapter }) {
+    const { name, age } = adapter.useAttrs({ name: t.String, age: t.Int });
+
+    return { person: { name, age } };
+}
+```
+
 -   `state.useMethods`: Utilises the helpful [`useMethods` from `react-use`](https://github.com/streamich/react-use/blob/master/docs/useMethods.md) which allows for reading and updating state.
+
+```javascript
+import { t } from 'switerland';
+import { createMethods, initialState } from './duck.js';
+
+function controller({ adapter }) {
+    const [state, methods] = adapter.useMethods(createMethods, initialState);
+
+    return { state, methods };
+}
+```
+
 -   `state.useRedux`: Utillises Redux for managing shared state between many components after creating a new store with the `utils.redux.createStore` function.
+
+```javascript
+import { t, utils } from 'switerland';
+import { reducer, actions } from './duck.js';
+
+const store = utils.createStore(reducer, actions);
+
+function controller({ adapter }) {
+    const redux = adapter.useRedux(store);
+
+    return { redux };
+}
+```
+
 -   `observer.useResize`: Observes the dimensions of the current node and re-renders when the dimensions change.
+
+```javascript
+import { t, utils } from 'switerland';
+
+function controller({ adapter }) {
+    const resize = adapter.observer.useResize();
+
+    return { resize };
+}
+```
+
 -   `observer.useIntersection`: Observes the intersection of the current node and re-renders when the intersections change.
+
+```javascript
+import { t, utils } from 'switerland';
+
+function controller({ adapter }) {
+    const intersection = adapter.observer.useIntersection();
+
+    return { intersection };
+}
+```
+
 -   `core.useInterval`: Re-renders the component every _X_ milliseconds.
+
+```javascript
+import { t, utils } from 'switerland';
+
+function controller({ adapter }) {
+    adapter.core.useInterval(1_000);
+
+    return {};
+}
+```
+
 -   `run.onMount`: Utility function for running a function on mount (`lifecycle === 'mount'`);
 -   `run.onUpdate`: Utility function for running a function on update (`lifecycle === 'update'`);
 -   `run.onUnmount`: Utility function for running a function on unmount (`lifecycle === 'unmount'`);
+
+```javascript
+import { t, utils } from 'switerland';
+
+function controller({ adapter }) {
+    adapter.run.onMount(() => `${node.nodeName.toLowerCase()} mounted!}`);
+    adapter.run.onUpdate(() => `${node.nodeName.toLowerCase()} updated!}`);
+    adapter.run.onUnmount(() => `${node.nodeName.toLowerCase()} unmounted!}`);
+
+    return {};
+}
+```
 
 ## Advanced Concepts
 
