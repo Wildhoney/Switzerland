@@ -465,6 +465,40 @@ export default create('x-countries', { view });
 
 Helpfully the component is fetched only once thanks to the way ECMAScript modules function. Using this approach we can prevent the unnecessary transferring of data across the wire, and in turn make it fetch lazily depending on when components are needed.
 
+### Handling Forms
+
+In each of your controller and views there's a prop that is passed called `form` which is an object with references to any forms in your component. On mount it will be an empty object, but if a form is detected then the subsequent render will contain form references. That way you can handle events such as when the form is invalid to have the submit button disabled.
+
+```javascript
+function view({ form, state, methods, handleSubmit }) {
+    return [
+        h('form', { onSubmit: handleSubmit }, [
+            h('input', {
+                value: state.text,
+                onInput: (event) => methods.setText(event.target.value),
+            }),
+
+            h('button', {
+                type: 'submit',
+                class: 'add',
+                disabled: !form?.default?.checkValidity(),
+            }),
+        ]),
+    ];
+}
+```
+
+However there's another function from the `utils` called `checkFormValidity` that accepts a form reference &mdash; for example `event.target` on form submission &mdash; and gives you back a tuple of whether the form is valid, and if a list of named form fields that don't pass the native validation. Each invalid form field yields an object of the [validity state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) and default browser message for the validation failure, which you can customise later on with a `switch`, `if` or even some kind of object map.
+
+```javascript
+const handleSubmit = (event) => {
+    event.preventDefault();
+    const [isInvalid, invalidFields] = utils.checkFormValidity(event.target);
+    
+    // Continue to process the form based on validity state.
+};
+```
+
 ## Elements
 
 Helpfully provided in the library are a set of custom elements that you can use in your own projects.
