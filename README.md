@@ -366,9 +366,9 @@ import { t, utils } from 'switerland';
 function controller({ node, adapter }) {
     const nodeName = node.nodeName.toLowerCase();
 
-    adapter.run.onMount(() => console.log(`${nodeName} mounted.}`));
-    adapter.run.onUpdate(() => console.log(`${nodeName} updated.}`));
-    adapter.run.onUnmount(() => console.log(`${nodeName} unmounted.}`));
+    adapter.run.onMount(() => console.log(`${nodeName} mounted.`));
+    adapter.run.onUpdate(() => console.log(`${nodeName} updated.`));
+    adapter.run.onUnmount(() => console.log(`${nodeName} unmounted.`));
 
     return {};
 }
