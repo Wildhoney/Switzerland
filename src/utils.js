@@ -46,8 +46,6 @@ export function checkFormValidity(form) {
         }
     }
 
-    console.log(Array.from(form.elements));
-
     return [
         form.checkValidity(),
         Array.from(form.elements).reduce((accum, field) => {
