@@ -235,19 +235,19 @@ Interestingly if you reference the `window` in any of your components, you can d
 
 Adapters are at the heart of Switzerland and whilst they may have hook-esque naming conventions, they don't have the same limitations as hooks &ndash; such as confusion over lexical scoping, not being able to be placed in conditionals, dependency lists, et cetera... Each controller automatically receives an object named `adapter` that allows for the executing of adapters. You can also write your own by invoking a function with the necessary props, such as the `render` function for re-rendering the component at any point.
 
--   **attachMethods**: Attach methods to a node that can be invoked once you have a reference to the node itself.
--   **attachShadow**: Attach a shadow boundary to the current node with any options passed in as the first argument.
--   **useAttrs**: Extract the attributes and parse the node's attributes according to the typings passed in. Re-render the component upon attributes mutating, and the second argument to exclude attributes from the mutation observer.
--   **useHistory** Fetch a list of the parameters from the URL and push and replace the state. Parsed the parameters according to the passed in types as the first argument.
--   **usePath** Yields a function when invoked with `import.meta.url` which allows you to resolve assets relative to the component's path on both the client and server.
--   **state.useMethods** Utilises the helpful [`useMethods` from `react-use`](https://github.com/streamich/react-use/blob/master/docs/useMethods.md) which allows for reading and updating state.
--   **state.useRedux** Utillises Redux for managing shared state between many components after creating a new store with the `utils.redux.createStore` function.
--   **observer.useResize** Observes the dimensions of the current node and re-renders when the dimensions change.
--   **observer.useIntersection** Observes the intersection of the current node and re-renders when the intersections change.
--   **core.useInterval** Re-renders the component every _X_ milliseconds.
--   **run.onMount** Utility function for running a function on mount (`lifecycle === 'mount'`);
--   **run.onUpdate** Utility function for running a function on update (`lifecycle === 'update'`);
--   **run.onUnmount** Utility function for running a function on unmount (`lifecycle === 'unmount'`);
+-   `attachMethods`: Attach methods to a node that can be invoked once you have a reference to the node itself.
+-   `attachShadow`: Attach a shadow boundary to the current node with any options passed in as the first argument.
+-   `useAttrs`: Extract the attributes and parse the node's attributes according to the typings passed in. Re-render the component upon attributes mutating, and the second argument to exclude attributes from the mutation observer.
+-   `useHistory`: Fetch a list of the parameters from the URL and push and replace the state. Parsed the parameters according to the passed in types as the first argument.
+-   `usePath`: Yields a function when invoked with `import.meta.url` which allows you to resolve assets relative to the component's path on both the client and server.
+-   `state.useMethods`: Utilises the helpful [`useMethods` from `react-use`](https://github.com/streamich/react-use/blob/master/docs/useMethods.md) which allows for reading and updating state.
+-   `state.useRedux`: Utillises Redux for managing shared state between many components after creating a new store with the `utils.redux.createStore` function.
+-   `observer.useResize`: Observes the dimensions of the current node and re-renders when the dimensions change.
+-   `observer.useIntersection`: Observes the intersection of the current node and re-renders when the intersections change.
+-   `core.useInterval`: Re-renders the component every _X_ milliseconds.
+-   `run.onMount`: Utility function for running a function on mount (`lifecycle === 'mount'`);
+-   `run.onUpdate`: Utility function for running a function on update (`lifecycle === 'update'`);
+-   `run.onUnmount`: Utility function for running a function on unmount (`lifecycle === 'unmount'`);
 
 ## Advanced Concepts
 
