@@ -491,10 +491,13 @@ function view({ form, state, methods, handleSubmit }) {
 However there's another function from the `utils` called `checkFormValidity` that accepts a form reference &mdash; for example `event.target` on form submission &mdash; and gives you back a tuple of whether the form is valid, and a list of named form fields that don't pass the native validation. Each invalid form field yields an object of the [validity state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) and default browser message for the validation failure, which you can customise later on with a `switch`, `if` or even some kind of object map.
 
 ```javascript
-const handleSubmit = (event) => {
+function handleSubmit(event) {
+    // Invoke the `checkFormValidity` function to check the form's validity.
     const [isValid, invalidFields] = utils.checkFormValidity(event.target);
+
+    // Set the result to the state and re-render the component.
     methods.setFormValidity({ isValid, invalidFields });
-};
+}
 ```
 
 ## Elements
