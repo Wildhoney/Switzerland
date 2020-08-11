@@ -54,7 +54,7 @@
         "nyc": "^15.1.0",
         "prettier": "^2.0.5",
         "ramda": "^0.27.1",
-        "sinon": "^9.0.2",
+        "sinon": "^9.0.3",
         "starwars": "^1.0.1",
         "string-template": "^1.0.0"
     }
