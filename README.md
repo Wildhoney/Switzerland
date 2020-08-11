@@ -376,7 +376,7 @@ function controller({ adapter }) {
 }
 ```
 
-### `run.onMount`, `run.onUpdate`, `run.onUnmount`
+### `run.onMount`, `run.onUpdate`, `run.onUnmount`, `run.onRender`
 
 Set of convenient utility functions for running functions on mount, update, unmount and post-rendering.
 
