@@ -378,7 +378,7 @@ function controller({ adapter }) {
 
 ### `run.onMount`, `run.onUpdate`, `run.onUnmount`
 
-Set of convenient utility functions for running functions on mount, update and unmount.
+Set of convenient utility functions for running functions on mount, update, unmount and post-rendering.
 
 ```javascript
 import { t, utils } from 'switerland';
@@ -389,6 +389,7 @@ function controller({ node, adapter }) {
     adapter.run.onMount(() => console.log(`${nodeName} mounted.`));
     adapter.run.onUpdate(() => console.log(`${nodeName} updated.`));
     adapter.run.onUnmount(() => console.log(`${nodeName} unmounted.`));
+    adapter.run.onRender(() => console.log(`${nodeName} rendered.`));
 
     return {};
 }

@@ -2,6 +2,7 @@ import morph from 'morphdom';
 import * as utils from './utils.js';
 import { dispatchEvent } from '../../core/impl/utils.js';
 import { boundaries } from '../../adapters/attach-shadow/index.js';
+import { runBatchedFunctions } from '../../adapters/run/index.js';
 
 const cache = new WeakMap();
 
@@ -12,6 +13,9 @@ export async function renderTree({ tree, node, server, options }) {
         const nodes = await utils.getVNodeDOM(typeof boundary === 'function' ? boundary(tree) : tree, options);
         const fragment = await utils.getVNodeFragment(nodes);
         node.appendChild(fragment);
+
+        // Run any batched functions from the `run.onRender` adapter.
+        runBatchedFunctions(node);
 
         return node.shadowRoot ?? node;
     }
@@ -47,6 +51,9 @@ export async function renderTree({ tree, node, server, options }) {
             return isSwiss ? false : to;
         },
     });
+
+    // Run any batched functions from the `run.onRender` adapter.
+    runBatchedFunctions(node);
 
     return node.shadowRoot ?? node;
 }
