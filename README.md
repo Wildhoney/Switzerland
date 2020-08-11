@@ -241,7 +241,7 @@ Attach methods to a node that can be invoked once you have a reference to the no
 
 ```javascript
 function controller({ node, adapter }) {
-    adapter.useMethods({ greet: (name) => `${node.nodeName.toLowerCase()} meet ${name}.` });
+    adapter.attachMethods({ greet: (name) => `${node.nodeName.toLowerCase()} meet ${name}.` });
 
     return {};
 }
