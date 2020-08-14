@@ -1,4 +1,13 @@
 /**
+ * @function getDefaultOptions
+ * ---
+ * Obtains the defaults used for server-side rendering.
+ */
+export function getDefaultOptions() {
+    return { path: 'https://0.0.0.0/', root: '' };
+}
+
+/**
  * @function parsename
  * ---
  * Parse the node name, grab the prototype to extend if we're running on the client, and the element

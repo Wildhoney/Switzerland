@@ -28,7 +28,7 @@ app.get('/', async (_, response) => {
     const html = fs.readFileSync(`${example}/index.html`, 'utf-8');
     const todos = await render(todoApp, {}, options);
 
-    response.send(fmt(html, { styles: await preload(todos), todos }));
+    response.send(fmt(html, { styles: await preload([todos], options), todos }));
 });
 
 app.use('/vendor', express.static(vendor));

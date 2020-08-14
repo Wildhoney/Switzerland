@@ -155,7 +155,8 @@ test('It should be able to extract the stylesheets from a tree for preloading;',
     ></todo-app
 >
     `;
-    t.snapshot(await preload(html));
+    t.snapshot(await preload([html]));
+    t.snapshot(await preload([html], { path: 'http://www.example.org/' }));
 });
 
 test('It should be able to render the component tree to a Node stream;', async (t) => {

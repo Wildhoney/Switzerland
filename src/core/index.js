@@ -29,7 +29,7 @@ export function create(name, { controller = defaultController, view = defaultVie
  * ---
  * Takes the component tree and renders it to string for server-side rendering capabilities.
  */
-export async function render(app, props = {}, options = { path: 'https://0.0.0.0/', root: '' }) {
+export async function render(app, props = {}, options = utils.getDefaultOptions()) {
     // Render the app using the passed props.
     const node = await app.render(props, options);
 
@@ -43,7 +43,7 @@ export async function render(app, props = {}, options = { path: 'https://0.0.0.0
  * ---
  * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
  */
-export async function renderToStream(app = {}, props, options = { path: 'https://0.0.0.0/', root: '' }) {
+export async function renderToStream(app = {}, props, options = utils.getDefaultOptions()) {
     const { Transform } = await import('stream');
     const stream = new Transform();
 
@@ -66,11 +66,11 @@ export async function renderToStream(app = {}, props, options = { path: 'https:/
  * Collates the assets for server-side rendering so that the qualifying nodes can be placed in the head of the
  * document to preload which helps to prevent FOUC.
  */
-export async function preload(...output) {
+export async function preload(trees, options = utils.getDefaultOptions()) {
     const window = await getWindow();
 
-    const links = output
-        .flatMap((output) => output.match(/<link.+?>/gis))
+    const links = trees
+        .flatMap((tree) => tree.match(/<link.+?>/gis))
         .map((link) => {
             if (!link) return;
 
@@ -78,6 +78,11 @@ export async function preload(...output) {
             const node = window.document.createElement('div');
             node.innerHTML = link;
             const child = node.firstChild;
+
+            // Parse the anchor and make it a path based on the options.
+            const anchor = window.document.createElement('a');
+            anchor.setAttribute('href', child.getAttribute('href'));
+            child.setAttribute('href', new URL(anchor.pathname, options.path).href);
 
             // Transform the link into a preload node for the head of the document.
             child.setAttribute('as', 'style');
