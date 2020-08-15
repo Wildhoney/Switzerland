@@ -15,7 +15,7 @@ const example = path.resolve('./example/app');
 const vendor = path.resolve(process.env.NODE_ENV === 'production' ? './es/production' : './src');
 
 const options = {
-    path: 'http://localhost:3000/',
+    path: process.env.DOMAIN ? `https://${process.env.DOMAIN}/` : 'http://localhost:3000/',
     root: path.resolve('./example/app'),
 };
 
