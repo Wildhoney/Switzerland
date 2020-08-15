@@ -200,7 +200,7 @@ app.get('/', async (_, response) => {
 });
 ```
 
-Using the declarative shadow DOM a shadow boundary will be added to your component server-side when using the `attachShadow` adapter. All styles will be applied in the component, however to prevent FOUC it's recommended to load your CSS documents in the `head` &ndash; Switzerland exports a `preload` function which takes an array of your components and collates all of the CSS imports for those component trees. As the second parameter it takes options the same as `reload`.
+Using the declarative shadow DOM a shadow boundary will be added to your component server-side when using the `attachShadow` adapter. All styles will be applied in the component, however to prevent FOUC it's recommended to load your CSS documents in the `head` &ndash; Switzerland exports a `preload` function which takes an array of your components and collates all of the CSS imports for those component trees.
 
 ```javascript
 import fs from 'fs';
@@ -214,7 +214,7 @@ app.get('/', async (_, response) => {
         values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
     });
 
-    response.send(fmt(html, { countries, styles: await preload([countries]) }));
+    response.send(fmt(html, { countries, styles: await preload(countries) }));
 });
 ```
 
