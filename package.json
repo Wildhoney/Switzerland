@@ -29,7 +29,7 @@
     },
     "devDependencies": {
         "@babel/core": "^7.11.4",
-        "ava": "^3.11.0",
+        "ava": "^3.12.1",
         "babel-eslint": "^10.1.0",
         "browser-env": "^3.3.0",
         "capitalize": "^2.0.3",
@@ -52,7 +52,7 @@
         "mkdirp": "^1.0.4",
         "nodemon": "^2.0.4",
         "nyc": "^15.1.0",
-        "prettier": "^2.0.5",
+        "prettier": "^2.1.0",
         "ramda": "^0.27.1",
         "sinon": "^9.0.3",
         "starwars": "^1.0.1",
