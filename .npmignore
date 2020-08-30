@@ -9,4 +9,5 @@ media/
 .prettierrc.json
 ava.config.js
 babel.config.mjs
+yarn-error.log
 **/__tests__/
