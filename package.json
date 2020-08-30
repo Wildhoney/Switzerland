@@ -59,7 +59,7 @@
         "mkdirp": "^1.0.4",
         "nodemon": "^2.0.4",
         "nyc": "^15.1.0",
-        "prettier": "^2.1.0",
+        "prettier": "^2.1.1",
         "ramda": "^0.27.1",
         "sinon": "^9.0.3",
         "starwars": "^1.0.1",
