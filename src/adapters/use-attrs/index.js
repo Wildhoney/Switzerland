@@ -11,7 +11,7 @@ export const nodes = new WeakSet();
  * watched and if changed the component is automatically re-rendering using the new set of attributes.
  */
 export default function useAttrs({ node, window, server, lifecycle, render }) {
-    return (types = {}, exclude = ['class', 'id', 'style', 'data-swiss']) => {
+    return (types = {}, exclude = ['class', 'id', 'style', 'data-swiss', 'data-width', 'data-height']) => {
         const defaults = getDefaults(types);
 
         if (!nodes.has(node) && !server) {

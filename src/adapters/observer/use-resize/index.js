@@ -1,3 +1,5 @@
+import * as utils from './utils.js';
+
 const nodes = new WeakSet();
 
 const state = new WeakMap();
@@ -21,7 +23,7 @@ const observer =
  * differently than when it's placed in a 400px space.
  */
 export default function useResize({ node, lifecycle, server }) {
-    return () => {
+    return ({ getWidth = utils.getContainerSize, getHeight = utils.getContainerSize } = {}) => {
         if (server) return null;
 
         switch (lifecycle) {
@@ -36,6 +38,11 @@ export default function useResize({ node, lifecycle, server }) {
                 break;
         }
 
-        return state.get(node) ?? null;
+        // A futile attempt at automated container queries.
+        const dimensions = state.get(node) ?? null;
+        node.dataset.width = getWidth(dimensions?.width ?? node.getBoundingClientRect().width);
+        node.dataset.height = getHeight(dimensions?.height ?? node.getBoundingClientRect().height);
+
+        return dimensions;
     };
 }
