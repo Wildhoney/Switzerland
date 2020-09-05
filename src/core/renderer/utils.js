@@ -39,15 +39,9 @@ export async function getNode(tree, options) {
     if (typeof tree !== 'object') return window.document.createTextNode(String(tree));
 
     // Delegate to a whole new Swiss custom element.
-    if (tree.name instanceof Swiss) {
+    if (tree.name instanceof Swiss)
         // Render the nested Swiss component that is effectively a new custom element.
-        const node = await tree.name.render(tree.props, options);
-
-        // Write to the stream's buffer if required.
-        // typeof options.stream !== 'undefined' && options.stream.write(node.outerHTML);
-
-        return node;
-    }
+        return tree.name.render(tree.props, options);
 
     // Otherwise it's a standard element.
     return window.document.createElement(tree.name);
@@ -91,6 +85,7 @@ export function attachEventListeners(tree) {
 export function detatchEventListeners(node) {
     // Remove all of the events currently bound to the node.
     const listeners = eventListeners.get(node) ?? [];
+
     [...listeners].forEach((listener) => {
         eventListeners.get(node).delete(listener);
         node.removeEventListener(listener.name, listener.fn);
