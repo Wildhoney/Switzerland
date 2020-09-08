@@ -34,7 +34,7 @@
         "redux-thunk": "^2.3.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.11.5",
+        "@babel/core": "^7.11.6",
         "ava": "^3.12.1",
         "babel-eslint": "^10.1.0",
         "browser-env": "^3.3.0",
@@ -54,7 +54,7 @@
         "express": "^4.17.1",
         "fslint": "^1.1.0",
         "glob": "^7.1.6",
-        "husky": "^4.2.5",
+        "husky": "^4.3.0",
         "jsdom": "^16.4.0",
         "mkdirp": "^1.0.4",
         "nodemon": "^2.0.4",
