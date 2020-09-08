@@ -1,5 +1,6 @@
 export { default as attachMethods } from './attach-methods/index.js';
 export { default as attachShadow } from './attach-shadow/index.js';
+export { default as attachServiceWorker } from './attach-service-worker/index.js';
 
 export { default as useAttrs } from './use-attrs/index.js';
 export { default as useHistory } from './use-history/index.js';

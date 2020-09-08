@@ -14,6 +14,8 @@ function controller({ adapter, window }) {
     const path = adapter.usePath(import.meta.url);
     const history = adapter.useHistory({ filter: [t.Bool, false] });
 
+    adapter.attachServiceWorker(path('worker.js'));
+
     adapter.run.onMount(() => setupWorker({ path, window }));
 
     return { path, attrs, redux, history, adapt };
