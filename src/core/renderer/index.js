@@ -4,8 +4,6 @@ import { dispatchEvent } from '../../core/impl/utils.js';
 import { boundaries } from '../../adapters/attach-shadow/index.js';
 import { runBatchedFunctions } from '../../adapters/run/index.js';
 
-const cache = new WeakMap();
-
 export async function renderTree({ tree, node, server, options }) {
     const boundary = boundaries.get(node) ?? node;
 
@@ -56,28 +54,4 @@ export async function renderTree({ tree, node, server, options }) {
     runBatchedFunctions(node);
 
     return node.shadowRoot ?? node;
-}
-
-function toMap(forms) {
-    return forms.reduce((forms, form) => ({ ...forms, [form.getAttribute('name') ?? 'default']: form }), {});
-}
-
-export function getForms(node) {
-    return toMap([...(cache.get(node) ?? [])]);
-}
-
-export function renderForms(node) {
-    //  Gather all of the rendered forms so we can re-render on first mount.
-    const forms = [...(node.shadowRoot ?? node).querySelectorAll('form')];
-
-    // Set the cache for the node which will memorise the forms seen.
-    !cache.has(node) && cache.set(node, new Set());
-
-    // Don't continue if we've seen every discovered form previously.
-    if (forms.every((form) => cache.get(node).has(form))) return {};
-
-    // Add all of the discovered forms to the cache.
-    for (const form of forms) cache.get(node).add(form);
-
-    return toMap(forms);
 }

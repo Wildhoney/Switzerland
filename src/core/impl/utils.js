@@ -49,7 +49,9 @@ export async function bindAdapters(renderProps, options, boundableAdapters = ada
             const isNested = typeof adapter === 'object';
             return {
                 ...adapters,
-                [name]: await (isNested ? applyAdapters(adapter) : adapter({ ...renderProps, options })),
+                [name]: await (isNested
+                    ? applyAdapters(adapter)
+                    : adapter({ ...renderProps, options, boundableAdapters })),
             };
         }, {});
     }
@@ -75,27 +77,13 @@ export function makeCyclicProps(props) {
  * the view, and then determining if there are any forms in the rendered output, and if so invoking a second
  * pass over both the controller and view.
  */
-export async function renderTree({ renderProps, boundAdapters, runController, runView, detectForms = true }) {
+export async function renderTree({ renderProps, boundAdapters, runController, runView }) {
     // Run the controller and pass those props to the view which yields a tree to render.
     const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters }));
     const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, adapter: null }));
 
     // Render the tree that is yielded from the view.
     await renderer.renderTree({ ...renderProps, tree });
-
-    if (!renderProps.server && detectForms) {
-        // Determine if there are any form nodes in the renderer HTML.
-        const form = renderer.renderForms(renderProps.node);
-
-        if (Object.keys(form).length > 0)
-            return renderTree({
-                renderProps: { ...renderProps, form, lifecycle: 'update' },
-                boundAdapters,
-                runController,
-                runView,
-                detectForms: false,
-            });
-    }
 
     return tree;
 }
@@ -107,7 +95,7 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
  * if the developer invoked the `renderToStream` function.
  */
 export async function runComponent(node, props, [runController, runView], options = {}) {
-    const renderProps = { ...props, ...(await getInitialProps(node, props)), form: renderer.getForms(node), options };
+    const renderProps = { ...props, ...(await getInitialProps(node, props)), options };
     const boundAdapters = await bindAdapters(renderProps, options);
     const isStreaming = typeof options.stream !== 'undefined';
 

@@ -5,6 +5,7 @@ import * as duck from './duck.js';
 function controller({ adapter }) {
     adapter.attachShadow();
 
+    const form = adapter.useForm();
     const path = adapter.usePath(import.meta.url);
     const redux = adapter.state.useRedux(store);
     const [state, methods] = adapter.state.useMethods(duck.createMethods, duck.initialState);
@@ -15,7 +16,7 @@ function controller({ adapter }) {
         redux.actions.add(state.text);
     };
 
-    return { path, state, methods, handleSubmit };
+    return { form, path, state, methods, handleSubmit };
 }
 
 function view({ form, path, server, state, methods, handleSubmit }) {

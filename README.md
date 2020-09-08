@@ -468,9 +468,13 @@ Helpfully the component is fetched only once thanks to the way ECMAScript module
 
 ### Handling Forms
 
-In each of your controllers and views there's a prop named `form` which is an object map of forms in your component's tree &ndash; if your form doesn't have a name then it will be named `default` in the map, otherwise it will use the form's name. On mount `form` will be an empty object, but if one or more forms are detected then all subsequent renders will contain form references &ndash; that way you can handle events such as when the form is invalid to have the submit button disabled.
+In your controller you can use the `adapter.useForm` function which yields an object map of forms in your component's tree &ndash; if your form doesn't have a name then it will be named `default` in the map, otherwise it will use the form's name. On mount `form` will be an empty object, but if one or more forms are detected then all subsequent renders will contain form references &ndash; that way you can handle events such as when the form is invalid to have the submit button disabled.
 
 ```javascript
+function controller({ adapter }) {
+    return { form: adapter.useForm() };
+}
+
 function view({ form, state, methods, handleSubmit }) {
     return [
         h('form', { onSubmit: handleSubmit }, [
@@ -489,7 +493,7 @@ function view({ form, state, methods, handleSubmit }) {
 }
 ```
 
-However there's another function from the `utils` called `checkFormValidity` that accepts a form reference &mdash; for example `event.target` on form submission &mdash; and gives you back a tuple of whether the form is valid, and a list of named form fields that don't pass the native validation. Each invalid form field yields an object of the [validity state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) and default browser message for the validation failure, which you can customise later on with a `switch`, `if` or even some kind of object map.
+Additionally there's another function from `utils` called `checkFormValidity` that accepts a form reference &mdash; for example `event.target` on form submission &mdash; and gives you back a tuple of whether the form is valid, and a list of named form fields that don't pass the native validation. Each invalid form field yields an object of the [validity state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) and default browser message for the validation failure, which you can customise later on with a `switch`, `if` or even some kind of object map.
 
 ```javascript
 function handleSubmit(event) {

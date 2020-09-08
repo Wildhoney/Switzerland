@@ -43,7 +43,7 @@ test('It should be able to create bound adapter functions using the props;', asy
     const boundAdapters = await utils.bindAdapters(props, {}, { adapter });
 
     t.is(adapter.callCount, 1);
-    t.true(adapter.calledWith(props));
+    t.true(adapter.calledWith({ ...props, boundableAdapters: sinon.match.object }));
     t.snapshot(boundAdapters);
 });
 
@@ -54,7 +54,7 @@ test('It should be able to create bound nested adapter functions using the props
     const boundAdapters = await utils.bindAdapters(props, {}, { nestedAdapter: { adapter } });
 
     t.is(adapter.callCount, 1);
-    t.true(adapter.calledWith(props));
+    t.true(adapter.calledWith({ ...props, boundableAdapters: sinon.match.object }));
     t.snapshot(boundAdapters);
 });
 
@@ -81,22 +81,6 @@ test('It should be able to render the passed tree;', async (t) => {
 
     t.is(runController.callCount, 1);
     t.is(runView.callCount, 1);
-    t.snapshot(props);
-});
-
-test('It should be able to render the passed tree twice when the form is detected;', async (t) => {
-    const runController = sinon.spy(() => ({}));
-    const runView = sinon.spy(({ form }) => h('form', {}, JSON.stringify(form)));
-
-    const props = await utils.renderTree({
-        boundAdapters: {},
-        renderProps: { node: document.createElement('x-adam'), server: false, form: {} },
-        runController,
-        runView,
-    });
-
-    t.is(runController.callCount, 2);
-    t.is(runView.callCount, 2);
     t.snapshot(props);
 });
 
