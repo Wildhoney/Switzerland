@@ -259,6 +259,24 @@ function controller({ adapter }) {
 }
 ```
 
+### `attachServiceWorker`
+
+Attach a service worker to the component with optional passing in of attributes that can be an object or a function that's invoked after the component has rendered, which allows you to parse the component's tree. Any non-primitive values will be transformed to JSON, which should be parsed in the worker using the `URLSearchParams` object from `new URL(location).searchParams`.
+
+```javascript
+function controller({ node, adapter }) {
+    adapter.attachServiceWorker(path('worker.js'), () => {
+        return {
+            name: 'Adam',
+            visitedCountries: ['Russian Federation', 'Indonesia', 'Argentina'],
+            albumName: node.dataset.albumName,
+        }
+    });
+
+    return {};
+}
+```
+
 ### `useAttrs`
 
 Extract the attributes and parse the node's attributes according to the typings passed in. Re-render the component upon attributes mutating, and the second argument to exclude attributes from the mutation observer.
