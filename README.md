@@ -291,6 +291,18 @@ function controller({ adapter }) {
 }
 ```
 
+### `useForm`
+
+Re-renders the component passing in any forms that have been parsed after rendering the component. Yields a map of the form name to the form element. If any of your forms don't have a name, then it will come through as `default` &mdash; thus multiple forms **must** have names.
+
+```javascript
+function controller({ adapter }) {
+    const form = adapter.useForm();
+
+    return { form };
+}
+```
+
 ### `useHistory`
 
 Fetch a list of the parameters from the URL and push and replace the state. Parsed the parameters according to the passed in types as the first argument.
@@ -337,7 +349,7 @@ function controller({ adapter }) {
 
 ### `state.useRedux`
 
--   `state.useRedux`: Utillises Redux for managing shared state between many components after creating a new store with the `utils.redux.createStore` function.
+Utillises Redux for managing shared state between many components after creating a new store with the `utils.redux.createStore` function.
 
 ```javascript
 import { t, utils } from 'switerland';
