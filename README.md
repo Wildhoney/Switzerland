@@ -99,7 +99,7 @@ export default create('x-countries', ({ use }) => {
 
     const attrs = use.attributes({ values: type.Array(type.String) });
     const countries = attrs.values;
-    const path = adapter.usePath(import.meta.url);
+    const path = use.path(import.meta.url);
 
     return [
         h(
@@ -136,7 +136,7 @@ export default create('x-countries', ({ use, dispatch }) => {
 
     const attrs = use.attributes({ values: type.Array(type.String) });
     const countries = attrs.values;
-    const path = adapter.usePath(import.meta.url);
+    const path = use.path(import.meta.url);
 
     return [
         h(
@@ -291,8 +291,8 @@ Utilises either a simple key-value store similar to React's `useState` or if pas
 Pass a non-store object to opt-in to the simple key-value state.
 
 ```javascript
-function view({ adapter }) {
-    const [name, setName] = adapter.state('Imogen');
+function view({ use }) {
+    const [name, setName] = use.state('Imogen');
     // ...
 }
 ```
@@ -302,8 +302,8 @@ Alternatively pass in a Redux store instance created via `createStore` to use Re
 ```javascript
 import { store } from './store.js';
 
-function view({ adapter }) {
-    const [state, dispatch] = adapter.state(store);
+function view({ use }) {
+    const [state, dispatch] = use.state(store);
     // ...
 }
 ```
@@ -313,8 +313,8 @@ You may also pass in an `actionCreators` object which will automatically invoke 
 ```javascript
 import { store, actionCreators } from './store.js';
 
-function view({ adapter }) {
-    const [state, actions] = adapter.state(store, { actionCreators });
+function view({ use }) {
+    const [state, actions] = use.state(store, { actionCreators });
     // ...
 }
 ```
@@ -412,7 +412,8 @@ In most cases importing the custom elements you're going to be using in your tre
 ```javascript
 import { create, fetch, h } from 'switzerland';
 
-async function view({ showCountries }) {
+
+export default create('x-countries', ({showCountries}) => {
     if (!showCountries) return h('div', {}, 'Countries are currently hidden.');
 
     return h('ul', {}, [
@@ -420,9 +421,7 @@ async function view({ showCountries }) {
         h(await fetch('./components/Country.js'), { name: 'Russian Federation' }),
         h(await fetch('./components/Country.js'), { name: 'Republic of Indonesia' }),
     ]);
-}
-
-export default create('x-countries', { view });
+});
 ```
 
 Helpfully the component is fetched only once thanks to the way ECMAScript modules function. Using this approach we can prevent the unnecessary transferring of data across the wire, and in turn make it fetch lazily depending on when components are needed.
@@ -432,11 +431,11 @@ Helpfully the component is fetched only once thanks to the way ECMAScript module
 In your view you can use the `use.form` function which yields an object map of forms in your component's tree &ndash; if your form doesn't have a name then it will be named `default` in the map, otherwise it will use the form's name. On mount `form` will be an empty object, but if one or more forms are detected then all subsequent renders will contain form references &ndash; that way you can handle events such as when the form is invalid to have the submit button disabled.
 
 ```javascript
-function view({ adapter }) {
-    return { form: adapter.useForm() };
-}
+import { create, fetch, h } from 'switzerland';
 
-function view({ form, state, methods, handleSubmit }) {
+export default create('x-form', ({ use }) => {
+    const form = use.form();
+
     return [
         h('form', { onSubmit: handleSubmit }, [
             h('input', {
@@ -451,7 +450,7 @@ function view({ form, state, methods, handleSubmit }) {
             }),
         ]),
     ];
-}
+});
 ```
 
 Additionally there's another function from `utils` called `checkFormValidity` that accepts a form reference &mdash; for example `event.target` on form submission &mdash; and gives you back a tuple of whether the form is valid, and a list of named form fields that don't pass the native validation. Each invalid form field yields an object of the [validity state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) and default browser message for the validation failure, which you can customise later on with a `switch`, `if` or even some kind of object map.
