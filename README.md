@@ -102,14 +102,11 @@ export default create('x-countries', ({ use }) => {
     const path = adapter.usePath(import.meta.url);
 
     return [
-        h('section', {}, [
-            h(
-                'ul',
-                {},
-                countries.map((country) => h('li', {}, country))
-            ),
-        ]),
-
+        h(
+            'ul',
+            {},
+            countries.map((country) => h('li', {}, country))
+        ),
         h(utils.node.Sheet, { href: path('index.css') }),
     ];
 });
@@ -142,16 +139,11 @@ export default create('x-countries', ({ use, dispatch }) => {
     const path = adapter.usePath(import.meta.url);
 
     return [
-        h('section', {}, [
-            h(
-                'ul',
-                {},
-                countries.map((country) =>
-                    h('li', { onClick: () => dispatch('clicked-country', { country }) }, country)
-                )
-            ),
-        ]),
-
+        h(
+            'ul',
+            {},
+            countries.map((country) => h('li', { onClick: () => dispatch('clicked-country', { country }) }, country))
+        ),
         h(utils.node.Sheet, { href: path('index.css') }),
     ];
 });
