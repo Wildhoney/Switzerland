@@ -60,7 +60,7 @@ The view yields a DOM structure and has a side-effect of writing to the DOM usin
 Let's take the next step and supply the list of countries via HTML attributes. For this example we'll desturcture the `use` object and use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
 ```javascript
-import { create, type, type, h } from 'switzerland';
+import { create, type, h } from 'switzerland';
 
 export default create('x-countries', ({ use }) => {
     const attrs = use.attributes({ values: type.Array(type.String) });
