@@ -228,7 +228,7 @@ Attach a shadow boundary to the current node with any options passed in as the f
 
 ```javascript
 function view({ use }) {
-    use.shadow({ delegatesFocus: true });
+    const root = use.shadow({ delegatesFocus: true });
     // ...
 }
 ```
@@ -276,8 +276,6 @@ function view({ use }) {
 Yields a function when invoked with `import.meta.url` which allows you to resolve assets relative to the component's path on both the client and server.
 
 ```javascript
-import { t } from 'switerland';
-
 function view({ use }) {
     const path = use.path(import.meta.url);
     // ...
