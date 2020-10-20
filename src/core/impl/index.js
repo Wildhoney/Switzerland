@@ -7,10 +7,10 @@ import { getEventName, fromCamelcase } from '../utils.js';
 /**
  * @function client
  * ---
- * Takes the element to extend and the middleware (controller and view) for instantiating the
+ * Takes the element to extend and the view function for instantiating the
  * custom element ready to be rendered to the DOM.
  */
-export function client(extension, middleware) {
+export function client(extension, view) {
     const meta = Symbol('switzerland/meta');
 
     return class Swiss extends extension {
@@ -47,7 +47,7 @@ export function client(extension, middleware) {
 
                 try {
                     // Iterate and invoke each middleware for this Swiss component.
-                    await this.utils.runComponent(this, props, middleware);
+                    await this.utils.runComponent(this, props, view);
                 } catch (error) {
                     // Clear the queue and resolve as a middleware threw an error, and also
                     // mark the component as having errored.
@@ -73,9 +73,9 @@ export function client(extension, middleware) {
 }
 
 export class Swiss {
-    constructor(name, middleware, extend) {
+    constructor(name, view, extend) {
         this.name = name;
-        this.middleware = middleware;
+        this.view = view;
         this.extend = extend;
         this.utils = utils;
     }
@@ -98,7 +98,7 @@ export class Swiss {
         typeof options.stream !== 'undefined' && options.stream.write(node.outerHTML.replace(`</${this.name}>`, ''));
 
         // Iterate over the middleware and then return the node.
-        await this.utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.middleware, options);
+        await this.utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.view, options);
 
         // Once rendered we'll write the Swiss component's closing node to the stream.
         typeof options.stream !== 'undefined' && options.stream.write(`<${this.name} />`);
@@ -110,9 +110,9 @@ export class Swiss {
 /**
  * @function server
  * ---
- * Yields a Swiss component for rendering server-side, taking the tag name, middleware functions (controller
- * and view), as well as optionally the element it extends.
+ * Yields a Swiss component for rendering server-side, taking the tag name, view function, as well
+ * as optionally the element it extends.
  */
-export function server(tag, middleware, extend = null) {
-    return new Swiss(tag, middleware, extend);
+export function server(tag, view, extend = null) {
+    return new Swiss(tag, view, extend);
 }

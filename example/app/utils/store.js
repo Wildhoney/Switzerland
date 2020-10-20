@@ -1,4 +1,5 @@
-import { utils } from 'switzerland';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import indexedDb from './db.js';
 
 const initialState = {
@@ -11,43 +12,43 @@ const actionTypes = {
     MARK: Symbol('todo/mark'),
 };
 
-const getId = () => {
+function getId() {
     const integers = new Uint32Array(2);
     window.crypto.getRandomValues(integers);
     return integers.toString();
-};
+}
 
-const createModel = (text) => ({
-    id: getId(),
-    text,
-    done: false,
-    created: Date.now(),
-});
+function createModel(text) {
+    return {
+        id: getId(),
+        text,
+        done: false,
+        created: Date.now(),
+    };
+}
 
-const reducer = (state = initialState, action) => {
-    switch (action.type) {
+function reducer(state = initialState, event) {
+    switch (event.type) {
         case actionTypes.ADD: {
-            const models = [].concat(action.payload);
+            const models = [].concat(event.payload);
             return { list: [...state.list, ...models] };
         }
 
         case actionTypes.REMOVE:
             return {
                 ...state,
-                list: state.list.filter((model) => model.id !== action.payload),
+                list: state.list.filter((model) => model.id !== event.payload),
             };
         case actionTypes.MARK:
             return {
-                list: state.list.map((model) =>
-                    model.id === action.payload ? { ...model, done: !model.done } : model
-                ),
+                list: state.list.map((model) => (model.id === event.payload ? { ...model, done: !model.done } : model)),
             };
         default:
             return state;
     }
-};
+}
 
-const actions = {
+export const actionCreators = {
     add: (text) => async (dispatch) => {
         const db = await indexedDb();
         const model = createModel(text);
@@ -69,4 +70,4 @@ const actions = {
     },
 };
 
-export default utils.redux.createStore(reducer, actions);
+export const store = createStore(reducer, applyMiddleware(thunk.default ?? thunk));

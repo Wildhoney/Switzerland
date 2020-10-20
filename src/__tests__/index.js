@@ -38,16 +38,13 @@ test('it should be able to create and rename a custom element;', (t) => {
 });
 
 test('it should be able to render a component tree;', async (t) => {
-    function controller({ adapter }) {
-        adapter.attachShadow();
-        return {};
-    }
+    function view({ use }) {
+        use.shadow();
 
-    function view() {
         return 'Hi Imogen!';
     }
 
-    const name = create('x-name', { controller, view });
+    const name = create('x-name', view);
     const html = await render(name);
     t.snapshot(html);
 
@@ -55,7 +52,7 @@ test('it should be able to render a component tree;', async (t) => {
     delete global.window;
 
     {
-        const name = create('x-name', { controller, view });
+        const name = create('x-name', view);
         const html = await render(name);
         t.snapshot(html);
     }

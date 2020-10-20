@@ -1,8 +1,10 @@
 import { getWindow, replaceTemplate } from '../utils.js';
 import * as impl from './impl/index.js';
+import { createVNode as h } from './renderer/utils.js';
 import * as utils from './utils.js';
-import defaultController from './defaults/controller.js';
-import defaultView from './defaults/view.js';
+
+export const defaultView = ({ node }) =>
+    h('code', { style: 'font-family: monospace' }, `<${node.nodeName.toLowerCase()} />`);
 
 /**
  * @function create
@@ -10,17 +12,17 @@ import defaultView from './defaults/view.js';
  * Takes the name of the web component and an array of functions that represent the middleware. Each
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
-export function create(name, { controller = defaultController, view = defaultView } = {}) {
+export function create(name, view = defaultView) {
     const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
         window.customElements.define(
             window.customElements.get(tag) ? utils.getRandomName() : tag,
-            impl.client(constuctor, [controller, view]),
+            impl.client(constuctor, view),
             extend && { extends: extend }
         );
     } finally {
-        return impl.server(extend ?? tag, [controller, view], extend ? tag : null);
+        return impl.server(extend ?? tag, view, extend ? tag : null);
     }
 }
 
@@ -98,8 +100,8 @@ export async function preload(...trees) {
  * Switzerland will assign a random name to the component, and it's up to the developer to rename it accordingly.
  */
 export function rename(component, name) {
-    const [controller, view] = component.middleware;
-    return create(name, { controller, view });
+    const { view } = component;
+    return create(name, view);
 }
 
 /**

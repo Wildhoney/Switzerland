@@ -1,29 +1,24 @@
 import { create, h, utils } from 'switzerland';
-import store from '../../utils/store.js';
-import * as duck from './duck.js';
+import { store, actionCreators } from '../../utils/store.js';
 
-function controller({ adapter }) {
-    adapter.attachShadow();
+export default create('todo-input', ({ use, server }) => {
+    use.shadow();
 
-    const form = adapter.useForm();
-    const path = adapter.usePath(import.meta.url);
-    const redux = adapter.state.useRedux(store);
-    const [state, methods] = adapter.state.useMethods(duck.createMethods, duck.initialState);
+    const form = use.form();
+    const path = use.path(import.meta.url);
+    const [, actions] = use.state(store, { actionCreators });
+    const [text, setText] = use.state('');
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        methods.setText('');
-        redux.actions.add(state.text);
+        setText('');
+        actions.add(text);
     };
 
-    return { form, path, state, methods, handleSubmit };
-}
-
-function view({ form, path, server, state, methods, handleSubmit }) {
     return [
         h('form', { onSubmit: handleSubmit }, [
             h('input', {
-                value: state.text,
+                value: text,
                 type: 'text',
                 name: 'todo',
                 required: true,
@@ -31,7 +26,7 @@ function view({ form, path, server, state, methods, handleSubmit }) {
                 autoFocus: 'on',
                 autoComplete: 'off',
                 placeholder: 'What do you need to do?',
-                onInput: (event) => methods.setText(event.target.value),
+                onInput: (event) => setText(event.target.value),
             }),
 
             h('button', {
@@ -45,6 +40,4 @@ function view({ form, path, server, state, methods, handleSubmit }) {
         h(utils.node.Sheet, { href: path('./styles/mobile.css'), media: '(max-width: 768px)' }),
         h(utils.node.Sheet, { href: path('./styles/print.css'), media: 'print' }),
     ];
-}
-
-export default create('todo-input', { controller, view });
+});

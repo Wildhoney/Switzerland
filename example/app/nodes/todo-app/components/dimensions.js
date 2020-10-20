@@ -1,10 +1,10 @@
 import { h } from 'switzerland';
 
-export default function Dimensions({ adapt }) {
-    if (!adapt) return h('li', {}, 'Loading...');
+export default function Dimensions({ dimensions }) {
+    if (!dimensions) return h('li', {}, 'Loading...');
 
     return h('li', {}, [
         h('em', {}, 'Dimensions: '),
-        h('span', {}, `${Math.round(adapt.width)}×${Math.round(adapt.height)}`),
+        h('span', {}, `${Math.round(dimensions.width)}×${Math.round(dimensions.height)}`),
     ]);
 }

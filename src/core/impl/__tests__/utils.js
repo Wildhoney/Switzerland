@@ -69,44 +69,40 @@ test('It should be able to make a passed object cyclic for use in infinitely des
 });
 
 test('It should be able to render the passed tree;', async (t) => {
-    const runController = sinon.spy(() => ({ name: 'Adam' }));
-    const runView = sinon.spy(({ name }) => h('section', {}, `Hi ${name}!`));
+    const view = sinon.spy(() => {
+        const state = { name: 'Adam' };
+        return h('section', {}, `Hi ${state.name}!`);
+    });
 
     const props = await utils.renderTree({
         boundAdapters: {},
         renderProps: { node: document.createElement('x-adam'), server: true },
-        runController,
-        runView,
+        view,
     });
 
-    t.is(runController.callCount, 1);
-    t.is(runView.callCount, 1);
+    t.is(view.callCount, 1);
     t.snapshot(props);
 });
 
 test('It should be able to run the component;', async (t) => {
     const node = document.createElement('x-imogen');
+    const view = sinon.spy(() => h('section'));
+    const props = await utils.runComponent(node, { node, server: true }, view);
 
-    const runController = sinon.spy(() => ({}));
-    const runView = sinon.spy(() => h('section'));
-
-    const props = await utils.runComponent(node, { node, server: true }, [runController, runView]);
-
-    t.is(runController.callCount, 1);
-    t.is(runView.callCount, 1);
+    t.is(view.callCount, 1);
     t.snapshot(props);
 });
 
 test('It should be able to run the component and handle any errors that are thrown;', async (t) => {
     const node = document.createElement('x-imogen');
 
-    const runController = sinon.spy(() => {
-        throw new Error('Oh no!');
+    const view = sinon.spy(({ throwError }) => {
+        if (throwError) throw new Error('Oh no!');
+        return h('section');
     });
-    const runView = sinon.spy(() => h('section'));
 
     sinon.stub(console, 'error');
-    await t.throwsAsync(() => utils.runComponent(node, { node, server: true }, [runController, runView]), {
+    await t.throwsAsync(() => utils.runComponent(node, { node, server: true, throwError: true }, view), {
         instanceOf: Error,
         message: 'Oh no!',
     });

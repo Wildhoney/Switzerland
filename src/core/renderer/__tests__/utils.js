@@ -43,16 +43,12 @@ test('It should be able to parse a vnode tree with children that yield arrays;',
 });
 
 test('It should be able to parse a vnode tree that yields a Swiss component;', async (t) => {
-    function controller({ adapter }) {
-        const attrs = adapter.useAttrs();
-        return { attrs };
-    }
-
-    function view({ attrs }) {
+    function view({ use }) {
+        const attrs = use.attributes();
         return h('div', {}, `Hello ${attrs.name}!`);
     }
 
-    const Name = create('x-name', { controller, view });
+    const Name = create('x-name', view);
 
     const main = h('section', {}, [h(Name, { name: 'Adam' }), h(Name, { name: 'Maria' }), h(Name, { name: 'Imogen' })]);
     const node = await getVNodeDOM(main);

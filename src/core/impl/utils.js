@@ -73,14 +73,18 @@ export function makeCyclicProps(props) {
 /**
  * @function renderTree
  * ---
- * Takes all of the arguments required for rendering the current tree by invoking the controller followed by
- * the view, and then determining if there are any forms in the rendered output, and if so invoking a second
- * pass over both the controller and view.
+ * Takes all of the arguments required for rendering the current tree by invoking the view, and then
+ * determining if there are any forms in the rendered output, and if so invoking a second pass over
+ * the component's view.
  */
-export async function renderTree({ renderProps, boundAdapters, runController, runView }) {
-    // Run the controller and pass those props to the view which yields a tree to render.
-    const viewProps = await runController(makeCyclicProps({ ...renderProps, adapter: boundAdapters }));
-    const tree = await runView(makeCyclicProps({ ...renderProps, ...viewProps, adapter: null }));
+export async function renderTree({ renderProps, boundAdapters, view }) {
+    // Setup the `use` function to take custom functions and bind all of the pre-established
+    // functions to the `use` as well.
+    const use = (fn) => fn(renderProps);
+    Object.entries(boundAdapters).forEach(([key, value]) => (use[key] = value));
+
+    // Run the view and pass those props to the view which yields a tree to render.
+    const tree = await view(makeCyclicProps({ ...renderProps, use }));
 
     // Render the tree that is yielded from the view.
     await renderer.renderTree({ ...renderProps, tree });
@@ -94,21 +98,21 @@ export async function renderTree({ renderProps, boundAdapters, runController, ru
  * Takes and gathers from other sources all of the required data for rendering the component. Also writes to the stream
  * if the developer invoked the `renderToStream` function.
  */
-export async function runComponent(node, props, [runController, runView], options = {}) {
+export async function runComponent(node, props, view, options = {}) {
     const renderProps = { ...props, ...(await getInitialProps(node, props)), options };
     const boundAdapters = await bindAdapters(renderProps, options);
     const isStreaming = typeof options.stream !== 'undefined';
 
     try {
-        // Run the controller to gather its props for view rendering, and write to the stream if available.
-        const tree = await renderTree({ boundAdapters, renderProps, runController, runView });
+        // Run the view to gather its structure for the DOM tree and write to the stream if available.
+        const tree = await renderTree({ boundAdapters, renderProps, view });
         isStreaming && options.stream.write(replaceTemplate(node.innerHTML));
         return tree;
     } catch (error) {
-        // Invoke the controller and view again but with passing the error that was thrown, writing to the stream
+        // Invoke the view again but with passing the error that was thrown, writing to the stream
         // again if necessary.
         process?.env?.NODE_ENV !== 'production' && consoleMessage(error);
-        await renderTree({ boundAdapters, renderProps: { ...renderProps, error }, runController, runView });
+        await renderTree({ boundAdapters, renderProps: { ...renderProps, error }, view });
         isStreaming && options.stream.write(replaceTemplate(node.innerHTML));
 
         // Re-throw an error so the caller in `Swiss.render` can clear the queue.

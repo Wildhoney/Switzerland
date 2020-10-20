@@ -1,8 +1,8 @@
 import morph from 'morphdom';
 import * as utils from './utils.js';
 import { dispatchEvent } from '../../core/impl/utils.js';
-import { boundaries } from '../../adapters/attach-shadow/index.js';
-import { runBatchedFunctions } from '../../adapters/run/index.js';
+import { boundaries } from '../../adapters/shadow/index.js';
+import { runBatchedFunctions } from '../../adapters/run/rendered/index.js';
 
 export async function renderTree({ tree, node, server, options }) {
     const boundary = boundaries.get(node) ?? node;

@@ -1,27 +1,20 @@
-import { create, utils, fetch, t, h } from 'switzerland';
-import store from '../../utils/store.js';
-import { isBottom, setupWorker } from './utils.js';
+import { create, utils, fetch, h, type } from 'switzerland';
+import { isBottom, createServiceWorker } from './utils.js';
 import Position from './components/position.js';
 import Dimensions from './components/dimensions.js';
 import Filter from './components/filter.js';
+import resize from './helpers/resize.js';
 
-function controller({ adapter, window }) {
-    adapter.attachShadow();
+export default create('todo-app', async ({ node, use, window }) => {
+    use.shadow();
 
-    const redux = adapter.state.useRedux(store);
-    const adapt = adapter.observer.useResize();
-    const attrs = adapter.useAttrs({ logo: [t.String, 'top'] });
-    const path = adapter.usePath(import.meta.url);
-    const history = adapter.useHistory({ filter: [t.Bool, false] });
+    const path = use.path(import.meta.url);
+    const attrs = use.attributes({ logo: [type.String, 'top'] });
+    const history = use.history({ filter: [type.Bool, false] });
+    const dimensions = use(resize);
 
-    adapter.attachServiceWorker(path('worker.js'));
+    createServiceWorker({ path, window });
 
-    adapter.run.onMount(() => setupWorker({ path, window }));
-
-    return { path, attrs, redux, history, adapt };
-}
-
-async function view({ path, props, attrs }) {
     return [
         h('section', { class: 'todo-app' }, [
             h(await fetch(import('../todo-input/index.js'))),
@@ -33,7 +26,7 @@ async function view({ path, props, attrs }) {
                 ]),
             ]),
 
-            h('ul', {}, [h(Position, props), h(Filter, props), h(Dimensions, props)]),
+            h('ul', {}, [h(Position, { node, attrs }), h(Filter, { history }), h(Dimensions, { dimensions })]),
         ]),
 
         h(utils.node.Sheet, { href: path('./styles/index.css') }),
@@ -45,6 +38,4 @@ async function view({ path, props, attrs }) {
             borderColour: isBottom(attrs) ? 'transparent' : 'rgba(0, 0, 0, 0.1)',
         }),
     ];
-}
-
-export default create('todo-app', { controller, view });
+});

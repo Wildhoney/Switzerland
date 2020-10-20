@@ -26,28 +26,27 @@
 
 1. [Getting Started](#getting-started)
 2. [Understanding Adapters](#understanding-adapters)
-3. [Advanced Concepts](#advanced-concepts)
-4. [Elements](#elements)
-5. [Philosophy](#philosophy)
+3. [Custom Adapters](#custom-adapters)
+4. [Advanced Concepts](#advanced-concepts)
+5. [Elements](#elements)
+6. [Philosophy](#philosophy)
 
 ## Getting Started
 
 Use our [JSFiddle base](https://jsfiddle.net/9kmx2tub/) (uncompiled) if you'd like to follow along interactively or for reproducing bugs for linking with issues.
 
-Switzerland takes both a controller and a view for rendering components &ndash; the controller is used for passing props to the view, and is separate from the view as this prevents a tight coupling between the internal props required for rendering the tree. By taking this approach the controllers and views are kept more general which faciliates interoperability. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
+Switzerland takes both a name and a view for rendering components &ndash; the name must following the naming conventions for custom elements, and the view is a function that yields a DOM structure. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
 ```javascript
 import { create, h } from 'switzerland';
 
-function view() {
+export default create('x-countries', () => {
     return h('ul', {}, [
         h('li', {}, 'United Kingdom'),
         h('li', {}, 'Russian Federation'),
         h('li', {}, 'Republic of Indonesia'),
     ]);
-}
-
-export default create('x-countries', { view });
+});
 ```
 
 We now have a usable custom element called `x-countries` which can be used anywhere. We're able to use the element even before the element is declared, as Switzerland subscribes to the [progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement) paradigm whereby elements are upgraded asynchronously. In the meantime you could display a loader, placeholder, static HTML generated on the server-side, or even nothing at all before the component renders.
@@ -56,31 +55,26 @@ We now have a usable custom element called `x-countries` which can be used anywh
 <x-countries />
 ```
 
-You may have noticed for the `x-countries` component we have a view but no associated controller &ndash; instead we're using the default controller as our component doesn't yet have any specialised internal prop requirements. The view takes `props` from the controller and has a side-effect of writing to the DOM using [`morphdom`](https://github.com/patrick-steele-idem/morphdom). It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
+The view yields a DOM structure and has a side-effect of writing to the DOM using [`morphdom`](https://github.com/patrick-steele-idem/morphdom). It's worth noting that Switzerland doesn't encourage JSX as it's non-standard and unlikely to ever be integrated into the JS spec, and thus you're forced to adopt its associated toolset in perpetuity. However there's nothing at all preventing you from introducting a build step to transform your JSX into hyperdom.
 
-Let's take the next step and supply the list of countries via HTML attributes. For this example we'll introduce a specialised controller and use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
+Let's take the next step and supply the list of countries via HTML attributes. For this example we'll desturcture the `use` object and use the Switzerland types which transform HTML string attributes into more appropriate representations, such as `Number`, `BigInt`, etc...
 
 ```javascript
-import { create, t, h } from 'switzerland';
+import { create, type, type, h } from 'switzerland';
 
-function controller({ adapter }) {
-    const attrs = adapter.useAttrs({ values: t.Array(t.String) });
+export default create('x-countries', ({ use }) => {
+    const attrs = use.attributes({ values: type.Array(type.String) });
+    const countries = attrs.values;
 
-    return { countries: attrs.values };
-}
-
-function view({ countries }) {
     return h(
         'ul',
         {},
         countries.map((country) => h('li', {}, country))
     );
-}
-
-export default create('x-countries', { controller, view });
+});
 ```
 
-Notice how we're destructuring the `adapter` from the props in the controller to then parse the node's attributes. By introducing a controller it's easy to see from the example above how both the controller and view become immediately reuseable. The controller reads attributes from the node and yields the `countries` array &ndash; whereas the view simply takes the `countries` array and iterates over it. It's the responsibility of the `useAttrs` adapter to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
+Notice how we're destructuring the `use` from the props in the view to then parse the node's attributes. The `use.attributes` reads attributes from the node and yields the `countries` array and then simply takes the `countries` array and iterates over it. It's the responsibility of the `use.attributes` adapter to parse the HTML attributes into a standard JS object, and re-render the component whenever those attributes are mutated. Since the list of countries now comes from the `values` attribute, we need to add it when using the custom element:
 
 ```html
 <x-countries values="United Kingdom,Russian Federation,Republic of Indonesia" />
@@ -98,35 +92,30 @@ Switzerland components only take string values as their attributes as that's all
 Where other JS libraries fall short, Switzerland considers all web assets to be within its remit. For example in React it is fairly common to use a third-party, non-standard, somewhat hacky JS-in-CSS solution that brings its own set of complexities and issues. With Switzerland it's easy to package up a regular CSS file alongside the component, and have the assets it references load relative to the JS document without any configuration. For that we simply render a `style` node in the view:
 
 ```javascript
-import { create, utils, t, h } from 'switzerland';
+import { create, utils, type, h } from 'switzerland';
 
-function controller({ adapter }) {
-    adapter.attachShadow();
+export default create('x-countries', ({ use }) => {
+    use.shadow();
 
+    const attrs = use.attributes({ values: type.Array(type.String) });
+    const countries = attrs.values;
     const path = adapter.usePath(import.meta.url);
-    const attrs = adapter.useAttrs({ values: t.Array(t.String) });
 
-    return { path, countries: attrs.values };
-}
-
-function view({ path, countries }) {
     return [
         h('section', {}, [
             h(
                 'ul',
                 {},
-                attrs.values.map((country) => h('li', {}, country))
+                countries.map((country) => h('li', {}, country))
             ),
         ]),
 
         h(utils.node.Sheet, { href: path('index.css') }),
     ];
-}
-
-export default create('x-countries', { controller, view });
+});
 ```
 
-Notice that we've also invoked the `attachShadow` adapter which attaches a shadow boundary to our custom element &ndash; it also works for server-side rendering without any configuration in browsers where it's currently supported. We do this so that our applied styles are encapsulated in the component itself, rather than bleeding into other elements on the page.
+Notice that we've also invoked the `use.shadow` adapter which attaches a shadow boundary to our custom element &ndash; it also works for server-side rendering without any configuration in browsers where it's currently supported. We do this so that our applied styles are encapsulated in the component itself, rather than bleeding into other elements on the page.
 
 We use the `utils.node.Sheet` helper function which constructs the `link` node itself &ndash; however there's no reason why we couldn't write it ourselves using the `h` function. In using the `path` middleware we have a function that allows us to resolve assets relative to the current JS file:
 
@@ -143,24 +132,21 @@ By utilising [shadow DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Compo
 Adding events to a component is achieved through the `dispatch` function which is passed through the `props` to the view. In our case we'll set an event up for when a user clicks on a country name. Switzerland uses the native `CustomEvent` to handle events, and thus guaranteeing our components stay interoperable and reusable:
 
 ```javascript
-import { create, utils, t, h } from 'switzerland';
+import { create, utils, type, h } from 'switzerland';
 
-function controller({ adapter }) {
-    adapter.attachShadow();
+export default create('x-countries', ({ use, dispatch }) => {
+    use.shadow();
 
+    const attrs = use.attributes({ values: type.Array(type.String) });
+    const countries = attrs.values;
     const path = adapter.usePath(import.meta.url);
-    const attrs = adapter.useAttrs({ values: t.Array(t.String) });
 
-    return { path, countries: attrs.values };
-}
-
-function view({ dispatch, path, countries }) {
     return [
         h('section', {}, [
             h(
                 'ul',
                 {},
-                attrs.values.map((country) =>
+                countries.map((country) =>
                     h('li', { onClick: () => dispatch('clicked-country', { country }) }, country)
                 )
             ),
@@ -168,9 +154,7 @@ function view({ dispatch, path, countries }) {
 
         h(utils.node.Sheet, { href: path('index.css') }),
     ];
-}
-
-export default create('x-countries', { controller, view });
+});
 ```
 
 Interestingly it's possible to use any valid event name for the `dispatch` as we simply need a corresponding `addEventListener` of the same name to catch it. Once we have our event all set up we can attach the listener by using the native `addEventListener` method on the custom element itself:
@@ -233,196 +217,151 @@ Interestingly if you reference the `window` in any of your components, you can d
 
 ## Understanding Adapters
 
-Adapters are at the heart of Switzerland and whilst they may have hook-esque naming conventions, they don't have the same limitations as hooks &ndash; such as confusion over lexical scoping, not being able to be placed in conditionals, dependency lists, et cetera... Each controller automatically receives an object named `adapter` that allows for the executing of adapters. You can also write your own by invoking a function with the necessary props, such as the `render` function for re-rendering the component at any point.
+Adapters are at the heart of Switzerland and whilst they may have hook-esque naming conventions, they don't have the same limitations as hooks &ndash; such as confusion over lexical scoping, not being able to be placed in conditionals, dependency lists, et cetera... Each view automatically receives an object named `use` that allows for the executing of adapters. You can also write your own by invoking a function with the necessary props, such as the `render` function for re-rendering the component at any point.
 
-### `attachMethods`
+### `use.methods`
 
 Attach methods to a node that can be invoked once you have a reference to the node itself.
 
 ```javascript
-function controller({ node, adapter }) {
-    adapter.attachMethods({ greet: (name) => `${node.nodeName.toLowerCase()} meet ${name}.` });
-
-    return {};
+function view({ node, use }) {
+    use.methods({ greet: (name) => `${node.nodeName.toLowerCase()} meet ${name}.` });
+    // ...
 }
 ```
 
-### `attachShadow`
+### `use.shadow`
 
 Attach a shadow boundary to the current node with any options passed in as the first argument.
 
 ```javascript
-function controller({ adapter }) {
-    adapter.attachShadow({ delegatesFocus: true });
-
-    return {};
+function view({ use }) {
+    use.shadow({ delegatesFocus: true });
+    // ...
 }
 ```
 
-### `attachServiceWorker`
-
-Attach a service worker to the component with optional passing in of attributes that can be an object or a function that's invoked after the component has rendered, which allows you to parse the component's tree. Any non-primitive values will be transformed to JSON, which should be parsed in the worker using the `URLSearchParams` object from `new URL(location).searchParams`.
-
-```javascript
-function controller({ node, adapter }) {
-    adapter.attachServiceWorker(path('worker.js'), () => {
-        return {
-            name: 'Adam',
-            visitedCountries: ['Russian Federation', 'Indonesia', 'Argentina'],
-            albumName: node.dataset.albumName,
-        }
-    });
-
-    return {};
-}
-```
-
-### `useAttrs`
+### `use.attributes`
 
 Extract the attributes and parse the node's attributes according to the typings passed in. Re-render the component upon attributes mutating, and the second argument to exclude attributes from the mutation observer.
 
 ```javascript
-import { t } from 'switerland';
+import { type } from 'switerland';
 
-function controller({ adapter }) {
-    const { name, age } = adapter.useAttrs({ name: t.String, age: t.Int });
-
-    return { person: { name, age } };
+function view({ use }) {
+    const { name, age } = use.attributes({ name: type.String, age: type.Int });
+    // ...
 }
 ```
 
-### `useForm`
+### `use.form`
 
 Re-renders the component passing in any forms that have been parsed after rendering the component. Yields a map of the form name to the form element. If any of your forms don't have a name, then it will come through as `default` &mdash; thus multiple forms **must** have names.
 
 ```javascript
-function controller({ adapter }) {
-    const form = adapter.useForm();
-
-    return { form };
+function view({ use }) {
+    const form = use.form();
+    // ...
 }
 ```
 
-### `useHistory`
+### `use.history`
 
 Fetch a list of the parameters from the URL and push and replace the state. Parsed the parameters according to the passed in types as the first argument.
 
 ```javascript
-import { t } from 'switerland';
+import { type } from 'switerland';
 
-function controller({ adapter }) {
-    const { params, pushState, replaceState } = adapter.useHistory({ name: t.String, age: t.Int });
+function view({ use }) {
+    const { params, pushState, replaceState } = use.history({ name: type.String, age: type.Int });
     const person = { name: params.get('name'), age: params.get('age') };
-
-    return { person, pushState, replaceState };
+    // ...
 }
 ```
 
-### `usePath`
+### `use.path`
 
 Yields a function when invoked with `import.meta.url` which allows you to resolve assets relative to the component's path on both the client and server.
 
 ```javascript
 import { t } from 'switerland';
 
-function controller({ adapter }) {
-    const path = adapter.usePath(import.meta.url);
-
-    return { path };
+function view({ use }) {
+    const path = use.path(import.meta.url);
+    // ...
 }
 ```
 
-### `state.useMethods`
+### `use.state`
 
-Utilises the helpful [`useMethods` from `react-use`](https://github.com/streamich/react-use/blob/master/docs/useMethods.md) which allows for reading and updating state.
+Utilises either a simple key-value store similar to React's `useState` or if passed a Redux store then a more complex state that is able to be shared between different components.
+
+Pass a non-store object to opt-in to the simple key-value state.
 
 ```javascript
-import { t } from 'switerland';
-import { createMethods, initialState } from './duck.js';
-
-function controller({ adapter }) {
-    const [state, methods] = adapter.useMethods(createMethods, initialState);
-
-    return { state, methods };
+function view({ adapter }) {
+    const [name, setName] = adapter.state('Imogen');
+    // ...
 }
 ```
 
-### `state.useRedux`
-
-Utillises Redux for managing shared state between many components after creating a new store with the `utils.redux.createStore` function.
+Alternatively pass in a Redux store instance created via `createStore` to use Redux.
 
 ```javascript
-import { t, utils } from 'switerland';
-import { reducer, actions } from './duck.js';
+import { store } from './store.js';
 
-const store = utils.redux.createStore(reducer, actions);
-
-function controller({ adapter }) {
-    const redux = adapter.useRedux(store);
-
-    return { redux };
+function view({ adapter }) {
+    const [state, dispatch] = adapter.state(store);
+    // ...
 }
 ```
 
-### `observer.useResize`
-
-Observes the dimensions of the current node and re-renders when the dimensions change.
+You may also pass in an `actionCreators` object which will automatically invoke `bindActionCreators` for you and yield those bound functions rather than the `dispatch` function.
 
 ```javascript
-import { t, utils } from 'switerland';
+import { store, actionCreators } from './store.js';
 
-function controller({ adapter }) {
-    const resize = adapter.observer.useResize();
-
-    return { resize };
+function view({ adapter }) {
+    const [state, actions] = adapter.state(store, { actionCreators });
+    // ...
 }
 ```
 
-### `observer.useIntersection`
-
-Observes the intersection of the current node and re-renders when the intersections change.
-
-```javascript
-import { t, utils } from 'switerland';
-
-function controller({ adapter }) {
-    const intersection = adapter.observer.useIntersection();
-
-    return { intersection };
-}
-```
-
-### `core.useInterval`
-
-Re-renders the component every _X_ milliseconds and halts the interval on unmount or when it's halted manually using `clearInterval`.
-
-```javascript
-import { t, utils } from 'switerland';
-
-function controller({ adapter }) {
-    const interval = adapter.core.useInterval(1_000);
-
-    return {};
-}
-```
-
-### `run.onMount`, `run.onUpdate`, `run.onUnmount`, `run.onRender`
+### `use.on.mount`, `use.on.update`, `use.on.unmount`, `use.on.rendered`
 
 Set of convenient utility functions for running functions on mount, update, unmount and post-rendering.
 
 ```javascript
 import { t, utils } from 'switerland';
 
-function controller({ node, adapter }) {
+function view({ node, use }) {
     const nodeName = node.nodeName.toLowerCase();
 
-    adapter.run.onMount(() => console.log(`${nodeName} mounted.`));
-    adapter.run.onUpdate(() => console.log(`${nodeName} updated.`));
-    adapter.run.onUnmount(() => console.log(`${nodeName} unmounted.`));
-    adapter.run.onRender(() => console.log(`${nodeName} rendered.`));
+    use.on.mount(() => console.log(`${nodeName} mounted.`));
+    use.on.update(() => console.log(`${nodeName} updated.`));
+    use.on.unmount(() => console.log(`${nodeName} unmounted.`));
+    use.on.rendered(() => console.log(`${nodeName} rendered.`));
 
     return {};
 }
+```
+
+## Custom Adapters
+
+Switzerland only ships with a handful of core adapters to keep the library as terse as possible. You can use the destructured `use` as a function. It will be invoked with all of the props so you have access to `render`, `node`, et cetera... For example attaching a function that re-renders every X milliseconds to create a time component could be implemented as a custom adapter which you can then share amongst other components.
+
+```javascript
+import { create, h } from 'switzerland';
+
+function interval(ms) {
+    return ({ render }) => setInterval(render, ms);
+}
+
+export default create('x-timestamp', ({ use }) => {
+    use(interval(1_000));
+
+    return h('time', {}, Date.now());
+});
 ```
 
 ## Advanced Concepts
@@ -498,10 +437,10 @@ Helpfully the component is fetched only once thanks to the way ECMAScript module
 
 ### Handling Forms
 
-In your controller you can use the `adapter.useForm` function which yields an object map of forms in your component's tree &ndash; if your form doesn't have a name then it will be named `default` in the map, otherwise it will use the form's name. On mount `form` will be an empty object, but if one or more forms are detected then all subsequent renders will contain form references &ndash; that way you can handle events such as when the form is invalid to have the submit button disabled.
+In your view you can use the `use.form` function which yields an object map of forms in your component's tree &ndash; if your form doesn't have a name then it will be named `default` in the map, otherwise it will use the form's name. On mount `form` will be an empty object, but if one or more forms are detected then all subsequent renders will contain form references &ndash; that way you can handle events such as when the form is invalid to have the submit button disabled.
 
 ```javascript
-function controller({ adapter }) {
+function view({ adapter }) {
     return { form: adapter.useForm() };
 }
 
