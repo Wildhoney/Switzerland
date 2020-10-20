@@ -325,14 +325,14 @@ Set of convenient utility functions for running functions on mount, update, unmo
 import { t, utils } from 'switerland';
 
 function view({ node, use }) {
-    const nodeName = node.nodeName.toLowerCase();
+    const name = node.nodeName.toLowerCase();
 
-    use.on.mount(() => console.log(`${nodeName} mounted.`));
-    use.on.update(() => console.log(`${nodeName} updated.`));
-    use.on.unmount(() => console.log(`${nodeName} unmounted.`));
-    use.on.rendered(() => console.log(`${nodeName} rendered.`));
+    use.on.mount(() => console.log(`${name} mounted.`));
+    use.on.update(() => console.log(`${name} updated.`));
+    use.on.unmount(() => console.log(`${name} unmounted.`));
+    use.on.rendered(() => console.log(`${name} rendered.`));
 
-    return {};
+    // ...
 }
 ```
 
@@ -344,7 +344,16 @@ Switzerland only ships with a handful of core adapters to keep the library as te
 import { create, h } from 'switzerland';
 
 function interval(ms) {
-    return ({ render }) => setInterval(render, ms);
+    return ({ lifecycle, render, state }) => {
+        switch (lifecycle) {
+            case 'mount':
+                return { interval: setInterval(render, ms) };
+
+            case 'unmount':
+                clearInterval(state.interval);
+                return {};
+        }
+    };
 }
 
 export default create('x-timestamp', ({ use }) => {
@@ -353,6 +362,8 @@ export default create('x-timestamp', ({ use }) => {
     return h('time', {}, Date.now());
 });
 ```
+
+Notice that We're using the special `state` object that is passed into custom attributes which is a shared state for each node. It allows you to prevent mutating variables inside your adapters to store state, rather yielding a state object that can then be destructured again for later use.
 
 ## Advanced Concepts
 

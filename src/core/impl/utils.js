@@ -2,6 +2,8 @@ import { consoleMessage, getWindow, replaceTemplate } from '../../utils.js';
 import * as adapters from '../../adapters/index.js';
 import * as renderer from '../renderer/index.js';
 
+const adapterStates = new WeakMap();
+
 export async function getInitialProps(node, props) {
     const server = props.server ?? false;
 
@@ -80,7 +82,12 @@ export function makeCyclicProps(props) {
 export async function renderTree({ renderProps, boundAdapters, view }) {
     // Setup the `use` function to take custom functions and bind all of the pre-established
     // functions to the `use` as well.
-    const use = (fn) => fn(renderProps);
+    const use = (fn) => {
+        const currentState = adapterStates.get(renderProps.node) ?? {};
+        const newState = fn({ ...renderProps, state: currentState });
+        newState != null && adapterStates.set(renderProps.node, { ...currentState, ...newState });
+    };
+
     Object.entries(boundAdapters).forEach(([key, value]) => (use[key] = value));
 
     // Run the view and pass those props to the view which yields a tree to render.
