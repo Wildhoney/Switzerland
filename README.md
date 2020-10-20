@@ -33,7 +33,7 @@
 
 ## Getting Started
 
-Use our [JSFiddle base](https://jsfiddle.net/9kmx2tub/) (uncompiled) if you'd like to follow along interactively or for reproducing bugs for linking with issues.
+Use our [JSFiddle base](https://jsfiddle.net/go67hy2z/) (uncompiled) if you'd like to follow along interactively or for reproducing bugs for linking with issues.
 
 Switzerland takes both a name and a view for rendering components &ndash; the name must following the naming conventions for custom elements, and the view is a function that yields a DOM structure. In the example below we create a component called `x-countries` that enumerates a few of the countries on planet earth:
 
