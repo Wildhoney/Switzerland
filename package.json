@@ -9,7 +9,7 @@
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
     "engines": {
-        "node": "14.x"
+        "node": ">=14.x"
     },
     "scripts": {
         "build": "node babel.config.mjs",
