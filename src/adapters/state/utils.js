@@ -4,7 +4,13 @@ const states = new Map();
 
 const subscriptions = new WeakSet();
 
-export function useKeyValueState({ map, render }) {
+/**
+ * @function useSimpleState
+ * ---
+ * State management that is akin to React's `useState` hook with a tuple returned for state and
+ * updating the state. Takes an initial state as its only argument.
+ */
+export function useSimpleState({ map, render }) {
     try {
         throw new Error();
     } catch (error) {
@@ -24,7 +30,14 @@ export function useKeyValueState({ map, render }) {
     }
 }
 
-export function useReduxStore({ store, options, node, render }) {
+/**
+ * @function useReduxState
+ * ---
+ * Passing in a store utilises the Redux state management. You can use multiple store instances in
+ * your application for synchronising data between your components, or a separate store for each
+ * to have a more complex local state.
+ */
+export function useReduxState({ store, options, node, render }) {
     if (!subscriptions.has(node)) {
         store.subscribe(function useRedux() {
             render();

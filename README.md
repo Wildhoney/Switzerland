@@ -284,9 +284,9 @@ function view({ use }) {
 
 ### `use.state`
 
-Utilises either a simple key-value store similar to React's `useState` or if passed a Redux store then a more complex state that is able to be shared between different components.
+Utilises either a simple store similar to React's `useState` or if passed a Redux store then a more complex state that is able to be shared between different components.
 
-Pass a non-store object to opt-in to the simple key-value state.
+Pass a non-store object to opt-in to the simple state management that is similar to React's `useState`.
 
 ```javascript
 function view({ use }) {
