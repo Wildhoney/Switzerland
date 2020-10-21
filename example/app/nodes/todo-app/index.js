@@ -16,7 +16,7 @@ export default create('todo-app', async ({ node, use, window }) => {
     createServiceWorker({ path, window });
 
     return [
-        h('section', { class: 'todo-app' }, [
+        h('section', { class: 'todo-app', another: { test: { name: 'resursive' } } }, [
             h(await fetch(import('../todo-input/index.js'))),
             h(await fetch(import('../todo-list/index.js'))),
 

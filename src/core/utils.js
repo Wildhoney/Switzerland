@@ -1,3 +1,5 @@
+import { createVNode as h } from './renderer/utils.js';
+
 /**
  * @function getDefaultOptions
  * ---
@@ -5,6 +7,15 @@
  */
 export function getDefaultOptions() {
     return { path: 'https://0.0.0.0/', root: '' };
+}
+
+/**
+ * @function getDefaultView
+ * ---
+ * Default view if none has been specified when creating a component.
+ */
+export function getDefaultView({ node }) {
+    return h('code', { style: 'font-family: monospace' }, `<${node.nodeName.toLowerCase()} />`);
 }
 
 /**

@@ -1,8 +1,8 @@
 import test from 'ava';
-import { defaultView } from '../index.js';
+import { getDefaultView } from '../utils.js';
 
 test('It should be able to initialise the default view;', (t) => {
     const node = document.createElement('x-view');
-    const props = defaultView({ node });
+    const props = getDefaultView({ node });
     t.snapshot(props);
 });

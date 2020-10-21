@@ -6,6 +6,11 @@ const eventListeners = new WeakMap();
 
 export const events = Symbol('switzerland/events');
 
+/**
+ * @function createVNode
+ * ---
+ * Creates a VNode for representing the DOM virtually.
+ */
 export function createVNode(name, props = {}, ...children) {
     return {
         name,
@@ -14,6 +19,29 @@ export function createVNode(name, props = {}, ...children) {
     };
 }
 
+/**
+ * @function getVNodeFragment
+ * ---
+ * Grabs the DOM and ensures it's able to be rendered by both server-side and client-side
+ * implementations.
+ */
+export async function getVNodeFragment(...nodes) {
+    const window = await getWindow();
+    const children = [].concat(nodes.flat());
+
+    // Append all of the nodes to the document fragment.
+    const fragment = window.document.createDocumentFragment();
+    children.forEach((node) => fragment.appendChild(node));
+
+    return fragment;
+}
+
+/**
+ * @function getProps
+ * ---
+ * Recursively flattens the props so that you're able to pass a nested object that's reduced
+ * to a string with the nested prop name.
+ */
 export function getProps(props) {
     return Object.entries(props).reduce((props, [key, value]) => {
         if (typeof value === 'object') {
@@ -29,6 +57,11 @@ export function getProps(props) {
     }, {});
 }
 
+/**
+ * @function getNode
+ * ---
+ * Able to handle and yield text nodes, Swiss nodes and general HTML nodes.
+ */
 export async function getNode(tree, options) {
     const window = await getWindow();
 
@@ -47,21 +80,20 @@ export async function getNode(tree, options) {
     return window.document.createElement(tree.name);
 }
 
-export async function getVNodeFragment(...nodes) {
-    const window = await getWindow();
-    const children = [].concat(nodes.flat());
-
-    // Append all of the nodes to the document fragment.
-    const fragment = window.document.createDocumentFragment();
-    children.forEach((node) => fragment.appendChild(node));
-
-    return fragment;
-}
-
+/**
+ * @function createVNodeFragment
+ * ---
+ * Determines whether a prop is an event listener that needs to be attached.
+ */
 export function isEvent(key, value) {
     return key.startsWith('on') && typeof value === 'function';
 }
 
+/**
+ * @function attachEventListeners
+ * ---
+ * Attaches all of the event listeners when passed a tree.
+ */
 export function attachEventListeners(tree) {
     return (node) => {
         // Remove all of the existing event listeners from the node.
@@ -82,6 +114,11 @@ export function attachEventListeners(tree) {
     };
 }
 
+/**
+ * @function detatchEventListeners
+ * ---
+ * Detatches all of the attached event listeners for the supplied node.
+ */
 export function detatchEventListeners(node) {
     // Remove all of the events currently bound to the node.
     const listeners = eventListeners.get(node) ?? [];
@@ -92,6 +129,11 @@ export function detatchEventListeners(node) {
     });
 }
 
+/**
+ * @function getVNodeDOM
+ * ---
+ * Parses the virtual DOM tree and yields the HTML for diffing by MorphDOM.
+ */
 export async function getVNodeDOM(tree, options) {
     if (typeof tree.name === 'function') {
         // Gather the sub-tree by invoking the function.

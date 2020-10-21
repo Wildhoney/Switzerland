@@ -1,10 +1,6 @@
 import { getWindow, replaceTemplate } from '../utils.js';
 import * as impl from './impl/index.js';
-import { createVNode as h } from './renderer/utils.js';
 import * as utils from './utils.js';
-
-export const defaultView = ({ node }) =>
-    h('code', { style: 'font-family: monospace' }, `<${node.nodeName.toLowerCase()} />`);
 
 /**
  * @function create
@@ -12,7 +8,7 @@ export const defaultView = ({ node }) =>
  * Takes the name of the web component and an array of functions that represent the middleware. Each
  * middleware item takes in the accumulated props, and yields props to pass to the next item in the list.
  */
-export function create(name, view = defaultView) {
+export function create(name, view = utils.getDefaultView) {
     const [tag, constuctor, extend] = utils.parseName(name);
 
     try {
