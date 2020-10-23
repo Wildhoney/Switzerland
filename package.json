@@ -1,7 +1,7 @@
 {
     "name": "switzerland",
     "version": "5.5.0",
-    "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
+    "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
     "type": "module",
     "main": "./src/index.js",
     "module": "./es/development/index.js",

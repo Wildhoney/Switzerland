@@ -1,6 +1,6 @@
 <img src="media/logo.png" alt="Switzerland" width="300" />
 
-> Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, mobx, attribute mutations, CSS variables, React-esque setState/state, etc&hellip; out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.
+> Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, attribute mutations, CSS variables, React-esque setState/state, etc&hellip; out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.
 
 ![Travis](http://img.shields.io/travis/Wildhoney/Switzerland.svg?style=for-the-badge)
 &nbsp;
