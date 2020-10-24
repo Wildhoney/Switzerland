@@ -4,7 +4,7 @@
     "description": "Switzerland takes a functional approach to Web Components by applying middleware to your components. Supports Redux, attribute mutations, CSS variables, React-esque setState/state, etc… out-of-the-box, along with Shadow DOM for style encapsulation and Custom Elements for interoperability.",
     "type": "module",
     "main": "./src/index.js",
-    "module": "./es/development/index.js",
+    "module": "./es/index.js",
     "repository": "git@github.com:Wildhoney/Switzerland.git",
     "author": "Adam Timberlake <adam.timberlake@gmail.com>",
     "license": "MIT",
@@ -12,7 +12,7 @@
         "node": ">=14.x"
     },
     "scripts": {
-        "build": "node babel.config.mjs",
+        "build": "rollup -c rollup.config.js",
         "start": "ln -nsf ../ node_modules/switzerland && nodemon ./example/server/index.mjs",
         "format": "prettier --write '{src,tests,example}/**/*.{mjs,js,css,html,yml,json,md}'",
         "test": "yarn lint && yarn spec",
@@ -20,7 +20,7 @@
         "coverage": "nyc ava",
         "prepublishOnly": "yarn format && yarn test && yarn build",
         "lint": "eslint '{src,tests,example}/**/**.js' && yarn fslint",
-        "fslint": "yarn build && (cd es/production && tar -zcf ../../build.tar.gz .) && (fslint --files=build.tar.gz --limit=10240 || rm -rf build.tar.gz es/) && rm -rf build.tar.gz es/"
+        "fslint": "yarn build && (cd es/ && tar -zcf ../build.tar.gz index.js) && (fslint --files=build.tar.gz --limit=6144 || rm -rf build.tar.gz es/) && rm -rf build.tar.gz es/"
     },
     "husky": {
         "hooks": {
@@ -43,7 +43,7 @@
         "cors": "^2.8.5",
         "coveralls": "^3.1.0",
         "delay": "^4.4.0",
-        "eslint": "^7.11.0",
+        "eslint": "^7.12.0",
         "eslint-config-prettier": "^6.14.0",
         "eslint-config-standard": "^15.0.0",
         "eslint-plugin-import": "^2.22.1",
@@ -61,6 +61,8 @@
         "nyc": "^15.1.0",
         "prettier": "^2.1.2",
         "ramda": "^0.27.1",
+        "rollup": "^2.32.1",
+        "rollup-plugin-terser": "^7.0.2",
         "sinon": "^9.2.0",
         "starwars": "^1.0.1",
         "string-template": "^1.0.0"

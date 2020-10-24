@@ -12,7 +12,7 @@ app.use(cors());
 app.use(compression());
 
 const example = path.resolve('./example/app');
-const vendor = path.resolve(process.env.NODE_ENV === 'production' ? './es/production' : './src');
+const vendor = path.resolve(process.env.NODE_ENV === 'production' ? './es' : './src');
 
 const options = {
     path: process.env.DOMAIN ? `https://${process.env.DOMAIN}/` : 'http://localhost:3000/',

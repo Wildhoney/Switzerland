@@ -16,7 +16,7 @@
 <br />
 **yarn**: `yarn add switzerland`
 <br />
-**cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@latest/es/production/index.js`](https://cdn.jsdelivr.net/npm/switzerland@latest/es/production/index.js)
+**cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@latest/es/index.js`](https://cdn.jsdelivr.net/npm/switzerland@latest/es/index.js)
 
 ![Screenshot](media/screenshot.png)
 
@@ -498,7 +498,7 @@ As a little teaser, navigate to [Google.com](https://www.google.com/) and paste 
 // Import map required for ECMA import resolutions.
 const map = document.createElement('script');
 map.type = 'importmap';
-map.innerHTML = `{ "imports": { "switzerland": "https://cdn.jsdelivr.net/npm/switzerland@5.0.6/es/production/index.js", "morphdom": "https://cdn.jsdelivr.net/npm/morphdom@2.6.1/dist/morphdom-esm.js", "redux": "https://cdn.jsdelivr.net/npm/redux@4.0.1/es/redux.mjs", "redux-thunk": "https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js" }}`;
+map.innerHTML = `{ "imports": { "switzerland": "https://cdn.jsdelivr.net/npm/switzerland@5.0.6/es/index.js", "morphdom": "https://cdn.jsdelivr.net/npm/morphdom@2.6.1/dist/morphdom-esm.js", "redux": "https://cdn.jsdelivr.net/npm/redux@4.0.1/es/redux.mjs", "redux-thunk": "https://cdn.jsdelivr.net/npm/redux-thunk@2.3.0/es/index.js" }}`;
 
 // Import the script for the todo app.
 const node = document.createElement('script');
