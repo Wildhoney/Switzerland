@@ -207,6 +207,26 @@ const options = {
 
 Interestingly if you reference the `window` in any of your components, you can destructure the `window` property for server-side compatibility &ndash; on the server the `window` will be from JSDOM, whereas on the client side `window` will be the native window object.
 
+Instead of passing in a root component to begin the server-side rendering process, it's also possible to use the exported `render` function to pass in a chunk of HTML and a list of custom components. The DOM tree will be walked and nodes replaced with custom components where applicable.
+
+```javascript
+import fs from 'fs';
+import fmt from 'string-template';
+import { render } from 'switzerland';
+import Countries from './components/Countries.js';
+
+const map = new Map([['x-countries', Countries]]);
+
+app.get('/', async (_, response) => {
+    const html = fs.readFileSync('./app/index.html', 'utf-8');
+    const countries = await render('<x-countries></x-countries>', map);
+
+    response.send(fmt(html, { countries }));
+});
+```
+
+Options are again passed in as the third argument when necessary. And the HTML may contain as many nodes and Swiss components as you wish as long as there's an appropriate mapping &mdash; this allows the server to behave similar to how the browser cherry-picks the custom elements from the DOM tree to render in isolation.
+
 ## Understanding Adapters
 
 Adapters are at the heart of Switzerland and whilst they may have hook-esque naming conventions, they don't have the same limitations as hooks &ndash; such as confusion over lexical scoping, not being able to be placed in conditionals, dependency lists, et cetera... Each view automatically receives an object named `use` that allows for the executing of adapters. You can also write your own by invoking a function with the necessary props, such as the `render` function for re-rendering the component at any point.
@@ -394,28 +414,6 @@ app.get('/', async (_, response) => {
 ```
 
 It's worth remembering that when streaming responses you lose the ability to preload assets, as the full HTML is not necessarily known up-front.
-
-### DOM Tree Rendering
-
-Instead of passing in a root component to begin the server-side rendering process, it's also possible to use the exported `render` function to pass in a chunk of HTML and a list of custom components. The DOM tree will be walked and nodes replaced with custom components where applicable.
-
-```javascript
-import fs from 'fs';
-import fmt from 'string-template';
-import { render } from 'switzerland';
-import Countries from './components/Countries.js';
-
-const map = new Map([['x-countries', Countries]]);
-
-app.get('/', async (_, response) => {
-    const html = fs.readFileSync('./app/index.html', 'utf-8');
-    const countries = await render('<x-countries></x-countries>', map);
-
-    response.send(fmt(html, { countries }));
-});
-```
-
-Options are again passed in as the third argument when necessary. And the HTML may contain as many nodes and Swiss components as you wish as long as there's an appropriate mapping &mdash; this allows the server to behave similar to how the browser cherry-picks the custom elements from the DOM tree to render in isolation.
 
 ### Renaming Components
 
