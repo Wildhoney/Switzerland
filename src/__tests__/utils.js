@@ -1,6 +1,6 @@
 import test from 'ava';
 import sinon from 'sinon';
-import { getWindow, consoleMessage, replaceTemplate, checkFormValidity } from '../utils.js';
+import { getWindow, consoleMessage, replaceTemplate, getFormValidity } from '../utils.js';
 
 test('It should be able to resolve the window object depending on its existence;', async (t) => {
     const window = global.window;
@@ -43,7 +43,7 @@ test('It should be able to replace the template string with the actual template 
 
 test('It should be able to check the form validity and the invalid fields;', (t) => {
     const form = document.createElement('form');
-    t.snapshot(checkFormValidity(form));
+    t.snapshot(getFormValidity(form));
 
     const invalidInput = document.createElement('input');
     invalidInput.name = 'invalid';
@@ -60,5 +60,5 @@ test('It should be able to check the form validity and the invalid fields;', (t)
     form.append(invalidInput);
     form.append(invalidInputWithoutName);
 
-    t.snapshot(checkFormValidity(form));
+    t.snapshot(getFormValidity(form));
 });

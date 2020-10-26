@@ -33,12 +33,12 @@ export function replaceTemplate(html) {
 }
 
 /**
- * @function checkFormValidity
+ * @function getFormValidity
  * ---
  * Utility function for determining if a form is valid, and if not which named fields fail the
  * validation, the type of the validation failure and the browser default message for the failure.
  */
-export function checkFormValidity(form) {
+export function getFormValidity(form) {
     function getType(field) {
         for (var key in field.validity) {
             const isInvalid = key !== 'valid' && field.validity[key];

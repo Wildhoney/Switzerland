@@ -486,12 +486,12 @@ export default create('x-form', ({ use }) => {
 });
 ```
 
-Additionally there's another function from `utils` called `checkFormValidity` that accepts a form reference &mdash; for example `event.target` on form submission &mdash; and gives you back a tuple of whether the form is valid, and a list of named form fields that don't pass the native validation. Each invalid form field yields an object of the [validity state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) and default browser message for the validation failure, which you can customise later on with a `switch`, `if` or even some kind of object map.
+Additionally there's another function from `utils` called `getFormValidity` that accepts a form reference &mdash; for example `event.target` on form submission &mdash; and gives you back a tuple of whether the form is valid, and a list of named form fields that don't pass the native validation. Each invalid form field yields an object of the [validity state](https://developer.mozilla.org/en-US/docs/Web/API/ValidityState) and default browser message for the validation failure, which you can customise later on with a `switch`, `if` or even some kind of object map.
 
 ```javascript
 function handleSubmit(event) {
-    // Invoke the `checkFormValidity` function to check the form's validity.
-    const [isValid, invalidFields] = utils.checkFormValidity(event.target);
+    // Invoke the `getFormValidity` function to check the form's validity.
+    const [isValid, invalidFields] = utils.getFormValidity(event.target);
 
     // Set the result to the state and re-render the component.
     methods.setFormValidity({ isValid, invalidFields });
