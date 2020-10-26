@@ -371,18 +371,22 @@ Whilst Switzerland aspires to be as simple as possible, there are a handful of a
 
 ### Streaming Responses
 
-With the exported `renderToStream` function, you're able to stream your responses to the client from the server &ndash; this allows for a quicker time to first byte response.
+With the exported `render` function, you're able to stream your responses to the client from the server with the `stream: true` option set &ndash; this allows for a quicker time to first byte response.
 
 ```javascript
-import { renderToStream } from 'switzerland';
+import { render } from 'switzerland';
 import Countries from './components/Countries.js';
 
 app.get('/', async (_, response) => {
     response.write('<!DOCTYPE html><html lang="en"><body>');
 
-    const reader = await renderToStream(Countries, {
-        values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
-    });
+    const reader = await render(
+        render,
+        {
+            values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
+        },
+        { stream: true }
+    );
 
     reader.pipe(response, { end: false });
     reader.on('end', () => response.end('</body></html>'));
@@ -393,19 +397,19 @@ It's worth remembering that when streaming responses you lose the ability to pre
 
 ### DOM Tree Rendering
 
-Instead of passing in a root component to begin the server-side rendering process, it's also possible to use the exported `renderFromString` function to pass in a chunk of HTML and a list of custom components. The DOM tree will be walked and nodes replaced with custom components where applicable.
+Instead of passing in a root component to begin the server-side rendering process, it's also possible to use the exported `render` function to pass in a chunk of HTML and a list of custom components. The DOM tree will be walked and nodes replaced with custom components where applicable.
 
 ```javascript
 import fs from 'fs';
 import fmt from 'string-template';
-import { renderFromString } from 'switzerland';
+import { render } from 'switzerland';
 import Countries from './components/Countries.js';
 
 const map = new Map([['x-countries', Countries]]);
 
 app.get('/', async (_, response) => {
     const html = fs.readFileSync('./app/index.html', 'utf-8');
-    const countries = await renderFromString('<x-countries></x-countries>', map);
+    const countries = await render('<x-countries></x-countries>', map);
 
     response.send(fmt(html, { countries }));
 });

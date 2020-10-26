@@ -5,7 +5,7 @@ import * as utils from './utils.js';
  * ---
  * Handles the logic of specifying relative and absolute paths (depending on context) to the current
  * component. Functions both on the client side automatically, and the server side using the `options`
- * parameter of the `render` and `renderToStream` functions.
+ * parameter of the `render` function.
  */
 export default async function path({ server, options }) {
     const path = server ? await import('path') : null;

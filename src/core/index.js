@@ -1,4 +1,4 @@
-import { getWindow, replaceTemplate } from '../utils.js';
+import { getWindow } from '../utils.js';
 import * as impl from './impl/index.js';
 import * as utils from './utils.js';
 
@@ -27,63 +27,15 @@ export function create(name, view = utils.getDefaultView) {
  * ---
  * Takes the component tree and renders it to string for server-side rendering capabilities.
  */
-export async function render(app, props = {}, options = utils.getDefaultOptions()) {
-    // Render the app using the passed props.
-    const node = await app.render(props, options);
+export function render(appOrHTML, propsOrComponentMap, options = utils.getDefaultOptions()) {
+    if (typeof appOrHTML === 'string') return utils.renderFromString(appOrHTML, propsOrComponentMap, options);
 
-    // JSDOM has an issue with appending children to the `template` node, so we merely find and replace
-    // at this point to mimick the behaviour.
-    return replaceTemplate(node.outerHTML);
-}
-
-/**
- * @function renderFromString
- * ---
- * Takes a HTML DOM tree and traverses over it to pull out the HTML nodes that need components rendering
- * inside of them. You must pass in a node to component mapping (instance of Map) via the second argument.
- */
-export async function renderFromString(html, componentMap = new Map(), options = utils.getDefaultOptions()) {
-    const window = await getWindow();
-    const document = new window.DOMParser().parseFromString(html, 'text/html');
-    const walker = window.document.createTreeWalker(document.body);
-
-    while (walker.nextNode()) {
-        // See if the current HTML node matches a component name from the passed in components.
-        const name = walker.currentNode.tagName?.toLowerCase() ?? null;
-        const app = componentMap.get(name);
-
-        if (app) {
-            // Update the HTML from the rendering of the current component, and iterate to the next
-            // node to continue processing the DOM tree.
-            const props = utils.getAttributes(walker.currentNode.attributes);
-            walker.currentNode.innerHTML = await render(app, props, options);
-            walker.nextNode();
-        }
+    if (appOrHTML instanceof impl.Swiss) {
+        if (options.stream) return utils.renderToStream(appOrHTML, propsOrComponentMap, options);
+        return utils.renderFromComponent(appOrHTML, propsOrComponentMap, options);
     }
 
-    return walker.root.innerHTML;
-}
-
-/**
- * @function renderToStream
- * ---
- * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
- */
-export async function renderToStream(app, props = {}, options = utils.getDefaultOptions()) {
-    const { Transform } = await import('stream');
-    const stream = new Transform();
-
-    // Push chunks of data into our stream.
-    stream._transform = (chunk, _, done) => (this.push(chunk), done());
-
-    async function run() {
-        // Invoke the typical `render` function but with an attached stream, and end the stream once
-        // the full component tree has been rendered.
-        await render(app, props, { ...options, stream });
-        stream.end();
-    }
-
-    return run(), stream;
+    return null;
 }
 
 /**

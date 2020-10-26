@@ -1,7 +1,7 @@
 import { Transform } from 'stream';
 import test from 'ava';
 import sinon from 'sinon';
-import { create, render, renderToStream, preload, rename, fetch } from '../index.js';
+import { create, render, preload, rename, fetch } from '../index.js';
 import { Swiss } from '../core/impl/index.js';
 
 test('it should be able to create and rename a custom element;', (t) => {
@@ -160,7 +160,7 @@ test('It should be able to render the component tree to a Node stream;', async (
     delete global.window;
 
     const name = create('x-name');
-    const reader = await renderToStream(name);
+    const reader = await render(name, {}, { stream: true });
     t.true(reader instanceof Transform);
 
     global.window = window;
