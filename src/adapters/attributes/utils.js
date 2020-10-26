@@ -6,7 +6,7 @@ import { toCamelcase } from '../../core/utils.js';
  * Grabs the attributes from the node and parses them according to their associated types, yielding the
  * default values if configured.
  */
-export const getAttributes = (attrs, types, defaults) =>
+export const getAttributes = (attrs, types = {}, defaults = {}) =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
         const [f] = [].concat(types[name] || ((a) => a));

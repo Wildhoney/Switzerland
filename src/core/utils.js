@@ -1,5 +1,7 @@
 import { createVNode as h } from './renderer/utils.js';
 
+export { getAttributes } from '../adapters/attributes/utils.js';
+
 /**
  * @function getDefaultOptions
  * ---

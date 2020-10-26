@@ -37,11 +37,40 @@ export async function render(app, props = {}, options = utils.getDefaultOptions(
 }
 
 /**
+ * @function renderFromString
+ * ---
+ * Takes a HTML DOM tree and traverses over it to pull out the HTML nodes that need components rendering
+ * inside of them. You must pass in a node to component mapping (instance of Map) via the second argument.
+ */
+export async function renderFromString(html, componentMap = new Map(), options = utils.getDefaultOptions()) {
+    const window = await getWindow();
+
+    const document = new window.DOMParser().parseFromString(html, 'text/html');
+    const walker = window.document.createTreeWalker(document.body);
+
+    while (walker.nextNode()) {
+        // See if the current HTML node matches a component name from the passed in components.
+        const name = walker.currentNode.tagName?.toLowerCase() ?? null;
+        const app = componentMap.get(name);
+
+        if (app) {
+            // Update the HTML from the rendering of the current component, and iterate to the next
+            // node to continue processing the DOM tree.
+            const props = utils.getAttributes(walker.currentNode.attributes);
+            walker.currentNode.innerHTML = await render(app, props, options);
+            walker.nextNode();
+        }
+    }
+
+    return walker.root.innerHTML;
+}
+
+/**
  * @function renderToStream
  * ---
  * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
  */
-export async function renderToStream(app = {}, props, options = utils.getDefaultOptions()) {
+export async function renderToStream(app, props = {}, options = utils.getDefaultOptions()) {
     const { Transform } = await import('stream');
     const stream = new Transform();
 

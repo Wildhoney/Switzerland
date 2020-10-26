@@ -391,6 +391,28 @@ app.get('/', async (_, response) => {
 
 It's worth remembering that when streaming responses you lose the ability to preload assets, as the full HTML is not necessarily known up-front.
 
+### DOM Tree Rendering
+
+Instead of passing in a root component to begin the server-side rendering process, it's also possible to use the exported `renderFromString` function to pass in a chunk of HTML and a list of custom components. The DOM tree will be walked and nodes replaced with custom components where applicable.
+
+```javascript
+import fs from 'fs';
+import fmt from 'string-template';
+import { renderFromString } from 'switzerland';
+import Countries from './components/Countries.js';
+
+const map = new Map([['x-countries', Countries]]);
+
+app.get('/', async (_, response) => {
+    const html = fs.readFileSync('./app/index.html', 'utf-8');
+    const countries = await renderFromString('<x-countries></x-countries>', map);
+
+    response.send(fmt(html, { countries }));
+});
+```
+
+Options are again passed in as the third argument when necessary. And the HTML may contain as many nodes and Swiss components as you wish as long as there's an appropriate mapping &mdash; this allows the server to behave similar to how the browser cherry-picks the custom elements from the DOM tree to render in isolation.
+
 ### Renaming Components
 
 In some instances it may be necessary to rename components, usually because there exists already a custom element with the name you're attempting to use. In those cases Switzerland will assign a random name to your custom element, and therefore should be renamed to something sensible using the exported `rename` function.
@@ -401,15 +423,13 @@ import Country from './components/Country.js';
 
 const CountryRenamed = rename(Country, 'x-country-renamed');
 
-function view() {
+export default create('x-countries', () => {
     return h('ul', {}, [
         h(CountryRenamed, { name: 'United Kingdom' }),
         h(CountryRenamed, { name: 'Russian Federation' }),
         h(CountryRenamed, { name: 'Republic of Indonesia' }),
     ]);
-}
-
-export default create('x-countries', { view });
+});
 ```
 
 In the above case the `x-country` _may_ still exist as you'd expect, assuming it's not a duplicate, but in addition to that you'll have a custom `x-country-renamed` element that can be used in exactly the same way.
