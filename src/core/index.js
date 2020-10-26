@@ -44,7 +44,6 @@ export async function render(app, props = {}, options = utils.getDefaultOptions(
  */
 export async function renderFromString(html, componentMap = new Map(), options = utils.getDefaultOptions()) {
     const window = await getWindow();
-
     const document = new window.DOMParser().parseFromString(html, 'text/html');
     const walker = window.document.createTreeWalker(document.body);
 
