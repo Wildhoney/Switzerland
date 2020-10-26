@@ -1,5 +1,3 @@
-import { bindActionCreators } from 'redux';
-
 const states = new Map();
 
 const subscriptions = new WeakSet();
@@ -48,6 +46,6 @@ export function useReduxState({ store, options, node, render }) {
 
     return [
         store.getState(),
-        options.actionCreators ? bindActionCreators(options.actionCreators, store.dispatch) : store.dispatch,
+        options.actionCreators ? options.bind(options.actionCreators, store.dispatch) : store.dispatch,
     ];
 }

@@ -1,4 +1,3 @@
-import morph from 'morphdom';
 import * as utils from './utils.js';
 import { dispatchEvent } from '../../core/impl/utils.js';
 import { boundaries } from '../../adapters/shadow/index.js';
@@ -22,10 +21,11 @@ export async function renderTree({ tree, node, server, options }) {
             return node.shadowRoot ?? node;
         }
 
+        const morph = await import('morphdom');
         const nodes = await utils.getVNodeDOM(tree);
         const fragment = await utils.getVNodeFragment(nodes);
 
-        morph(boundary, fragment, {
+        morph.default(boundary, fragment, {
             childrenOnly: boundary != null,
 
             getNodeKey(node) {
