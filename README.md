@@ -401,7 +401,7 @@ app.get('/', async (_, response) => {
     response.write('<!DOCTYPE html><html lang="en"><body>');
 
     const reader = await render(
-        render,
+        Countries,
         {
             values: ['United Kingdom', 'Russian Federation', 'Republic of Indonesia'],
         },
