@@ -27,12 +27,31 @@ export function create(name, view = utils.getDefaultView) {
  * ---
  * Takes the component tree and renders it to string for server-side rendering capabilities.
  */
-export function render(appOrHTML, propsOrComponentMap, options = utils.getDefaultOptions()) {
-    if (typeof appOrHTML === 'string') return utils.renderFromString(appOrHTML, propsOrComponentMap, options);
+export async function render(appOrHTML, propsOrComponentMap, options = utils.getDefaultOptions()) {
+    const mergedOptions = { ...utils.getDefaultOptions(), ...options };
+
+    const getStreamOptions = async () => {
+        const { Transform } = await import('stream');
+        const stream = new Transform();
+
+        // Push chunks of data into our stream.
+        stream._transform = function _transform(chunk, _, done) {
+            return this.push(chunk), done();
+        };
+
+        return { ...mergedOptions, stream };
+    };
+
+    if (typeof appOrHTML === 'string') {
+        return options.stream
+            ? utils.toStreamFromHTML(appOrHTML, propsOrComponentMap, await getStreamOptions())
+            : utils.toStringFromHTML(appOrHTML, propsOrComponentMap, mergedOptions);
+    }
 
     if (appOrHTML instanceof impl.Swiss) {
-        if (options.stream) return utils.renderToStream(appOrHTML, propsOrComponentMap, options);
-        return utils.renderFromComponent(appOrHTML, propsOrComponentMap, options);
+        return options.stream
+            ? utils.toStreamFromComponent(appOrHTML, propsOrComponentMap, await getStreamOptions())
+            : utils.toStringFromComponent(appOrHTML, propsOrComponentMap, mergedOptions);
     }
 
     return null;

@@ -108,7 +108,7 @@ export async function renderTree({ renderProps, boundAdapters, view }) {
 export async function runComponent(node, props, view, options = {}) {
     const renderProps = { ...props, ...(await getInitialProps(node, props)), options };
     const boundAdapters = await bindAdapters(renderProps, options);
-    const isStreaming = typeof options.stream !== 'undefined';
+    const isStreaming = options.stream;
 
     try {
         // Run the view to gather its structure for the DOM tree and write to the stream if available.

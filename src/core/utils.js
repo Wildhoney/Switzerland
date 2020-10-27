@@ -5,11 +5,11 @@ import * as utils from './utils.js';
 export { getAttributes } from '../adapters/attributes/utils.js';
 
 /**
- * @function renderFromComponent
+ * @function toStringFromComponent
  * ---
  * Takes a component as the starting point
  */
-export async function renderFromComponent(app, props = {}, options = getDefaultOptions()) {
+export async function toStringFromComponent(app, props = {}, options) {
     // Render the app using the passed props.
     const node = await app.render(props, options);
 
@@ -19,54 +19,83 @@ export async function renderFromComponent(app, props = {}, options = getDefaultO
 }
 
 /**
- * @function renderFromString
+ * @function toStreamFromHTML
+ * ---
+ *
+ */
+export async function toStreamFromHTML(html, componentMap = new Map(), options) {
+    async function run() {
+        // Invoke the typical `render` function but with an attached stream, and end the stream once
+        // the full component tree has been rendered.
+        await toStringFromHTML(html, componentMap, options);
+        options.stream.end();
+    }
+
+    return run(), options.stream;
+}
+
+/**
+ * @function toStringFromHTML
  * ---
  * Takes a HTML DOM tree and traverses over it to pull out the HTML nodes that need components rendering
  * inside of them. You must pass in a node to component mapping (instance of Map) via the second argument.
  */
-export async function renderFromString(html, componentMap = new Map(), options = getDefaultOptions()) {
+export async function toStringFromHTML(html, componentMap = new Map(), options) {
     const window = await getWindow();
+    const doc = new window.DOMParser().parseFromString(html, 'text/html');
+    const walker = window.document.createTreeWalker(doc.body);
+    const cloned = window.document.createTreeWalker(new window.DOMParser().parseFromString(html, 'text/html'));
+    const isStreaming = options.stream;
 
-    const document = new window.DOMParser().parseFromString(html, 'text/html');
-    const walker = window.document.createTreeWalker(document.body);
+    async function walk() {
+        // End the recursive walking of the DOM tree if there is no next node.
+        if ((cloned.nextNode(), !walker.nextNode())) return null;
 
-    while (walker.nextNode()) {
         // See if the current HTML node matches a component name from the passed in components.
         const name = walker.currentNode.tagName?.toLowerCase() ?? null;
         const app = componentMap.get(name);
+        const attrs = utils.getAttributes(walker.currentNode?.attributes ?? {});
+
+        // Write the opening of the node to the stream if it's available.
+        if (isStreaming) {
+            const node = window.document.createElement(name);
+            Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+            options.stream.write(`${node.outerHTML.replace(`</${name}>`, '')}`);
+        }
 
         if (app) {
-            // Update the HTML from the rendering of the current component, and iterate to the next
-            // node to continue processing the DOM tree.
-            const props = utils.getAttributes(walker.currentNode.attributes);
-            walker.currentNode.innerHTML = await renderFromComponent(app, props, options);
-            walker.nextNode();
+            // Update the HTML from the rendering of the current component.
+            const html = await toStringFromComponent(app, attrs, { ...options, stream: null });
+            const doc = new window.DOMParser().parseFromString(html, 'text/html');
+            cloned.currentNode.innerHTML = doc.body.firstChild.innerHTML;
+
+            // Write the body of the component if a stream is available.
+            isStreaming && options.stream.write(doc.body.firstChild.innerHTML);
         }
+
+        await walk();
+
+        // Close the node and write to the stream if required.
+        isStreaming && options.stream.write(`</${name}>`);
     }
 
-    return walker.root.innerHTML;
+    return await walk(), cloned.root.innerHTML;
 }
 
 /**
- * @function renderToStream
+ * @function toStreamFromComponent
  * ---
  * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
  */
-export async function renderToStream(app, props = {}, options = getDefaultOptions()) {
-    const { Transform } = await import('stream');
-    const stream = new Transform();
-
-    // Push chunks of data into our stream.
-    stream._transform = (chunk, _, done) => (this.push(chunk), done());
-
+export async function toStreamFromComponent(app, props = {}, options) {
     async function run() {
         // Invoke the typical `render` function but with an attached stream, and end the stream once
         // the full component tree has been rendered.
-        await renderFromComponent(app, props, { ...options, stream });
-        stream.end();
+        await toStringFromComponent(app, props, options);
+        options.stream.end();
     }
 
-    return run(), stream;
+    return run(), options.stream;
 }
 
 /**
@@ -75,7 +104,7 @@ export async function renderToStream(app, props = {}, options = getDefaultOption
  * Obtains the defaults used for server-side rendering.
  */
 export function getDefaultOptions() {
-    return { path: 'https://0.0.0.0/', root: '' };
+    return { path: 'https://0.0.0.0/', root: '', stream: false };
 }
 
 /**

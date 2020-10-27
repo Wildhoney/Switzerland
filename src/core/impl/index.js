@@ -95,13 +95,13 @@ export class Swiss {
         for (const [key, value] of Object.entries(props)) node.setAttribute(fromCamelcase(key).toKebab(), value);
 
         // Write the opening of the current Swiss element to the stream's buffer if required.
-        typeof options.stream !== 'undefined' && options.stream.write(node.outerHTML.replace(`</${this.name}>`, ''));
+        options.stream && options.stream.write(node.outerHTML.replace(`<${this.name}>`, ''));
 
         // Iterate over the middleware and then return the node.
         await this.utils.runComponent(node, { server: true, lifecycle: 'mount' }, this.view, options);
 
         // Once rendered we'll write the Swiss component's closing node to the stream.
-        typeof options.stream !== 'undefined' && options.stream.write(`<${this.name} />`);
+        options.stream && options.stream.write(`</${this.name}>`);
 
         return node;
     }
