@@ -40,7 +40,7 @@ export function replaceTemplate(html) {
  */
 export function getFormValidity(form) {
     function getType(field) {
-        for (var key in field.validity) {
+        for (const key in field.validity) {
             const isInvalid = key !== 'valid' && field.validity[key];
             if (isInvalid) return key;
         }

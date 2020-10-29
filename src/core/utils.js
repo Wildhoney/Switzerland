@@ -9,7 +9,7 @@ export { getAttributes } from '../adapters/attributes/utils.js';
  * ---
  * Takes a component as the starting point
  */
-export async function toStringFromComponent(app, props = {}, options) {
+export async function toStringFromComponent(app, props = {}, options = {}) {
     // Render the app using the passed props.
     const node = await app.render(props, options);
 
@@ -23,7 +23,7 @@ export async function toStringFromComponent(app, props = {}, options) {
  * ---
  *
  */
-export async function toStreamFromHTML(html, componentMap = new Map(), options) {
+export async function toStreamFromHTML(html, componentMap = new Map(), options = {}) {
     async function run() {
         // Invoke the typical `render` function but with an attached stream, and end the stream once
         // the full component tree has been rendered.
@@ -40,7 +40,7 @@ export async function toStreamFromHTML(html, componentMap = new Map(), options) 
  * Takes a HTML DOM tree and traverses over it to pull out the HTML nodes that need components rendering
  * inside of them. You must pass in a node to component mapping (instance of Map) via the second argument.
  */
-export async function toStringFromHTML(html, componentMap = new Map(), options) {
+export async function toStringFromHTML(html, componentMap = new Map(), options = {}) {
     const window = await getWindow();
     const doc = new window.DOMParser().parseFromString(html, 'text/html');
     const walker = window.document.createTreeWalker(doc.body);
@@ -87,7 +87,7 @@ export async function toStringFromHTML(html, componentMap = new Map(), options) 
  * ---
  * Renders the component tree as usual but yields a readable Node stream that can be piped to the response.
  */
-export async function toStreamFromComponent(app, props = {}, options) {
+export async function toStreamFromComponent(app, props = {}, options = {}) {
     async function run() {
         // Invoke the typical `render` function but with an attached stream, and end the stream once
         // the full component tree has been rendered.

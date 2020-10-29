@@ -27,7 +27,7 @@ function createModel(text) {
     };
 }
 
-function reducer(state = initialState, event) {
+function reducer(state = initialState, event = {}) {
     switch (event.type) {
         case actionTypes.ADD: {
             const models = [].concat(event.payload);

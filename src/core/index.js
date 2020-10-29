@@ -69,7 +69,7 @@ export async function preload(...trees) {
     const links = trees
         .flatMap((tree) => tree.match(/<link.+?>/gis))
         .map((link) => {
-            if (!link) return;
+            if (!link) return '';
 
             // Parse the link DOM string into a HTML node.
             const node = window.document.createElement('div');
