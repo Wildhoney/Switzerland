@@ -45,7 +45,7 @@
         "delay": "^4.4.0",
         "eslint": "^7.12.1",
         "eslint-config-prettier": "^6.15.0",
-        "eslint-config-standard": "^15.0.0",
+        "eslint-config-standard": "^16.0.0",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^4.2.1",
@@ -63,7 +63,7 @@
         "ramda": "^0.27.1",
         "rollup": "^2.32.1",
         "rollup-plugin-terser": "^7.0.2",
-        "sinon": "^9.2.0",
+        "sinon": "^9.2.1",
         "starwars": "^1.0.1",
         "string-template": "^1.0.0"
     }
