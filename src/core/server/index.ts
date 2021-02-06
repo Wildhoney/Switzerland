@@ -1,16 +1,19 @@
 import { DOMWindow } from 'jsdom';
 import * as abstract from '../abstract';
 import { getWindow } from '../../utils';
-import type { Attributes } from './types';
+import type { Attributes, View } from '../../types';
+import { transform } from './utils';
 
 export class Swiss extends abstract.Swiss {
     protected name: string;
     protected extend: null | string;
+    protected view: View;
 
-    constructor(name: string, extend?: string) {
+    constructor(name: string, extend: null | string = null, view: View) {
         super();
         this.name = name;
-        this.extend = extend ?? null;
+        this.extend = extend;
+        this.view = view;
     }
 
     async render(attributes: Attributes = {}): Promise<HTMLElement> {
@@ -25,10 +28,17 @@ export class Swiss extends abstract.Swiss {
         // Define all of the attributes for the host node.
         for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
 
+        // Render the current view and all of its descendant views.
+        await transform(node, this.view());
+
         return node;
     }
 }
 
-export function create(name: string, extend?: string): InstanceType<typeof Swiss> {
-    return new Swiss(name, extend);
+export function create(
+    name: string,
+    extend: null | string = null,
+    view: View = () => null
+): InstanceType<typeof Swiss> {
+    return new Swiss(name, extend, view);
 }

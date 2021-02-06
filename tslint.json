@@ -4,7 +4,8 @@
     "jsRules": {},
     "rules": {
         "no-any": true,
-        "typedef": [true, "call-signature"]
+        "typedef": [true, "call-signature"],
+        "no-shadowed-variable": [false]
     },
     "rulesDirectory": []
 }

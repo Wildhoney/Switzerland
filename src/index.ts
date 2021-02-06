@@ -1,1 +1,1 @@
-export { create, render } from './core';
+export { create, render, h } from './core';

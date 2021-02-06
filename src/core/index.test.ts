@@ -1,4 +1,4 @@
-import { create, render } from '.';
+import { create, h, render } from '.';
 import * as server from './server';
 
 describe('create', () => {
@@ -9,9 +9,19 @@ describe('create', () => {
 
 describe('render', () => {
     it('should be able to render component hierarchies', async () => {
-        const adam = create('x-adam');
-        const html = await render(adam);
+        const adam = create('x-adam', () => 'Adam');
+        const maria = create('x-maria', () => 'Maria');
+        const imogen = create('x-imogen', () => 'Imogen');
 
-        expect(html).toEqual('<x-adam data-swiss=""></x-adam>');
+        const people = create('x-people', () => {
+            return h('section', {}, [
+                h(adam, { nationality: 'British' }),
+                h(maria, { nationality: 'Russian/British' }),
+                h(imogen, { nationality: 'British' }),
+            ]);
+        });
+
+        const html = await render(people);
+        expect(html).toMatchSnapshot();
     });
 });

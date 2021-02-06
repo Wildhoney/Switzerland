@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render should be able to render component hierarchies 1`] = `"<x-people data-swiss=\\"\\"><section><x-adam data-swiss=\\"\\" nationality=\\"British\\">Adam</x-adam><x-maria data-swiss=\\"\\" nationality=\\"Russian/British\\">Maria</x-maria><x-imogen data-swiss=\\"\\" nationality=\\"British\\">Imogen</x-imogen></section></x-people>"`;
