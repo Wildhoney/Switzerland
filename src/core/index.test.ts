@@ -1,9 +1,9 @@
 import { create, h, render } from '.';
-import * as server from './server';
+import { SwissServer } from './server';
 
 describe('create', () => {
     it('should be able to create component instances', () => {
-        expect(create('x-maria')).toBeInstanceOf(server.Swiss);
+        expect(create('x-maria')).toBeInstanceOf(SwissServer);
     });
 });
 

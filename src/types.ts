@@ -1,4 +1,4 @@
-import * as server from './core/server';
+import { SwissServer } from './core/server';
 
 export type Attributes = { [key: string]: string };
 
@@ -10,4 +10,4 @@ export type Node = { element: Element; attributes: Attributes; children: Childre
 
 export type View = () => null | Child;
 
-export type Element = string | server.Swiss;
+export type Element = string | SwissServer;
