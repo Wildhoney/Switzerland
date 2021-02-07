@@ -1,6 +1,5 @@
-import { Child, Node, Element } from '../../types';
-import { getWindow } from '../../utils';
-import * as server from '../server';
+import { Child } from '../../types';
+import { getWindow, isNode, isHTMLElement, isSwiss } from '../../utils';
 
 export async function transform(parentNode: HTMLElement, child: Child): Promise<string> {
     const window = await getWindow();
@@ -34,16 +33,4 @@ export async function transform(parentNode: HTMLElement, child: Child): Promise<
     }
 
     return '';
-}
-
-function isNode(child: Child): child is Node {
-    return 'element' in Object(child);
-}
-
-function isHTMLElement(element: Element): element is string {
-    return typeof element === 'string';
-}
-
-function isSwiss(element: Element): element is server.Swiss {
-    return element instanceof server.Swiss;
 }
