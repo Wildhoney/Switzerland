@@ -1,5 +1,5 @@
 import { Child } from '../../types';
-import { getWindow, isNode, isHTMLElement, isSwiss } from '../../utils';
+import { getWindow, isNode, isSwiss } from '../../utils';
 
 export async function transform(parentNode: HTMLElement, child: Child): Promise<string> {
     const window = await getWindow();
@@ -10,26 +10,17 @@ export async function transform(parentNode: HTMLElement, child: Child): Promise<
         return parentNode.outerHTML;
     }
 
-    if (isNode(child)) {
-        if (isHTMLElement(child.element)) {
-            const node = window.document.createElement(child.element);
-            parentNode.appendChild(node);
+    if (isNode(child) || isSwiss(child)) {
+        const node = !isSwiss(child.element)
+            ? window.document.createElement(child.element)
+            : await child.element.render(child.attributes);
 
-            if (child.children != null)
-                await Promise.all(child.children.map(async (child) => await transform(node, child)));
+        parentNode.appendChild(node);
 
-            return node.outerHTML;
-        }
+        if (child.children != null)
+            await Promise.all(child.children.map(async (child) => await transform(node, child)));
 
-        if (isSwiss(child.element)) {
-            const node = await child.element.render(child.attributes);
-            parentNode.appendChild(node);
-
-            if (child.children != null)
-                await Promise.all(child.children.map(async (child) => await transform(node, child)));
-
-            return node.outerHTML;
-        }
+        return node.outerHTML;
     }
 
     return '';

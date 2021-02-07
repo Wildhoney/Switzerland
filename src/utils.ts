@@ -16,10 +16,10 @@ export function isNode(child: Child): child is Node {
     return 'element' in Object(child);
 }
 
-export function isHTMLElement(element: Element): element is string {
+export function isHTMLElement(element: null | Element): element is string {
     return typeof element === 'string';
 }
 
-export function isSwiss(element: Element): element is server.Swiss {
+export function isSwiss(element: null | Element): element is server.Swiss {
     return element instanceof server.Swiss;
 }
