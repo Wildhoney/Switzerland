@@ -1,5 +1,11 @@
 import { Child } from '../../types';
 import { getWindow, isNode, isSwiss } from '../../utils';
+import { Args } from './types';
+import { Props } from '../../types';
+
+export function getInitialProps({ node }: Args): Props {
+    return { node, lifecycle: 'mount' };
+}
 
 export async function transform(parentNode: HTMLElement, child: Child): Promise<string> {
     const window = await getWindow();

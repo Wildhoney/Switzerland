@@ -8,6 +8,8 @@ export type Children = Child[];
 
 export type Node = { element: Element; attributes: Attributes; children: Children };
 
-export type View = () => null | Child;
+export type View = (props: Props) => null | Child;
 
 export type Element = string | SwissServer;
+
+export type Props = { node: HTMLElement; lifecycle: 'mount' | 'unmount' | 'update' };

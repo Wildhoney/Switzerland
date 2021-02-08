@@ -3,7 +3,7 @@ import { SwissBase } from '../base';
 import { SwissInterface } from '../interface';
 import { getWindow } from '../../utils';
 import type { Attributes, View } from '../../types';
-import { transform } from './utils';
+import { getInitialProps, transform } from './utils';
 
 export class SwissServer extends SwissBase implements SwissInterface {
     #name: string;
@@ -31,7 +31,7 @@ export class SwissServer extends SwissBase implements SwissInterface {
         for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
 
         // Render the current view and all of its descendant views.
-        await transform(node, this.#view());
+        await transform(node, this.#view(getInitialProps({ node })));
 
         return node;
     }
