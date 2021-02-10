@@ -10,7 +10,7 @@ export async function getInitialProps({ node, server }: Pick<Props, 'node' | 'se
         server,
         render: () => null,
         window: await getWindow(),
-        dispatch: dispatch(node),
+        dispatch: bindDispatch(node),
     };
 }
 
@@ -39,7 +39,7 @@ export async function transform(parentNode: HTMLElement, child: Child): Promise<
     return '';
 }
 
-export function dispatch(node: HTMLElement): EventDispatch {
+export function bindDispatch(node: HTMLElement): EventDispatch {
     return (name: EventName, payload: EventPayload, options: EventOptions = {}) => {
         const model = typeof payload === 'object' ? payload : { value: payload };
 

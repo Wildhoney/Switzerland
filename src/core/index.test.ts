@@ -31,7 +31,7 @@ describe('render', () => {
         const maria = create('x-maria', () => 'Maria');
         const imogen = create('x-imogen', () => 'Imogen');
 
-        const people = create('x-people', (props) => {
+        const people = create('x-people', () => {
             return h('section', {}, [
                 h(adam, { nationality: 'British' }),
                 h(maria, { nationality: 'Russian/British' }),
