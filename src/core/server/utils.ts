@@ -1,6 +1,7 @@
 import { Child, EventDispatch } from '../../types';
 import { getWindow, isNode, isSwiss } from '../../utils';
 import { Props, EventName, EventPayload, EventOptions } from '../../types';
+import pkg from '../../../package.json';
 
 export async function getInitialProps({ node, server }: Pick<Props, 'node' | 'server'>): Promise<Props> {
     return {
@@ -47,7 +48,7 @@ export function dispatch(node: HTMLElement): EventDispatch {
                 bubbles: true,
                 composed: true,
                 ...options,
-                detail: { ...model, version: 5 },
+                detail: { ...model, version: pkg.version },
             })
         );
     };
