@@ -31,7 +31,7 @@ export class SwissServer extends SwissBase implements SwissInterface {
         for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, value);
 
         // Render the current view and all of its descendant views.
-        await transform(node, this.#view(getInitialProps({ node })));
+        await transform(node, this.#view(await getInitialProps({ node, server: true })));
 
         return node;
     }

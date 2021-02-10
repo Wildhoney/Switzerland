@@ -1,3 +1,4 @@
+import { DOMWindow } from 'jsdom';
 import { SwissServer } from './core/server';
 
 export type Attributes = { [key: string]: string };
@@ -12,4 +13,19 @@ export type View = (props: Props) => null | Child;
 
 export type Element = string | SwissServer;
 
-export type Props = { node: HTMLElement; lifecycle: 'mount' | 'unmount' | 'update' };
+export type Props = {
+    node: HTMLElement;
+    lifecycle: 'mount' | 'unmount' | 'update';
+    server: boolean;
+    render: () => null;
+    window: Window | DOMWindow;
+    dispatch: EventDispatch;
+};
+
+export type EventName = string;
+
+export type EventPayload = object | string;
+
+export type EventOptions = { [key: string]: string };
+
+export type EventDispatch = (name: EventName, payload: EventPayload, options?: EventOptions) => void;
