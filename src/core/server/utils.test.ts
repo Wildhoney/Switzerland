@@ -22,8 +22,10 @@ describe('transform()', () => {
         expect(await transform(node, h('div', {}, ['Hi Imogen']))).toMatchSnapshot();
     });
 
-    // it('should be able to transform hierarchies with Swiss components', async () => {
-    //     const node = document.createElement('section');
-    //     expect(await transform(node, h('div', {}, [new server.Swiss('x-imogen', null, () => 'Hi Imogen')]))).toMatchSnapshot();
-    // });
+    it('should be able to transform hierarchies with Swiss components', async () => {
+        const node = document.createElement('section');
+        expect(
+            await transform(node, h('div', {}, [h(new server.Swiss('x-imogen', null, () => 'Hi Imogen'))]))
+        ).toMatchSnapshot();
+    });
 });

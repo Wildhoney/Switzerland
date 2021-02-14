@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`transform() should be able to transform hierarchies with Swiss components 1`] = `"<div><x-imogen data-swiss=\\"\\">Hi Imogen</x-imogen></div>"`;
+
 exports[`transform() should be able to transform simple node hierarchies 1`] = `"<div>Hi Imogen</div>"`;
