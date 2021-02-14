@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`create should be able to render server instances 1`] = `"<x-imogen data-swiss=\\"\\">Hi Imogen!</x-imogen>"`;

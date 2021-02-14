@@ -1,27 +1,24 @@
 import { DOMWindow } from 'jsdom';
-import * as base from '../base';
 import * as impl from '../impl';
 import { getWindow } from '../../utils';
 import type { Attributes, View } from '../../types';
 import { getInitialProps, transform } from './utils';
 
-export class Swiss extends base.Swiss implements impl.Swiss {
-    #name: string;
+export class Swiss implements impl.Swiss {
+    #tag: string;
     #extend: null | string;
     #view: View;
 
-    constructor(name: string, extend: null | string = null, view: View = () => null) {
-        super();
-
-        this.#name = name;
+    constructor(tag: string, extend: null | string = null, view: View = () => null) {
+        this.#tag = tag;
         this.#extend = extend;
         this.#view = view;
     }
 
     async render(attributes: Attributes = {}): Promise<HTMLElement> {
         // Initialte the node and defined the `data-swiss` attribute which denotes a boundary.
-        const window = (await getWindow()) as DOMWindow;
-        const node = window.document.createElement(this.#name);
+        const window = await getWindow() as DOMWindow;
+        const node = window.document.createElement(this.#tag);
         node.setAttribute('data-swiss', '');
 
         // Define the optional element to be extended from which will inherit its behaviours.
@@ -35,4 +32,12 @@ export class Swiss extends base.Swiss implements impl.Swiss {
 
         return node;
     }
+}
+
+export function create(
+    name: string,
+    extend: null | string = null,
+    view: View = () => null
+): InstanceType<typeof Swiss> {
+    return new Swiss(name, extend, view);
 }
