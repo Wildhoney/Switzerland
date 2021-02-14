@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transform() should be able to transform simple node hierarchies 1`] = `"<div>Hi Imogen</div>"`;

@@ -1,6 +1,6 @@
-import { SwissInterface } from '../interface';
+import * as impl from '../impl';
 
-export class SwissBase implements SwissInterface {
+export class Swiss implements impl.Swiss {
     async render(): Promise<HTMLElement> {
         return document.createElement('x-swiss');
     }

@@ -1,5 +1,5 @@
 import { DOMWindow } from 'jsdom';
-import { SwissServer } from './core/server';
+import * as server from './core/server';
 
 export type Attributes = { [key: string]: string };
 
@@ -11,7 +11,7 @@ export type Node = { element: Element; attributes: Attributes; children: Childre
 
 export type View = (props: Props) => null | Child;
 
-export type Element = string | SwissServer;
+export type Element = string | server.Swiss;
 
 export type Props = {
     node: HTMLElement;

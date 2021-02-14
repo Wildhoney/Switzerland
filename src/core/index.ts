@@ -1,13 +1,13 @@
 import * as server from './server';
 import { Attributes, Node, Children, View, Element } from '../types';
 
-export function create(name: string, view: View = () => null): server.SwissServer {
+export function create(name: string, view: View = () => null): server.Swiss {
     const extend = null;
 
-    return server.create(name, extend, view);
+    return new server.Swiss(name, extend, view);
 }
 
-export async function render(component: server.SwissServer): Promise<string> {
+export async function render(component: server.Swiss): Promise<string> {
     const node = await component.render();
 
     return node.outerHTML;

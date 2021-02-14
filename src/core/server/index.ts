@@ -1,16 +1,16 @@
 import { DOMWindow } from 'jsdom';
-import { SwissBase } from '../base';
-import { SwissInterface } from '../interface';
+import * as base from '../base';
+import * as impl from '../impl';
 import { getWindow } from '../../utils';
 import type { Attributes, View } from '../../types';
 import { getInitialProps, transform } from './utils';
 
-export class SwissServer extends SwissBase implements SwissInterface {
+export class Swiss extends base.Swiss implements impl.Swiss {
     #name: string;
     #extend: null | string;
     #view: View;
 
-    constructor(name: string, extend: null | string = null, view: View) {
+    constructor(name: string, extend: null | string = null, view: View = () => null) {
         super();
 
         this.#name = name;
@@ -35,12 +35,4 @@ export class SwissServer extends SwissBase implements SwissInterface {
 
         return node;
     }
-}
-
-export function create(
-    name: string,
-    extend: null | string = null,
-    view: View = () => null
-): InstanceType<typeof SwissServer> {
-    return new SwissServer(name, extend, view);
 }

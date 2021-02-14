@@ -1,5 +1,5 @@
 import { Attributes } from '../../types';
 
-export interface SwissInterface {
+export interface Swiss {
     render(attributes: Attributes): Promise<HTMLElement>;
 }
