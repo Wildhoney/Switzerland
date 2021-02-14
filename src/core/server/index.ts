@@ -17,7 +17,7 @@ export class Swiss implements impl.Swiss {
 
     async render(attributes: Attributes = {}): Promise<HTMLElement> {
         // Initialte the node and defined the `data-swiss` attribute which denotes a boundary.
-        const window = await getWindow() as DOMWindow;
+        const window = (await getWindow()) as DOMWindow;
         const node = window.document.createElement(this.#tag);
         node.setAttribute('data-swiss', '');
 

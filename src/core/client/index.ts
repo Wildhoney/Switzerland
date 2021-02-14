@@ -16,5 +16,5 @@ export function create(constructor: CustomElementConstructor, view: View): Custo
         }
     };
 
-    return (e as unknown)as CustomElementConstructor;
+    return (e as unknown) as CustomElementConstructor;
 }

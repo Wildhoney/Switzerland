@@ -7,7 +7,7 @@ export function parseName(name: string): [string, CustomElementConstructor, stri
 export function getPrototype(name: string): CustomElementConstructor {
     const defaultConstructor = window.document.createElement('div').constructor as CustomElementConstructor;
     if (typeof window === 'undefined') return defaultConstructor;
-    return name ? window.document.createElement(name).constructor as CustomElementConstructor : defaultConstructor;
+    return name ? (window.document.createElement(name).constructor as CustomElementConstructor) : defaultConstructor;
 }
 
 export function getRandomName(): string {

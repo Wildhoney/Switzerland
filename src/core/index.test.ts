@@ -9,7 +9,7 @@ describe.skip('create', () => {
 
 describe.skip('render', () => {
     it('should be able to handle parent components yielding null', async () => {
-        const people = create('x-people', () => null)as server.Swiss;
+        const people = create('x-people', () => null) as server.Swiss;
         const html = await render(people);
         expect(html).toEqual('<x-people data-swiss=""></x-people>');
     });
@@ -27,9 +27,9 @@ describe.skip('render', () => {
     });
 
     it('should be able to render component hierarchies', async () => {
-        const adam = create('x-adam', () => 'Adam')as server.Swiss;
-        const maria = create('x-maria', () => 'Maria')as server.Swiss;
-        const imogen = create('x-imogen', () => 'Imogen')as server.Swiss;
+        const adam = create('x-adam', () => 'Adam') as server.Swiss;
+        const maria = create('x-maria', () => 'Maria') as server.Swiss;
+        const imogen = create('x-imogen', () => 'Imogen') as server.Swiss;
 
         const people = create('x-people', () => {
             return h('section', {}, [
@@ -37,7 +37,7 @@ describe.skip('render', () => {
                 h(maria, { nationality: 'Russian/British' }),
                 h(imogen, { nationality: 'British' }),
             ]);
-        })as server.Swiss;
+        }) as server.Swiss;
 
         const html = await render(people);
         expect(html).toMatchSnapshot();
