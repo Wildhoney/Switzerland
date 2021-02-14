@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target": "esnext",
-        "module": "esnext",
+        "module": "CommonJS",
         "sourceMap": true,
         "moduleResolution": "node",
         "outDir": "./dist",
@@ -12,6 +12,8 @@
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
         "noImplicitReturns": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "paths": { "switzerland": ["./src/index.ts"] },
+        "baseUrl": "./"
     }
 }

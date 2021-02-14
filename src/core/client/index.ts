@@ -4,7 +4,7 @@ import { getWindow } from '../../utils';
 import type { Attributes, View } from '../../types';
 
 export function create(constructor: CustomElementConstructor, view: View): CustomElementConstructor {
-    const e = class Swiss extends constructor implements impl.Swiss {
+    class Swiss extends constructor implements impl.Swiss {
         #meta: symbol = Symbol('meta');
 
         async render(attributes: Attributes = {}): Promise<HTMLElement> {
@@ -14,7 +14,7 @@ export function create(constructor: CustomElementConstructor, view: View): Custo
 
             return node;
         }
-    };
+    }
 
-    return (e as unknown) as CustomElementConstructor;
+    return (Swiss as unknown) as CustomElementConstructor;
 }

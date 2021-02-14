@@ -7,7 +7,7 @@ export function create(name: string, view: View = () => null): void | server.Swi
     const [tag, constructor, extend] = parseName(name);
 
     try {
-        const component = client.create(constructor, view);
+        const component = client.create(constructor as CustomElementConstructor, view);
 
         window.customElements.define(
             window.customElements.get(tag) ? getRandomName() : tag,
