@@ -1,1 +1,1 @@
-export { create, render, h } from './core';
+export { create, render, h, preload } from './core';
