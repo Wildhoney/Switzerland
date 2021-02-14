@@ -29,3 +29,5 @@ export type EventPayload = object | string;
 export type EventOptions = { [key: string]: string };
 
 export type EventDispatch = (name: EventName, payload: EventPayload, options?: EventOptions) => void;
+
+export type Options = Partial<{ path: string; root: string }>;

@@ -5,6 +5,7 @@ import cors from 'cors';
 import compression from 'compression';
 import fmt from 'string-template';
 import { render } from '../../src';
+import * as server from '../../src/core/server';
 import todoApp from '../app';
 
 const app = express();
@@ -26,7 +27,7 @@ app.get('*', (_, response, next) => {
 
 app.get('/', async (_, response) => {
     const html = fs.readFileSync(`${example}/index.html`, 'utf-8');
-    const todos = await render(todoApp as any);
+    const todos = await render(todoApp as server.Swiss, {}, options);
 
     response.send(fmt(html, { todos }));
 });

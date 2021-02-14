@@ -1,6 +1,6 @@
 import * as server from './server';
 import * as client from './client';
-import { Attributes, Node, Children, View, Element } from '../types';
+import { Attributes, Node, Children, View, Element, Options } from '../types';
 import { parseName, getRandomName } from './utils';
 
 export function create(name: string, view: View = () => null): void | server.Swiss | CustomElementConstructor {
@@ -21,8 +21,8 @@ export function create(name: string, view: View = () => null): void | server.Swi
     }
 }
 
-export async function render(component: server.Swiss): Promise<string> {
-    const node = await component.render();
+export async function render(app: server.Swiss, attributes: Attributes = {}, options: Options = {}): Promise<string> {
+    const node = await app.render(attributes);
 
     return node.outerHTML;
 }
