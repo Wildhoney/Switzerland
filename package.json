@@ -1,7 +1,9 @@
 {
+    "name": "switzerland",
+    "version": "0.0.0",
     "scripts": {
-        "build": "esbuild example/index.tsx --bundle --splitting --outdir=dist --format=esm --jsx-factory=h",
-        "start": "ts-node ./example/server/index.ts",
+        "build": "esbuild example/components/*/index.ts --bundle --splitting --outdir=example/components --format=esm --jsx-factory=h",
+        "start": "ts-node --esm ./example/server/index.ts",
         "format": "prettier . --write"
     },
     "devDependencies": {

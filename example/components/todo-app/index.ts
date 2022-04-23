@@ -5,7 +5,15 @@ type Attrs = {
 };
 
 export default create<Attrs>('todo-app', (attrs) => {
-    const env = use.env();
+    const [user, setUser] = use.state(attrs.name);
 
-    return h('div', {}, `Hi ${attrs.name}. You are currently viewing ${env.path}.`);
+    use.mount(() => {
+        console.log('mounted!');
+    });
+
+    use.unmount(() => {
+        console.log('unmounted!');
+    });
+
+    return h('div', {}, [`Hi ${user}`, h('button', { onClick: () => setUser('Adam') }, 'Switch User')]);
 });
