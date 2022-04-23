@@ -7,7 +7,7 @@ import compression from 'compression';
 import fmt from 'string-template';
 import { render } from '../../src';
 import todoApp from '../components/todo-app';
-import {h} from "preact"
+import { h } from 'preact';
 
 const app = express();
 app.use(cors());

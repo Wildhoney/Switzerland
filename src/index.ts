@@ -13,17 +13,13 @@ export function render(vnode: VNode, options: RenderOptions) {
 
 export function create<Attrs extends Record<string, string>>(name: string, tree: Tree<Attrs>) {
     return function Tree(attrs: Attrs): VNode {
-        return h(
-            name,
-            attrs,
-            h('template', { shadowroot: 'open' }, h(tree, attrs))
-        );
-    }
+        return h(name, attrs, h('template', { shadowroot: 'open' }, h(tree, attrs)));
+    };
 }
 
 export const use = {
     state: useState,
     effect: useEffect,
     reducer: useReducer,
-    env: () => useContext(Env)
-}
+    env: () => useContext(Env),
+};
