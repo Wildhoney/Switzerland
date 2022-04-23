@@ -19,3 +19,9 @@ export function toCamelcase(value) {
         fromSnake: f('_'),
     };
 }
+
+export function hasApplicableMutations(node, mutations) {
+    return mutations.some((mutation) => {
+        return mutation.oldValue !== node.getAttribute(mutation.attributeName);
+    });
+}

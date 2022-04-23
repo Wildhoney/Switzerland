@@ -12,7 +12,7 @@ import {
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
 import { RenderOptions, Tree } from './types';
-import { getAttributes } from './utils';
+import { getAttributes, hasApplicableMutations } from './utils';
 
 export { h } from 'preact';
 
@@ -24,11 +24,26 @@ export function render(vnode: VNode, options: RenderOptions) {
 
 export function create<Attrs extends Record<string, string>>(name: string, tree: Tree<Attrs>) {
     if (typeof window !== 'undefined') {
-        return void window.customElements.define(
+        window.customElements.define(
             name,
             class Swiss extends HTMLElement {
+                private observer: MutationObserver;
+
                 connectedCallback() {
+                    this.observer = new window.MutationObserver(
+                        (mutations) => hasApplicableMutations(this, mutations) && this.render()
+                    );
+
+                    this.observer.observe(this, {
+                        attributes: true,
+                        attributeOldValue: true,
+                    });
+
                     this.render();
+                }
+
+                disconnectedCallback() {
+                    this.observer.disconnect();
                 }
 
                 render() {
@@ -37,6 +52,10 @@ export function create<Attrs extends Record<string, string>>(name: string, tree:
                 }
             }
         );
+
+        return function Tree(attrs: Attrs): VNode {
+            return h(name, attrs);
+        };
     }
 
     return function Tree(attrs: Attrs): VNode {
