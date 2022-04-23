@@ -1,7 +1,8 @@
-import { h, create, use } from '../../../src';
+import { h, create, use, types } from '../../../src';
 
 type Attrs = {
     name: string;
+    age: string;
 };
 
 const TodoName = create<{ lang: string }>('todo-name', (attrs) => {
@@ -9,19 +10,17 @@ const TodoName = create<{ lang: string }>('todo-name', (attrs) => {
 });
 
 export default create<Attrs>('todo-app', (attrs) => {
+    const transformedAttrs = use.attrs({ name: types.String, age: types.Int });
+
     const [user, setUser] = use.state(attrs.name);
+    const [age, setAge] = use.state(transformedAttrs.age);
     const [lang, setLang] = use.state('en');
 
-    use.mount(() => {
-        console.log('mounted!');
-    });
-
-    use.unmount(() => {
-        console.log('unmounted!');
-    });
-
     return h('div', {}, [
-        `Hi ${user}`,
+        `Hi ${user}: `,
+        `You are ${age} years old`,
+        h('button', { onClick: () => setAge(age - 1) }, '-'),
+        h('button', { onClick: () => setAge(age + 1) }, '+'),
         h(TodoName, { lang }),
         h('button', { onClick: () => setUser('Adam') }, 'Change User'),
         h('button', { onClick: () => setLang('ru') }, 'Change Language'),
