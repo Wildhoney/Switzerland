@@ -1,9 +1,9 @@
 import { h, create, use, types } from '../../../src';
 
-type Attrs = {
-    name: string;
-    age: string;
-};
+class Attrs {
+    name = types.String;
+    age = types.Int;
+}
 
 const TodoName = create<{ lang: string }>('todo-name', (attrs) => {
     const dispatch = use.dispatch();
@@ -12,7 +12,8 @@ const TodoName = create<{ lang: string }>('todo-name', (attrs) => {
 });
 
 export default create<Attrs>('todo-app', (attrs) => {
-    const transformedAttrs = use.attrs({ name: types.String, age: types.Int });
+    const transformedAttrs = use.attrs(new Attrs());
+    console.log(transformedAttrs);
 
     const [user, setUser] = use.state(attrs.name);
     const [age, setAge] = use.state(transformedAttrs.age);

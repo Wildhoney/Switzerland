@@ -14,7 +14,7 @@ import {
 import { EffectCallback } from 'preact/hooks';
 import { RenderOptions, Tree } from './types';
 import { dispatchEvent, getAttributes, hasApplicableMutations } from './utils';
-import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex } from './types';
+import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, Stringify } from './types';
 
 export const types = {
     String,
@@ -41,7 +41,7 @@ export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
     return renderToString(h(Fragment, {}, h(Env.Provider, { value: { ...options, node: null }, children: vnode })));
 }
 
-export function create<Attrs extends Record<string, string>>(name: string, tree: Tree<Attrs>) {
+export function create<Attrs>(name: string, tree: Tree<Stringify<Attrs>>) {
     if (typeof window !== 'undefined') {
         window.customElements.define(
             name,
@@ -78,12 +78,12 @@ export function create<Attrs extends Record<string, string>>(name: string, tree:
             }
         );
 
-        return function Tree(attrs: Attrs): VNode {
+        return function Tree(attrs: Stringify<Attrs>): VNode {
             return h(name, attrs);
         };
     }
 
-    return function Tree(attrs: Attrs): VNode {
+    return function Tree(attrs: Stringify<Attrs>): VNode {
         return h(
             name,
             attrs,

@@ -6,6 +6,10 @@ export type Tree<Attrs> = (attrs: Attrs) => VNode;
 
 export type RenderOptions = { path: null | string; root: null | string; node: null | HTMLElement };
 
+export type Stringify<T> = {
+    [P in keyof T]: string;
+};
+
 export function String(a: string): string {
     return a;
 }
