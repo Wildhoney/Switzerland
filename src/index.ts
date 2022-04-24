@@ -7,12 +7,13 @@ import {
     useCallback,
     useReducer,
     useContext,
+    useMemo,
     createContext,
     Fragment,
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
 import { RenderOptions, Tree } from './types';
-import { getAttributes, hasApplicableMutations } from './utils';
+import { dispatchEvent, getAttributes, hasApplicableMutations } from './utils';
 import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex } from './types';
 
 export const types = {
@@ -29,14 +30,15 @@ export const types = {
 export { h } from 'preact';
 
 const Env = createContext<RenderOptions>({
-    path: typeof window === 'undefined' ? null : window.location.href,
+    path: null,
     root: null,
+    node: null,
 });
 
 const Attrs = createContext<Record<string, string>>({});
 
-export function render(vnode: VNode, options: RenderOptions) {
-    return renderToString(h(Fragment, {}, h(Env.Provider, { value: options, children: vnode })));
+export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
+    return renderToString(h(Fragment, {}, h(Env.Provider, { value: { ...options, node: null }, children: vnode })));
 }
 
 export function create<Attrs extends Record<string, string>>(name: string, tree: Tree<Attrs>) {
@@ -66,7 +68,10 @@ export function create<Attrs extends Record<string, string>>(name: string, tree:
                 render() {
                     const attrs = getAttributes(this.attributes);
                     hydrate(
-                        h(Attrs.Provider, { value: attrs, children: h(tree, attrs) }),
+                        h(Env.Provider, {
+                            value: { path: window.location.href, root: null, node: this },
+                            children: h(Attrs.Provider, { value: attrs, children: h(tree, attrs) }),
+                        }),
                         this.shadowRoot as unknown as Element
                     );
                 }
@@ -107,5 +112,9 @@ export const use = {
     attrs(map: Record<string, any>): Record<string, any> {
         const attrs = useContext(Attrs);
         return Object.entries(attrs).reduce((attrs, [key, value]) => ({ ...attrs, [key]: map[key](value) }), {});
+    },
+    dispatch() {
+        const env = useContext(Env);
+        return useMemo(() => dispatchEvent(env.node), [env.node]);
     },
 };

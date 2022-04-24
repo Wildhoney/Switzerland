@@ -25,3 +25,18 @@ export function hasApplicableMutations(node, mutations) {
         return mutation.oldValue !== node.getAttribute(mutation.attributeName);
     });
 }
+
+export const dispatchEvent =
+    (node) =>
+    (name, payload, options = {}) => {
+        const model = typeof payload === 'object' ? payload : { value: payload };
+
+        return node.dispatchEvent(
+            new window.CustomEvent(name, {
+                bubbles: true,
+                composed: true,
+                ...options,
+                detail: { ...model, version: 5 },
+            })
+        );
+    };

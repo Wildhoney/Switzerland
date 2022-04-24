@@ -6,7 +6,9 @@ type Attrs = {
 };
 
 const TodoName = create<{ lang: string }>('todo-name', (attrs) => {
-    return h('div', {}, `Language: ${attrs.lang}`);
+    const dispatch = use.dispatch();
+
+    return h('div', { onClick: () => dispatch('langclick', 'Clicked lang!') }, `Language: ${attrs.lang}`);
 });
 
 export default create<Attrs>('todo-app', (attrs) => {
@@ -16,7 +18,7 @@ export default create<Attrs>('todo-app', (attrs) => {
     const [age, setAge] = use.state(transformedAttrs.age);
     const [lang, setLang] = use.state('en');
 
-    return h('div', {}, [
+    return h('div', { onlangclick: console.log }, [
         `Hi ${user}: `,
         `You are ${age} years old`,
         h('button', { onClick: () => setAge(age - 1) }, '-'),
