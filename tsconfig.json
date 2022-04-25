@@ -7,8 +7,11 @@
     },
     "ts-node": {
         "compilerOptions": {
-            "target": "esnext",
-            "module": "nodenext"
-        }
+            "module": "CommonJS",
+            "plugins": [{ "transform": "@magic-works/commonjs-import.meta" }],
+            "esModuleInterop": true
+        },
+        "compiler": "ttypescript",
+        "ignoreDiagnostics": [1343]
     }
 }

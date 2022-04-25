@@ -1,7 +1,6 @@
 import path from 'path';
 import fs from 'fs';
 import express from 'express';
-import renderToString from 'preact-render-to-string';
 import cors from 'cors';
 import compression from 'compression';
 import fmt from 'string-template';
@@ -17,7 +16,7 @@ const vendor = path.resolve('./src');
 
 const options = {
     path: process.env.DOMAIN ? `https://${process.env.DOMAIN}/` : 'http://localhost:3000/',
-    root: path.resolve('./example/app'),
+    root: path.resolve('./example'),
 };
 
 app.get('*', (_, response, next) => {

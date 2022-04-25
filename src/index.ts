@@ -108,8 +108,18 @@ export const use = {
     env() {
         return useContext(Env);
     },
-    path(path: string): string {
-        return path;
+    path(componentUrl: string) {
+        const env = useContext(Env);
+
+        return (resourcePath: string) => {
+            if (typeof window !== 'undefined') return new URL(resourcePath, componentUrl).href;
+
+            const url = componentUrl.replace('file://', '') ?? '';
+            return `${env.path.replace(/(\/)*$/g, '')}/${url
+                .replace(env.root, '')
+                .replace(/^(\/)*/g, '')
+                .replace(/\/[^\/]*$/i, '')}/${resourcePath}`;
+        };
     },
     attrs<Attrs>(map: ToTransform<Partial<Attrs>>): Record<string, any> {
         const attrs = useContext(Attrs);
