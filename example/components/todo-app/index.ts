@@ -25,6 +25,7 @@ export default create<Attrs>('todo-app', (attrs) => {
         h('button', { onClick: () => setAge(age - 1) }, '-'),
         h('button', { onClick: () => setAge(age + 1) }, '+'),
         h(TodoName, { lang }),
+        age > 5 && h(TodoName, { lang }),
         h('button', { onClick: () => setUser('Adam') }, 'Change User'),
         h('button', { onClick: () => setLang('ru') }, 'Change Language'),
     ]);

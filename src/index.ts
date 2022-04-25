@@ -67,12 +67,14 @@ export function create<Attrs>(name: string, tree: Tree<Stringify<Attrs>>) {
 
                 render() {
                     const attrs = getAttributes(this.attributes);
+                    const shadowRoot = this.shadowRoot ?? this.attachShadow({ mode: 'open' });
+
                     hydrate(
                         h(Env.Provider, {
                             value: { path: window.location.href, root: null, node: this },
                             children: h(Attrs.Provider, { value: attrs, children: h(tree, attrs) }),
                         }),
-                        this.shadowRoot as unknown as Element
+                        shadowRoot as unknown as Element
                     );
                 }
             }
