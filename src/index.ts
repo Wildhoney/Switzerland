@@ -12,9 +12,9 @@ import {
     Fragment,
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
-import { RenderOptions, Tree } from './types';
+import { RenderOptions, ToTransform, Tree } from './types';
 import { dispatchEvent, getAttributes, hasApplicableMutations } from './utils';
-import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, Stringify } from './types';
+import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, ToType } from './types';
 
 export const types = {
     String,
@@ -41,7 +41,7 @@ export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
     return renderToString(h(Fragment, {}, h(Env.Provider, { value: { ...options, node: null }, children: vnode })));
 }
 
-export function create<Attrs>(name: string, tree: Tree<Stringify<Attrs>>) {
+export function create<Attrs>(name: string, tree: Tree<ToType<Attrs>>) {
     if (typeof window !== 'undefined') {
         window.customElements.define(
             name,
@@ -80,12 +80,12 @@ export function create<Attrs>(name: string, tree: Tree<Stringify<Attrs>>) {
             }
         );
 
-        return function Tree(attrs: Stringify<Attrs>): VNode {
+        return function Tree(attrs: ToType<Attrs>): VNode {
             return h(name, attrs);
         };
     }
 
-    return function Tree(attrs: Stringify<Attrs>): VNode {
+    return function Tree(attrs: ToType<Attrs>): VNode {
         return h(
             name,
             attrs,
@@ -111,9 +111,12 @@ export const use = {
     path(path: string): string {
         return path;
     },
-    attrs(map: Record<string, any>): Record<string, any> {
+    attrs<Attrs>(map: ToTransform<Partial<Attrs>>): Record<string, any> {
         const attrs = useContext(Attrs);
-        return Object.entries(attrs).reduce((attrs, [key, value]) => ({ ...attrs, [key]: map[key](value) }), {});
+        return Object.entries(attrs).reduce(
+            (attrs, [key, value]) => ({ ...attrs, [key]: (map[key] ?? String)(value) }),
+            {}
+        );
     },
     dispatch() {
         const env = useContext(Env);

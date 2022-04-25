@@ -6,8 +6,12 @@ export type Tree<Attrs> = (attrs: Attrs) => VNode;
 
 export type RenderOptions = { path: null | string; root: null | string; node: null | HTMLElement };
 
-export type Stringify<T> = {
+export type ToType<T> = {
     [P in keyof T]: string;
+};
+
+export type ToTransform<T> = {
+    [P in keyof T]: (a: string) => null | string | number | boolean | Date;
 };
 
 export function String(a: string): string {
