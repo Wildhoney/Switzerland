@@ -15,15 +15,15 @@
         "compression": "^1.7.4",
         "cors": "^2.8.5",
         "esbuild": "^0.14.38",
-        "express": "^4.18.0",
+        "express": "^4.18.1",
         "prettier": "^2.6.2",
         "string-template": "^1.0.0",
         "ts-node": "^10.7.0",
         "ttypescript": "^1.5.13",
-        "typescript": "^4.6.3"
+        "typescript": "^4.6.4"
     },
     "dependencies": {
         "preact": "^10.7.1",
-        "preact-render-to-string": "^5.1.21"
+        "preact-render-to-string": "^5.2.0"
     }
 }
