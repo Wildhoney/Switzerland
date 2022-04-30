@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import fmt from 'string-template';
-import { render } from '../../src';
+import { render } from 'switzerland';
 import todoApp from '../nodes/todo-app';
 
 const app = express();

@@ -1,4 +1,4 @@
-import { create, h, use, Fragment } from '../../../src';
+import { create, h, use, Fragment } from 'switzerland';
 // import { store, actionCreators } from '../../utils/store.js';
 import List from './components/list';
 import Nothing from './components/nothing';

@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
+        "baseUrl": ".",
         "module": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "paths": { "switzerland": ["./src/index.ts"] }
     },
     "ts-node": {
         "compilerOptions": {

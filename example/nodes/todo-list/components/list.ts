@@ -1,4 +1,4 @@
-import { h } from '../../../../src';
+import { h } from 'switzerland';
 
 export default function List({ history, actions, list }) {
     const todos = list

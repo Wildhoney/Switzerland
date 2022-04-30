@@ -1,4 +1,4 @@
-import { create, h, use, Fragment } from '../../../src';
+import { create, h, use, Fragment } from 'switzerland';
 // import { isBottom, createServiceWorker } from './utils.js';
 // import Position from './components/position.js';
 // import Dimensions from './components/dimensions.js';

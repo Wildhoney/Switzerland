@@ -1,4 +1,4 @@
-import { h } from '../../../../src';
+import { h } from 'switzerland';
 
 export default function Nothing() {
     return h('li', { class: 'none' }, [
