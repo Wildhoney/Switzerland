@@ -27,7 +27,7 @@ export const types = {
     Regex,
 };
 
-export { h } from 'preact';
+export { h, Fragment } from 'preact';
 
 const Env = createContext<RenderOptions>({
     path: null,
