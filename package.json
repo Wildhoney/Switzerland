@@ -2,7 +2,7 @@
     "name": "switzerland",
     "version": "0.0.0",
     "scripts": {
-        "build": "esbuild example/nodes/*/index.ts --bundle --splitting --outdir=example --outbase=example --format=esm --jsx-factory=h",
+        "build": "rm -rf example/chunk-* && esbuild example/nodes/*/index.ts --bundle --splitting --outdir=example --outbase=example --format=esm --jsx-factory=h",
         "start": "ts-node --preferTsExts -r tsconfig-paths/register ./example/server/index.ts",
         "format": "prettier . --write"
     },
