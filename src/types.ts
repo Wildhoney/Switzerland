@@ -6,13 +6,12 @@ export type Tree<Attrs> = (attrs: Attrs) => VNode;
 
 export type RenderOptions = { path: null | string; root: null | string; node: null | HTMLElement };
 
-export type ToType<T> = {
-    [P in keyof T]: string;
+export type StyleSheetProps = {
+    href: string;
+    media?: null | string;
 };
 
-export type ToTransform<T> = {
-    [P in keyof T]: (a: string) => null | string | number | boolean | Date;
-};
+export type VariablesProps = Record<string, boolean | number | string>;
 
 export function String(a: string): string {
     return a;

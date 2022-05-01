@@ -20,6 +20,16 @@ export function toCamelcase(value) {
     };
 }
 
+export function fromCamelcase(value) {
+    const f = (separator) => () => {
+        return value.replace(/([A-Z])/g, `${separator}$1`).toLowerCase();
+    };
+    return {
+        toKebab: f('-'),
+        toSnake: f('_'),
+    };
+}
+
 export function hasApplicableMutations(node, mutations) {
     return mutations.some((mutation) => {
         return mutation.oldValue !== node.getAttribute(mutation.attributeName);

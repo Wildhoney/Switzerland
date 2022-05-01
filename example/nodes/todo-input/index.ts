@@ -1,4 +1,4 @@
-import { create, h, use, Fragment } from 'switzerland';
+import { create, h, use, node } from 'switzerland';
 // import { store, actionCreators } from '../../utils/store.js';
 
 export default create('todo-input', () => {
@@ -13,7 +13,7 @@ export default create('todo-input', () => {
         // actions.add(text);
     };
 
-    return h(Fragment, {}, [
+    return h(node.Fragment, {}, [
         h('form', { onSubmit: handleSubmit }, [
             h('input', {
                 value: text,

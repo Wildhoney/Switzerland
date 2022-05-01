@@ -26,7 +26,7 @@ app.get('*', (_, response, next) => {
 
 app.get('/', async (_, response) => {
     const html = fs.readFileSync(`${root}/index.html`, 'utf-8');
-    const todos = await render(todoApp({ name: 'Imogen', age: '2' }), options);
+    const todos = await render(todoApp({ logo: 'top' }), options);
     response.send(fmt(html, { todos }));
 });
 

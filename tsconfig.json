@@ -5,7 +5,10 @@
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
-        "paths": { "switzerland": ["./src/index.ts"] }
+        "jsx": "react",
+        "jsxFactory": "h",
+        "jsxFragmentFactory": "node.Fragment",
+        "paths": { "switzerland": ["src/index.ts"] }
     },
     "ts-node": {
         "compilerOptions": {

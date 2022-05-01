@@ -12,11 +12,11 @@ import {
     Fragment,
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
-import { RenderOptions, ToTransform, Tree } from './types';
-import { dispatchEvent, getAttributes, hasApplicableMutations } from './utils';
-import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, ToType } from './types';
+import { RenderOptions, Tree, VariablesProps } from './types';
+import { dispatchEvent, fromCamelcase, getAttributes, hasApplicableMutations } from './utils';
+import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, StyleSheetProps } from './types';
 
-export const types = {
+export const type = {
     String,
     Int,
     BigInt,
@@ -27,7 +27,7 @@ export const types = {
     Regex,
 };
 
-export { h, Fragment } from 'preact';
+export { h, VNode } from 'preact';
 
 const Env = createContext<RenderOptions>({
     path: null,
@@ -41,7 +41,7 @@ export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
     return renderToString(h(Fragment, {}, h(Env.Provider, { value: { ...options, node: null }, children: vnode })));
 }
 
-export function create<Attrs>(name: string, tree: Tree<ToType<Attrs>>) {
+export function create<Attrs extends {}>(name: string, tree: Tree<Attrs>) {
     if (typeof window !== 'undefined') {
         window.customElements.define(
             name,
@@ -80,12 +80,12 @@ export function create<Attrs>(name: string, tree: Tree<ToType<Attrs>>) {
             }
         );
 
-        return function Tree(attrs: ToType<Attrs>): VNode {
+        return function Tree(attrs: Attrs): VNode {
             return h(name, attrs);
         };
     }
 
-    return function Tree(attrs: ToType<Attrs>): VNode {
+    return function Tree(attrs: Attrs): VNode {
         return h(
             name,
             attrs,
@@ -121,7 +121,7 @@ export const use = {
                 .replace(/\/[^\/]*$/i, '')}/${resourcePath}`;
         };
     },
-    attrs<Attrs>(map: ToTransform<Partial<Attrs>>): Record<string, any> {
+    attrs<Attrs>(map: Partial<Attrs>): Record<string, any> {
         const attrs = useContext(Attrs);
         return Object.entries(attrs).reduce(
             (attrs, [key, value]) => ({ ...attrs, [key]: (map[key] ?? String)(value) }),
@@ -131,5 +131,22 @@ export const use = {
     dispatch() {
         const env = useContext(Env);
         return useMemo(() => dispatchEvent(env.node), [env.node]);
+    },
+};
+
+export const node = {
+    Fragment,
+    StyleSheet({ href, media }: StyleSheetProps): VNode {
+        return h('link', { rel: 'stylesheet', type: 'text/css', media, href });
+    },
+    Variables(props: VariablesProps): VNode {
+        const vars = useMemo(() => {
+            return Object.entries(props).reduce(
+                (accum, [key, value]) => `${accum} --${fromCamelcase(key).toKebab()}: ${value};`,
+                ''
+            );
+        }, [props]);
+
+        return h('style', { type: 'text/css' }, `:host { ${vars} }`);
     },
 };

@@ -1,4 +1,4 @@
-import { create, h, use, Fragment } from 'switzerland';
+import { create, h, use, node } from 'switzerland';
 // import { store, actionCreators } from '../../utils/store.js';
 import List from './components/list';
 import Nothing from './components/nothing';
@@ -19,7 +19,7 @@ export default create('todo-list', () => {
     // const hasTodos = state.list.length > 0;
     const hasTodos = false;
 
-    return h(Fragment, {}, [
+    return h(node.Fragment, {}, [
         // h('ul', {}, hasTodos ? h(List, {}) : h(Nothing, {})),
         h('ul', {}, h(Nothing, {})),
 
