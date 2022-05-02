@@ -1,7 +1,6 @@
 import { VNode, h } from 'preact';
 import renderToString from 'preact-render-to-string';
-import {
-    hydrate,
+import Preact, {
     useState,
     useEffect,
     useCallback,
@@ -69,7 +68,7 @@ export function create<Attrs extends {}>(name: string, tree: Tree<Attrs>) {
                     const attrs = getAttributes(this.attributes);
                     const shadowRoot = this.shadowRoot ?? this.attachShadow({ mode: 'open' });
 
-                    hydrate(
+                    Preact.render(
                         h(Env.Provider, {
                             value: { path: window.location.href, root: null, node: this },
                             children: h(Attrs.Provider, { value: attrs, children: h(tree, attrs) }),
