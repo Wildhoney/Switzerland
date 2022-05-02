@@ -18,9 +18,11 @@
         "express": "^4.18.1",
         "glob": "^8.0.1",
         "prettier": "^2.6.2",
+        "redux": "^4.2.0",
+        "redux-thunk": "^2.4.1",
         "string-template": "^1.0.0",
         "ts-node": "^10.7.0",
-        "tsconfig-paths": "^3.14.1",
+        "tsconfig-paths": "^4.0.0",
         "ttypescript": "^1.5.13",
         "typescript": "^4.6.4"
     },

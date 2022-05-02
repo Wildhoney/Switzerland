@@ -14,6 +14,7 @@ import { EffectCallback } from 'preact/hooks';
 import { RenderOptions, Tree, VariablesProps } from './types';
 import { dispatchEvent, fromCamelcase, getAttributes, hasApplicableMutations } from './utils';
 import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, StyleSheetProps } from './types';
+import { bindActionCreators } from 'redux';
 
 export const type = {
     String,
@@ -101,6 +102,7 @@ export function preload(html): string {
 }
 
 export const use = {
+    memo: useMemo,
     state: useState,
     effect: useEffect,
     callback: useCallback,
@@ -137,6 +139,15 @@ export const use = {
     dispatch() {
         const env = useContext(Env);
         return useMemo(() => dispatchEvent(env.node), [env.node]);
+    },
+    store(store, actionCreators) {
+        const { dispatch, subscribe, getState } = useMemo(() => store, [store]);
+        const [state, setState] = useState(getState());
+        const actions = useMemo(() => bindActionCreators(actionCreators, dispatch), [actionCreators, dispatch]);
+
+        subscribe(() => setState(getState()));
+
+        return [state, dispatch, actions];
     },
 };
 
