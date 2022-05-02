@@ -1,6 +1,6 @@
 {
     "name": "switzerland",
-    "version": "0.0.0",
+    "version": "6.0.0",
     "scripts": {
         "build": "rm -rf example/chunk-* && node ./esbuild.config.js",
         "start": "ts-node --preferTsExts -r tsconfig-paths/register ./example/server/index.ts",
