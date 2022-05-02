@@ -93,6 +93,13 @@ export function create<Attrs extends {}>(name: string, tree: Tree<Attrs>) {
     };
 }
 
+export function preload(html): string {
+    const links = html.match(/(<link.*type="text\/css".+?\/>)/gi);
+    const urls = links[0].match(/href="(.+?)"/gi);
+
+    return urls.map((url) => `<link as="style" rel="preload" ${url} />`).join('\n');
+}
+
 export const use = {
     state: useState,
     effect: useEffect,

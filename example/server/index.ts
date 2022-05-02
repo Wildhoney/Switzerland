@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import compression from 'compression';
 import fmt from 'string-template';
-import { render } from 'switzerland';
+import { render, preload } from 'switzerland';
 import todoApp from '../nodes/todo-app';
 
 const app = express();
@@ -27,7 +27,7 @@ app.get('*', (_, response, next) => {
 app.get('/', async (_, response) => {
     const html = fs.readFileSync(`${root}/index.html`, 'utf-8');
     const todos = await render(todoApp({ logo: 'top' }), options);
-    response.send(fmt(html, { todos }));
+    response.send(fmt(html, { todos, styles: await preload(todos) }));
 });
 
 app.use('/vendor', express.static(vendor));
