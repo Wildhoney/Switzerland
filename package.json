@@ -14,20 +14,20 @@
         "@types/string-template": "^1.0.2",
         "compression": "^1.7.4",
         "cors": "^2.8.5",
-        "esbuild": "^0.14.43",
+        "esbuild": "^0.14.47",
         "express": "^4.18.1",
         "glob": "^8.0.3",
-        "prettier": "^2.6.2",
+        "prettier": "^2.7.1",
         "redux": "^4.2.0",
         "redux-thunk": "^2.4.1",
         "string-template": "^1.0.0",
         "ts-node": "^10.8.1",
         "tsconfig-paths": "^4.0.0",
         "ttypescript": "^1.5.13",
-        "typescript": "^4.7.3"
+        "typescript": "^4.7.4"
     },
     "dependencies": {
-        "preact": "^10.7.3",
+        "preact": "^10.8.2",
         "preact-render-to-string": "^5.2.0"
     }
 }
