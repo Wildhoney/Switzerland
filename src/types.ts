@@ -13,6 +13,10 @@ export type StyleSheetProps = {
 
 export type VariablesProps = Record<string, boolean | number | string>;
 
+export type ToCamelcase = { fromKebab: () => string; fromSnake: () => string };
+
+export type FromCamelcase = { toKebab: () => string; toSnake: () => string };
+
 export function String(a: string): string {
     return a;
 }

@@ -11,7 +11,7 @@ import Preact, {
     Fragment,
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
-import { RenderOptions, Tree, VariablesProps } from './types';
+import type { RenderOptions, Tree, VariablesProps } from './types';
 import { dispatchEvent, fromCamelcase, getAttributes, hasApplicableMutations, stripTrailingSlashes } from './utils';
 import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, StyleSheetProps } from './types';
 import { bindActionCreators } from 'redux';

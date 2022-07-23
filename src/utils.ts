@@ -1,3 +1,5 @@
+import type { FromCamelcase, ToCamelcase } from './types';
+
 export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): Record<string, string> =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
@@ -9,8 +11,29 @@ export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): R
         };
     }, defaults);
 
-export function toCamelcase(value) {
-    const f = (separator) => () => {
+export function hasApplicableMutations(node, mutations) {
+    return mutations.some((mutation) => {
+        return mutation.oldValue !== node.getAttribute(mutation.attributeName);
+    });
+}
+
+export const dispatchEvent =
+    (node: HTMLElement) =>
+    (name: string, payload: Record<string, unknown>, options: Record<string, unknown> = {}): boolean => {
+        const model = typeof payload === 'object' ? payload : { value: payload };
+
+        return node.dispatchEvent(
+            new window.CustomEvent(name, {
+                bubbles: true,
+                composed: true,
+                ...options,
+                detail: { ...model, version: 6 },
+            })
+        );
+    };
+
+export function toCamelcase(value: string): ToCamelcase {
+    const f = (separator: string) => () => {
         const r = new RegExp(`(${separator}\\w)`, 'g');
         return value.replace(r, (match) => match[1].toUpperCase());
     };
@@ -21,8 +44,8 @@ export function toCamelcase(value) {
     };
 }
 
-export function fromCamelcase(value) {
-    const f = (separator) => () => {
+export function fromCamelcase(value: string): FromCamelcase {
+    const f = (separator: string) => () => {
         return value.replace(/([A-Z])/g, `${separator}$1`).toLowerCase();
     };
 
@@ -31,27 +54,6 @@ export function fromCamelcase(value) {
         toSnake: f('_'),
     };
 }
-
-export function hasApplicableMutations(node, mutations) {
-    return mutations.some((mutation) => {
-        return mutation.oldValue !== node.getAttribute(mutation.attributeName);
-    });
-}
-
-export const dispatchEvent =
-    (node) =>
-    (name, payload, options = {}) => {
-        const model = typeof payload === 'object' ? payload : { value: payload };
-
-        return node.dispatchEvent(
-            new window.CustomEvent(name, {
-                bubbles: true,
-                composed: true,
-                ...options,
-                detail: { ...model, version: 5 },
-            })
-        );
-    };
 
 export function stripTrailingSlashes(value: null | string): null | string {
     return value.replace(/(\/)*$/g, '');
