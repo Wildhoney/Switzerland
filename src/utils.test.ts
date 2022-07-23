@@ -30,7 +30,7 @@ describe('toCamelcase()', () => {
             ${'imogen'}            | ${`imogen`}
             ${'my-name-is-imogen'} | ${`my-name-is-imogen`}
             ${'my_name_is_imogen'} | ${`myNameIsImogen`}
-        `('should be able convert camelcase to kebabcase and transform "$input" → "$output"', ({ input, output }) => {
+        `('should be able convert camelcase to snakecase and transform "$input" → "$output"', ({ input, output }) => {
             expect(toCamelcase(input).fromSnake()).toEqual(output);
         });
     });
@@ -43,7 +43,7 @@ describe('fromCamelcase()', () => {
             ${'imogen'}            | ${`imogen`}
             ${'my_name_is_imogen'} | ${`my_name_is_imogen`}
             ${'myNameIsImogen'}    | ${`my-name-is-imogen`}
-        `('should be able convert camelcase to kebabcase and transform "$input" → "$output"', ({ input, output }) => {
+        `('should be able convert camelcase from kebabcase and transform "$input" → "$output"', ({ input, output }) => {
             expect(fromCamelcase(input).toKebab()).toEqual(output);
         });
     });
@@ -54,7 +54,7 @@ describe('fromCamelcase()', () => {
             ${'imogen'}            | ${`imogen`}
             ${'my-name-is-imogen'} | ${`my-name-is-imogen`}
             ${'myNameIsImogen'}    | ${`my_name_is_imogen`}
-        `('should be able convert camelcase to kebabcase and transform "$input" → "$output"', ({ input, output }) => {
+        `('should be able convert camelcase from snakecase and transform "$input" → "$output"', ({ input, output }) => {
             expect(fromCamelcase(input).toSnake()).toEqual(output);
         });
     });
