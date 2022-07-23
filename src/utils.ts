@@ -14,6 +14,7 @@ export function toCamelcase(value) {
         const r = new RegExp(`(${separator}\\w)`, 'g');
         return value.replace(r, (match) => match[1].toUpperCase());
     };
+
     return {
         fromKebab: f('-'),
         fromSnake: f('_'),
@@ -24,6 +25,7 @@ export function fromCamelcase(value) {
     const f = (separator) => () => {
         return value.replace(/([A-Z])/g, `${separator}$1`).toLowerCase();
     };
+
     return {
         toKebab: f('-'),
         toSnake: f('_'),
@@ -50,3 +52,7 @@ export const dispatchEvent =
             })
         );
     };
+
+export function stripTrailingSlashes(value: null | string): null | string {
+    return value.replace(/(\/)*$/g, '');
+}

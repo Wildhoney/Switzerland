@@ -12,7 +12,7 @@ import Preact, {
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
 import { RenderOptions, Tree, VariablesProps } from './types';
-import { dispatchEvent, fromCamelcase, getAttributes, hasApplicableMutations } from './utils';
+import { dispatchEvent, fromCamelcase, getAttributes, hasApplicableMutations, stripTrailingSlashes } from './utils';
 import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, StyleSheetProps } from './types';
 import { bindActionCreators } from 'redux';
 
@@ -38,7 +38,16 @@ const Env = createContext<RenderOptions>({
 const Attrs = createContext<Record<string, string>>({});
 
 export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
-    return renderToString(h(Fragment, {}, h(Env.Provider, { value: { ...options, node: null }, children: vnode })));
+    return renderToString(
+        h(
+            Fragment,
+            {},
+            h(Env.Provider, {
+                value: { ...options, path: stripTrailingSlashes(options.path), node: null },
+                children: vnode,
+            })
+        )
+    );
 }
 
 export function create<Attrs extends {}>(name: string, tree: Tree<Attrs>) {
@@ -71,7 +80,7 @@ export function create<Attrs extends {}>(name: string, tree: Tree<Attrs>) {
 
                     Preact.render(
                         h(Env.Provider, {
-                            value: { path: window.location.href, root: null, node: this },
+                            value: { path: window.location.origin, root: null, node: this },
                             children: h(Attrs.Provider, { value: attrs, children: h(tree, attrs) }),
                         }),
                         shadowRoot as unknown as Element
