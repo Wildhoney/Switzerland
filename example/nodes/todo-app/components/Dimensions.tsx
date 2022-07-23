@@ -1,7 +1,7 @@
-import { h, node } from 'switzerland';
+import { h, node, VNode } from 'switzerland';
 import { useResize } from '../utils';
 
-export default function Dimensions() {
+export default function Dimensions(): VNode {
     const dimensions = useResize();
 
     return (
