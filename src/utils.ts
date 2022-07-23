@@ -33,7 +33,7 @@ export const dispatchEvent =
     };
 
 export function toCamelcase(value: string): ToCamelcase {
-    const f = (separator: string) => () => {
+    const f = (separator: string) => (): string => {
         const r = new RegExp(`(${separator}\\w)`, 'g');
         return value.replace(r, (match) => match[1].toUpperCase());
     };
@@ -45,7 +45,7 @@ export function toCamelcase(value: string): ToCamelcase {
 }
 
 export function fromCamelcase(value: string): FromCamelcase {
-    const f = (separator: string) => () => {
+    const f = (separator: string) => (): string => {
         return value.replace(/([A-Z])/g, `${separator}$1`).toLowerCase();
     };
 
