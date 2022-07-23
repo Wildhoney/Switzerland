@@ -1,9 +1,10 @@
-import { create, h, use, node, type, VNode } from 'switzerland';
-import { Props } from './types';
+import { VNode, create, h, node, type, use } from 'switzerland';
+
 import TodoInput from '../todo-input';
 import TodoList from '../todo-list';
 import Dimensions from './components/Dimensions';
 import Position from './components/Position';
+import { Props } from './types';
 
 export default create<Props>('todo-app', (): VNode => {
     const path = use.path(import.meta.url);

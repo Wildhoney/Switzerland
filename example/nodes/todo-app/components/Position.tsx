@@ -1,4 +1,5 @@
-import { h, use, VNode } from 'switzerland';
+import { VNode, h, use } from 'switzerland';
+
 import { Props as RootProps } from '../types';
 
 type Props = {

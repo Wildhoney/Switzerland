@@ -1,10 +1,11 @@
-import path from 'path';
-import fs from 'fs';
-import express from 'express';
-import cors from 'cors';
 import compression from 'compression';
+import cors from 'cors';
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
 import fmt from 'string-template';
-import { render, preload } from 'switzerland';
+import { preload, render } from 'switzerland';
+
 import todoApp from '../nodes/todo-app';
 
 const app = express();

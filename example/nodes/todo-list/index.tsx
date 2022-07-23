@@ -1,8 +1,10 @@
-import { create, h, use, node } from 'switzerland';
+import { create, h, node, use } from 'switzerland';
+
 import { actionCreators, store } from '../todo-app/utils';
 // import { store, actionCreators } from '../../utils/store.js';
 import List from './components/List';
 import Nothing from './components/Nothing';
+
 // import db from '../../utils/db.js';
 
 export default create('todo-list', () => {

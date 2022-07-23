@@ -1,4 +1,5 @@
-import { h, node, VNode } from 'switzerland';
+import { VNode, h, node } from 'switzerland';
+
 import { useResize } from '../utils';
 
 export default function Dimensions(): VNode {

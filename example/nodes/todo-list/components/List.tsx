@@ -1,4 +1,4 @@
-import { h, node, VNode } from 'switzerland';
+import { VNode, h, node } from 'switzerland';
 
 type Props = {
     history?: any;

@@ -1,4 +1,14 @@
 import { useEffect } from 'preact/hooks';
+// export async function createServiceWorker({ path, window }) {
+//     try {
+//         window.navigator.serviceWorker &&
+//             (await window.navigator.serviceWorker.register(path('../../../utils/worker.js'), {
+//                 scope: '/',
+//             }));
+//     } catch {}
+// }
+import { applyMiddleware, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import { use } from 'switzerland';
 
 export function useResize(): null | { width: number; height: number } {
@@ -19,18 +29,6 @@ export function useResize(): null | { width: number; height: number } {
 
     return state;
 }
-
-// export async function createServiceWorker({ path, window }) {
-//     try {
-//         window.navigator.serviceWorker &&
-//             (await window.navigator.serviceWorker.register(path('../../../utils/worker.js'), {
-//                 scope: '/',
-//             }));
-//     } catch {}
-// }
-
-import { createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
 
 const initialState = {
     list: [],

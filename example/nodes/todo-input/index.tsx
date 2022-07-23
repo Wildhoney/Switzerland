@@ -1,4 +1,5 @@
-import { create, h, use, node } from 'switzerland';
+import { create, h, node, use } from 'switzerland';
+
 import { actionCreators, store } from '../todo-app/utils';
 
 export default create('todo-input', () => {

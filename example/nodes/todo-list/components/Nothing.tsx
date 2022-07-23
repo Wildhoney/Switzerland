@@ -1,4 +1,4 @@
-import { h, VNode } from 'switzerland';
+import { VNode, h } from 'switzerland';
 
 export default function Nothing(): VNode {
     return (

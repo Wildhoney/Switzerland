@@ -1,20 +1,21 @@
 import { VNode, h } from 'preact';
 import renderToString from 'preact-render-to-string';
 import Preact, {
-    useState,
-    useEffect,
-    useCallback,
-    useReducer,
-    useContext,
-    useMemo,
-    createContext,
     Fragment,
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useReducer,
+    useState,
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
-import type { RenderOptions, Tree, VariablesProps } from './types';
-import { dispatchEvent, fromCamelcase, getAttributes, hasApplicableMutations, stripTrailingSlashes } from './utils';
-import { String, Int, BigInt, Float, Bool, Array, Tuple, Regex, StyleSheetProps } from './types';
 import { bindActionCreators } from 'redux';
+
+import type { RenderOptions, Tree, VariablesProps } from './types';
+import { Array, BigInt, Bool, Float, Int, Regex, String, StyleSheetProps, Tuple } from './types';
+import { dispatchEvent, fromCamelcase, getAttributes, hasApplicableMutations, stripTrailingSlashes } from './utils';
 
 export const type = {
     String,
