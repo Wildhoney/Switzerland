@@ -9,9 +9,6 @@ export default create<Props>('todo-app', (): VNode => {
     const path = use.path(import.meta.url);
     const attrs = use.attrs({ logo: type.String });
 
-    const e = use.env();
-    console.log(e);
-
     const isBottom = attrs.logo === 'bottom';
     // const history = use.history({ filter: [type.Bool, false] });
 
