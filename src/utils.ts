@@ -1,6 +1,8 @@
+import { Primitive } from 'utility-types';
+
 import type { FromCamelcase, ToCamelcase } from './types';
 
-export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): Record<string, string> =>
+export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): Record<string, Primitive> =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
         const [f] = [].concat(types[name] || ((a) => a));

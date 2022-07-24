@@ -12,6 +12,7 @@ import Preact, {
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
 import { bindActionCreators } from 'redux';
+import type { Primitive } from 'utility-types';
 
 import type { RenderOptions, Tree, VariablesProps } from './types';
 import { Array, BigInt, Bool, Float, Int, Regex, String, StyleSheetProps, Tuple } from './types';
@@ -36,7 +37,7 @@ const Env = createContext<RenderOptions>({
     node: null,
 });
 
-const Attrs = createContext<Record<string, string>>({});
+const Attrs = createContext<Record<string, Primitive>>({});
 
 export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
     return renderToString(
@@ -51,7 +52,7 @@ export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
     );
 }
 
-export function create<Attrs extends {}>(name: string, tree: Tree<Attrs>) {
+export function create<Attrs extends Record<string, Primitive>>(name: string, tree: Tree<Attrs>) {
     if (typeof window !== 'undefined') {
         window.customElements.define(
             name,
@@ -136,7 +137,7 @@ export const use = {
             return `${env.path.replace(/(\/)*$/g, '')}/${url
                 .replace(env.root, '')
                 .replace(/^(\/)*/g, '')
-                .replace(/\/[^\/]*$/i, '')}/${resourcePath}`;
+                .replace(/\/[^/]*$/i, '')}/${resourcePath}`;
         };
     },
     attrs<Attrs>(map: Partial<Attrs>): Record<string, any> {
