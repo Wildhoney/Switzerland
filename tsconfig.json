@@ -9,9 +9,7 @@
         "jsxFactory": "h",
         "jsxFragmentFactory": "node.Fragment",
         "paths": {
-          "switzerland": [
-            "src/index.ts"
-          ]
+            "switzerland": ["src/index.ts"]
         },
         "strict": true,
         "noFallthroughCasesInSwitch": true,

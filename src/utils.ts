@@ -13,9 +13,10 @@ export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): R
         };
     }, defaults);
 
-export function hasApplicableMutations(node, mutations) {
+export function hasApplicableMutations(node: HTMLElement, mutations: MutationRecord[]): Boolean {
     return mutations.some((mutation) => {
-        return mutation.oldValue !== node.getAttribute(mutation.attributeName);
+        const { attributeName, oldValue } = mutation;
+        return attributeName ? oldValue !== node.getAttribute(attributeName) : false;
     });
 }
 
@@ -58,5 +59,5 @@ export function fromCamelcase(value: string): FromCamelcase {
 }
 
 export function stripTrailingSlashes(value: null | string): null | string {
-    return value.replace(/(\/)*$/g, '');
+    return value?.replace(/(\/)*$/g, '') ?? null;
 }

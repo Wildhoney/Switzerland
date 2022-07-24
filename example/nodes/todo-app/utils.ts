@@ -22,9 +22,9 @@ export function useResize(): null | { width: number; height: number } {
             })
         );
 
-        observer.observe(env.node);
+        env.node && observer.observe(env.node);
 
-        return () => observer.unobserve(env.node);
+        return () => env.node && observer.unobserve(env.node);
     }, [env.node]);
 
     return state;
@@ -46,7 +46,7 @@ function getId() {
     return integers.toString();
 }
 
-function createModel(text) {
+function createModel(text: string) {
     return {
         id: getId(),
         text,
@@ -77,7 +77,7 @@ function reducer(state = initialState, event) {
 }
 
 export const actionCreators = {
-    add: (text) => async (dispatch) => {
+    add: (text: string) => async (dispatch) => {
         // const db = await indexedDb();
         const model = createModel(text);
         // db.add(model);

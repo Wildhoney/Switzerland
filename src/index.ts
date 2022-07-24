@@ -11,7 +11,7 @@ import Preact, {
     useState,
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
-import { bindActionCreators } from 'redux';
+import { Store, bindActionCreators } from 'redux';
 import type { Primitive } from 'utility-types';
 
 import type { RenderOptions, Tree, VariablesProps } from './types';
@@ -57,7 +57,7 @@ export function create<Attrs extends Record<string, Primitive>>(name: string, tr
         window.customElements.define(
             name,
             class Swiss extends HTMLElement {
-                private observer: MutationObserver;
+                private observer?: MutationObserver;
 
                 connectedCallback() {
                     this.observer = new window.MutationObserver(
@@ -73,7 +73,7 @@ export function create<Attrs extends Record<string, Primitive>>(name: string, tr
                 }
 
                 disconnectedCallback() {
-                    this.observer.disconnect();
+                    this.observer?.disconnect();
                 }
 
                 render() {
@@ -105,11 +105,11 @@ export function create<Attrs extends Record<string, Primitive>>(name: string, tr
     };
 }
 
-export function preload(html): string {
-    const links = html.match(/(<link.*type="text\/css".+?\/>)/gi);
+export function preload(html: string): string {
+    const links = html.match(/(<link.*type="text\/css".+?\/>)/gi) ?? [];
     const urls = links[0].match(/href="(.+?)"/gi);
 
-    return urls.map((url) => `<link as="style" rel="preload" ${url} />`).join('\n');
+    return urls?.map((url) => `<link as="style" rel="preload" ${url} />`).join('\n') ?? '';
 }
 
 export const use = {
@@ -127,17 +127,19 @@ export const use = {
     env() {
         return useContext(Env);
     },
-    path(componentUrl: string) {
+    path(componentUrl: string): (resourcePath: string) => string {
         const env = useContext(Env);
 
-        return (resourcePath: string) => {
+        return (resourcePath: string): string => {
             if (typeof window !== 'undefined') return new URL(resourcePath, componentUrl).href;
 
             const url = componentUrl.replace('file://', '') ?? '';
-            return `${env.path.replace(/(\/)*$/g, '')}/${url
-                .replace(env.root, '')
-                .replace(/^(\/)*/g, '')
-                .replace(/\/[^/]*$/i, '')}/${resourcePath}`;
+            return !env.path || !env.root
+                ? resourcePath
+                : `${env.path.replace(/(\/)*$/g, '')}/${url
+                      .replace(env.root, '')
+                      .replace(/^(\/)*/g, '')
+                      .replace(/\/[^/]*$/i, '')}/${resourcePath}`;
         };
     },
     attrs<Attrs>(map: Partial<Attrs>): Record<string, any> {
@@ -149,9 +151,9 @@ export const use = {
     },
     dispatch() {
         const env = useContext(Env);
-        return useMemo(() => dispatchEvent(env.node), [env.node]);
+        return useMemo(() => env.node instanceof HTMLElement && dispatchEvent(env.node), [env.node]);
     },
-    store(store, actionCreators) {
+    store(store: Store, actionCreators) {
         const { dispatch, subscribe, getState } = useMemo(() => store, [store]);
         const [state, setState] = useState(getState());
         const actions = useMemo(() => bindActionCreators(actionCreators, dispatch), [actionCreators, dispatch]);
