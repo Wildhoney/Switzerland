@@ -26,7 +26,7 @@ export function Int(a: string): null | number {
     return Number.isNaN(value) ? null : value;
 }
 
-export function BigInt(a: string): null | BigInt {
+export function BigInt(a: string): null | bigint {
     try {
         return window.BigInt(a);
     } catch {
