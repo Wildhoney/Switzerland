@@ -37,7 +37,7 @@ const Env = createContext<RenderOptions>({
     node: null,
 });
 
-const Attrs = createContext<Record<string, Primitive>>({});
+const Attrs = createContext<Record<string, string>>({});
 
 export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
     return renderToString(
@@ -52,7 +52,7 @@ export function render(vnode: VNode, options: Omit<RenderOptions, 'node'>) {
     );
 }
 
-export function create<Attrs extends Record<string, Primitive>>(name: string, tree: Tree<Attrs>) {
+export function create<Attrs extends Record<string, string>>(name: string, tree: Tree<Attrs>) {
     if (typeof window !== 'undefined') {
         window.customElements.define(
             name,

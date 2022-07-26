@@ -2,7 +2,7 @@ import { Primitive } from 'utility-types';
 
 import type { FromCamelcase, ToCamelcase } from './types';
 
-export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): Record<string, Primitive> =>
+export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): Record<string, string> =>
     Object.values(attrs).reduce((acc, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
         const [f] = [].concat(types[name] || ((a) => a));
@@ -13,7 +13,7 @@ export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): R
         };
     }, defaults);
 
-export function hasApplicableMutations(node: HTMLElement, mutations: MutationRecord[]): Boolean {
+export function hasApplicableMutations(node: HTMLElement, mutations: MutationRecord[]): boolean {
     return mutations.some((mutation) => {
         const { attributeName, oldValue } = mutation;
         return attributeName ? oldValue !== node.getAttribute(attributeName) : false;

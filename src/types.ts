@@ -71,16 +71,16 @@ export function Array(f = String) {
     return (a: string): string[] => a.split(',').map((a) => f(a));
 }
 
-export function Tuple(...fs) {
+export function Tuple(...fs: ((a: string) => any)[]) {
     return (a: string): string[] =>
         a.split(',').map((a, index) => {
-            const f = fs[index] || String;
+            const f = fs[index] ?? String;
             return f(a);
         });
 }
 
 export function Regex(expression: RegExp) {
-    return (a: string): Record<string, string> => {
+    return (a: string): Record<string, null | string> => {
         const captureGroups = [];
         const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
 
@@ -90,12 +90,6 @@ export function Regex(expression: RegExp) {
 
         const match = a.match(expression);
 
-        return captureGroups.reduce(
-            (model, key) => ({
-                ...model,
-                [key]: model[key] ? model[key] : null,
-            }),
-            match ? match.groups : {}
-        );
+        return captureGroups.reduce((model, key) => ({ ...model, [key]: model?.[key] ?? null }), match?.groups ?? {});
     };
 }

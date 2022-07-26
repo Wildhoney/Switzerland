@@ -3,6 +3,7 @@
         "baseUrl": ".",
         "module": "esnext",
         "moduleResolution": "node",
+        "target": "esnext",
         "allowSyntheticDefaultImports": true,
         "downlevelIteration": true,
         "jsx": "react",
