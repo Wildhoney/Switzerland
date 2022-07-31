@@ -6,7 +6,7 @@ export type RenderOptions = { path: null | string; root: null | string; node: nu
 
 export type StyleSheetProps = {
     href: string;
-    media: string;
+    media?: string;
 };
 
 export type VariablesProps = Record<string, boolean | number | string>;
@@ -28,7 +28,7 @@ export function Int(a: string): null | number {
     return Number.isNaN(value) ? null : value;
 }
 
-export function BigInt(a: string): null | BigInt {
+export function BigInt(a: string): null | bigint {
     try {
         return window.BigInt(a);
     } catch {
@@ -75,7 +75,7 @@ export function Array(f = String) {
     return (a: string): string[] => a.split(',').map((a) => f(a));
 }
 
-export function Tuple(...fs: ((a: string) => any)[]) {
+export function Tuple(...fs: ((a: string) => string)[]) {
     return (a: string): string[] =>
         a.split(',').map((a, index) => {
             const f = fs[index] ?? String;

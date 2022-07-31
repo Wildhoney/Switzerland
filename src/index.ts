@@ -141,7 +141,7 @@ export const use = {
                       .replace(/\/[^/]*$/i, '')}/${resourcePath}`;
         };
     },
-    attrs<Attrs>(map: Partial<Attrs>): Record<string, any> {
+    attrs<Attrs>(map: Partial<Attrs>): Record<string, string> {
         const attrs = useContext(Attrs);
         return Object.entries(attrs).reduce(
             (attrs, [key, value]) => ({ ...attrs, [key]: (map[key] ?? String)(value) }),

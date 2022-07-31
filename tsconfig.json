@@ -11,13 +11,13 @@
         "jsxFragmentFactory": "node.Fragment",
         "paths": {
             "switzerland": ["src/index.ts"]
-        }
+        },
         // "strict": true,
-        // "noFallthroughCasesInSwitch": true,
-        // "noImplicitReturns": true,
-        // "forceConsistentCasingInFileNames": true,
-        // "noPropertyAccessFromIndexSignature": true,
-        // "noImplicitOverride": true
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "forceConsistentCasingInFileNames": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "noImplicitOverride": true
     },
     "ts-node": {
         "compilerOptions": {

@@ -16,11 +16,11 @@ export default function Position({ is }: Props): VNode {
     return (
         <li>
             <em>Logo:</em>{' '}
-            <a class={is === 'bottom' ? 'active' : undefined} onClick={handlePositionToggle}>
+            <a class={is === 'bottom' && 'active'} onClick={handlePositionToggle}>
                 Bottom
             </a>{' '}
             <span>/</span>{' '}
-            <a class={is === 'top' ? 'active' : undefined} onClick={handlePositionToggle}>
+            <a class={is === 'top' && 'active'} onClick={handlePositionToggle}>
                 Top
             </a>
         </li>

@@ -1,5 +1,3 @@
-import { Primitive } from 'utility-types';
-
 import type { DispatchEventOptions, DispatchEventPayload, FromCamelcase, ToCamelcase } from './types';
 
 export const getAttributes = (attrs: NamedNodeMap): Record<string, string> =>
