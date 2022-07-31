@@ -21,7 +21,7 @@ export default function List({ history, actions, list }: Props): VNode {
                 <li class={model.done ? 'done' : ''}>
                     <p onClick={(): void => actions.mark(model.id)}>{model.text}</p>
 
-                    <button class="delete" onClick={(): void => actions.remove(model.id)}>
+                    <button class="delete" onClick={(): void => actions.remove(model.id)} data-qa="delete">
                         Delete
                     </button>
                 </li>

@@ -5,7 +5,8 @@
         "build": "rm -rf example/chunk-* && node ./esbuild.config.js",
         "start": "ts-node --preferTsExts -r tsconfig-paths/register ./example/server/index.ts",
         "format": "prettier . --write",
-        "test": "yarn typecheck && yarn lint && yarn unit",
+        "test": "yarn typecheck && yarn lint && yarn unit && yarn e2e",
+        "e2e": "concurrently -k -s first  'yarn start' 'wait-port localhost:3000 && cypress run'",
         "typecheck": "tsc --noEmit",
         "lint": "eslint src/** --fix",
         "unit": "jest"
@@ -21,7 +22,9 @@
         "@typescript-eslint/eslint-plugin": "^5.31.0",
         "@typescript-eslint/parser": "^5.31.0",
         "compression": "^1.7.4",
+        "concurrently": "^7.3.0",
         "cors": "^2.8.5",
+        "cypress": "^10.3.1",
         "esbuild": "^0.14.51",
         "eslint": "^8.20.0",
         "eslint-plugin-prettier": "^4.2.1",
@@ -37,7 +40,8 @@
         "ts-node": "^10.9.1",
         "tsconfig-paths": "^4.0.0",
         "ttypescript": "^1.5.13",
-        "typescript": "^4.7.4"
+        "typescript": "^4.7.4",
+        "wait-port": "^0.3.0"
     },
     "dependencies": {
         "preact": "^10.10.0",

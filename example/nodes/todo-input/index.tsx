@@ -32,7 +32,7 @@ export default create('todo-input', () => {
                     onInput={(event) => setText((event.target as any).value)}
                 />
 
-                <button type="submit" class="add" />
+                <button type="submit" class="add" data-qa="add" />
             </form>
 
             <node.StyleSheet href={path('./styles/index.css')} />

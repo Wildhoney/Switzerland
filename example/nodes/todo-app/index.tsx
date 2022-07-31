@@ -27,7 +27,7 @@ export default create<Props>('todo-app', (): VNode => {
 
                 <ul>
                     <Dimensions />
-                    <Position is={attrs['logo'] as "bottom" | "top"} />
+                    <Position is={attrs['logo'] as 'bottom' | 'top'} />
                 </ul>
             </section>
 
