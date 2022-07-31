@@ -12,7 +12,6 @@ import Preact, {
 } from 'preact/compat';
 import { EffectCallback } from 'preact/hooks';
 import { Store, bindActionCreators } from 'redux';
-import type { Primitive } from 'utility-types';
 
 import type { RenderOptions, Tree, VariablesProps } from './types';
 import { Array, BigInt, Bool, Float, Int, Regex, String, StyleSheetProps, Tuple } from './types';

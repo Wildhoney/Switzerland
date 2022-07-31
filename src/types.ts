@@ -6,7 +6,7 @@ export type RenderOptions = { path: null | string; root: null | string; node: nu
 
 export type StyleSheetProps = {
     href: string;
-    media?: null | string;
+    media: string;
 };
 
 export type VariablesProps = Record<string, boolean | number | string>;
@@ -14,6 +14,10 @@ export type VariablesProps = Record<string, boolean | number | string>;
 export type ToCamelcase = { fromKebab: () => string; fromSnake: () => string };
 
 export type FromCamelcase = { toKebab: () => string; toSnake: () => string };
+
+export type DispatchEventPayload = Record<string, unknown>;
+
+export type DispatchEventOptions = Record<string, unknown>;
 
 export function String(a: string): string {
     return a;
@@ -24,7 +28,7 @@ export function Int(a: string): null | number {
     return Number.isNaN(value) ? null : value;
 }
 
-export function BigInt(a: string): null | bigint {
+export function BigInt(a: string): null | BigInt {
     try {
         return window.BigInt(a);
     } catch {

@@ -1,6 +1,6 @@
 import { Primitive } from 'utility-types';
 
-import type { FromCamelcase, ToCamelcase } from './types';
+import type { DispatchEventOptions, DispatchEventPayload, FromCamelcase, ToCamelcase } from './types';
 
 export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): Record<string, string> =>
     Object.values(attrs).reduce((acc, attr) => {
@@ -22,7 +22,7 @@ export function hasApplicableMutations(node: HTMLElement, mutations: MutationRec
 
 export const dispatchEvent =
     (node: HTMLElement) =>
-    (name: string, payload: Record<string, unknown>, options: Record<string, unknown> = {}): boolean => {
+    (name: string, payload: DispatchEventPayload, options: DispatchEventOptions = {}): boolean => {
         const model = typeof payload === 'object' ? payload : { value: payload };
 
         return node.dispatchEvent(

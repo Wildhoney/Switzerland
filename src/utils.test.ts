@@ -1,4 +1,4 @@
-import { dispatchEvent, fromCamelcase, stripTrailingSlashes, toCamelcase } from './utils';
+import { dispatchEvent, fromCamelcase, hasApplicableMutations, stripTrailingSlashes, toCamelcase } from './utils';
 
 describe('stripTrailingSlashes()', () => {
     it.each`
@@ -70,5 +70,19 @@ describe('dispatchEvent()', () => {
 
         expect(spy).toHaveBeenCalledTimes(1);
         expect(result).toBe(true);
+    });
+});
+
+describe('hasApplicableMutations()', () => {
+    it.each`
+        input      | output
+        ${'Adam'}  | ${true}
+        ${'Maria'} | ${false}
+    `('should be able to determine when there is an applicable mutation for "$input"', ({ input, output }) => {
+        const node = document.createElement('div');
+        node.setAttribute('name', 'Maria');
+        const mutations = [{ attributeName: 'name', oldValue: input }];
+
+        expect(hasApplicableMutations(node, mutations as MutationRecord[])).toBe(output);
     });
 });
