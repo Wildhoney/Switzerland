@@ -1,4 +1,12 @@
-import { dispatchEvent, fromCamelcase, hasApplicableMutations, stripTrailingSlashes, toCamelcase } from './utils';
+import * as t from './types';
+import {
+    dispatchEvent,
+    fromCamelcase,
+    getAttributes,
+    hasApplicableMutations,
+    stripTrailingSlashes,
+    toCamelcase,
+} from './utils';
 
 describe('stripTrailingSlashes()', () => {
     it.each`
@@ -84,5 +92,22 @@ describe('hasApplicableMutations()', () => {
         const mutations = [{ attributeName: 'name', oldValue: input }];
 
         expect(hasApplicableMutations(node, mutations as MutationRecord[])).toBe(output);
+    });
+});
+
+describe('getAttributes()', () => {
+    it('should be able to fetch the attributes from the supplied node', () => {
+        const node = document.createElement('div');
+        node.setAttribute('firstName', 'Adam');
+        node.setAttribute('age', '36');
+        node.setAttribute('location', 'Horsham, UK');
+
+        expect(getAttributes(node.attributes)).toMatchInlineSnapshot(`
+            Object {
+              "age": "36",
+              "firstname": "Adam",
+              "location": "Horsham, UK",
+            }
+        `);
     });
 });

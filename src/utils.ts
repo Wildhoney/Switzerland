@@ -2,16 +2,15 @@ import { Primitive } from 'utility-types';
 
 import type { DispatchEventOptions, DispatchEventPayload, FromCamelcase, ToCamelcase } from './types';
 
-export const getAttributes = (attrs: NamedNodeMap, types = {}, defaults = {}): Record<string, string> =>
-    Object.values(attrs).reduce((acc, attr) => {
+export const getAttributes = (attrs: NamedNodeMap): Record<string, string> =>
+    Object.values(attrs).reduce((attrs, attr) => {
         const name = toCamelcase(attr.nodeName).fromKebab();
-        const [f] = [].concat(types[name] || ((a) => a));
 
         return {
-            ...acc,
-            [name]: f(attr.nodeValue),
+            ...attrs,
+            [name]: attr.nodeValue,
         };
-    }, defaults);
+    }, {});
 
 export function hasApplicableMutations(node: HTMLElement, mutations: MutationRecord[]): boolean {
     return mutations.some((mutation) => {
