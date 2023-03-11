@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  container-type: inline-size;
+  width: 60vw;
+}
+
+section.weather {
+  position: relative;
+}

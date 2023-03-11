@@ -1,0 +1,14 @@
+section.coordinates {
+  position: absolute;
+  bottom: 0;
+  background-color: rgb(229, 229, 229);
+  transform: translate(10px, 19px);
+  color: darkgray;
+  font-size: 11px;
+  border-radius: 0 0 3px 3px;
+  box-shadow: inset 0 5px 5px -5px rgba(0, 0, 0, 0.075);
+  height: 25px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}

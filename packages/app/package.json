@@ -1,0 +1,45 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.tsx",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "node": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier . --write",
+    "lint": "eslint src/** --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lausanne": "1.0.0"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "default"
+        ],
+        "outputs": [],
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "typecheck": {
+        "inputs": [
+          "default"
+        ],
+        "outputs": [],
+        "dependsOn": [
+          "build"
+        ]
+      }
+    }
+  },
+  "devDependencies": {
+    "@sinclair/typebox": "0.25.24"
+  }
+}

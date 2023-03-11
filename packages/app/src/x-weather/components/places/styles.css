@@ -1,0 +1,14 @@
+section.places {
+  padding: 20px;
+  display: flex;
+}
+
+section.places select {
+  background-color: var(--gradient-colour);
+  filter: brightness(90%);
+  border: 0;
+  padding: 10px;
+  border-radius: 3px;
+  flex: 1;
+  text-shadow: 1px 1px 0 white;
+}

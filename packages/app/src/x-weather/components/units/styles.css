@@ -1,0 +1,35 @@
+section.units {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 20px;
+  margin-bottom: 10px;
+  justify-content: start;
+}
+
+section.units label {
+  color: darkgray;
+  font-weight: bold;
+}
+
+section.units button {
+  background-color: transparent;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.25s, text-decoration-color 1s;
+  font-size: inherit;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+}
+
+section.units button.active {
+  color: hotpink;
+  cursor: not-allowed;
+  text-decoration-color: currentColor;
+}
+
+section.units div.separator {
+  color: darkgray;
+}

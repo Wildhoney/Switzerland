@@ -1,0 +1,21 @@
+a.logo {
+  position: absolute;
+  bottom: 0;
+  transform: translate(0, 40px);
+  right: 0;
+  width: clamp(120px, 35%, 150px);
+}
+
+@container (max-width: 320px) {
+  a.logo {
+    left: 0;
+    bottom: unset;
+    top: 0;
+    margin: auto;
+    transform: translate(0, -40px);
+  }
+}
+
+a.logo img {
+  width: 100%;
+}

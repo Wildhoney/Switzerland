@@ -1,0 +1,57 @@
+{
+  "name": "lausanne",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.tsx",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "node": {
+      "types": "./dist/index.server.d.ts",
+      "default": "./dist/index.server.js"
+    },
+    "default": {
+      "types": "./dist/index.client.d.ts",
+      "default": "./dist/index.client.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && rollup -c rollup.config.js && rm -rf dist/client",
+    "format": "prettier . --write",
+    "unit": "jest",
+    "lint": "eslint src/** --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "nx": {
+    "targets": {
+      "build": {
+        "inputs": [
+          "default"
+        ],
+        "outputs": [],
+        "dependsOn": [
+          "^build"
+        ]
+      },
+      "typecheck": {
+        "inputs": [
+          "default"
+        ],
+        "outputs": [],
+        "dependsOn": [
+          "build"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "preact": "10.13.0",
+    "preact-render-to-string": "5.2.6"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "0.4.0",
+    "@rollup/plugin-typescript": "11.0.0",
+    "jest-environment-jsdom": "29.4.3",
+    "rollup": "3.19.1",
+    "ts-loader": "9.4.2"
+  }
+}

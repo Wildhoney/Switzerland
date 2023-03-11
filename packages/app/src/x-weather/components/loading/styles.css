@@ -1,0 +1,30 @@
+section.loading {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 5;
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 3px solid lightgray;
+  transform: scale(0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8),
+    transform 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8),
+    visibility 0.5s cubic-bezier(0.47, 1.64, 0.41, 0.8);
+}
+
+section.loading.active {
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
+}

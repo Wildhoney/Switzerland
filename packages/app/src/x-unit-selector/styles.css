@@ -1,0 +1,27 @@
+section {
+  display: grid;
+  grid-auto-flow: row;
+  grid-gap: 1px;
+  width: var(--offset);
+  box-shadow: inset 5px 0 5px -5px rgba(0, 0, 0, 0.075);
+  border-radius: 0 3px 3px 0;
+  overflow: hidden;
+}
+
+section button {
+  border: 0;
+  color: #666;
+  cursor: pointer;
+  transition: background-color 0.25s;
+  background-color: rgb(229, 229, 229);
+}
+
+section button.active {
+  background-color: var(--gradient-colour);
+  filter: brightness(80%);
+  cursor: not-allowed;
+}
+
+section button:not(.active):hover {
+  background-color: lightgray;
+}
