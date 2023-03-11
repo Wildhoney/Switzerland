@@ -58,6 +58,15 @@ export default create('x-countries', ({ attrs }) => {
 });
 ```
 
+Using our component from within a Node environment requires us to use the exported asynchronous `render` function; we can specify an optional second parameter to the function, however as our component is currently super simple it's unnecessary at the moment.
+
+```tsx
+app.get("/", async (_, response) => {
+    const html = render(<Countries list="Japan,Croatia,Singapore" />);
+    response.send(html);
+});
+```
+
 As our components are self-contained modules, any changes to their attributes will initiate a re-render of the component's tree.
 
 ```js

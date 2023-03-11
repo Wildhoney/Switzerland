@@ -13,7 +13,7 @@ const serverOptions = {
 
 export async function render(
   App: VNode,
-  options: RenderOptions
+  options: RenderOptions = { path: null, root: null }
 ): Promise<string> {
   const loaders = new Set<Loaders>();
 

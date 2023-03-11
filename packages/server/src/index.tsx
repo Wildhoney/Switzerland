@@ -1,6 +1,6 @@
 import express from "express";
 import * as path from "node:path";
-import { render, node, preload } from "switzerland";
+import { render, preload } from "switzerland";
 import App from "app";
 
 const app = express();
