@@ -6,16 +6,6 @@
   "workspaces": [
     "packages/**"
   ],
-  "exports": {
-    "node": {
-      "types": "./packages/library/dist/index.server.d.ts",
-      "default": "./packages/library/dist/index.server.js"
-    },
-    "default": {
-      "types": "./packages/library/dist/index.client.d.ts",
-      "default": "./packages/library/dist/index.client.js"
-    }
-  },
   "scripts": {
     "build": "nx run-many --target=build",
     "start": "nx run-many --target=start",
