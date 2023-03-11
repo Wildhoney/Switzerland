@@ -35,7 +35,7 @@ export const use = {
     return Object.entries(attrs).reduce(
       (attrs, [key, value]) => ({
         ...attrs,
-        [key]: (map[key] ?? String)(value),
+        [key]: ((map[key] ?? String) as any)(value),
       }),
       {}
     ) as AttrsReturn<typeof map>;

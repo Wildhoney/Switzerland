@@ -16,10 +16,10 @@
     }
   },
   "scripts": {
-    "build": "tsc && rollup -c rollup.config.js && rm -rf dist/client",
+    "build": "make build",
     "format": "prettier . --write",
     "unit": "jest",
-    "lint": "eslint src/** --fix",
+    "lint": "make lint",
     "typecheck": "tsc --noEmit"
   },
   "nx": {
@@ -51,6 +51,7 @@
   "devDependencies": {
     "@rollup/plugin-terser": "0.4.0",
     "@rollup/plugin-typescript": "11.0.0",
+    "fslint": "1.1.0",
     "jest-environment-jsdom": "29.4.3",
     "rollup": "3.19.1",
     "ts-loader": "9.4.2"
