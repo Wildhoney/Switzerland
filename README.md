@@ -58,7 +58,7 @@ export default create('x-countries', ({ attrs }) => {
 });
 ```
 
-Using our component from within a Node environment requires us to use the exported asynchronous `render` function; we can specify an optional second parameter to the function, however as our component is currently super simple it's unnecessary at the moment.
+Using our component from within a Node environment requires us to use the exported asynchronous `render` function; we can specify an optional second parameter to the function, however our component currently doesn't perform data fetching or media inclusion and so is unnecessary.
 
 ```tsx
 app.get("/", async (_, response) => {
