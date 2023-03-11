@@ -43,14 +43,16 @@ export default create('x-countries', () => {
 Once we've defined our `x-countries` component we are able to both render it on the server and hydrate it on the client as a standard `<x-countries />` DOM element. We can then take a step further and allow our countries to be passed as a HTML attribute on the DOM node using `<x-countries list="Japan,Croatia,Singapore">`.
 
 ```tsx
-import { create } from 'switzerland';
+import { create, use, type } from 'switzerland';
 
-export default create('x-countries', ({ attrs }) => {
-    const countries = attrs.list.split(',');
+export default create('x-countries', () => {
+    const attrs = use.attrs({
+        countries: type.Array(type.String)
+    });
 
     return (
         <ul>
-            {countries.map(country => (
+            {attrs.countries.map(country => (
                 <li key={country}>{country}</li>
             ))}
         <ul>
@@ -61,6 +63,8 @@ export default create('x-countries', ({ attrs }) => {
 Using our component from within a Node environment requires us to use the exported asynchronous `render` function; we can specify an optional second parameter to the function, however our component currently doesn't perform data fetching or media inclusion and so is unnecessary.
 
 ```tsx
+import { render } from 'switzerland';
+
 app.get("/", async (_, response) => {
     const html = render(<Countries list="Japan,Croatia,Singapore" />);
     response.send(html);
