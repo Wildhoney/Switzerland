@@ -24,4 +24,43 @@
 
 ## Getting Started
 
-&hellip;
+Switzerland optionally begins with server-side rendering with hydration on the client thanks to [declarative shadow DOM](https://developer.chrome.com/en/articles/declarative-shadow-dom/) &mdash; with our components looking very familiar due to our usage of [Preact](https://preactjs.com/).
+
+```tsx
+import { create } from 'switzerland';
+
+export default create('x-countries', () => {
+    return (
+        <ul>
+            <li>Japan</li>
+            <li>Croatia</li>
+            <li>Singapore</li>
+        <ul>
+    );
+});
+```
+
+Once we've defined our `x-countries` component we are able to both render it on the server and hydrate it on the client as a standard `<x-countries />` DOM element. We can then take a step further and allow our countries to be passed as a HTML attribute on the DOM node using `<x-countries list="Japan,Croatia,Singapore">`.
+
+```tsx
+import { create } from 'switzerland';
+
+export default create('x-countries', ({ attrs }) => {
+    const countries = attrs.list.split(',');
+
+    return (
+        <ul>
+            {countries.map(country => (
+                <li key={country}>{country}</li>
+            ))}
+        <ul>
+    );
+});
+```
+
+As our components are self-contained modules, any changes to their attributes will initiate a re-render of the component's tree.
+
+```js
+const node = document.querySelector('x-countries');
+node.attributes.values = `${node.attributes.values},Ukraine,Maldives`;
+```
