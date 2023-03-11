@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "lausanne": "1.0.0"
+    "switzerland": "1.0.0"
   },
   "nx": {
     "targets": {

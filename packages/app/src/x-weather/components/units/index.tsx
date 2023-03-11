@@ -1,4 +1,4 @@
-import { VNode, node, use } from "lausanne";
+import { VNode, node, use } from "switzerland";
 import { Unit } from "../../types.js";
 import { Props } from "./types.js";
 

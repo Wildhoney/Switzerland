@@ -1,5 +1,5 @@
 import { Props } from "./types.js";
-import { use, node } from "lausanne";
+import { use, node } from "switzerland";
 import { places } from "../../utils.js";
 
 export default function Places({ value }: Props) {

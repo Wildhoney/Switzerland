@@ -1,4 +1,4 @@
-import { create, node, use } from "lausanne";
+import { create, node, use } from "switzerland";
 import { Unit } from "../x-weather/types.js";
 import { Attrs } from "./types.js";
 

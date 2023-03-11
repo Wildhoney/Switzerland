@@ -1,4 +1,4 @@
-import { use, node, VNode } from "lausanne";
+import { use, node, VNode } from "switzerland";
 
 export default function Logo(): VNode {
   const path = use.path(import.meta.url);

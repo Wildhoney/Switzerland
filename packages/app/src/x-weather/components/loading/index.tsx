@@ -1,4 +1,4 @@
-import { VNode, node, use } from "lausanne";
+import { VNode, node, use } from "switzerland";
 import { Props } from "./types.js";
 
 export default function Loading({ value }: Props): VNode {

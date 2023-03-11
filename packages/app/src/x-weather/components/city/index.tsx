@@ -1,4 +1,4 @@
-import { VNode, node, use } from "lausanne";
+import { VNode, node, use } from "switzerland";
 import Coordinates from "../coordinates/index.js";
 import Forecast from "../forecast/index.js";
 import Meta from "../meta/index.js";

@@ -1,6 +1,6 @@
 import express from "express";
 import * as path from "node:path";
-import { render, node, preload } from "lausanne";
+import { render, node, preload } from "switzerland";
 import App from "app";
 
 const app = express();
@@ -19,7 +19,7 @@ app.get("/", async (_, response) => {
 
   response.send(`<html lang="en">
       <head>
-        <title>Lausanne</title>
+        <title>Switzerland</title>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
@@ -40,7 +40,7 @@ app.get("/", async (_, response) => {
 
         <script type="importmap">
           {"imports": {
-              "lausanne": "/client/library/dist/index.client.js",
+              "switzerland": "/client/library/dist/index.client.js",
               "preact": "https://cdnjs.cloudflare.com/ajax/libs/preact/10.13.0/preact.module.min.js",
               "preact/hooks": "https://cdnjs.cloudflare.com/ajax/libs/preact/10.13.0/hooks.module.min.js",
               "preact/compat": "https://cdnjs.cloudflare.com/ajax/libs/preact/10.13.0/compat.module.min.js",

@@ -1,6 +1,6 @@
 import { Unit } from "../../types.js";
 import { Props } from "./types.js";
-import { node, use } from "lausanne";
+import { node, use } from "switzerland";
 import { toFahrenheit, toSlug } from "../../utils.js";
 
 export default function Forecast({ city, weather, unit }: Props) {
