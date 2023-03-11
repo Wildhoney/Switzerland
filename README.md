@@ -1,6 +1,6 @@
 <img src="media/logo.png" alt="Switzerland" width="300" />
 
-> Switzerland takes a functional approach to Web Components using Preact with Shadow DOM for style encapsulation and Custom Elements for interoperability.
+> Switzerland takes a functional approach to web components using Preact with shadow DOM for style encapsulation, custom elements for interoperability and server-side rendering for universality.
 
 ![npm](http://img.shields.io/npm/v/switzerland.svg?style=for-the-badge)
 &nbsp;
