@@ -3,8 +3,6 @@
   "description": "Switzerland takes a functional approach to web components using Preact with shadow DOM for style encapsulation, custom elements for interoperability and server-side rendering for universality.",
   "version": "6.0.0",
   "type": "module",
-  "main": "./src/index.tsx",
-  "types": "./dist/index.d.ts",
   "exports": {
     "node": {
       "types": "./dist/index.server.d.ts",
@@ -14,6 +12,18 @@
       "types": "./dist/index.client.d.ts",
       "default": "./dist/index.client.js"
     }
+  },
+  "dependencies": {
+    "preact": "10.13.0",
+    "preact-render-to-string": "5.2.6"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "0.4.0",
+    "@rollup/plugin-typescript": "11.0.0",
+    "fslint": "1.1.0",
+    "jest-environment-jsdom": "29.4.3",
+    "rollup": "3.19.1",
+    "ts-loader": "9.4.2"
   },
   "scripts": {
     "build": "make build",
@@ -43,17 +53,5 @@
         ]
       }
     }
-  },
-  "dependencies": {
-    "preact": "10.13.0",
-    "preact-render-to-string": "5.2.6"
-  },
-  "devDependencies": {
-    "@rollup/plugin-terser": "0.4.0",
-    "@rollup/plugin-typescript": "11.0.0",
-    "fslint": "1.1.0",
-    "jest-environment-jsdom": "29.4.3",
-    "rollup": "3.19.1",
-    "ts-loader": "9.4.2"
   }
 }

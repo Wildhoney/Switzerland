@@ -106,7 +106,7 @@ export default create('x-countries', () => {
 Styles within a shadow boundary allow for encapsulation which means we can use regular CSS documents scoped to our component's tree. We can attach our stylesheets to our component by using a regular `link` node, although Switzerland provides a `nodes` utility for `StyleSheet` and `Variables` &mdash; the latter applies custom variables to your component tree allowing CSS to access those JavaScript variables. We use the `use.path` hook to resolve media &mdash; CSS documents, images, etc... &mdash; relative to our component.
 
 ```tsx
-import { create, use, nodes } from 'switzerland';
+import { create, use, node } from 'switzerland';
 
 export default create('x-countries', () => {
     const path = use.path(import.meta.url);

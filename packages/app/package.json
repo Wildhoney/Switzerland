@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "switzerland": "1.0.0"
+    "switzerland": "workspace:*"
   },
   "nx": {
     "targets": {
