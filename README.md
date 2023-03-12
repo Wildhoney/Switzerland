@@ -144,4 +144,26 @@ ul {
 
 ## Data Fetching
 
-<!-- ... -->
+Since Switzerland allows for server-side rendering by default a `use.loader` utility hook is provided for fetching data &ndash; although you may choose to use **any** other third-party fetching utility or a simple `useEffect` and that is fine too. Using `loader` hook allows for fetching data server-side and then preventing a re-fetch on the client; we achieve this by rendering our components twice in the asynchronous `render` function we covered earlier and then including the serialised data in the tree.
+
+```tsx
+import { create, use } from 'switzerland';
+
+export default create('x-countries', () => {
+    const { data, loading, error } = use.loader('x-countries', () =>
+        fetch('https://www.example.org/countries').then(response => response.json()
+    ), []);
+
+    return loading ? <p>Loading&hellip;</p> : (
+        <>
+            <ul>
+                {countries.map(country => (
+                    <li key={country}>{country}</li>
+                ))}
+            <ul>
+        </>
+    );
+});
+```
+
+We provide a unique ID to the `loader` function which _should_ identify the individual request to prevent duplicates and to allow for reconciliation on the client. With the dependencies argument in third position we can re-invoke the `loader` client-side whenever a parameter changes; in our case we probably don't want to re-fetch given nothing changes but if fetching by a given list we might expect the current list of countries to be provided as dependencies.
