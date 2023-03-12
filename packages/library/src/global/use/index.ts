@@ -7,6 +7,12 @@ import {
   useMemo,
   useReducer,
   useState,
+  useLayoutEffect,
+  useRef,
+  useId,
+  useErrorBoundary,
+  useImperativeHandle,
+  useDebugValue,
 } from "preact/hooks";
 import { AttrsContext, AttrsReturn, EnvContext, MapGeneric } from "./types.js";
 
@@ -26,6 +32,12 @@ export const use = {
   effect: useEffect,
   callback: useCallback,
   reducer: useReducer,
+  layoutEffect: useLayoutEffect,
+  ref: useRef,
+  id: useId,
+  imperativeHandle: useImperativeHandle,
+  errorBoundary: useErrorBoundary,
+  debugValue: useDebugValue,
   mount: (fn: EffectCallback) => useEffect(fn, []),
   unmount: (fn: EffectCallback) => useEffect(() => fn, []),
   env: () => useContext(Env),
