@@ -102,12 +102,15 @@ export default create('x-countries', () => {
 
 ## Applying Styles
 
-As we're using web components to allow for style encapsulation, applying styles is more akin to how the web expects us to apply styles via vanilla CSS with class names, etc... With the shadow boundary defined on each component, styles don't bleed into other components or into other HTML elements in the DOM. StyleSheet documents are attached using the traditional `link` element but we also export a convenient `node` component for attaching stylesheets and defining custom CSS properties. We must use the `path` hook with `import.meta.url` to resolve our stylesheets relative to our component &mdash; interestingly we use the same hook for all kinds of media, such as images.
+As we're using web components to allow for style encapsulation, applying styles is more akin to how the web _expects_ us to apply styles via vanilla CSS with class names, etc... With the shadow boundary defined on each component, styles don't bleed into other components or into other HTML elements in the DOM.
+
+Styles are attached using the traditional `link` element but we also export a convenient `node` component for attaching stylesheets and defining custom CSS variables. We must use the `path` hook with `import.meta.url` to resolve our stylesheets relative to our component &mdash; interestingly we use the same hook for all kinds of media, such as images.
 
 ```tsx
 import { create, use, nodes } from 'switzerland';
 
 export default create('x-countries', () => {
+    const path = use.path(import.meta.url);
     const [countries, setCountries] = use.state(['Japan', 'Croatia', 'Singapore']);
 
     return (
@@ -126,7 +129,7 @@ export default create('x-countries', () => {
 });
 ```
 
-Custom variables allow us to pass JavaScript variables into the stylesheet &ndash; by default they're attached to the `:host` node (in our case above, `x-countries`) but you can pass the `container` to define a child node to attach them to.
+Custom variables allow us to pass JavaScript variables into our CSS stylesheet &ndash; by default they're attached to the `:host` node (in our case above, `x-countries`) but you may pass the `container` to define a child node to attach them to.
 
 ```tsx
 import { create, use, nodes } from 'switzerland';
