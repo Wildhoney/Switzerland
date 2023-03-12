@@ -24,6 +24,7 @@
 2. [Managing State](#managing-state)
 3. [Applying Styles](#applying-styles)
 4. [Data Fetching](#data-fetching)
+5. [Environment Context](#environment-context)
 
 ## Getting Started
 
@@ -150,20 +151,70 @@ Since Switzerland allows for server-side rendering by default a `use.loader` uti
 import { create, use } from "switzerland";
 
 export default create("x-countries", () => {
-  const { data, loading, error } = use.loader(
-    "x-countries",
-    () => fetch("https://www.example.org/countries").then((response) => response.json()),
-    null
-  );
+    const { data, loading, error } = use.loader(
+        'x-countries',
+        () => fetch('https://www.example.org/countries').then((response) => response.json()),
+        null
+    );
 
-  return loading ? <p>Loading&hellip;</p> : (
-    <ul>
-      {countries.map((country) => (
-        <li key={country}>{country}</li>
-      ))}
-    </ul>
-  );
+    return loading ? <p>Loading&hellip;</p> : (
+        <ul>
+            {countries.map((country) => (
+                <li key={country}>{country}</li>
+            ))}
+        </ul>
+    );
 });
 ```
 
 We provide a unique ID to the `loader` function which _should_ identify the individual request to prevent duplicates and to allow for reconciliation on the client. With the dependencies argument in third position we can re-invoke the `loader` client-side whenever a parameter changes; in our case we probably don't want to re-fetch given nothing changes but if fetching by a given list we might expect the current list of countries to be provided as dependencies.
+
+## Environment Context
+
+Providing the environment context requires some user configuration on the server side &mdash; the `render` function takes an optional second parameter which allows us to specify both the root directory on the web-server and _optionally_ the domain we're running the server on.
+
+```ts
+import { render, preload } from "switzerland";
+import App from "./App";
+
+const vendor = path.resolve("..");
+
+const options = {
+  path: process.env["DOMAIN"]
+    ? `https://${process.env["DOMAIN"]}/client`
+    : "http://localhost:3000/client",
+  root: vendor,
+};
+
+app.get("/", async (_, response) => {
+    const html = await render(<Countries list="Japan,Croatia,Singapore" />, options);
+    response.send(html);
+});
+```
+
+We use these options to resolve media using the `use.path` hook with `import.meta.url` relative to the component &ndash; on the server we need to know the root directory in order to achieve this. On the client-side however it's slightly more simple since we know the root based on each components' path. Likewise with the `path` option where we specify the domain the web-server is running on; we use this to provide absolute paths to media so that components can be utilised in third-party applications, however since it's optional we use the aforementioned `root` to specify a relative path which is perfectly fine when we're only using our components on our own web-server.
+
+Using the `use.env` hook we can access these defined parameters as well as a few additional items.
+
+```tsx
+import { create, use } from 'switzerland';
+
+export default create('x-countries', () => {
+    const { path, root, node, isServer, isClient } = use.env();
+
+    return (
+        <>
+            {node && <h1>Hey {node.nodeName}!</h1>}
+
+            <p>Server: {isServer}</p>
+            <p>Client: {isClient}</p>
+
+            <ul>
+                <li>Japan</li>
+                <li>Croatia</li>
+                <li>Singapore</li>
+            </ul>
+        </>
+    );
+});
+```
