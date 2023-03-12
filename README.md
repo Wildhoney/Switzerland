@@ -38,7 +38,7 @@ export default create('x-countries', () => {
             <li>Japan</li>
             <li>Croatia</li>
             <li>Singapore</li>
-        <ul>
+        </ul>
     );
 });
 ```
@@ -58,7 +58,7 @@ export default create('x-countries', () => {
             {attrs.countries.map(country => (
                 <li key={country}>{country}</li>
             ))}
-        <ul>
+        </ul>
     );
 });
 ```
@@ -96,14 +96,14 @@ export default create('x-countries', () => {
             {countries.map(country => (
                 <li key={country}>{country}</li>
             ))}
-        <ul>
+        </ul>
     );
 });
 ```
 
 ## Applying Styles
 
-Styles within a shadow boundary allow for encapsulation which means we can use regular CSS documents scoped to our component's tree. We can attach our stylesheets to our component by using a regular `link` node, although Switzerland provides a `nodes` utility for `StyleSheet` and `Variables` &mdash; the latter applies custom variables to your component tree allowing CSS to access those JavaScript variables. We use the `use.path` hook to resolve media &mdash; CSS documents, images, etc... &mdash; relative to our component.
+Styles within a shadow boundary allow for encapsulation which means we can use regular CSS documents scoped to our component's tree. We can attach our stylesheets to our component by using a regular `link` node, although Switzerland provides a `node` utility for `StyleSheet` and `Variables` &mdash; the latter applies custom variables to your component tree allowing CSS to access those JavaScript variables. We use the `use.path` hook to resolve media &mdash; CSS documents, images, etc... &mdash; relative to our component.
 
 ```tsx
 import { create, use, node } from 'switzerland';
@@ -118,19 +118,19 @@ export default create('x-countries', () => {
                 {countries.map(country => (
                     <li key={country}>{country}</li>
                 ))}
-            <ul>
+            </ul>
 
             <node.Variables backgroundColour={countries.length === 0 ? '#8ECCD4' : '#FBDEA3'} />
 
-            <node.StyleSheet href={path("../../src/x-weather/styles.default.css")} />
-            <node.StyleSheet href={path("../../src/x-weather/styles.mobile.css")} media="(max-width: 768px)" />
-            <node.StyleSheet href={path("../../src/x-weather/styles.print.css")} media="print" />
+            <node.StyleSheet href={path("./styles/default.css")} />
+            <node.StyleSheet href={path("./styles/mobile.css")} media="(max-width: 768px)" />
+            <node.StyleSheet href={path("./styles/print.css")} media="print" />
         </>
     );
 });
 ```
 
-We can then be quite loose when applying those styles to our component knowing that the shadow boundary will prevent styles from leaking out &mdash; we use CSS variables to apply a conditional background colour.
+We can then be quite loose when applying those styles to our component knowing that the shadow boundary will prevent styles from leaking out &mdash; we use a CSS variable to apply a conditional background colour with a fallback.
 
 ```css
 :host {
@@ -147,22 +147,22 @@ ul {
 Since Switzerland allows for server-side rendering by default a `use.loader` utility hook is provided for fetching data &ndash; although you may choose to use **any** other third-party fetching utility or a simple `useEffect` and that is fine too. Using `loader` hook allows for fetching data server-side and then preventing a re-fetch on the client; we achieve this by rendering our components twice in the asynchronous `render` function we covered earlier and then including the serialised data in the tree.
 
 ```tsx
-import { create, use } from 'switzerland';
+import { create, use } from "switzerland";
 
-export default create('x-countries', () => {
-    const { data, loading, error } = use.loader('x-countries', () =>
-        fetch('https://www.example.org/countries').then(response => response.json()
-    ), []);
+export default create("x-countries", () => {
+  const { data, loading, error } = use.loader(
+    "x-countries",
+    () => fetch("https://www.example.org/countries").then((response) => response.json()),
+    null
+  );
 
-    return loading ? <p>Loading&hellip;</p> : (
-        <>
-            <ul>
-                {countries.map(country => (
-                    <li key={country}>{country}</li>
-                ))}
-            <ul>
-        </>
-    );
+  return loading ? <p>Loading&hellip;</p> : (
+    <ul>
+      {countries.map((country) => (
+        <li key={country}>{country}</li>
+      ))}
+    </ul>
+  );
 });
 ```
 

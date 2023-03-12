@@ -37,7 +37,7 @@ export const use = {
     loader: () => Promise<State>,
     initial: Initial,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _: any[]
+    _: unknown[]
   ): LoaderResponse<Initial, State> {
     const loaders = useContext(Loader);
     const data = [...loaders].find((loader) => loader.id === id);
