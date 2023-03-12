@@ -121,6 +121,7 @@ export default create('x-countries', () => {
                 ))}
             <ul>
 
+            <node.Variables backgroundColour={countries.length === 0 ? 'red' : 'green'} />
             <node.StyleSheet href={path("../../src/x-weather/styles.default.css")} />
             <node.StyleSheet href={path("../../src/x-weather/styles.mobile.css")} media="(max-width: 768px)" />
             <node.StyleSheet href={path("../../src/x-weather/styles.print.css")} media="print" />
@@ -130,27 +131,6 @@ export default create('x-countries', () => {
 ```
 
 Custom variables allow us to pass JavaScript variables into our CSS stylesheet &ndash; by default they're attached to the `:host` node (in our case above, `x-countries`) but you may pass the `container` to define a child node to attach them to.
-
-```tsx
-import { create, use, nodes } from 'switzerland';
-
-export default create('x-countries', () => {
-    const [countries, setCountries] = use.state(['Japan', 'Croatia', 'Singapore']);
-
-    return (
-        <>
-            <ul>
-                {attrs.countries.map(country => (
-                    <li key={country}>{country}</li>
-                ))}
-            <ul>
-
-            <node.Variables backgroundColour={countries.length === 0 ? 'red' : 'green'} />
-            <node.StyleSheet href={path("../../src/x-weather/styles.css")} />
-        </>
-    );
-});
-```
 
 From within our `styles.css` stylesheet we can then reference the `var(--background-colour)` that is attached to our `x-countries` node and applying some additional styles.
 
