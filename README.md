@@ -66,7 +66,7 @@ Using our component from within a Node environment requires us to use the export
 import { render } from 'switzerland';
 
 app.get("/", async (_, response) => {
-    const html = render(<Countries list="Japan,Croatia,Singapore" />);
+    const html = await render(<Countries list="Japan,Croatia,Singapore" />);
     response.send(html);
 });
 ```
