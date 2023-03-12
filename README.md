@@ -23,6 +23,7 @@
 1. [Getting Started](#getting-started)
 2. [Managing State](#managing-state)
 3. [Applying Styles](#applying-styles)
+4. [Data Fetching](#data-fetching)
 
 ## Getting Started
 
@@ -82,7 +83,7 @@ node.attributes.values = `${node.attributes.values},Ukraine,Maldives`;
 
 ## Managing State
 
-Since we use [Preact](https://preactjs.com/) to render Switzerland's components, the API is very similar to React. For ease of use we re-export Preact's hook functions but you can also directly use them from the Preact package if you choose.
+Since we use [Preact](https://preactjs.com/) to render Switzerland's components the API should already be familiar. For ease of use we re-export Preact's hook functions but you may also use them directly from Preact.
 
 ```tsx
 import { create, use } from 'switzerland';
@@ -92,7 +93,7 @@ export default create('x-countries', () => {
 
     return (
         <ul>
-            {attrs.countries.map(country => (
+            {countries.map(country => (
                 <li key={country}>{country}</li>
             ))}
         <ul>
@@ -102,9 +103,7 @@ export default create('x-countries', () => {
 
 ## Applying Styles
 
-As we're using web components to allow for style encapsulation, applying styles is more akin to how the web _expects_ us to apply styles via vanilla CSS with class names, etc... With the shadow boundary defined on each component, styles don't bleed into other components or into other HTML elements in the DOM.
-
-Styles are attached using the traditional `link` element but we also export a convenient `node` component for attaching stylesheets and defining custom CSS variables. We must use the `path` hook with `import.meta.url` to resolve our stylesheets relative to our component &mdash; interestingly we use the same hook for all kinds of media, such as images.
+Styles within a shadow boundary allow for encapsulation which means we can use regular CSS documents scoped to our component's tree. We can attach our stylesheets to our component by using a regular `link` node, although Switzerland provides a `nodes` utility for `StyleSheet` and `Variables` &mdash; the latter applies custom variables to your component tree allowing CSS to access those JavaScript variables. We use the `use.path` hook to resolve media &mdash; CSS documents, images, etc... &mdash; relative to our component.
 
 ```tsx
 import { create, use, nodes } from 'switzerland';
@@ -116,12 +115,13 @@ export default create('x-countries', () => {
     return (
         <>
             <ul>
-                {attrs.countries.map(country => (
+                {countries.map(country => (
                     <li key={country}>{country}</li>
                 ))}
             <ul>
 
-            <node.Variables backgroundColour={countries.length === 0 ? 'red' : 'green'} />
+            <node.Variables backgroundColour={countries.length === 0 ? '#8ECCD4' : '#FBDEA3'} />
+
             <node.StyleSheet href={path("../../src/x-weather/styles.default.css")} />
             <node.StyleSheet href={path("../../src/x-weather/styles.mobile.css")} media="(max-width: 768px)" />
             <node.StyleSheet href={path("../../src/x-weather/styles.print.css")} media="print" />
@@ -130,17 +130,18 @@ export default create('x-countries', () => {
 });
 ```
 
-Custom variables allow us to pass JavaScript variables into our CSS stylesheet &ndash; by default they're attached to the `:host` node (in our case above, `x-countries`) but you may pass the `container` to define a child node to attach them to.
-
-From within our `styles.css` stylesheet we can then reference the `var(--background-colour)` that is attached to our `x-countries` node and applying some additional styles.
+We can then be quite loose when applying those styles to our component knowing that the shadow boundary will prevent styles from leaking out &mdash; we use CSS variables to apply a conditional background colour.
 
 ```css
 :host {
-    box-shadow: 0 0 5px lightgrey;
-    border: 2px solid blue;
+    box-shadow: 0 0 5px #E8C5B0;
 }
 
 ul {
-    background-color: var(--background-color);
+    background-color: var(--background-color, '#E39AC7');
 }
 ```
+
+## Data Fetching
+
+<!-- ... -->
