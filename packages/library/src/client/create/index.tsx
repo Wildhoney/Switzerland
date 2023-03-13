@@ -1,13 +1,13 @@
-import { render, h, VNode } from "preact";
+import { render, h } from "preact";
 import { memo } from "preact/compat";
-import SwissTree from "../../global/tree/index.js";
-import { AttrsGeneric, SwissAttrs } from "../../global/types/index.js";
+import Container from "../../global/container/index.js";
+import { SwissAttrs, SwissTree } from "../../global/types/index.js";
 import { Env } from "../../global/use/index.js";
 import { getAttributes, hasApplicableMutations } from "./utils.js";
 
-export function create<Attrs extends AttrsGeneric = Record<string, never>>(
+export function create<Attrs extends SwissAttrs>(
   name: string,
-  Tree: (attrs: SwissAttrs<Attrs>) => VNode
+  Tree: SwissTree<Attrs>
 ) {
   window.customElements.define(
     name,
@@ -41,12 +41,12 @@ export function create<Attrs extends AttrsGeneric = Record<string, never>>(
       }
 
       render() {
-        const attrs = getAttributes(this.attributes);
+        const attrs = getAttributes<Attrs>(this.attributes);
         const root = this.shadowRoot ?? this.attachShadow({ mode: "open" });
 
         render(
           <Env.Provider value={this.context}>
-            <SwissTree Tree={Tree} attrs={attrs} />
+            <Container<Attrs> Tree={Tree} attrs={attrs} />
           </Env.Provider>,
           root
         );

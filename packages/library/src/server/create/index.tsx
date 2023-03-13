@@ -1,19 +1,20 @@
-import { h, VNode } from "preact";
-import SwissTree from "../../global/tree/index.js";
-import { AttrsGeneric, SwissAttrs } from "../../global/types/index.js";
+import { h } from "preact";
+import Container from "../../global/container/index.js";
+import { SwissTree, SwissAttrs } from "../../global/types/index.js";
 
-export function create<Attrs extends AttrsGeneric = Record<string, never>>(
+export function create<Attrs extends SwissAttrs>(
   name: string,
-  Tree: (attrs: SwissAttrs<Attrs>) => VNode
+  Tree: SwissTree<Attrs>
 ) {
   return function Swiss(attrs: Attrs) {
     return h(
       name,
       attrs,
       h(
-        "template" as any,
+        "template",
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { shadowroot: "open" } as any,
-        <SwissTree Tree={Tree} attrs={attrs} />
+        <Container<Attrs> Tree={Tree} attrs={attrs} />
       )
     );
   };

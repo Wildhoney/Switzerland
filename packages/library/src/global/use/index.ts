@@ -14,7 +14,8 @@ import {
   useImperativeHandle,
   useDebugValue,
 } from "preact/hooks";
-import { AttrsContext, AttrsReturn, EnvContext, MapGeneric } from "./types.js";
+import { SwissAttrs } from "../types/index.js";
+import { AttrsReturn, EnvContext, MapGeneric } from "./types.js";
 
 export const Env = createContext<EnvContext>({
   path: null,
@@ -24,7 +25,7 @@ export const Env = createContext<EnvContext>({
   isClient: false,
 });
 
-export const Attrs = createContext<AttrsContext>({});
+export const Attrs = createContext<SwissAttrs>({});
 
 export const use = {
   memo: useMemo,
@@ -47,6 +48,7 @@ export const use = {
     return Object.entries(attrs).reduce(
       (attrs, [key, value]) => ({
         ...attrs,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         [key]: ((map[key] ?? String) as any)(value),
       }),
       {}

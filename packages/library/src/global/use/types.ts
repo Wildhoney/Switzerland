@@ -8,8 +8,6 @@ export type EnvContext = {
   isClient: boolean;
 };
 
-export type AttrsContext = Record<string, string>;
-
 type ValueOf<T> = T[keyof T];
 
 export type MapGeneric = Record<string, ValueOf<typeof type>>;

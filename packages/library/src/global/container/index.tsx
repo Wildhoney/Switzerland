@@ -1,10 +1,12 @@
-// @ts-nocheck
-
 import { Component } from "preact";
+import { SwissAttrs } from "../types/index.js";
 import { Attrs } from "../use/index.js";
 import { Props, State } from "./types.js";
 
-export default class SwissTree extends Component<Props, State> {
+export default class SwissContainer<Attrs extends SwissAttrs> extends Component<
+  Props<Attrs>,
+  State
+> {
   state = { error: null };
 
   static getDerivedStateFromError(error: Error) {

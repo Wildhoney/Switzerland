@@ -1,12 +1,14 @@
 import {
-  AttrsGeneric,
   DispatchEventOptions,
   DispatchEventPayload,
+  SwissAttrs,
   SwissEvent,
 } from "../../global/types/index.js";
 import { toCamelcase } from "../../global/utils/index.js";
 
-export const getAttributes = (attrs: NamedNodeMap): any =>
+export const getAttributes = <Attrs extends SwissAttrs>(
+  attrs: NamedNodeMap
+): Attrs =>
   Object.values(attrs).reduce((attrs, attr) => {
     const name = toCamelcase(attr.nodeName).fromKebab();
 
@@ -14,7 +16,7 @@ export const getAttributes = (attrs: NamedNodeMap): any =>
       ...attrs,
       [name]: attr.nodeValue,
     };
-  }, {});
+  }, {} as Attrs);
 
 export function hasApplicableMutations(
   node: HTMLElement,
@@ -30,7 +32,7 @@ export function hasApplicableMutations(
 
 export function dispatchEvent<Attrs>(node: HTMLElement) {
   return (
-    name: Attrs extends AttrsGeneric ? SwissEvent<keyof Attrs> : string,
+    name: Attrs extends SwissAttrs ? SwissEvent<keyof Attrs> : string,
     payload: DispatchEventPayload,
     options: DispatchEventOptions = {}
   ) => {

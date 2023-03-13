@@ -3,9 +3,9 @@ import { parse, join } from "node:path";
 import { Env, use as baseUse } from "../../global/use/index.js";
 import { stripTrailingSlashes } from "./utils.js";
 import {
-  AttrsGeneric,
   DispatchEventOptions,
   DispatchEventPayload,
+  SwissAttrs,
   SwissEvent,
 } from "../../global/types/index.js";
 import { Loader } from "../render/index.js";
@@ -25,7 +25,7 @@ export const use = {
   },
   dispatch<Attrs>() {
     return (
-      name: Attrs extends AttrsGeneric ? SwissEvent<keyof Attrs> : string,
+      name: Attrs extends SwissAttrs ? SwissEvent<keyof Attrs> : string,
       payload: DispatchEventPayload,
       options: DispatchEventOptions = {}
     ): void => {

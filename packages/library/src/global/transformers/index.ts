@@ -58,6 +58,7 @@ type P =
   | typeof Float
   | typeof BigInt;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type R<F extends (...args: any[]) => any> = ReturnType<F>;
 
 export function Array<T extends P>(t: T): (t: string) => R<T>[] {
