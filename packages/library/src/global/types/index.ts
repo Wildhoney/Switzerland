@@ -3,7 +3,9 @@ import { VNode } from "preact";
 export type SwissAttrs = Record<string, unknown>;
 
 type Keys<Attrs extends SwissAttrs> = {
-  [K in keyof Attrs]: Attrs[K] extends (...args: any[]) => any ? never : K;
+  [K in keyof Attrs]: Attrs[K] extends (...args: unknown[]) => unknown
+    ? never
+    : K;
 }[keyof Attrs];
 
 export type GetAttrs<Attrs extends SwissAttrs> = Pick<

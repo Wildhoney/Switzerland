@@ -159,7 +159,7 @@ export default create("x-countries", () => {
 
     return loading ? <p>Loading&hellip;</p> : (
         <ul>
-            {countries.map((country) => (
+            {data.map((country) => (
                 <li key={country}>{country}</li>
             ))}
         </ul>
