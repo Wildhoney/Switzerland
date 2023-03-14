@@ -2,13 +2,6 @@ import { VNode } from "preact";
 
 export type SwissAttrs = Record<string, unknown>;
 
-// export type SwissAttrs<Attrs extends SwissAttrsGeneric> = {
-//   attrs: {
-//     [K in keyof Attrs]: Attrs[K] extends string ? Attrs[K] : string;
-//   };
-//   error: null | Error;
-// };
-
 type Keys<Attrs extends SwissAttrs> = {
   [K in keyof Attrs]: Attrs[K] extends (...args: any[]) => any ? never : K;
 }[keyof Attrs];
