@@ -14,8 +14,9 @@ import {
   useImperativeHandle,
   useDebugValue,
 } from "preact/hooks";
+import { String } from "../transformers/index.js";
 import { SwissAttrs } from "../types/index.js";
-import { AttrsReturn, EnvContext, MapGeneric } from "./types.js";
+import { AttrsReturn, EnvContext, AttrsMap } from "./types.js";
 
 export const Env = createContext<EnvContext>({
   path: null,
@@ -42,16 +43,16 @@ export const use = {
   mount: (fn: EffectCallback) => useEffect(fn, []),
   unmount: (fn: EffectCallback) => useEffect(() => fn, []),
   env: () => useContext(Env),
-  attrs<Map extends MapGeneric>(map: Map): AttrsReturn<Map> {
+  attrs<Map extends AttrsMap>(map: Map): AttrsReturn<Map> {
     const attrs = useContext(Attrs);
 
-    return Object.entries(attrs).reduce(
-      (attrs, [key, value]) => ({
+    return Object.entries(attrs).reduce((attrs, [key, value]) => {
+      const transform = map[key] ?? String;
+
+      return {
         ...attrs,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        [key]: ((map[key] ?? String) as any)(value),
-      }),
-      {}
-    ) as AttrsReturn<typeof map>;
+        [key]: value ? transform(value as string) : null,
+      };
+    }, {}) as AttrsReturn<typeof map>;
   },
 };

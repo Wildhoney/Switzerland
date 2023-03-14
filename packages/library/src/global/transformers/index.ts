@@ -98,20 +98,20 @@ export function Tuple(...fs: ((a: string) => string)[]) {
     });
 }
 
-// export function Regex(expression: RegExp) {
-//   return (a: string): Record<string, null | string> => {
-//     const captureGroups = [];
-//     const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
+export function Regex(expression: RegExp) {
+  return (a: string): Record<string, null | string> => {
+    const captureGroups = [];
+    const namedGroups = expression.toString().matchAll(/\?<(.+?)>/gi);
 
-//     for (const group of namedGroups) {
-//       captureGroups.push(group[1]);
-//     }
+    for (const group of namedGroups) {
+      captureGroups.push(group[1]);
+    }
 
-//     const match = a.match(expression);
+    const match = a.match(expression);
 
-//     return captureGroups.reduce(
-//       (model, key) => ({ ...model, [key]: model?.[key] ?? null }),
-//       match?.groups ?? {}
-//     );
-//   };
-// }
+    return captureGroups.reduce(
+      (model, key) => ({ ...model, [key]: model?.[key] ?? null }),
+      match?.groups ?? {}
+    );
+  };
+}

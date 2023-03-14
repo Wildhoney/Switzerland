@@ -9,7 +9,7 @@ import {
   SwissEvent,
 } from "../../global/types/index.js";
 import { Loader } from "../render/index.js";
-import { LoaderResponse } from "../../global/use/types.js";
+import { LoaderReturn } from "../../global/use/types.js";
 
 export const use = {
   ...baseUse,
@@ -38,7 +38,7 @@ export const use = {
     initial: Initial,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _: unknown[]
-  ): LoaderResponse<Initial, State> {
+  ): LoaderReturn<Initial, State> {
     const loaders = useContext(Loader);
     const data = [...loaders].find((loader) => loader.id === id);
 
@@ -47,7 +47,7 @@ export const use = {
         data: data.value,
         loading: false,
         error: null,
-      } as LoaderResponse<Initial, State>;
+      } as LoaderReturn<Initial, State>;
     }
 
     const value = loader();
@@ -57,6 +57,6 @@ export const use = {
       data: initial,
       loading: true,
       error: null,
-    } as LoaderResponse<Initial, State>;
+    } as LoaderReturn<Initial, State>;
   },
 };

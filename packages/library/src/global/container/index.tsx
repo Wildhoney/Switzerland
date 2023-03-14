@@ -1,5 +1,5 @@
-import { Component } from "preact";
-import { SwissAttrs } from "../types/index.js";
+import { Component, VNode } from "preact";
+import { GetAttrs, SwissAttrs } from "../types/index.js";
 import { Attrs } from "../use/index.js";
 import { Props, State } from "./types.js";
 
@@ -13,16 +13,16 @@ export default class SwissContainer<Attrs extends SwissAttrs> extends Component<
     return { error };
   }
 
-  componentDidCatch(error: Error) {
+  componentDidCatch(error: Error): void {
     this.setState({ error });
   }
 
-  render() {
+  render(): VNode {
     const { Tree, attrs } = this.props;
 
     return (
       <Attrs.Provider value={attrs}>
-        <Tree attrs={attrs} error={this.state.error} />
+        <Tree attrs={attrs as GetAttrs<Attrs>} error={this.state.error} />
       </Attrs.Provider>
     );
   }

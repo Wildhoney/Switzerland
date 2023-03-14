@@ -9,8 +9,19 @@ export type SwissAttrs = Record<string, unknown>;
 //   error: null | Error;
 // };
 
+type Keys<Attrs extends SwissAttrs> = {
+  [K in keyof Attrs]: Attrs[K] extends (...args: any[]) => any ? never : K;
+}[keyof Attrs];
+
+export type GetAttrs<Attrs extends SwissAttrs> = Pick<
+  {
+    [K in keyof Attrs]: Attrs[K] extends string ? Attrs[K] : string;
+  },
+  Keys<Attrs>
+>;
+
 export type SwissTree<Attrs extends SwissAttrs> = (args: {
-  attrs: Attrs;
+  attrs: GetAttrs<Attrs>;
   error: null | Error;
 }) => VNode;
 

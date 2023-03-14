@@ -1,5 +1,3 @@
-import * as type from "../transformers/index.js";
-
 export type EnvContext = {
   path: null | string;
   root: null | string;
@@ -8,15 +6,13 @@ export type EnvContext = {
   isClient: boolean;
 };
 
-type ValueOf<T> = T[keyof T];
+export type AttrsMap = Record<string, (arg: string) => unknown>;
 
-export type MapGeneric = Record<string, ValueOf<typeof type>>;
-
-export type AttrsReturn<Map extends MapGeneric> = {
+export type AttrsReturn<Map extends AttrsMap> = {
   [K in keyof Map]: ReturnType<Map[K]>;
 };
 
-export type LoaderResponse<Initial, State> =
+export type LoaderReturn<Initial, State> =
   | {
       error: Error | null;
       loading: true;

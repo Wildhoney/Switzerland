@@ -1,6 +1,6 @@
 import { useContext, useMemo, useRef } from "preact/hooks";
 import { Env, use as baseUse } from "../../global/use/index.js";
-import { LoaderResponse } from "../../global/use/types.js";
+import { LoaderReturn } from "../../global/use/types.js";
 import { dispatchEvent } from "../create/utils.js";
 
 export const use = {
@@ -22,7 +22,7 @@ export const use = {
     loader: () => Promise<State>,
     initial: Initial,
     deps: unknown[]
-  ): LoaderResponse<Initial, State> {
+  ): LoaderReturn<Initial, State> {
     const preload = globalThis.swissData
       .flat()
       .find((datum: { id: string }) => datum.id === id);
@@ -34,7 +34,7 @@ export const use = {
     const [loading, setLoading] = use.state<boolean>(false);
     const [error, setError] = use.state<null | Error>(null);
 
-    use.effect(() => {
+    use.effect((): void => {
       if (preload && isFirstRender.current) {
         isFirstRender.current = false;
         return;
@@ -54,6 +54,6 @@ export const use = {
         });
     }, deps);
 
-    return { data, loading, error } as LoaderResponse<Initial, State>;
+    return { data, loading, error } as LoaderReturn<Initial, State>;
   },
 };

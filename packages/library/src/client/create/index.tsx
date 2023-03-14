@@ -1,4 +1,4 @@
-import { render, h } from "preact";
+import { render, h, VNode } from "preact";
 import { memo } from "preact/compat";
 import Container from "../../global/container/index.js";
 import { SwissAttrs, SwissTree } from "../../global/types/index.js";
@@ -8,7 +8,7 @@ import { getAttributes, hasApplicableMutations } from "./utils.js";
 export function create<Attrs extends SwissAttrs>(
   name: string,
   Tree: SwissTree<Attrs>
-) {
+): (attrs: Attrs) => VNode {
   window.customElements.define(
     name,
     class Swiss extends HTMLElement {
@@ -22,7 +22,7 @@ export function create<Attrs extends SwissAttrs>(
         isServer: false,
       };
 
-      connectedCallback() {
+      connectedCallback(): void {
         this.observer = new window.MutationObserver(
           (mutations) =>
             hasApplicableMutations(this, mutations) && this.render()
@@ -36,11 +36,11 @@ export function create<Attrs extends SwissAttrs>(
         this.render();
       }
 
-      disconnectedCallback() {
+      disconnectedCallback(): void {
         this.observer?.disconnect();
       }
 
-      render() {
+      render(): void {
         const attrs = getAttributes<Attrs>(this.attributes);
         const root = this.shadowRoot ?? this.attachShadow({ mode: "open" });
 
@@ -55,8 +55,8 @@ export function create<Attrs extends SwissAttrs>(
   );
 
   return memo(
-    (attrs: Attrs) => h(name, attrs),
-    (nextProps, prevProps) =>
+    (attrs: Attrs): VNode => h(name, attrs),
+    (nextProps, prevProps): boolean =>
       JSON.stringify(nextProps) === JSON.stringify(prevProps)
   );
 }
