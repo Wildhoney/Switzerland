@@ -1,4 +1,4 @@
-<img src="media/logo.png" alt="Switzerland" width="300" />
+<img src="https://raw.githubusercontent.com/Wildhoney/Switzerland/master/media/logo.png" alt="Switzerland" width="300" />
 
 > Switzerland takes a functional approach to web components using Preact with shadow DOM for style encapsulation, custom elements for interoperability and server-side rendering for universality.
 
@@ -14,7 +14,7 @@
 <br />
 <!-- **cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@latest/es/index.js`](https://cdn.jsdelivr.net/npm/switzerland@latest/es/index.js) -->
 
-![Screenshot](media/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/Wildhoney/Switzerland/master/media/screenshot.png)
 
 ---
 
