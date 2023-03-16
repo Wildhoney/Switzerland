@@ -1,6 +1,6 @@
 {
   "name": "app",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "type": "module",
   "main": "./src/index.tsx",
   "types": "./dist/index.d.ts",
