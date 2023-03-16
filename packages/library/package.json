@@ -1,7 +1,7 @@
 {
   "name": "switzerland",
   "description": "Switzerland takes a functional approach to web components using Preact with shadow DOM for style encapsulation, custom elements for interoperability and server-side rendering for universality.",
-  "version": "5.8.1",
+  "version": "6.0.0",
   "type": "module",
   "exports": {
     "node": {
@@ -31,7 +31,7 @@
     "unit": "jest",
     "lint": "make lint",
     "typecheck": "tsc --noEmit",
-    "publish": "make publish"
+    "deploy": "make deploy"
   },
   "nx": {
     "targets": {

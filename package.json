@@ -1,7 +1,7 @@
 {
   "name": "@wildhoney/switzerland",
   "description": "Switzerland takes a functional approach to web components using Preact with shadow DOM for style encapsulation, custom elements for interoperability and server-side rendering for universality.",
-  "version": "5.8.1",
+  "version": "6.0.0",
   "private": true,
   "workspaces": [
     "packages/**"
@@ -14,7 +14,7 @@
     "lint": "nx run-many --target=lint",
     "typecheck": "nx run-many --target=typecheck",
     "test": "yarn lint && yarn typecheck && yarn unit",
-    "publish": "nx run workspace:version && nx run-many --target=publish",
+    "deploy": "nx run workspace:version && nx run-many --target=deploy",
     "prepare": "husky install"
   },
   "devDependencies": {

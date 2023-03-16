@@ -9,7 +9,7 @@ lint:
 	# fslint --files=./dist/index.client.tar.gz --limit=3072 || rm -rf ./dist/index.client.tar.gz
 	# rm -rf ./dist/index.client.tar.gz
 
-publish:
+deploy:
 	cp ../../README.md .
 	make build
 	npm publish
