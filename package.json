@@ -14,7 +14,7 @@
     "lint": "nx run-many --target=lint",
     "typecheck": "nx run-many --target=typecheck",
     "test": "yarn lint && yarn typecheck && yarn unit",
-    "deploy": "nx run workspace:version && nx run-many --target=deploy",
+    "deploy": "nx run workspace:version && nx run switzerland:deploy",
     "prepare": "husky install"
   },
   "devDependencies": {
