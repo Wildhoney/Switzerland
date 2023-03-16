@@ -14,3 +14,4 @@ deploy:
 	make build
 	npm publish
 	rm README.md
+	git push --tags
