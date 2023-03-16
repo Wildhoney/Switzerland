@@ -41,7 +41,6 @@ export const use = {
   ): LoaderReturn<Initial, State> {
     const loaders = useContext(Loader);
     const data = [...loaders].find((loader) => loader.id === id);
-    console.log(data);
 
     if (data) {
       return {
