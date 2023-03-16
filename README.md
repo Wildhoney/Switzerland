@@ -12,7 +12,7 @@
 <br />
 **npm**: `npm install switzerland`
 <br />
-<!-- **cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@latest/es/index.js`](https://cdn.jsdelivr.net/npm/switzerland@latest/es/index.js) -->
+**cdn**: [`https://cdn.jsdelivr.net/npm/switzerland@latest/dist/index.client.js`](https://cdn.jsdelivr.net/npm/switzerland@latest/dist/index.client.js)
 
 ![Screenshot](https://raw.githubusercontent.com/Wildhoney/Switzerland/master/media/screenshot.png)
 

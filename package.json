@@ -7,14 +7,14 @@
     "packages/**"
   ],
   "scripts": {
-    "build": "nx run-many --target=build",
-    "start": "nx run-many --target=start",
-    "format": "nx run-many --target=format",
-    "unit": "nx run-many --target=unit",
-    "lint": "nx run-many --target=lint",
-    "typecheck": "nx run-many --target=typecheck",
-    "test": "yarn lint && yarn typecheck && yarn unit",
-    "deploy": "nx run workspace:version && nx run switzerland:deploy",
+    "build": "nx run-many --target=build --exclude workspace",
+    "start": "nx run-many --target=start --exclude workspace",
+    "format": "nx run-many --target=format --exclude workspace",
+    "unit": "nx run-many --target=unit --exclude workspace",
+    "lint": "nx run-many --target=lint --exclude workspace",
+    "typecheck": "nx run-many --target=typecheck --exclude workspace",
+    "test": "yarn lint && yarn typecheck && yarn unit --exclude workspace",
+    "deploy": "nx run workspace:version && nx run-many --target=deploy --exclude workspace",
     "prepare": "husky install"
   },
   "devDependencies": {
