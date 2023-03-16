@@ -30,7 +30,8 @@
     "format": "prettier . --write",
     "unit": "jest",
     "lint": "make lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "publish": "make publish"
   },
   "nx": {
     "targets": {
