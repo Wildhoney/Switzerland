@@ -1,7 +1,7 @@
 {
   "name": "@wildhoney/switzerland",
   "description": "Switzerland takes a functional approach to web components using Preact with shadow DOM for style encapsulation, custom elements for interoperability and server-side rendering for universality.",
-  "version": "6.1.3",
+  "version": "6.1.4",
   "private": true,
   "workspaces": [
     "packages/**"
