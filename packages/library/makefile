@@ -1,7 +1,7 @@
 build:
 	npx tsc
 	npx rollup -c rollup.config.js
-	rm -rf dist/client
+	rm -rf dist/client/**/*.js
 
 lint:
 	eslint --fix
