@@ -1,0 +1,13 @@
+{
+  "name": "workspace",
+  "$schema": "node_modules/nx/schemas/project-schema.json",
+  "targets": {
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "syncVersions": true,
+        "preset": "conventional"
+      }
+    }
+  }
+}
