@@ -10,5 +10,7 @@ lint:
 	# rm -rf ./dist/index.client.tar.gz
 
 publish:
+	cp ../../README.md .
 	make build
 	npm publish
+	rm README.md
