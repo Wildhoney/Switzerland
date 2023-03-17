@@ -6,6 +6,6 @@
     "strict": true,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "declaration": true
+    "declaration": true,
   }
 }

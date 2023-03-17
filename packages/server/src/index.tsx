@@ -1,6 +1,6 @@
 import express from "express";
 import * as path from "node:path";
-import { render, preload } from "switzerland";
+import { render, preload, imports } from "switzerland";
 import App from "app";
 
 const app = express();
@@ -39,13 +39,7 @@ app.get("/", async (_, response) => {
         ${preload(app)}
 
         <script type="importmap">
-          {"imports": {
-              "switzerland": "/client/library/dist/index.client.js",
-              "preact": "https://cdnjs.cloudflare.com/ajax/libs/preact/10.13.0/preact.module.min.js",
-              "preact/hooks": "https://cdnjs.cloudflare.com/ajax/libs/preact/10.13.0/hooks.module.min.js",
-              "preact/compat": "https://cdnjs.cloudflare.com/ajax/libs/preact/10.13.0/compat.module.min.js",
-              "preact/jsx-runtime": "https://cdn.jsdelivr.net/npm/preact-jsx-runtime@1.2.0/jsx-runtime.min.js"
-          }}
+          ${await imports(path.resolve("../app/src"))}
         </script>
 
         <script
