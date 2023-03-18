@@ -21,6 +21,7 @@
 ## Contents
 
 1. [Getting Started](#getting-started)
+1. [Import Maps](#import-maps)
 1. [Managing State](#managing-state)
 1. [Applying Styles](#applying-styles)
 1. [Data Fetching](#data-fetching)
@@ -80,6 +81,42 @@ As our components are self-contained modules, any changes to their attributes wi
 ```js
 const node = document.querySelector('x-countries');
 node.attributes.values = `${node.attributes.values},Ukraine,Maldives`;
+```
+
+## Import Maps
+
+Except for optional TypeScript and JSX transpiling, Switzerland doesn't _need_ to be compiled because it uses native ES modules in the browser and Node 16+; it achieves this by using `node_modules` when rendering on the server using named imports, and in the browser it uses import maps to resolve those named imports to CDN URLs which offers enhanced caching. We provide a utility for the server to automatically generate the import maps for your application.
+
+```tsx
+import { imports } from 'switzerland';
+
+<script type="importmap">
+    ${await imports({ path: path.resolve('../app/src') })}
+</script>
+```
+
+You need to give the `imports` function the base path of your Switzerland components. It will then traverse the files [using `ts-morph`](https://github.com/dsherret/ts-morph) which provides an abstract syntax tree (AST) and allows us to pick out the external dependencies; it then iteratively resolves each of those dependencies it finds to the versions installed by your chosen package manager. We [use the `@jspm/generator` package](https://github.com/jspm/generator) to resolve the dependencies to `jspm.io` URLs by default, however you can also pass the `provider` option to change the provider.
+
+Once you have the import map configured, when rendering Switzerland clients in the browser it will use those CDN URLs and prevent any need to package up dependencies. You can focus purely on the simple task of transpiling TypeScript and JSX into JS files using `tsc`.
+
+```json
+{
+  "include": ["src"],
+
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "module": "esnext",
+
+    "moduleResolution": "nodenext",
+    "esModuleInterop": true,
+    "target": "esnext",
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
+    "declaration": true
+  }
+}
 ```
 
 ## Managing State
