@@ -52,7 +52,7 @@ import { create, use, type } from 'switzerland';
 
 type Attrs = {
     countries: string[];
-}
+};
 
 export default create<Attrs>('x-countries', () => {
     const attrs = use.attrs({
@@ -92,6 +92,7 @@ node.attributes.values = `${node.attributes.values},Ukraine,Maldives`;
 Except for optional TypeScript and JSX transpiling, Switzerland doesn't _need_ to be compiled because it uses native ES modules in the browser and Node 16+; it achieves this by using `node_modules` when rendering on the server using named imports, and in the browser it uses import maps to resolve those named imports to CDN URLs which offers enhanced caching. We provide a utility for the server to automatically generate the import maps for your application.
 
 ```tsx
+import fs from 'node:fs';
 import { imports } from 'switzerland';
 
 <script type="importmap">
