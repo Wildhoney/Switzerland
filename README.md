@@ -21,10 +21,10 @@
 ## Contents
 
 1. [Getting Started](#getting-started)
-2. [Managing State](#managing-state)
-3. [Applying Styles](#applying-styles)
-4. [Data Fetching](#data-fetching)
-5. [Environment Context](#environment-context)
+1. [Managing State](#managing-state)
+1. [Applying Styles](#applying-styles)
+1. [Data Fetching](#data-fetching)
+1. [Environment Context](#environment-context)
 
 ## Getting Started
 
