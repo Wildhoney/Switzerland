@@ -50,7 +50,11 @@ Once we've defined our `x-countries` component we are able to both render it on 
 ```tsx
 import { create, use, type } from 'switzerland';
 
-export default create('x-countries', () => {
+type Attrs = {
+    countries: string[];
+}
+
+export default create<Attrs>('x-countries', () => {
     const attrs = use.attrs({
         countries: type.Array(type.String)
     });
@@ -106,8 +110,8 @@ Once you have the import map configured, when rendering Switzerland clients in t
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "module": "esnext",
 
+    "module": "esnext",
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "target": "esnext",
