@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@jspm/generator": "1.1.1",
+    "find-file-up": "2.0.1",
     "preact": "10.13.0",
     "preact-render-to-string": "5.2.6",
     "ts-morph": "17.0.1"

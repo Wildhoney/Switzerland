@@ -39,7 +39,21 @@ app.get("/", async (_, response) => {
         ${preload(app)}
 
         <script type="importmap">
-          ${await imports(path.resolve("../app/src"))}
+          ${JSON.stringify(
+            {
+              imports: {
+                switzerland: "/client/library/dist/index.client.js",
+                ...JSON.parse(
+                  await imports({
+                    path: path.resolve("../app/src"),
+                    includeSwitzerland: false,
+                  })
+                ).imports,
+              },
+            },
+            null,
+            4
+          )}
         </script>
 
         <script

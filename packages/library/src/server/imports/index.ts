@@ -1,14 +1,17 @@
+// @ts-nocheck
 import { Project } from "ts-morph";
 import { Generator } from "@jspm/generator";
-import { Provider } from "./types.js";
+import { Args } from "./types.js";
+import findPackage from "find-file-up";
+import fs from "node:fs";
 
-const excludeDependencies = ["switzerland"];
-
-export async function imports(
-  path: string,
-  provider: Provider = "jspm.io"
-): Promise<string> {
+export async function imports({
+  path,
+  provider = "jspm.io",
+  includeSwitzerland = true,
+}: Args): Promise<string> {
   const imports = new Set<string>();
+  const excludeDependencies = includeSwitzerland ? [] : ["switzerland"];
 
   const project = new Project({ useInMemoryFileSystem: false });
   const generator = new Generator({
@@ -26,7 +29,14 @@ export async function imports(
           .getModuleSpecifier()
           .getLiteralText();
         if (!excludeDependencies.includes(importName)) {
-          imports.add(importName);
+          const pkg = await findPackage(
+            `./node_modules/${importName}/package.json`,
+            source.getDirectoryPath()
+          );
+          const version = pkg
+            ? JSON.parse(fs.readFileSync(pkg, "utf-8")).version
+            : null;
+          imports.add(version ? `${importName}@${version}` : importName);
         }
       }
     }
@@ -43,14 +53,5 @@ export async function imports(
     await generator.install(importName);
   }
 
-  return JSON.stringify(
-    {
-      imports: {
-        switzerland: "/client/library/dist/index.client.js",
-        ...generator.getMap().imports,
-      },
-    },
-    null,
-    4
-  );
+  return JSON.stringify(generator.getMap(), null, 4);
 }
