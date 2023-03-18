@@ -15,3 +15,4 @@ deploy:
 	npm publish
 	rm README.md
 	git push --tags
+	git push
