@@ -1,7 +1,7 @@
 export type Args = {
   path: string;
   provider?: Provider;
-  includeSwitzerland?: boolean;
+  excludeDependencies?: string[];
 };
 
 export type Provider =

@@ -46,7 +46,7 @@ app.get("/", async (_, response) => {
                 ...JSON.parse(
                   await imports({
                     path: path.resolve("../app/src"),
-                    includeSwitzerland: false,
+                    excludeDependencies: ["switzerland"],
                   })
                 ).imports,
               },

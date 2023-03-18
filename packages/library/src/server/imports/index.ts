@@ -8,10 +8,9 @@ import fs from "node:fs";
 export async function imports({
   path,
   provider = "jspm.io",
-  includeSwitzerland = true,
+  excludeDependencies = [],
 }: Args): Promise<string> {
   const imports = new Set<string>();
-  const excludeDependencies = includeSwitzerland ? [] : ["switzerland"];
 
   const project = new Project({ useInMemoryFileSystem: false });
   const generator = new Generator({
