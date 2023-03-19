@@ -97,10 +97,11 @@ import { render, imports } from 'switzerland';
 
 app.get("/", async (_, response) => {
     const html = await render(<Countries list="Japan,Croatia,Singapore" />);
+    const importMap = await imports({ path: path.resolve('../app/src') });
 
     response.send(`
         <script type="importmap">
-            ${await imports({ path: path.resolve('../app/src') })}
+            ${importMap}
         </script>
 
         ${html}
