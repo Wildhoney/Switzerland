@@ -100,11 +100,15 @@ app.get("/", async (_, response) => {
     const importMap = await imports({ path: path.resolve('../app/src') });
 
     response.send(`
-        <script type="importmap">
-            ${importMap}
-        </script>
+        <head>
+            <script type="importmap">
+                ${importMap}
+            </script>
+        </head>
 
-        ${html}
+        <body>
+            ${html}
+        </body>
     `);
 });
 ```
