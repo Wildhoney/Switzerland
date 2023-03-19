@@ -4,12 +4,11 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ## [6.2.0](https://github.com/Wildhoney/Switzerland/compare/v6.1.6...v6.2.0) (2023-03-18)
 
-
 ### Features
 
-* added initial import map generator ([bf2dbf9](https://github.com/Wildhoney/Switzerland/commit/bf2dbf9ffa9b30d73b6d9ac3a91f602b4e376900))
-* added versioning to import map generator ([eaf49c6](https://github.com/Wildhoney/Switzerland/commit/eaf49c61ab8da5d8297bbb1a3cd4e5009f4bc91d))
-* changing imports function to take externalDependencies array ([3d677cb](https://github.com/Wildhoney/Switzerland/commit/3d677cbf1b21d000f39635d64a18463619c95de5))
+- added initial import map generator ([bf2dbf9](https://github.com/Wildhoney/Switzerland/commit/bf2dbf9ffa9b30d73b6d9ac3a91f602b4e376900))
+- added versioning to import map generator ([eaf49c6](https://github.com/Wildhoney/Switzerland/commit/eaf49c61ab8da5d8297bbb1a3cd4e5009f4bc91d))
+- changing imports function to take externalDependencies array ([3d677cb](https://github.com/Wildhoney/Switzerland/commit/3d677cbf1b21d000f39635d64a18463619c95de5))
 
 ## [6.1.6](https://github.com/Wildhoney/Switzerland/compare/v6.1.5...v6.1.6) (2023-03-17)
 
