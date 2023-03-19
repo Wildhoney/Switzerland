@@ -13,7 +13,7 @@ export default function Places({ value }: Props) {
   return (
     <>
       <section class="places">
-        <select value={value} onChange={handleChange}>
+        <select value={value} disabled={env.isServer} onChange={handleChange}>
           {places.map((place) => (
             <option key={`${place.city}-${place.country}`} value={place.city}>
               {place.city}, {place.country}

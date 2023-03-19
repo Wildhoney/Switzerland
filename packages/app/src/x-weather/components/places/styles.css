@@ -12,3 +12,7 @@ section.places select {
   flex: 1;
   text-shadow: 1px 1px 0 white;
 }
+
+section.places select:disabled {
+  cursor: not-allowed;
+}
