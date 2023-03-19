@@ -18,7 +18,7 @@ export type GetAttrs<Attrs extends SwissAttrs> = Pick<
 export type SwissTree<Attrs extends SwissAttrs> = (args: {
   attrs: GetAttrs<Attrs>;
   error: null | Error;
-}) => VNode;
+}) => null | VNode;
 
 export type SwissEvent<AttrKeys> = AttrKeys extends `on${infer E}` ? E : never;
 
