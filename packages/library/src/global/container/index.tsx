@@ -7,13 +7,13 @@ export default class SwissContainer<Attrs extends SwissAttrs> extends Component<
   Props<Attrs>,
   State
 > {
-  state = { error: null };
+  override state = { error: null };
 
-  static getDerivedStateFromError(error: Error) {
+  static override getDerivedStateFromError(error: Error) {
     return { error };
   }
 
-  componentDidCatch(error: Error): void {
+  override componentDidCatch(error: Error): void {
     this.setState({ error });
   }
 

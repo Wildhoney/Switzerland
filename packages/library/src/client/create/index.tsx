@@ -24,7 +24,7 @@ export function create<Attrs extends SwissAttrs>(
 
       connectedCallback(): void {
         this.observer = new window.MutationObserver(
-          (mutations) =>
+          (mutations: MutationRecord[]) =>
             hasApplicableMutations(this, mutations) && this.render()
         );
 

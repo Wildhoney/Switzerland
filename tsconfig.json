@@ -6,6 +6,12 @@
     "strict": true,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
-    "declaration": true
+    "declaration": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitOverride": true,
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
