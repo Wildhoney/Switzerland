@@ -3,6 +3,7 @@ import { memo } from "preact/compat";
 import Container from "../../global/container/index.js";
 import { SwissAttrs, SwissTree } from "../../global/types/index.js";
 import { Env } from "../../global/use/index.js";
+import { EnvContext } from "../../global/use/types.js";
 import { getAttributes, hasApplicableMutations } from "./utils.js";
 
 export function create<Attrs extends SwissAttrs>(
@@ -12,22 +13,20 @@ export function create<Attrs extends SwissAttrs>(
   window.customElements.define(
     name,
     class Swiss extends HTMLElement {
-      private observer?: MutationObserver;
-
       private context = {
         path: window.location.origin,
         root: null,
         node: this,
         isClient: true,
         isServer: false,
-      };
+      } satisfies EnvContext;
+
+      private observer: MutationObserver = new window.MutationObserver(
+        (mutations: MutationRecord[]) =>
+          hasApplicableMutations(this, mutations) && this.render()
+      );
 
       connectedCallback(): void {
-        this.observer = new window.MutationObserver(
-          (mutations: MutationRecord[]) =>
-            hasApplicableMutations(this, mutations) && this.render()
-        );
-
         this.observer.observe(this, {
           attributes: true,
           attributeOldValue: true,
@@ -37,7 +36,7 @@ export function create<Attrs extends SwissAttrs>(
       }
 
       disconnectedCallback(): void {
-        this.observer?.disconnect();
+        this.observer.disconnect();
       }
 
       render(): void {

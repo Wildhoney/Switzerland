@@ -1,6 +1,7 @@
 import { VNode, createContext } from "preact";
 import { renderToString } from "preact-render-to-string";
 import { Env } from "../../global/use/index.js";
+import { EnvContext } from "../../global/use/types.js";
 import { Loaders, RenderOptions } from "./types.js";
 
 export const Loader = createContext<Set<Loaders>>(new Set());
@@ -9,7 +10,7 @@ const serverOptions = {
   node: null,
   isServer: true,
   isClient: false,
-};
+} satisfies Partial<EnvContext>;
 
 export async function render(
   App: VNode,
@@ -52,7 +53,7 @@ export async function render(
         type="module"
         dangerouslySetInnerHTML={{
           __html: `
-            const data = globalThis.swissData ?? [];
+            const data = globalThis.swissData ? [...globalThis.swissData] : [];
             data.push(${JSON.stringify([...data])});
             globalThis.swissData = data;
           `,

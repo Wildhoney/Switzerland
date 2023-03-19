@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Project } from "ts-morph";
 import { Generator } from "@jspm/generator";
 import { Args } from "./types.js";
