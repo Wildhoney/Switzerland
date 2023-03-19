@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [6.3.0](https://github.com/Wildhoney/Switzerland/compare/v6.2.0...v6.3.0) (2023-03-19)
+
+
+### Features
+
+* allow yielding null from Swiss components ([63dd48d](https://github.com/Wildhoney/Switzerland/commit/63dd48d75c4e07e7bec7dcb4b96a443a49a25473))
+
 ## [6.2.0](https://github.com/Wildhoney/Switzerland/compare/v6.1.6...v6.2.0) (2023-03-18)
 
 ### Features
