@@ -4,7 +4,7 @@ build:
 	rm -rf dist/client/**/*.js
 
 lint:
-	eslint --fix
+	eslint src/**/*.{ts,tsx} --fix
 	# cd ./dist && tar -zcf ./index.client.tar.gz ./index.client.js
 	# fslint --files=./dist/index.client.tar.gz --limit=3072 || rm -rf ./dist/index.client.tar.gz
 	# rm -rf ./dist/index.client.tar.gz
