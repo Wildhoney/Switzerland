@@ -1,6 +1,6 @@
 import { Unit, Weather } from "../../types.js";
 import { toFahrenheit } from "../../utils.js";
-import { node, VNode } from "switzerland";
+import { VNode, node } from "switzerland";
 
 export const metaData = [
   {

@@ -1,7 +1,7 @@
+import App from "app";
 import express from "express";
 import * as path from "node:path";
-import { render, preload, imports } from "switzerland";
-import App from "app";
+import { imports, preload, render } from "switzerland";
 
 const app = express();
 const root = path.resolve("./src");

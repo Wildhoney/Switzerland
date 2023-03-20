@@ -1,7 +1,7 @@
-import { Component, VNode } from "preact";
 import { GetAttrs, SwissAttrs } from "../types/index.js";
 import { Attrs } from "../use/index.js";
 import { Props, State } from "./types.js";
+import { Component, VNode } from "preact";
 
 export default class SwissContainer<Attrs extends SwissAttrs> extends Component<
   Props<Attrs>,

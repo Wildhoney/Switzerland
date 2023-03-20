@@ -1,5 +1,5 @@
-import { Static, Type } from "@sinclair/typebox";
 import { Unit } from "../x-weather/types.js";
+import { Static, Type } from "@sinclair/typebox";
 
 const AttrsUnit = Type.Union([
   Type.Literal(Unit.Celsius),

@@ -1,11 +1,10 @@
-import { create, node, use } from "switzerland";
-
+import City from "./components/city/index.js";
+import Loading from "./components/loading/index.js";
+import Logo from "./components/logo/index.js";
 import { Attrs } from "./types.js";
 import { Unit } from "./types.js";
 import { fetch, gradientColours } from "./utils.js";
-import Logo from "./components/logo/index.js";
-import City from "./components/city/index.js";
-import Loading from "./components/loading/index.js";
+import { create, node, use } from "switzerland";
 
 export default create<Attrs>("x-weather", ({ attrs }) => {
   const path = use.path(import.meta.url);

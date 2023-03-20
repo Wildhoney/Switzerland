@@ -1,10 +1,10 @@
-import { render, h, VNode } from "preact";
-import { memo } from "preact/compat";
 import Container from "../../global/container/index.js";
 import { SwissAttrs, SwissTree } from "../../global/types/index.js";
 import { Env } from "../../global/use/index.js";
 import { EnvContext } from "../../global/use/types.js";
 import { getAttributes, hasApplicableMutations } from "./utils.js";
+import { VNode, h, render } from "preact";
+import { memo } from "preact/compat";
 
 export function create<Attrs extends SwissAttrs>(
   name: string,

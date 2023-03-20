@@ -1,4 +1,4 @@
-import { SwissTree, SwissAttrs } from "../types/index.js";
+import { SwissAttrs, SwissTree } from "../types/index.js";
 
 export type State = { error: null | Error };
 

@@ -4,8 +4,7 @@ import {
   Bool,
   Date,
   Float,
-  Int,
-  // Regex,
+  Int, // Regex,
   Tuple,
 } from "./index.js";
 

@@ -1,8 +1,8 @@
-import { Project } from "ts-morph";
-import { Generator } from "@jspm/generator";
 import { Args } from "./types.js";
+import { Generator } from "@jspm/generator";
 import findPackage from "find-file-up";
 import fs from "node:fs";
+import { Project } from "ts-morph";
 
 export async function imports({
   path,

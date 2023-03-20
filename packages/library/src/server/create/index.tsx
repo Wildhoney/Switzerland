@@ -1,6 +1,6 @@
-import { h, VNode } from "preact";
 import Container from "../../global/container/index.js";
-import { SwissTree, SwissAttrs } from "../../global/types/index.js";
+import { SwissAttrs, SwissTree } from "../../global/types/index.js";
+import { VNode, h } from "preact";
 
 export function create<Attrs extends SwissAttrs>(
   name: string,

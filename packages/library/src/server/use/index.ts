@@ -1,15 +1,15 @@
-import { useContext } from "preact/hooks";
-import { parse, join } from "node:path";
-import { Env, use as baseUse } from "../../global/use/index.js";
-import { stripTrailingSlashes } from "./utils.js";
 import {
   DispatchEventOptions,
   DispatchEventPayload,
   SwissAttrs,
   SwissEvent,
 } from "../../global/types/index.js";
-import { Loader } from "../render/index.js";
+import { Env, use as baseUse } from "../../global/use/index.js";
 import { LoaderReturn } from "../../global/use/types.js";
+import { Loader } from "../render/index.js";
+import { stripTrailingSlashes } from "./utils.js";
+import { join, parse } from "node:path";
+import { useContext } from "preact/hooks";
 
 export const use = {
   ...baseUse,

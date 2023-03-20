@@ -1,6 +1,6 @@
-import { VNode, node, use } from "switzerland";
 import { Unit } from "../../types.js";
 import { Props } from "./types.js";
+import { VNode, node, use } from "switzerland";
 
 export default function Units({ value, onChange }: Props): VNode {
   const path = use.path(import.meta.url);

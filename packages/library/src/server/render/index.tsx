@@ -1,8 +1,8 @@
-import { VNode, createContext } from "preact";
-import { renderToString } from "preact-render-to-string";
 import { Env } from "../../global/use/index.js";
 import { EnvContext } from "../../global/use/types.js";
 import { Loaders, RenderOptions } from "./types.js";
+import { VNode, createContext } from "preact";
+import { renderToString } from "preact-render-to-string";
 
 export const Loader = createContext<Set<Loaders>>(new Set());
 

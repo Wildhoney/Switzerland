@@ -1,7 +1,7 @@
-import { Fragment, h, VNode } from "preact";
-import { useMemo } from "preact/hooks";
 import { fromCamelcase } from "../utils/index.js";
 import { StyleSheetProps, VariablesProps } from "./types.js";
+import { Fragment, VNode, h } from "preact";
+import { useMemo } from "preact/hooks";
 
 export const node = {
   h,

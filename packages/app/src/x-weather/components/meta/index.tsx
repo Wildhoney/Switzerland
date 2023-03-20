@@ -1,6 +1,6 @@
-import { VNode, node, use } from "switzerland";
 import { Props } from "./types.js";
 import { metaData } from "./utils.js";
+import { VNode, node, use } from "switzerland";
 
 export default function Meta({ weather, unit }: Props): VNode {
   const path = use.path(import.meta.url);

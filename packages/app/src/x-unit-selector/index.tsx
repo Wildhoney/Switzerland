@@ -1,6 +1,6 @@
-import { create, node, use } from "switzerland";
 import { Unit } from "../x-weather/types.js";
 import { Attrs } from "./types.js";
+import { create, node, use } from "switzerland";
 
 export default create<Attrs>("x-unit-selector", ({ attrs }) => {
   const path = use.path(import.meta.url);

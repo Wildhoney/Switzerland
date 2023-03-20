@@ -1,6 +1,6 @@
-import { Props } from "./types.js";
-import { use, node } from "switzerland";
 import { places } from "../../utils.js";
+import { Props } from "./types.js";
+import { node, use } from "switzerland";
 
 export default function Places({ value }: Props) {
   const env = use.env();

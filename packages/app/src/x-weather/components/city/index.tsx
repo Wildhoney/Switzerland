@@ -1,10 +1,10 @@
-import { VNode, node, use } from "switzerland";
+import UnitSelector from "../../../x-unit-selector/index.js";
 import Coordinates from "../coordinates/index.js";
 import Forecast from "../forecast/index.js";
 import Meta from "../meta/index.js";
 import Places from "../places/index.js";
 import { Props } from "./types.js";
-import UnitSelector from "../../../x-unit-selector/index.js";
+import { VNode, node, use } from "switzerland";
 
 export default function City({
   city,

@@ -1,7 +1,7 @@
-import { useContext, useMemo, useRef } from "preact/hooks";
 import { Env, use as baseUse } from "../../global/use/index.js";
 import { LoaderReturn } from "../../global/use/types.js";
 import { dispatchEvent } from "../create/utils.js";
+import { useContext, useMemo, useRef } from "preact/hooks";
 
 export const use = {
   ...baseUse,
