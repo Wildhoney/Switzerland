@@ -6,6 +6,8 @@ import {
 } from "../../global/types/index.js";
 import { toCamelcase } from "../../global/utils/index.js";
 
+export const serialiseAttributes = JSON.stringify;
+
 export const getAttributes = <Attrs extends SwissAttrs>(
   attrs: NamedNodeMap
 ): Attrs =>
@@ -39,7 +41,7 @@ export function dispatchEvent<Attrs>(node: HTMLElement) {
     const model = typeof payload === "object" ? payload : { value: payload };
 
     return node.dispatchEvent(
-      new window.CustomEvent(name as string, {
+      new CustomEvent(name as string, {
         bubbles: true,
         composed: true,
         ...options,

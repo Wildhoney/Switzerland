@@ -9,7 +9,7 @@ export function Int(a: string): null | number {
 
 export function BigInt(a: string): null | bigint {
   try {
-    return window.BigInt(a);
+    return globalThis.BigInt(a);
   } catch {
     return null;
   }
@@ -46,7 +46,7 @@ export const Bool = (a: string): null | boolean => {
 };
 
 export function Date(a: string): null | Date {
-  const value = new window.Date(window.Date.parse(a));
+  const value = new globalThis.Date(globalThis.Date.parse(a));
   return Number.isNaN(value.getTime()) ? null : value;
 }
 

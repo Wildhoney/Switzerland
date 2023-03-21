@@ -2,7 +2,11 @@ import Container from "../../global/container/index.js";
 import { SwissAttrs, SwissTree } from "../../global/types/index.js";
 import { Env } from "../../global/use/index.js";
 import { EnvContext } from "../../global/use/types.js";
-import { getAttributes, hasApplicableMutations } from "./utils.js";
+import {
+  getAttributes,
+  hasApplicableMutations,
+  serialiseAttributes,
+} from "./utils.js";
 import { VNode, h, render } from "preact";
 import { memo } from "preact/compat";
 
@@ -10,18 +14,18 @@ export function create<Attrs extends SwissAttrs>(
   name: string,
   Tree: SwissTree<Attrs>
 ): (attrs: Attrs) => VNode {
-  window.customElements.define(
+  customElements.define(
     name,
     class Swiss extends HTMLElement {
       private context = {
-        path: window.location.origin,
+        path: location.origin,
         root: null,
         node: this,
         isClient: true,
         isServer: false,
       } satisfies EnvContext;
 
-      private observer: MutationObserver = new window.MutationObserver(
+      private observer: MutationObserver = new MutationObserver(
         (mutations: MutationRecord[]) =>
           hasApplicableMutations(this, mutations) && this.render()
       );
@@ -56,6 +60,6 @@ export function create<Attrs extends SwissAttrs>(
   return memo(
     (attrs: Attrs): VNode => h(name, attrs),
     (nextProps, prevProps): boolean =>
-      JSON.stringify(nextProps) === JSON.stringify(prevProps)
+      serialiseAttributes(nextProps) === serialiseAttributes(prevProps)
   );
 }
