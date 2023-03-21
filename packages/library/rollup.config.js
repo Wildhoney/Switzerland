@@ -7,5 +7,5 @@ export default {
     dir: "./dist",
     format: "es",
   },
-  plugins: [typescript(), terser()],
+  plugins: [typescript(), terser(), terser()],
 };
