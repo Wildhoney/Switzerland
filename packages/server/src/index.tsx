@@ -5,13 +5,16 @@ import { imports, preload, render } from "switzerland";
 
 const app = express();
 const root = path.resolve("./src");
-const vendor = path.resolve("..");
+const vendor = {
+  prefix: "client",
+  root: path.resolve(".."),
+};
 
 const options = {
   path: process.env["DOMAIN"]
-    ? `https://${process.env["DOMAIN"]}/client`
-    : "http://localhost:3000/client",
-  root: vendor,
+    ? `https://${process.env["DOMAIN"]}/${vendor.prefix}`
+    : `http://localhost:3000/${vendor.prefix}`,
+  root: vendor.root,
 };
 
 app.get("/", async (_, response) => {
@@ -42,7 +45,7 @@ app.get("/", async (_, response) => {
           ${JSON.stringify(
             {
               imports: {
-                switzerland: "/client/library/dist/index.client.js",
+                switzerland: `/${vendor.prefix}/library/dist/index.client.js`,
                 ...JSON.parse(
                   await imports({
                     path: path.resolve("../app/src"),
@@ -58,7 +61,7 @@ app.get("/", async (_, response) => {
 
         <script
           type="module"
-          src="/client/app/dist/index.js"
+          src="/${vendor.prefix}/app/dist/index.js"
           async
           defer
         ></script>
@@ -69,7 +72,7 @@ app.get("/", async (_, response) => {
     </html>`);
 });
 
-app.use("/client", express.static(vendor));
+app.use(`/${vendor.prefix}`, express.static(vendor.root));
 app.use(express.static(root));
 
 app.listen(3000);
