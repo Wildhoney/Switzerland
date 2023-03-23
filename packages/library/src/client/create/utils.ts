@@ -8,10 +8,10 @@ import { toCamelcase } from "../../global/utils/index.js";
 
 export const serialiseAttributes = JSON.stringify;
 
-export const getAttributes = <Attrs extends SwissAttrs>(
+export function getAttributes<Attrs extends SwissAttrs>(
   attrs: NamedNodeMap
-): Attrs =>
-  Object.values(attrs).reduce((attrs, attr) => {
+): Attrs {
+  return Object.values(attrs).reduce((attrs, attr) => {
     const name = toCamelcase(attr.nodeName).fromKebab();
 
     return {
@@ -19,6 +19,7 @@ export const getAttributes = <Attrs extends SwissAttrs>(
       [name]: attr.nodeValue,
     };
   }, {} as Attrs);
+}
 
 export function hasApplicableMutations(
   node: HTMLElement,

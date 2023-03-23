@@ -1,4 +1,25 @@
-import { FromCamelcase, ToCamelcase } from "./types.js";
+import { FromCamelcase, ParseNameReturn, ToCamelcase } from "./types.js";
+
+export function parseName(name: string): ParseNameReturn {
+  const [customElementName, prototype] = name.split("/");
+  const extendElement = prototype ?? null;
+  return {
+    customElementName,
+    prototype: getPrototype(customElementName),
+    extendElement,
+  };
+}
+
+export function getPrototype(name: string): null | CustomElementConstructor {
+  if (typeof globalThis.HTMLElement === "undefined") {
+    return null;
+  }
+
+  return name
+    ? (window.document.createElement(name)
+        .constructor as CustomElementConstructor)
+    : HTMLElement;
+}
 
 export function toCamelcase(value: string): ToCamelcase {
   const f = (separator: string) => (): string => {

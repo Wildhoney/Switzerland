@@ -2,6 +2,7 @@ import Container from "../../global/container/index.js";
 import { SwissAttrs, SwissTree } from "../../global/types/index.js";
 import { Env } from "../../global/use/index.js";
 import { EnvContext } from "../../global/use/types.js";
+import { parseName } from "../../global/utils/index.js";
 import {
   getAttributes,
   hasApplicableMutations,
@@ -14,9 +15,12 @@ export function create<Attrs extends SwissAttrs>(
   name: string,
   Tree: SwissTree<Attrs>
 ): (attrs: Attrs) => VNode {
+  const element = parseName(name);
+  const CustomPrototype = element.prototype ?? HTMLElement;
+
   customElements.define(
-    name,
-    class Swiss extends HTMLElement {
+    element.customElementName,
+    class Swiss extends CustomPrototype {
       private context = {
         path: location.origin,
         root: null,
@@ -54,11 +58,15 @@ export function create<Attrs extends SwissAttrs>(
           root
         );
       }
-    }
+    },
+    element.extendElement ? { extends: element.extendElement } : undefined
   );
 
   return memo(
-    (attrs: Attrs): VNode => h(name, attrs),
+    (attrs: Attrs): VNode =>
+      element.extendElement
+        ? h(element.extendElement, { ...attrs, is: element.customElementName })
+        : h(element.customElementName, attrs),
     (nextProps, prevProps): boolean =>
       serialiseAttributes(nextProps) === serialiseAttributes(prevProps)
   );
