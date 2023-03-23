@@ -16,6 +16,7 @@ export default create<Attrs>("x-unit-selector", ({ attrs }) => {
         >
           C&deg;
         </button>
+
         <button
           part="button"
           class={Number(attrs.unit) === Unit.Fahrenheit ? "active" : ""}

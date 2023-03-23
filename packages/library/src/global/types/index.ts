@@ -15,6 +15,10 @@ export type GetAttrs<Attrs extends SwissAttrs> = Pick<
   Keys<Attrs>
 >;
 
+export type SwissName<N extends string> = N extends `${string}-${string}`
+  ? N
+  : `Switzerland: ${N} is an invalid custom element name`;
+
 export type SwissTree<Attrs extends SwissAttrs> = (args: {
   attrs: GetAttrs<Attrs>;
   error: null | Error;
