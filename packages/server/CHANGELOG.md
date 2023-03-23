@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [6.4.0](https://github.com/Wildhoney/Switzerland/compare/v6.3.0...v6.4.0) (2023-03-23)
+
+
+### Bug Fixes
+
+* eslint for app ([849327e](https://github.com/Wildhoney/Switzerland/commit/849327e5baea9a6b3114fc66db58be91dbc3d713))
+
 ## [6.3.0](https://github.com/Wildhoney/Switzerland/compare/v6.2.0...v6.3.0) (2023-03-19)
 
 ## [6.2.0](https://github.com/Wildhoney/Switzerland/compare/v6.1.6...v6.2.0) (2023-03-18)
