@@ -1532,6 +1532,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/devkit@npm:15.8.9":
+  version: 15.8.9
+  resolution: "@nrwl/devkit@npm:15.8.9"
+  dependencies:
+    "@phenomnomnominal/tsquery": 4.1.1
+    ejs: ^3.1.7
+    ignore: ^5.0.4
+    semver: 7.3.4
+    tmp: ~0.2.1
+    tslib: ^2.3.0
+  peerDependencies:
+    nx: ">= 14.1 <= 16"
+  checksum: fbf495d62a4e465224d8b85c4af57c0b1c9fa5b344e3e8313d0c7a2f47930a52c749ca4d1df4851312d1c46d1be03d606af50b28c06f149f20fc430f5f86474c
+  languageName: node
+  linkType: hard
+
 "@nrwl/devkit@npm:^15.8.6":
   version: 15.8.6
   resolution: "@nrwl/devkit@npm:15.8.6"
@@ -4776,6 +4792,14 @@ __metadata:
   checksum: 788b6bfe52f1dd8e263cda800c26ac0ca2ff6de0b6eee2fe0d9e3abf15e149b651bd27bf5226be10e6e3edb5c4e5d5985a5a1a98137e7a892f75eff76467ad2d
   languageName: node
   linkType: hard
+
+"generators@workspace:packages/generators":
+  version: 0.0.0-use.local
+  resolution: "generators@workspace:packages/generators"
+  dependencies:
+    "@nrwl/devkit": 15.8.9
+  languageName: unknown
+  linkType: soft
 
 "gensync@npm:^1.0.0-beta.2":
   version: 1.0.0-beta.2

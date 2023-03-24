@@ -1,0 +1,9 @@
+import { create } from "switzerland";
+
+export default create("<%= fileName %>", () => {
+  return (
+    <section>
+      <h1>Hello, Switzerland</h1>
+    </section>
+  );
+});

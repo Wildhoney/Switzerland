@@ -1,0 +1,12 @@
+{
+  "name": "generators",
+  "version": "6.4.0",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@nrwl/devkit": "15.8.9"
+  },
+  "scripts": {
+    "format": "prettier . --write"
+  },
+  "generators": "generators.json"
+}

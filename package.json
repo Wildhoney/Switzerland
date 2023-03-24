@@ -15,7 +15,8 @@
     "typecheck": "nx run-many --target=typecheck --exclude workspace",
     "test": "yarn lint && yarn typecheck && yarn unit --exclude workspace",
     "deploy": "nx run workspace:version && nx run-many --target=deploy --exclude workspace",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "nx:create": "nx generate generators:create-component"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.0",
