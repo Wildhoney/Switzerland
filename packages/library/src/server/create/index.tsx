@@ -1,6 +1,7 @@
 import Container from "../../global/container/index.js";
 import { SwissAttrs, SwissTree } from "../../global/types/index.js";
 import { parseName } from "../../global/utils/index.js";
+import { forbiddenBoundaryNodes } from "./utils.js";
 import { VNode, h } from "preact";
 
 export function create<Attrs extends SwissAttrs>(
@@ -16,11 +17,17 @@ export function create<Attrs extends SwissAttrs>(
         ...attrs,
         is: element.extendElement ? element.customElementName : false,
       },
-      h(
-        "template" as string,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        { shadowroot: "open" } as any,
+      forbiddenBoundaryNodes.includes(
+        element.extendElement ?? element.customElementName
+      ) ? (
         <Container<Attrs> Tree={Tree} attrs={attrs} />
+      ) : (
+        h(
+          "template" as string,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          { shadowroot: "open" } as any,
+          <Container<Attrs> Tree={Tree} attrs={attrs} />
+        )
       )
     );
   };

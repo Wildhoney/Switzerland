@@ -51,3 +51,13 @@ export function dispatchEvent<Attrs>(node: HTMLElement) {
     );
   };
 }
+
+export function attachShadow(node: HTMLElement): HTMLElement | ShadowRoot {
+  if (node.shadowRoot) return node.shadowRoot;
+
+  try {
+    return node.attachShadow({ mode: "open" });
+  } catch {
+    return node;
+  }
+}

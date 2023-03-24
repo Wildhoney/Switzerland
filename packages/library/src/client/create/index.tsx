@@ -4,6 +4,7 @@ import { Env } from "../../global/use/index.js";
 import { EnvContext } from "../../global/use/types.js";
 import { parseName } from "../../global/utils/index.js";
 import {
+  attachShadow,
   getAttributes,
   hasApplicableMutations,
   serialiseAttributes,
@@ -47,9 +48,9 @@ export function create<Attrs extends SwissAttrs>(
         this.observer.disconnect();
       }
 
-      render(): void {
+      private render(): void {
         const attrs = getAttributes<Attrs>(this.attributes);
-        const root = this.shadowRoot ?? this.attachShadow({ mode: "open" });
+        const root = attachShadow(this);
 
         render(
           <Env.Provider value={this.context}>
