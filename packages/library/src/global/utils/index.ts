@@ -3,9 +3,10 @@ import { FromCamelcase, ParseNameReturn, ToCamelcase } from "./types.js";
 export function parseName(name: string): ParseNameReturn {
   const [customElementName, prototype] = name.split("/");
   const extendElement = prototype ?? null;
+
   return {
     customElementName,
-    prototype: getPrototype(customElementName),
+    prototype: getPrototype(prototype ?? customElementName),
     extendElement,
   };
 }
