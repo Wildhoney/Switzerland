@@ -8,6 +8,7 @@ export async function imports({
   path,
   provider = "jspm.io",
   excludeDependencies = [],
+  inputMap,
 }: Args): Promise<string> {
   const imports = new Set<string>();
 
@@ -15,6 +16,7 @@ export async function imports({
   const generator = new Generator({
     env: ["production", "browser", "module"],
     defaultProvider: provider,
+    inputMap,
   });
 
   const matcher = `${path}/**/*.{ts,tsx}`;
