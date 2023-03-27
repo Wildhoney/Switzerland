@@ -9,17 +9,16 @@ export function create<Attrs extends SwissAttrs>(
   Tree: SwissTree<Attrs>
 ): (attrs: Attrs) => VNode {
   const element = parseName(name);
+  const tag = element.extendElement
+    ? element.extendElement
+    : element.customElementName;
+  const is = element.extendElement ? element.customElementName : false;
 
   return function Swiss(attrs: Attrs): VNode {
     return h(
-      element.extendElement ? element.extendElement : element.customElementName,
-      {
-        ...attrs,
-        is: element.extendElement ? element.customElementName : false,
-      },
-      forbiddenBoundaryNodes.includes(
-        element.extendElement ?? element.customElementName
-      ) ? (
+      tag,
+      { ...attrs, is },
+      forbiddenBoundaryNodes.includes(tag) ? (
         <Container<Attrs> Tree={Tree} attrs={attrs} />
       ) : (
         h(

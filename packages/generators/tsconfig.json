@@ -6,5 +6,5 @@
     "module": "esnext",
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*"]
 }
