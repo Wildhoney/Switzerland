@@ -26,64 +26,65 @@
 1. [Applying Styles](#applying-styles)
 1. [Data Fetching](#data-fetching)
 1. [Environment Context](#environment-context)
+1. [Extending Elements](#extending-elements)
 
 ## Getting Started
 
 Switzerland optionally begins with server-side rendering with hydration on the client thanks to [declarative shadow DOM](https://developer.chrome.com/en/articles/declarative-shadow-dom/) &mdash; with our components looking very familiar due to our usage of [Preact](https://preactjs.com/).
 
 ```tsx
-import { create } from 'switzerland';
+import { create } from "switzerland";
 
-export default create('x-countries', () => {
-    return (
-        <ul>
-            <li>Japan</li>
-            <li>Croatia</li>
-            <li>Singapore</li>
-        </ul>
-    );
+export default create("x-countries", () => {
+  return (
+    <ul>
+      <li>Japan</li>
+      <li>Croatia</li>
+      <li>Singapore</li>
+    </ul>
+  );
 });
 ```
 
 Once we've defined our `x-countries` component we are able to both render it on the server and hydrate it on the client as a standard `<x-countries />` DOM element. We can then take a step further and allow our countries to be passed as a HTML attribute on the DOM node using `<x-countries list="Japan,Croatia,Singapore">`.
 
 ```tsx
-import { create, use, type } from 'switzerland';
+import { create, type, use } from "switzerland";
 
 type Attrs = {
-    countries: string[];
+  countries: string[];
 };
 
-export default create<Attrs>('x-countries', () => {
-    const attrs = use.attrs({
-        countries: type.Array(type.String)
-    });
+export default create<Attrs>("x-countries", () => {
+  const attrs = use.attrs({
+    countries: type.Array(type.String),
+  });
 
-    return (
-        <ul>
-            {attrs.countries.map(country => (
-                <li key={country}>{country}</li>
-            ))}
-        </ul>
-    );
+  return (
+    <ul>
+      {attrs.countries.map((country) => (
+        <li key={country}>{country}</li>
+      ))}
+    </ul>
+  );
 });
 ```
 
 Using our component from within a Node environment requires us to use the exported asynchronous `render` function; we can specify an optional second parameter to the function, however our component currently doesn't perform data fetching or media inclusion and so is unnecessary.
 
 ```tsx
-import { render } from 'switzerland';
+import { render } from "switzerland";
 
 app.get("/", async (_, response) => {
-    const html = await render(<Countries list="Japan,Croatia,Singapore" />);
-    response.send(html);
+  const html = await render(<Countries list="Japan,Croatia,Singapore" />);
+  response.send(html);
 });
 ```
 
 As our components are self-contained modules, any changes to their attributes will initiate a re-render of the component's tree &ndash; regardless of whether those attributes change from inside another component or through vanilla DOM accessors.
 
 ```js
-const node = document.querySelector('x-countries');
+const node = document.querySelector("x-countries");
 node.attributes.values = `${node.attributes.values},Ukraine,Maldives`;
 ```
 
@@ -92,14 +93,14 @@ node.attributes.values = `${node.attributes.values},Ukraine,Maldives`;
 Switzerland doesn't _need_ to be compiled except for optional TypeScript and JSX transpiling because it uses native ES modules in the browser and Node 16+ on the server. It achieves this by using `node_modules` when rendering on the server using named imports, and in the browser it uses import maps to resolve those named imports to CDN URLs which offers enhanced caching. We provide a utility for the server to automatically generate the import maps for your application based on its dependencies.
 
 ```tsx
-import fs from 'node:fs';
-import { render, imports } from 'switzerland';
+import fs from "node:fs";
+import { imports, render } from "switzerland";
 
 app.get("/", async (_, response) => {
-    const html = await render(<Countries list="Japan,Croatia,Singapore" />);
-    const importMap = await imports({ path: path.resolve('../app/src') });
+  const html = await render(<Countries list="Japan,Croatia,Singapore" />);
+  const importMap = await imports({ path: path.resolve("../app/src") });
 
-    response.send(`
+  response.send(`
         <head>
             <script type="importmap">
                 ${importMap}
@@ -142,18 +143,22 @@ Once you have the import map configured, when rendering Switzerland components i
 Since we use [Preact](https://preactjs.com/) to render Switzerland's components the API should already be familiar. For ease of use we re-export Preact's hook functions but you may also use them directly from Preact.
 
 ```tsx
-import { create, use } from 'switzerland';
+import { create, use } from "switzerland";
 
-export default create('x-countries', () => {
-    const [countries, setCountries] = use.state(['Japan', 'Croatia', 'Singapore']);
+export default create("x-countries", () => {
+  const [countries, setCountries] = use.state([
+    "Japan",
+    "Croatia",
+    "Singapore",
+  ]);
 
-    return (
-        <ul>
-            {countries.map(country => (
-                <li key={country}>{country}</li>
-            ))}
-        </ul>
-    );
+  return (
+    <ul>
+      {countries.map((country) => (
+        <li key={country}>{country}</li>
+      ))}
+    </ul>
+  );
 });
 ```
 
@@ -162,27 +167,36 @@ export default create('x-countries', () => {
 Styles within a shadow boundary allow for encapsulation which means we can use regular CSS documents scoped to our component's tree. We can attach our stylesheets to our component by using a regular `link` node, although Switzerland provides a `node` utility for `StyleSheet` and `Variables` &mdash; the latter applies custom variables to your component tree allowing CSS to access those JavaScript variables. We use the `use.path` hook to resolve media &mdash; CSS documents, images, etc... &mdash; relative to our component.
 
 ```tsx
-import { create, use, node } from 'switzerland';
+import { create, node, use } from "switzerland";
 
-export default create('x-countries', () => {
-    const path = use.path(import.meta.url);
-    const [countries, setCountries] = use.state(['Japan', 'Croatia', 'Singapore']);
+export default create("x-countries", () => {
+  const path = use.path(import.meta.url);
+  const [countries, setCountries] = use.state([
+    "Japan",
+    "Croatia",
+    "Singapore",
+  ]);
 
-    return (
-        <>
-            <ul>
-                {countries.map(country => (
-                    <li key={country}>{country}</li>
-                ))}
-            </ul>
+  return (
+    <>
+      <ul>
+        {countries.map((country) => (
+          <li key={country}>{country}</li>
+        ))}
+      </ul>
 
-            <node.Variables backgroundColour={countries.length === 0 ? '#8ECCD4' : '#FBDEA3'} />
+      <node.Variables
+        backgroundColour={countries.length === 0 ? "#8ECCD4" : "#FBDEA3"}
+      />
 
-            <node.StyleSheet href={path("./styles/default.css")} />
-            <node.StyleSheet href={path("./styles/mobile.css")} media="(max-width: 768px)" />
-            <node.StyleSheet href={path("./styles/print.css")} media="print" />
-        </>
-    );
+      <node.StyleSheet href={path("./styles/default.css")} />
+      <node.StyleSheet
+        href={path("./styles/mobile.css")}
+        media="(max-width: 768px)"
+      />
+      <node.StyleSheet href={path("./styles/print.css")} media="print" />
+    </>
+  );
 });
 ```
 
@@ -190,11 +204,11 @@ We can then be quite loose when applying those styles to our component knowing t
 
 ```css
 :host {
-    box-shadow: 0 0 5px #E8C5B0;
+  box-shadow: 0 0 5px #e8c5b0;
 }
 
 ul {
-    background-color: var(--background-color, '#E39AC7');
+  background-color: var(--background-color, "#E39AC7");
 }
 ```
 
@@ -206,19 +220,24 @@ Since Switzerland allows for server-side rendering by default a `use.loader` uti
 import { create, use } from "switzerland";
 
 export default create("x-countries", () => {
-    const { data, loading, error } = use.loader(
-        'x-countries',
-        () => fetch('https://www.example.org/countries').then((response) => response.json()),
-        null
-    );
+  const { data, loading, error } = use.loader(
+    "x-countries",
+    () =>
+      fetch("https://www.example.org/countries").then((response) =>
+        response.json()
+      ),
+    null
+  );
 
-    return loading ? <p>Loading&hellip;</p> : (
-        <ul>
-            {data.map((country) => (
-                <li key={country}>{country}</li>
-            ))}
-        </ul>
-    );
+  return loading ? (
+    <p>Loading&hellip;</p>
+  ) : (
+    <ul>
+      {data.map((country) => (
+        <li key={country}>{country}</li>
+      ))}
+    </ul>
+  );
 });
 ```
 
@@ -229,8 +248,8 @@ We provide a unique ID to the `loader` function which _should_ identify the indi
 Providing the environment context requires some user configuration on the server side &mdash; the `render` function takes an optional second parameter which allows us to specify both the root directory on the web-server and _optionally_ the domain we're running the server on.
 
 ```ts
-import { render, preload } from "switzerland";
 import App from "./App";
+import { preload, render } from "switzerland";
 
 const vendor = path.resolve("..");
 
@@ -242,8 +261,11 @@ const options = {
 };
 
 app.get("/", async (_, response) => {
-    const html = await render(<Countries list="Japan,Croatia,Singapore" />, options);
-    response.send(html);
+  const html = await render(
+    <Countries list="Japan,Croatia,Singapore" />,
+    options
+  );
+  response.send(html);
 });
 ```
 
@@ -252,24 +274,38 @@ We use these options to resolve media using the `use.path` hook with `import.met
 Using the `use.env` hook we can access these defined parameters as well as a few additional items.
 
 ```tsx
-import { create, use } from 'switzerland';
+import { create, use } from "switzerland";
 
-export default create('x-countries', () => {
-    const { path, root, node, isServer, isClient } = use.env();
+export default create("x-countries", () => {
+  const { path, root, node, isServer, isClient } = use.env();
 
-    return (
-        <>
-            {node && <h1>Hey {node.nodeName}!</h1>}
+  return (
+    <>
+      {node && <h1>Hey {node.nodeName}!</h1>}
 
-            <p>Server: {isServer}</p>
-            <p>Client: {isClient}</p>
+      <p>Server: {isServer}</p>
+      <p>Client: {isClient}</p>
 
-            <ul>
-                <li>Japan</li>
-                <li>Croatia</li>
-                <li>Singapore</li>
-            </ul>
-        </>
-    );
+      <ul>
+        <li>Japan</li>
+        <li>Croatia</li>
+        <li>Singapore</li>
+      </ul>
+    </>
+  );
+});
+```
+
+## Extending Elements
+
+You may also extend native HTML elements using the `x-hello:button` syntax in the `create` function &ndash; it'll create a `x-hello` custom element that extends from the `button` constructor allowing you to add your own twist to it.
+
+```tsx
+import { create, use } from "switzerland";
+
+export default create("x-hello:button", () => {
+  const handleClick = use.callback((): void => console.log("Hello!"), []);
+
+  return <button onClick={handleClick}>Say Hello!</button>;
 });
 ```
