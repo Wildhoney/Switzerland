@@ -1257,6 +1257,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jridgewell/source-map@npm:^0.3.3":
+  version: 0.3.5
+  resolution: "@jridgewell/source-map@npm:0.3.5"
+  dependencies:
+    "@jridgewell/gen-mapping": ^0.3.0
+    "@jridgewell/trace-mapping": ^0.3.9
+  checksum: 1ad4dec0bdafbade57920a50acec6634f88a0eb735851e0dda906fa9894e7f0549c492678aad1a10f8e144bfe87f238307bf2a914a1bc85b7781d345417e9f6f
+  languageName: node
+  linkType: hard
+
 "@jridgewell/sourcemap-codec@npm:1.4.14, @jridgewell/sourcemap-codec@npm:^1.4.10":
   version: 1.4.14
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.14"
@@ -1733,25 +1743,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/plugin-terser@npm:0.4.0":
-  version: 0.4.0
-  resolution: "@rollup/plugin-terser@npm:0.4.0"
+"@rollup/plugin-terser@npm:0.4.3":
+  version: 0.4.3
+  resolution: "@rollup/plugin-terser@npm:0.4.3"
   dependencies:
-    serialize-javascript: ^6.0.0
-    smob: ^0.0.6
-    terser: ^5.15.1
+    serialize-javascript: ^6.0.1
+    smob: ^1.0.0
+    terser: ^5.17.4
   peerDependencies:
     rollup: ^2.x || ^3.x
   peerDependenciesMeta:
     rollup:
       optional: true
-  checksum: 0988472b3cd15756cd8d630a7f133526167d4226f47608a12e7d6744f59f23704170a064213efc1a4286636c206c3e1528de0e944e48d28ab98cc84ee09fa480
+  checksum: 0d697e816f32e9609c48defbda6f3ed90548126fbf673451cfde2c576a7511073cd25d45a9669f179d0b89485e62f56cabeb65428c2232469ab6057ae5dc7709
   languageName: node
   linkType: hard
 
-"@rollup/plugin-typescript@npm:11.0.0":
-  version: 11.0.0
-  resolution: "@rollup/plugin-typescript@npm:11.0.0"
+"@rollup/plugin-typescript@npm:11.1.2":
+  version: 11.1.2
+  resolution: "@rollup/plugin-typescript@npm:11.1.2"
   dependencies:
     "@rollup/pluginutils": ^5.0.1
     resolve: ^1.22.1
@@ -1764,7 +1774,7 @@ __metadata:
       optional: true
     tslib:
       optional: true
-  checksum: b0d34ff0ad6bfc681c437ef42df7b02f04c361465be5a2044cd30cac5b003045c54e4377d58ab91925e296076b792bbb5ddded72cacdd21092bc8694a95b046f
+  checksum: f4655a35e08639574e86dbce578b76468ee8627e4a3d8a46b7e0703d5d98c39a9bda9aa7144510aae11c5d8ce9c3b065e7f3e52dd31fbc6780015dd7802e01f7
   languageName: node
   linkType: hard
 
@@ -2403,6 +2413,15 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: f790b99a1bf63ef160c967e23c46feea7787e531292bb827126334612c234ed489a0dc2c7ba33156416f0ffa8d25bf2b0fdb7f35c2ba60eb3e960572bece4001
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^8.8.2":
+  version: 8.10.0
+  resolution: "acorn@npm:8.10.0"
+  bin:
+    acorn: bin/acorn
+  checksum: 538ba38af0cc9e5ef983aee196c4b8b4d87c0c94532334fa7e065b2c8a1f85863467bb774231aae91613fcda5e68740c15d97b1967ae3394d20faddddd8af61d
   languageName: node
   linkType: hard
 
@@ -8404,9 +8423,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:3.19.1":
-  version: 3.19.1
-  resolution: "rollup@npm:3.19.1"
+"rollup@npm:3.26.3":
+  version: 3.26.3
+  resolution: "rollup@npm:3.26.3"
   dependencies:
     fsevents: ~2.3.2
   dependenciesMeta:
@@ -8414,7 +8433,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: f78198c6de224b26650c70b16db156762d1fcceeb375d34fb2c76fc5b23a78f712c3c881d3248e6f277a511589e20d50c247bcf5c7920f1ddc0a43cadf9f0140
+  checksum: e6a765b2b7af709170344cc804392936613e06b6bdab46a04d264368d154bdadaaaf77de39e6e656bf728a060d7b4867d81e2464d791c0f37dd5b21aa9c7a6df
   languageName: node
   linkType: hard
 
@@ -8545,7 +8564,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-javascript@npm:^6.0.0":
+"serialize-javascript@npm:^6.0.1":
   version: 6.0.1
   resolution: "serialize-javascript@npm:6.0.1"
   dependencies:
@@ -8635,10 +8654,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smob@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "smob@npm:0.0.6"
-  checksum: 360b8b72896974411ec6ca9a352b306bd4233aea44309dbebaeb41fc822cf770b094589e42a8a025ae291f043cbfc4199fc01dd909e45c7bd3c23d287c7e5bac
+"smob@npm:^1.0.0":
+  version: 1.4.0
+  resolution: "smob@npm:1.4.0"
+  checksum: f693b42698c90262dee4324eae635ea2aa16782161274b47417f87e353880487cdea8e6d9d07fb9b2a0e0df472ef0c5a1bfc07395edd8acfad7062797c1293ca
   languageName: node
   linkType: hard
 
@@ -8976,15 +8995,15 @@ __metadata:
   resolution: "switzerland@workspace:packages/library"
   dependencies:
     "@jspm/generator": 1.1.1
-    "@rollup/plugin-terser": 0.4.0
-    "@rollup/plugin-typescript": 11.0.0
+    "@rollup/plugin-terser": 0.4.3
+    "@rollup/plugin-typescript": 11.1.2
     find-file-up: 2.0.1
     fslint: 1.1.0
     jest-environment-jsdom: 29.4.3
     preact: 10.13.0
     preact-render-to-string: 5.2.6
-    rollup: 3.19.1
-    ts-loader: 9.4.2
+    rollup: 3.26.3
+    ts-loader: 9.4.4
     ts-morph: 17.0.1
   languageName: unknown
   linkType: soft
@@ -9030,7 +9049,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:5.16.6, terser@npm:^5.15.1":
+"terser@npm:5.16.6":
   version: 5.16.6
   resolution: "terser@npm:5.16.6"
   dependencies:
@@ -9041,6 +9060,20 @@ __metadata:
   bin:
     terser: bin/terser
   checksum: f763a7bcc7b98cb2bfc41434f7b92bfe8a701a12c92ea6049377736c8e6de328240d654a20dfe15ce170fd783491b9873fad9f4cd8fee4f6c6fb8ca407859dee
+  languageName: node
+  linkType: hard
+
+"terser@npm:^5.17.4":
+  version: 5.19.1
+  resolution: "terser@npm:5.19.1"
+  dependencies:
+    "@jridgewell/source-map": ^0.3.3
+    acorn: ^8.8.2
+    commander: ^2.20.0
+    source-map-support: ~0.5.20
+  bin:
+    terser: bin/terser
+  checksum: 18657b2a282238a1ca9c825efa966f4dd043a33196b2f8a7a2cba406a2006e14f55295b9d9cf6380a18599b697e9579e4092c99b9f40c7871ceec01cc98e3606
   languageName: node
   linkType: hard
 
@@ -9230,9 +9263,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-loader@npm:9.4.2":
-  version: 9.4.2
-  resolution: "ts-loader@npm:9.4.2"
+"ts-loader@npm:9.4.4":
+  version: 9.4.4
+  resolution: "ts-loader@npm:9.4.4"
   dependencies:
     chalk: ^4.1.0
     enhanced-resolve: ^5.0.0
@@ -9241,7 +9274,7 @@ __metadata:
   peerDependencies:
     typescript: "*"
     webpack: ^5.0.0
-  checksum: 6f306ee4c615c2a159fb177561e3fb86ca2cbd6c641e710d408a64b4978e1ff3f2c9733df07bff27d3f82efbfa7c287523d4306049510c7485ac2669a9c37eb0
+  checksum: 8e5e6b839b0edfa40d2156c880d88ccab58226894ea5978221bc48c7db3215e2e856bfd0093f148e925a2befc42d6c94cafa9a994a7da274541efaa916012b63
   languageName: node
   linkType: hard
 

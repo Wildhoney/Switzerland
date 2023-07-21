@@ -5,6 +5,6 @@
     "outDir": "./dist",
     "module": "esnext"
   },
-  "include": ["src/**/*", "./global.d.ts"],
+  "include": ["src/**/*", "src/global.d.ts"],
   "exclude": ["src/**/*.test*"]
 }
