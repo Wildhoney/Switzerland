@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [6.5.1](https://github.com/Wildhoney/Switzerland/compare/v6.5.0...v6.5.1) (2023-07-21)
+
 ## [6.4.0](https://github.com/Wildhoney/Switzerland/compare/v6.3.0...v6.4.0) (2023-03-23)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "generators",
-  "version": "6.4.0",
+  "version": "6.5.1",
   "license": "UNLICENSED",
   "devDependencies": {
     "@nrwl/devkit": "15.8.9"

@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "version": "6.4.0",
+  "version": "6.5.1",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./dist/index.d.ts",
