@@ -24,7 +24,7 @@ export function create<Attrs extends SwissAttrs>(
         h(
           "template" as string,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          { shadowroot: "open" } as any,
+          { shadowrootmode: "open", shadowroot: "open" } as any,
           <Container<Attrs> Tree={Tree} attrs={attrs} />
         )
       )
