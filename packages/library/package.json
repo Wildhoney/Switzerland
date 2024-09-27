@@ -26,7 +26,7 @@
     "@rollup/plugin-typescript": "11.1.2",
     "fslint": "1.1.0",
     "jest-environment-jsdom": "29.4.3",
-    "rollup": "3.26.3",
+    "rollup": "3.29.5",
     "ts-loader": "9.4.4"
   },
   "scripts": {
